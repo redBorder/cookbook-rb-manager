@@ -28,6 +28,5 @@ depends 'zookeeper', '0.0.1'
 GNU AFFERO GENERAL PUBLIC LICENSE Version 3
 
 ## Authors
-
 Authors: Enrique Jimenez <ejimenez@redborder.com>
 
