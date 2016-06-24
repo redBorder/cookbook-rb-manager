@@ -1,3 +1,11 @@
+#
+# Cookbook Name:: manager
+# Recipe:: default
+#
+# Copyright 2016, redborder
+#
+# AFFERO GENERAL PUBLIC LICENSE V3
+#
 
 kafka_config "Configure Kafka" do
   memory node["redborder"]["memory"]
