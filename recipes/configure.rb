@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: manager
-# Recipe:: default
+# Recipe:: configure
 #
 # Copyright 2016, redborder
 #
