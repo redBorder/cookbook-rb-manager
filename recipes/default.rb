@@ -4,7 +4,7 @@
 #
 # Copyright 2016, redborder
 #
-# All rights reserved - Do Not Redistribute
+# AFFERO GENERAL PUBLIC LICENSE V3
 #
 
 include_recipe 'manager::prepare_system'
