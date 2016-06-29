@@ -6,7 +6,8 @@
 #
 # AFFERO GENERAL PUBLIC LICENSE V3
 #
-managers = get_managers()
+
+node.set["redborder"]["managers_info"] = get_managers()
 
 node.set["redborder"]["memory"] = memory(12345678)
 
