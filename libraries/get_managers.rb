@@ -1,6 +1,6 @@
 class Chef
   class Recipe
-    def get_managers()
+    def get_managers_info()
       managers_info = {}
       manager_nodes = {}
 
