@@ -9,5 +9,5 @@
 
 node.set["redborder"]["managers_info"] = get_managers()
 
-node.set["redborder"]["memory"] = memory(12345678)
+#node.set["redborder"]["memory"] = memory(12345678)
 

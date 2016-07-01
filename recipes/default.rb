@@ -7,6 +7,6 @@
 # AFFERO GENERAL PUBLIC LICENSE V3
 #
 
-include_recipe 'manager::prepare_system'
-include_recipe 'manager::configure'
+include_recipe 'rb-manager::prepare_system'
+include_recipe 'rb-manager::configure'
 
