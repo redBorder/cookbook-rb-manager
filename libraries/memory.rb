@@ -3,6 +3,5 @@ class Chef
     def memory(mem_total)
       return mem_total.to_s
     end
-
   end
 end

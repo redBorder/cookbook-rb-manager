@@ -7,7 +7,9 @@
 # AFFERO GENERAL PUBLIC LICENSE V3
 #
 
-node.set["redborder"]["managers_info"] = get_managers_info()
+extend Rb_manager::Helpers
+
+node.default["redborder"]["managers_info"] = get_managers_info()
 
 #node.set["redborder"]["memory"] = memory(12345678)
 
