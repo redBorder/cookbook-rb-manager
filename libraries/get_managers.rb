@@ -4,23 +4,30 @@ module Rb_manager
       managers_info = {}
       manager_nodes = {}
   
-      manager_nodes = search(:node, "recipes:rb-manager")
+      manager_nodes = search(:node, "recipes:rb-manager").sort
+ 
       manager_nodes.each do |mnode|
-        hostname = mnode["hostname"]
+        name = mnode.name
         ip = mnode["ipaddress"]
-        managers_info[hostname] = {}
-        managers_info[hostname]["ip"] = ip
+        services = []
+        # add active services to array
+        mnode_services = mnode["redborder"]["services"].to_h
+        mnode_services.each do |service, service_status|
+          services << service if service_status
+        end
+        managers_info[name] = {}
+        managers_info[name]["ip"] = ip
+        managers_info[name]["services"] = services
       end
-  
+ 
       #The search function above is looking for rb-manager value in "Recipes" key instead run_list, for this reason
       #in the first execution the node data is not added to managers hash, so it will be checked now and added 
-      #to managers hasha
-
-      if !managers_info.key?(node["hostname"]) and node.recipe?("rb-manager")
-        hostname = node["hostname"]
+      #to managers hash
+      if !managers_info.key?(node.name) and node.recipe?("rb-manager")
+        name = node.name
         ip = node["ipaddress"]
-        managers_info[hostname] = {}
-        managers_info[hostname]["ip"] = ip
+        managers_info[name] = {}
+        managers_info[name]["ip"] = ip
       end
 
       return managers_info

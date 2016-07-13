@@ -7,15 +7,15 @@
 # AFFERO GENERAL PUBLIC LICENSE V3
 #
 
+zookeeper_config "zookeeper" do
+  memory 524288
+  managers node["redborder"]["managers_list"]
+  action :add
+end
+
 #kafka_config "Configure Kafka" do
 #  memory node["redborder"]["memory"]
 #  managers_list node["redborder"]["managers"]
-#  action :add
-#end
-#
-#zookeeper_zk_config "Configure Zookeeper" do
-#  memory node["redborder"]["memory"]
-#  managers node["redborder"]["managers"]
 #  action :add
 #end
 #
