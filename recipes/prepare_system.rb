@@ -17,8 +17,14 @@ node["redborder"]["managers_info"].each_key do |mgr|
 end
 node.default["redborder"]["managers_list"] = managers_list
 
-##node.set["redborder"]["memory"] = memory(12345678)
+# get managers with zookeeper
+managers_with_zookeeper = []
+node["redborder"]["managers_info"].each do |mgr, m_val|
+  managers_with_zookeeper << mgr if m_val["services"].to_a.include?("zookeeper")
+end
+node.default["redborder"]["zookeeper_hosts"] = managers_with_zookeeper
 
+##node.set["redborder"]["memory"] = memory(12345678)
 
 # create /etc/hosts
 template "/etc/hosts" do

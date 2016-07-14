@@ -9,8 +9,8 @@
 
 zookeeper_config "zookeeper" do
   memory 524288
-  managers node["redborder"]["managers_list"]
-  action :add
+  hosts node["redborder"]["zookeeper_hosts"]
+  action (node["redborder"]["services"]["zookeeper"] ? :add : :remove)
 end
 
 #kafka_config "Configure Kafka" do

@@ -8,7 +8,10 @@ default["redborder"]["managers_info"] = {}
 default["redborder"]["managers_info"][node["hostname"]] = {}
 default["redborder"]["managers_info"][node["hostname"]]["ip"] = node["ipaddress"]
 
+
+
 default["redborder"]["managers_list"] = ["localhost"]
+default["redborder"]["zookeeper_hosts"] = []
 
 default["redBorder"]["memory_services"] = [
                                             {"name" => "zookeeper", "count" => 40, "limit" => 2048},
@@ -46,5 +49,4 @@ default["redborder"]["services"]["iptables"]            = false
 default["redborder"]["services"]["memcached"]           = false
 default["redborder"]["services"]["rb-monitor"]          = false
 default["redborder"]["services"]["secor"]               = false
-
 
