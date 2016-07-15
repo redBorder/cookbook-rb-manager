@@ -1,5 +1,8 @@
 # rb-manager CHANGELOG
 
+## 0.0.6
+- [Enrique Jimenez] - Changel managers_info to cluster_info to get more readibility
+
 ## 0.0.5
 - [Enrique Jimenez] - Kafka basic integration
 

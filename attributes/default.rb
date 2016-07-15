@@ -19,11 +19,11 @@ default["redBorder"]["manager"]["hd_services"] = [
                                                  ]
 
 # default attributes for managers_info, it would be rewriten with the cluster config
-default["redborder"]["managers_info"] = {}
-default["redborder"]["managers_info"][node["hostname"]] = {}
-default["redborder"]["managers_info"][node["hostname"]]["ip"] = node["ipaddress"]
+default["redborder"]["cluster_info"] = {}
+default["redborder"]["cluster_info"][node["hostname"]] = {}
+default["redborder"]["cluster_info"][node["hostname"]]["ip"] = node["ipaddress"]
 
-
+default["redborder"]["managers_per_services"] = {}
 
 default["redborder"]["managers_list"] = ["localhost"]
 default["redborder"]["zookeeper_hosts"] = []
