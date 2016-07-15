@@ -1,6 +1,7 @@
 # rb-manager CHANGELOG
 
-This file is used to list changes made in each version of the manager cookbook.
+## 0.0.4
+- [Enrique Jimenez] - Added new library to manager disks 
 
 ## 0.0.3
 - [Enrique Jimenez] - Fixing attributes in zookeeper custom resource
