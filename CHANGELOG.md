@@ -1,5 +1,8 @@
 # rb-manager CHANGELOG
 
+## 0.0.5
+- [Enrique Jimenez] - Kafka basic integration
+
 ## 0.0.4
 - [Enrique Jimenez] - Added new library to manager disks 
 

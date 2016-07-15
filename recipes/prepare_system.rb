@@ -24,6 +24,9 @@ node["redborder"]["managers_info"].each do |mgr, m_val|
 end
 node.default["redborder"]["zookeeper_hosts"] = managers_with_zookeeper
 
+#hard disk
+node.default["redBorder"]["manager"]["hd_services_current"] = harddisk_services()
+
 ##node.set["redborder"]["memory"] = memory(12345678)
 
 # create /etc/hosts

@@ -3,6 +3,21 @@ default["redborder"]["kafka"]["logdir"] = "/var/log/kafka"
 default["redborder"]["zk_hosts"] = ["localhost"]
 default["redborder"]["memory"] = "512"
 
+
+# hard disk
+default["redBorder"]["manager"]["data_dev"]              = {}
+default["redBorder"]["manager"]["data_dev"]["root"]      = "/dev/mapper/VolGroup-lv_root"
+default["redBorder"]["manager"]["data_dev"]["raw"]       = "/dev/mapper/vg_rbdata-lv_raw"
+default["redBorder"]["manager"]["data_dev"]["aggregate"] = "/dev/mapper/vg_rbdata-lv_aggregated"
+default["redBorder"]["manager"]["hd_services"] = [
+                                                   {:name => "kafka" , :count => 5 , :prefered => "aggregate"},
+                                                   {:name => "zookeeper" , :count => 1 , :prefered => "aggregate"},
+                                                   {:name => "zookeeper2" , :count => 1 , :prefered => "aggregate"},
+                                                   {:name => "riak" , :count => 50, :prefered => "raw"},
+                                                   {:name => "druid_historical", :count => 50, :prefered => "raw"},
+                                                   {:name => "hadoop_datanode" , :count => 50, :prefered => "raw"}
+                                                 ]
+
 # default attributes for managers_info, it would be rewriten with the cluster config
 default["redborder"]["managers_info"] = {}
 default["redborder"]["managers_info"][node["hostname"]] = {}
