@@ -8,21 +8,18 @@
 #
 
 zookeeper_config "Configure Zookeeper" do
+  port node["zookeeper"]["port"] 
   memory 524288
-  hosts node["redborder"]["zookeeper_hosts"]
+  hosts node["redborder"]["managers_per_services"]["zookeeper"]
   action (node["redborder"]["services"]["zookeeper"] ? :add : :remove)
 end
 
 kafka_config "Configure Kafka" do
   memory 524288
   maxsize node["redBorder"]["manager"]["hd_services_current"]["kafka"]
-  managers_list  ["localhost"]
-  action :add
+  managers_list node["redborder"]["managers_per_services"]["kafka"]
+  zk_hosts node["redborder"]["zookeeper"]["zk_hosts"]
+  host_index node["redborder"]["kafka"]["host_index"]
+  action (node["redborder"]["services"]["kafka"] ? :add : :remove)
 end
-
-#zookeeper_zk2_config "Configure Zookeeper 2" do
-#  memory node["redborder"]["memory"]
-#  managers node["redborder"]["managers"]
-#  action :add
-#end
 

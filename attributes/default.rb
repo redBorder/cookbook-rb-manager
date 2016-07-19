@@ -1,8 +1,16 @@
-default["redborder"]["kafka"]["memory"] = "512"
-default["redborder"]["kafka"]["logdir"] = "/var/log/kafka"
-default["redborder"]["zk_hosts"] = ["localhost"]
-default["redborder"]["memory"] = "512"
+#Default attributes
 
+#kafka
+default["redborder"]["kafka"]["port"] = 9092
+default["redborder"]["kafka"]["logdir"] = "/var/log/kafka"
+default["redborder"]["kafka"]["host_index"] = 0
+
+#zookeeper
+default["redborder"]["zookeeper"]["zk_hosts"] = "localhost:2181"
+default["redborder"]["zookeeper"]["port"] = 2181
+
+#memory
+default["redborder"]["memory"] = "512"
 
 # hard disk
 default["redBorder"]["manager"]["data_dev"]              = {}
@@ -45,7 +53,7 @@ default["redborder"]["services"]["druid_historical"]    = false
 default["redborder"]["services"]["druid_broker"]        = false
 default["redborder"]["services"]["druid_overlord"]      = false
 default["redborder"]["services"]["druid_middleManager"] = false
-default["redborder"]["services"]["kafka"]               = false
+default["redborder"]["services"]["kafka"]               = true
 default["redborder"]["services"]["zookeeper"]           = false
 default["redborder"]["services"]["rb-webui"]            = false
 default["redborder"]["services"]["postgresql"]          = false
@@ -64,4 +72,5 @@ default["redborder"]["services"]["iptables"]            = false
 default["redborder"]["services"]["memcached"]           = false
 default["redborder"]["services"]["rb-monitor"]          = false
 default["redborder"]["services"]["secor"]               = false
+
 

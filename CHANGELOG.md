@@ -1,5 +1,10 @@
 # rb-manager CHANGELOG
 
+## 0.0.7
+ [Enrique Jimenez] 
+- set zk_hosts for kafka configuration
+- integration for kafka
+
 ## 0.0.6
 - [Enrique Jimenez] - Changel managers_info to cluster_info to get more readibility
 
