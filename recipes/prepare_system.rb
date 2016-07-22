@@ -32,9 +32,14 @@ end
 node.default["redborder"]["managers_list"] = managers_list
 
 #hard disk
-node.default["redBorder"]["manager"]["hd_services_current"] = harddisk_services()
+node.default["redborder"]["manager"]["hd_services_current"] = harddisk_services()
 
-#node.set["redborder"]["memory"] = memory(12345678)
+#memory
+#
+#getting total system memory less 10% reserved by system 
+sysmem_total = (node["memory"]["total"].to_i * 0.90).to_i
+#node attributes are changes inside the function to have simplicity using recursivity
+memory_services(sysmem_total)
 
 # create /etc/hosts
 template "/etc/hosts" do

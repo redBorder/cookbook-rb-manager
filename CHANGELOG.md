@@ -1,5 +1,10 @@
 # rb-manager CHANGELOG
 
+## 0.0.8
+ [Enrique Jimenez]
+- Added memory_services
+- Fixed redborder in lower case error in harddisk_services lib 
+
 ## 0.0.7
  [Enrique Jimenez] 
 - set zk_hosts for kafka configuration

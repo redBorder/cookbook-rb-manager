@@ -3,9 +3,9 @@ module Rb_manager
     def harddisk_services()
       hd_services = {}
 
-      root_dev=node["redBorder"]["manager"]["data_dev"]["root"]
-      raw_dev=node["redBorder"]["manager"]["data_dev"]["raw"]
-      aggregate_dev=node["redBorder"]["manager"]["data_dev"]["aggregate"]
+      root_dev=node["redborder"]["manager"]["data_dev"]["root"]
+      raw_dev=node["redborder"]["manager"]["data_dev"]["raw"]
+      aggregate_dev=node["redborder"]["manager"]["data_dev"]["aggregate"]
       
       root_dev=node["filesystem"].keys.first if node["filesystem"][root_dev].nil?
       if node["filesystem"][raw_dev].nil? and node["filesystem"][aggregate_dev].nil?
@@ -47,14 +47,14 @@ module Rb_manager
         maxsize[type] = 0 if maxsize[type]<0
       end
       
-      node["redBorder"]["manager"]["hd_services"].each do |s|
+      node["redborder"]["manager"]["hd_services"].each do |s|
         if node["redborder"]["services"][s[:name]]
           hd_services_size[hd_services_dev[s[:prefered]]] = hd_services_size[hd_services_dev[s[:prefered]]] + s[:count]
         end
         hd_services_size_total[hd_services_dev[s[:prefered]]] = hd_services_size_total[hd_services_dev[s[:prefered]]] + s[:count]
       end
       
-      node["redBorder"]["manager"]["hd_services"].each do |s|
+      node["redborder"]["manager"]["hd_services"].each do |s|
 
         if hd_services_size[hd_services_dev[s[:prefered]]]>0 
           size = hd_services_size[hd_services_dev[s[:prefered]]]
