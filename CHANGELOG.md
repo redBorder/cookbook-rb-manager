@@ -1,5 +1,9 @@
 # rb-manager CHANGELOG
 
+## 0.0.9
+ [Enrique Jimenez]
+- Passing memory to resources
+
 ## 0.0.8
  [Enrique Jimenez]
 - Added memory_services

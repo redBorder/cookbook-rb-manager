@@ -67,7 +67,6 @@ module Rb_manager
         end
         hd_services[s[:name]] = ((s[:count].to_i * maxsize[s[:prefered]].to_i * 0.90)/size) / 1024 * 1024
       end 
-
       return hd_services
     end
   end

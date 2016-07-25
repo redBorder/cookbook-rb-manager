@@ -22,6 +22,9 @@ default["redborder"]["manager"]["hd_services"] = [
                                                    {"name" => "hadoop_datanode" , "count" => 50, "prefered" => "raw"}
                                                  ]                                                 
 
+default["redborder"]["manager"]["hd_services_current"] = {}
+
+
 # memory
 default["redborder"]["memory_services"]    = {}
 #default["redborder"]["memory_services"]["kafka"]     = {"count" => 150, "memory" => 0,"max_limit" => 2097152}

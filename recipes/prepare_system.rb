@@ -38,7 +38,7 @@ node.default["redborder"]["manager"]["hd_services_current"] = harddisk_services(
 #
 #getting total system memory less 10% reserved by system 
 sysmem_total = (node["memory"]["total"].to_i * 0.90).to_i
-#node attributes are changes inside the function to have simplicity using recursivity
+#node attributes related with memory are changed inside the function to have simplicity using recursivity
 memory_services(sysmem_total)
 
 # create /etc/hosts
