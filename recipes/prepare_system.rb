@@ -8,6 +8,11 @@
 #
 extend Rb_manager::Helpers
 
+#clean metadata to get àckages upgrades 
+execute "Clean yum metadata" do
+  command "yum clean metadata"
+end
+
 # get managers information(name, ip, services...)
 node.default["redborder"]["cluster_info"] = get_cluster_info()
 

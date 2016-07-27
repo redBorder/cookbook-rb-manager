@@ -1,5 +1,10 @@
 # rb-manager CHANGELOG
 
+## 0.0.10
+ [Enrique Jimenez]
+- Add slash to druid services name
+- Clean yum cache to upgrade packages
+
 ## 0.0.9
  [Enrique Jimenez]
 - Passing memory to resources
