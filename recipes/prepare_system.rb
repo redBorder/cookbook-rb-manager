@@ -8,12 +8,33 @@
 #
 extend Rb_manager::Helpers
 
-#clean metadata to get àckages upgrades 
+#clean metadata to get packages upgrades 
 execute "Clean yum metadata" do
   command "yum clean metadata"
 end
 
-# get managers information(name, ip, services...)
+#Configure and enable chef-client
+yum_package "redborder-chef-client" do
+  flush_cache [:before]
+  action :upgrade
+end
+
+template "/etc/sysconfig/chef-client" do
+  source "sysconfig_chef-client.rb"
+  mode 0644
+  variables(
+    :interval => node["chef-client"]["interval"],
+    :splay => node["chef-client"]["splay"],
+    :options => node["chef-client"]["options"]
+  )
+end
+
+service "chef-client" do
+  supports :status => true, :restart => true, :start => true, :stop => true
+  action [:enable, :start]
+end
+
+#get managers information(name, ip, services...)
 node.default["redborder"]["cluster_info"] = get_cluster_info()
 
 #get managers sorted by service

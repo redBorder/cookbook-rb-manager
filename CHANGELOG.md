@@ -1,5 +1,9 @@
 # rb-manager CHANGELOG
 
+## 0.0.11
+ [Enrique Jimenez]
+- Add chef-client service
+
 ## 0.0.10
  [Enrique Jimenez]
 - Add slash to druid services name

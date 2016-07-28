@@ -1,5 +1,10 @@
 #Default attributes
 
+#chef-client
+default["chef-client"]["interval"] = 300
+default["chef-client"]["splay"] = 100
+default["chef-client"]["options"] = ""
+
 #kafka
 default["redborder"]["kafka"]["port"] = 9092
 default["redborder"]["kafka"]["logdir"] = "/var/log/kafka"
@@ -23,7 +28,6 @@ default["redborder"]["manager"]["hd_services"] = [
                                                  ]                                                 
 
 default["redborder"]["manager"]["hd_services_current"] = {}
-
 
 # memory
 default["redborder"]["memory_services"]    = {}
