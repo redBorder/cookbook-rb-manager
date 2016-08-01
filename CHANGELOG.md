@@ -1,5 +1,14 @@
 # rb-manager CHANGELOG
 
+## 0.0.13
+ [Enrique Jimenez]
+- Add druid broker, historical and middlemanager
+
+## 0.0.12
+ [Enrique Jimenez]
+- Add druid overlord
+- Enable/disable chef-client service by attribute
+
 ## 0.0.11
  [Enrique Jimenez]
 - Add chef-client service

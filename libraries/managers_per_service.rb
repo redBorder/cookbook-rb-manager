@@ -8,8 +8,8 @@ class Chef
       services.each do |serv, status|
         cluster_services[serv] = []
         cluster_info.each do |manager, info|
-          if info["services"].include?(serv)
-           cluster_services[serv] << manager 
+          if !info["services"].nil? and info["services"].include?(serv)
+            cluster_services[serv] << manager 
           end
         end
       end

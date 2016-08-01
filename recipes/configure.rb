@@ -33,3 +33,43 @@ druid_coordinator "Configure Druid Coordinator" do
   action (node["redborder"]["services"]["druid-coordinator"] ? :add : :remove)
 end
 
+druid_overlord "Configure Druid Overlord" do
+  name node["hostname"]
+  memory_kb 524288
+  zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
+  psql_user "druid"
+  psql_password "druid"
+  psql_uri "jdbc:postgresql://localhost:5432/druid"
+  action (node["redborder"]["services"]["druid-overlord"] ? :add : :remove)
+end
+
+druid_broker "Configure Druid Broker" do
+  name node["hostname"]
+  memory_kb 524288
+  zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
+  psql_user "druid"
+  psql_password "druid"
+  psql_uri "jdbc:postgresql://localhost:5432/druid"
+  action (node["redborder"]["services"]["druid-broker"] ? :add : :remove)
+end
+
+druid_middlemanager "Configure Druid MiddleManager" do
+  name node["hostname"]
+  memory_kb 524288
+  zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
+  psql_user "druid"
+  psql_password "druid"
+  psql_uri "jdbc:postgresql://localhost:5432/druid"
+  action (node["redborder"]["services"]["druid-middlemanager"] ? :add : :remove)
+end
+
+druid_historical "Configure Druid Historical" do
+  name node["hostname"]
+  memory_kb 524288
+  zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
+  psql_user "druid"
+  psql_password "druid"
+  psql_uri "jdbc:postgresql://localhost:5432/druid"
+  action (node["redborder"]["services"]["druid-historical"] ? :add : :remove)
+end
+
