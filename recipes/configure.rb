@@ -25,7 +25,7 @@ end
 
 druid_coordinator "Configure Druid Coordinator" do
   name node["hostname"]
-  memory_kb 524288
+  memory_kb node["redborder"]["memory_services"]["druid_coordinator"]["memory"]
   zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   psql_user "druid"
   psql_password "druid"
@@ -35,7 +35,7 @@ end
 
 druid_overlord "Configure Druid Overlord" do
   name node["hostname"]
-  memory_kb 524288
+  memory_kb node["redborder"]["memory_services"]["druid_overlord"]["memory"]
   zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   psql_user "druid"
   psql_password "druid"
@@ -45,7 +45,7 @@ end
 
 druid_broker "Configure Druid Broker" do
   name node["hostname"]
-  memory_kb 524288
+  memory_kb node["redborder"]["memory_services"]["druid_broker"]["memory"]
   zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   psql_user "druid"
   psql_password "druid"
@@ -55,7 +55,7 @@ end
 
 druid_middlemanager "Configure Druid MiddleManager" do
   name node["hostname"]
-  memory_kb 524288
+  memory_kb node["redborder"]["memory_services"]["druid_middlemanager"]["memory"]
   zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   psql_user "druid"
   psql_password "druid"
@@ -65,11 +65,25 @@ end
 
 druid_historical "Configure Druid Historical" do
   name node["hostname"]
-  memory_kb 524288
+  memory_kb node["redborder"]["memory_services"]["druid_historical"]["memory"]
   zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   psql_user "druid"
   psql_password "druid"
   psql_uri "jdbc:postgresql://localhost:5432/druid"
   action (node["redborder"]["services"]["druid-historical"] ? :add : :remove)
+end
+
+http2k_config "Configure Http2k" do
+  domain node["redborder"]["cdomain"]
+  memory node["redborder"]["memory_services"]["http2k"]["memory"]
+  port node["redborder"]["http2k"]["port"]
+  hosts node["redborder"]["managers_per_services"]["http2k"]
+  kafka_hosts node["redborder"]["managers_per_services"]["kafka"]
+  proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"] 
+  ips_nodes node["redborder"]["sensors_info"]["ips-sensor"] 
+  ipsg_nodes node["redborder"]["sensors_info"]["ipsg-sensor"]
+  organizations node["redborder"]["organizations"]
+  locations_list node["redborder"]["locations"]
+  action (node["redborder"]["services"]["http2k"] ? :add : :remove)
 end
 

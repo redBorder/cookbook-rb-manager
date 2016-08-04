@@ -1,5 +1,11 @@
 # rb-manager CHANGELOG
 
+## 0.0.14
+ [Enrique Jimenez]
+- Add cdomain as default attribute
+- Add http2k
+- Memory for druid services
+
 ## 0.0.13
  [Enrique Jimenez]
 - Add druid broker, historical and middlemanager

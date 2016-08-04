@@ -45,6 +45,12 @@ node.default["redborder"]["cluster_info"] = get_cluster_info()
 #get managers sorted by service
 node.default["redborder"]["managers_per_services"] = managers_per_service()
 
+#get organizations for http2k
+node.default["redborder"]["organizations"] = get_orgs() if node["redborder"]["services"]["http2k"]
+
+#get sensors info
+node.default["redborder"]["sensors_info"] = get_sensors_info()
+
 #get string with all zookeeper hosts and port separated by commas, its needed for multiples services
 zk_port = node["redborder"]["zookeeper"]["port"] 
 zk_hosts = node["redborder"]["managers_per_services"]["zookeeper"].map {|z| "#{z}:#{zk_port}"}.join(',') 

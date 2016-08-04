@@ -1,5 +1,16 @@
 #Default attributes
 
+#general
+default["redborder"]["cdomain"] = "redborder.cluster"
+default["redborder"]["organization_uuid"] = nil
+default["redborder"]["organizations"] = []
+default["redborder"]["locations"] = [
+                                      "namespace", "namespace_uuid", "organization", "organization_uuid", \
+                                      "service_provider", "service_provider_uuid", "deployment", \
+                                      "deployment_uuid", "market", "market_uuid", "campus", "campus_uuid", \
+                                      "building", "building_uuid", "floor", "floor_uuid"
+                                    ]
+
 #chef-client
 default["chef-client"]["interval"] = 300
 default["chef-client"]["splay"] = 100
@@ -13,6 +24,9 @@ default["redborder"]["kafka"]["host_index"] = 0
 #zookeeper
 default["redborder"]["zookeeper"]["zk_hosts"] = "localhost:2181"
 default["redborder"]["zookeeper"]["port"] = 2181
+
+#http2k
+default["redborder"]["http2k"]["port"] = 7980
 
 # hard disk
 default["redborder"]["manager"]["data_dev"]              = {}
@@ -37,6 +51,11 @@ default["redborder"]["memory_services"]["zookeeper"] = {"count" => 20, "memory" 
 default["redborder"]["memory_services"]["chef-client"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["keepalived"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["druid_coordinator"] = {"count" => 10, "memory" => 0}
+default["redborder"]["memory_services"]["druid_overlord"] = {"count" => 10, "memory" => 0}
+default["redborder"]["memory_services"]["druid_historical"] = {"count" => 10, "memory" => 0}
+default["redborder"]["memory_services"]["druid_broker"] = {"count" => 10, "memory" => 0}
+default["redborder"]["memory_services"]["druid_middlemanager"] = {"count" => 10, "memory" => 0}
+default["redborder"]["memory_services"]["http2k"] = {"count" => 10, "memory" => 0}
  
 
 # default attributes for managers_info, it would be rewriten with the cluster config
@@ -64,6 +83,7 @@ default["redborder"]["services"]["druid-overlord"]      = false
 default["redborder"]["services"]["druid-middleManager"] = false
 default["redborder"]["services"]["kafka"]               = false
 default["redborder"]["services"]["zookeeper"]           = false
+default["redborder"]["services"]["http2k"]              = false
 default["redborder"]["services"]["rb-webui"]            = false
 default["redborder"]["services"]["postgresql"]          = false
 default["redborder"]["services"]["nginx"]               = false
