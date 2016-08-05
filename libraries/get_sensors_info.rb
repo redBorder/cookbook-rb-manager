@@ -8,8 +8,12 @@ module Rb_manager
 
       sensor_types.each do |s_type|
         sensors = search(:node, "role:#{s_type}").sort
+        info = {}
+        found_sensor = false
+
+        sensors_info[s_type] = {}
         sensors.each do |s|
-          info = {}
+          found_sensor = true
           info["name"] = s.name
           info["ip"] = s["ipaddress"]
           info["sensor_uuid"] = s["redborder"]["sensor_uuid"] if !s["redborder"]["sensor_uuid"].nil?
@@ -17,17 +21,15 @@ module Rb_manager
           info["megabytes_limit"] = s["redborder"]["megabytes_limit"] if !s["redborder"]["megabytes_limit"].nil?
           info["index_partitions"] = s["redborder"]["index_partitions"] if !s["redborder"]["index_partitions"].nil?
           info["index_replicas"] = s["redborder"]["index_replicas"] if !s["redborder"]["index_replicas"].nil?
+          info["sensors_mapping"] = s["redborder"]["sensors_mapping"] if !s["redborder"]["sensors_mapping"].nil?
           info["locations"] = {}
           locations.each do |loc|
-            if !s["redborder"][loc].nil? and !s["redborder"][loc].empty?
+            if !s["redborder"][loc].nil?
               info["locations"][loc] = s["redborder"][loc]
             end
-
           end
-      
-          sensors_info[s_type] = {}
-          sensors_info[s_type][s.name] = info
-        end 
+          sensors_info[s_type][s.name] = info if found_sensor
+        end
       end
       return sensors_info
     end

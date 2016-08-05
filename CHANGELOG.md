@@ -1,5 +1,9 @@
 # rb-manager CHANGELOG
 
+## 0.0.15
+ [Enrique Jimenez]
+- Typo on get_sensor lib
+
 ## 0.0.14
  [Enrique Jimenez]
 - Add cdomain as default attribute
