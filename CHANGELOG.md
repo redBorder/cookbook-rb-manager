@@ -1,5 +1,9 @@
 # rb-manager CHANGELOG
 
+## 0.0.16
+ [Enrique Jimenez]
+- Add cdomain to hosts template
+
 ## 0.0.15
  [Enrique Jimenez]
 - Typo on get_sensor lib

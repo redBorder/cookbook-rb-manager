@@ -81,7 +81,9 @@ memory_services(sysmem_total)
 # create /etc/hosts
 template "/etc/hosts" do
   source "etc_hosts.erb"
-  variables(:cluster_info => node["redborder"]["cluster_info"]) 
+  variables(:cluster_info => node["redborder"]["cluster_info"],
+            :cdomain => node["redborder"]["cdomain"]
+           ) 
   mode "0644"
 end
 
