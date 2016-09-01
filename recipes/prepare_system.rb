@@ -14,20 +14,20 @@ execute "Clean yum metadata" do
 end
 
 #Configure and enable chef-client
-  yum_package "redborder-chef-client" do
-    flush_cache [:before]
-    action :upgrade
-  end
+yum_package "redborder-chef-client" do
+  flush_cache [:before]
+  action :upgrade
+end
 
-  template "/etc/sysconfig/chef-client" do
-    source "sysconfig_chef-client.rb"
-    mode 0644
-    variables(
-      :interval => node["chef-client"]["interval"],
-      :splay => node["chef-client"]["splay"],
-      :options => node["chef-client"]["options"]
-    )
-  end
+template "/etc/sysconfig/chef-client" do
+  source "sysconfig_chef-client.rb"
+  mode 0644
+  variables(
+    :interval => node["chef-client"]["interval"],
+    :splay => node["chef-client"]["splay"],
+    :options => node["chef-client"]["options"]
+  )
+end
 
 if node["redborder"]["services"]["chef-client"]
   service "chef-client" do
