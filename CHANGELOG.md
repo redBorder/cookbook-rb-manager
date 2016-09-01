@@ -1,5 +1,9 @@
 # rb-manager CHANGELOG
 
+## 0.0.17
+  - ejimenez
+    - f628177 Fix indentation typo
+
 ## 0.0.16
  [Enrique Jimenez]
 - Add cdomain to hosts template
