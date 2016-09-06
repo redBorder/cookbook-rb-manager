@@ -28,6 +28,12 @@ default["redborder"]["zookeeper"]["port"] = 2181
 #http2k
 default["redborder"]["http2k"]["port"] = 7980
 
+#memcached
+default["redborder"]["memcached"]["port"] = 11211
+default["redborder"]["memcached"]["maxconn"] = 1024
+default["redborder"]["memcached"]["cachesize"] = 64
+default["redborder"]["memcached"]["options"] = ""
+
 # hard disk
 default["redborder"]["manager"]["data_dev"]              = {}
 default["redborder"]["manager"]["data_dev"]["root"]      = "/dev/mapper/VolGroup-lv_root"
@@ -56,6 +62,7 @@ default["redborder"]["memory_services"]["druid_historical"] = {"count" => 10, "m
 default["redborder"]["memory_services"]["druid_broker"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["druid_middlemanager"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["http2k"] = {"count" => 10, "memory" => 0}
+default["redborder"]["memory_services"]["memcached"] = {"count" => 10, "memory" => 0}
  
 
 # default attributes for managers_info, it would be rewriten with the cluster config
