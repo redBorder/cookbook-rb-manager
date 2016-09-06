@@ -3,6 +3,7 @@
 ## 0.0.17
   - ejimenez
     - f628177 Fix indentation typo
+    - 85d8ad4 Added memcached service
 
 ## 0.0.16
  [Enrique Jimenez]
