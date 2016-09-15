@@ -4,9 +4,10 @@ maintainer_email 'ejimenez@redborder.com'
 license          'All rights reserved'
 description      'Installs/Configures redborder manager'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.0.15'
+version          '0.0.17'
 
 depends 'zookeeper'
 depends 'kafka'
 depends 'druid'
 depends 'http2k'
+depends 'memcached'

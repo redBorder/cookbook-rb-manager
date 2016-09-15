@@ -102,3 +102,11 @@ http2k_config "Configure Http2k" do
   action (node["redborder"]["services"]["http2k"] ? :add : :remove)
 end
 
+memcached_config "Configure Memcached" do
+  memory node["redborder"]["memory_services"]["memcached"]["memory"]
+  port node["redborder"]["memcached"]["port"]
+  maxconn node["redborder"]["memcached"]["maxconn"]
+  cachesize node["redborder"]["memcached"]["cachesize"]
+  options node["redborder"]["memcached"]["options"]
+  action (node["redborder"]["services"]["memcached"] ? :add : :remove)
+end

@@ -1,5 +1,14 @@
 # rb-manager CHANGELOG
 
+## 0.0.17
+  - ejimenez
+    - f628177 Fix indentation typo
+    - 85d8ad4 Added memcached service
+
+## 0.0.16
+ [Enrique Jimenez]
+- Add cdomain to hosts template
+
 ## 0.0.15
  [Enrique Jimenez]
 - Typo on get_sensor lib
