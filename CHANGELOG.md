@@ -4,6 +4,7 @@
   - ejimenez
     - f628177 Fix indentation typo
     - 85d8ad4 Added memcached service
+    - 0f3791e Add postgresql and chef
 
 ## 0.0.16
  [Enrique Jimenez]
