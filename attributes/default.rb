@@ -56,6 +56,8 @@ default["redborder"]["memory_services"]["druid_historical"] = {"count" => 10, "m
 default["redborder"]["memory_services"]["druid_broker"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["druid_middlemanager"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["http2k"] = {"count" => 10, "memory" => 0}
+default["redborder"]["memory_services"]["chef-server"] = {"count" => 10, "memory" => 0}
+default["redborder"]["memory_services"]["postgresql"] = {"count" => 10, "memory" => 0}
  
 
 # default attributes for managers_info, it would be rewriten with the cluster config
@@ -85,17 +87,9 @@ default["redborder"]["services"]["kafka"]               = false
 default["redborder"]["services"]["zookeeper"]           = false
 default["redborder"]["services"]["http2k"]              = false
 default["redborder"]["services"]["rb-webui"]            = false
+default["redborder"]["services"]["chef-server"]          = false
 default["redborder"]["services"]["postgresql"]          = false
 default["redborder"]["services"]["nginx"]               = false
-default["redborder"]["services"]["opscode-erchef"]      = false
-default["redborder"]["services"]["opscode-expander"]    = false
-default["redborder"]["services"]["opscode-solr4"]       = false
-default["redborder"]["services"]["opscode-chef-mover"]  = false
-default["redborder"]["services"]["oc_bifrost"]          = false
-default["redborder"]["services"]["oc_id"]               = false
-default["redborder"]["services"]["bookshelf"]           = false
-default["redborder"]["services"]["rabbitmq"]            = false
-default["redborder"]["services"]["redis_lb"]            = false
 default["redborder"]["services"]["cep"]                 = false
 default["redborder"]["services"]["iptables"]            = false
 default["redborder"]["services"]["memcached"]           = false

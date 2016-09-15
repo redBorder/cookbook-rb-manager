@@ -7,6 +7,21 @@
 # AFFERO GENERAL PUBLIC LICENSE V3
 #
 
+
+if node["redborder"]["services"]["chef-server"]  or node["redborder"]["services"]["postgresql"]
+  chef_server_config "Configure chef-server" do
+    memory node["redborder"]["memory_services"]["chef-server"]["memory"]
+    postgresql node["redborder"]["services"]["postgresql"]
+    postgresql_memory node["redborder"]["memory_services"]["postgresql"]["memory"]
+    chef_active node["redborder"]["services"]["chef-server"]
+    action :add
+  end
+else
+  chef_server_config "Configure chef-server" do
+    action :remove
+  end
+end
+
 zookeeper_config "Configure Zookeeper" do
   port node["zookeeper"]["port"] 
   memory node["redborder"]["memory_services"]["zookeeper"]["memory"]

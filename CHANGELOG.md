@@ -3,6 +3,7 @@
 ## 0.0.15
  [Enrique Jimenez]
 - Typo on get_sensor lib
+- Add chef-server/postgresql
 
 ## 0.0.14
  [Enrique Jimenez]
