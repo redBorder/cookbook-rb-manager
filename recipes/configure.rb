@@ -9,7 +9,7 @@
 
 
 if node["redborder"]["services"]["chef-server"]  or node["redborder"]["services"]["postgresql"]
-  chef_server_config "Configure chef-server" do
+  chef_server_config "Configure chef services" do
     memory node["redborder"]["memory_services"]["chef-server"]["memory"]
     postgresql node["redborder"]["services"]["postgresql"]
     postgresql_memory node["redborder"]["memory_services"]["postgresql"]["memory"]
@@ -17,7 +17,7 @@ if node["redborder"]["services"]["chef-server"]  or node["redborder"]["services"
     action :add
   end
 else
-  chef_server_config "Configure chef-server" do
+  chef_server_config "Remove chef service" do
     action :remove
   end
 end
