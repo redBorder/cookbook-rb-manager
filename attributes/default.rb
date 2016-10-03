@@ -34,6 +34,8 @@ default["redborder"]["memcached"]["maxconn"] = 1024
 default["redborder"]["memcached"]["cachesize"] = 64
 default["redborder"]["memcached"]["options"] = ""
 
+#riak
+
 # hard disk
 default["redborder"]["manager"]["data_dev"]              = {}
 default["redborder"]["manager"]["data_dev"]["root"]      = "/dev/mapper/VolGroup-lv_root"
@@ -45,7 +47,7 @@ default["redborder"]["manager"]["hd_services"] = [
                                                    {"name" => "riak" , "count" => 50, "prefered" => "raw"},
                                                    {"name" => "druid_historical", "count" => 50, "prefered" => "raw"},
                                                    {"name" => "hadoop_datanode" , "count" => 50, "prefered" => "raw"}
-                                                 ]                                                 
+                                                 ]
 
 default["redborder"]["manager"]["hd_services_current"] = {}
 
@@ -65,7 +67,7 @@ default["redborder"]["memory_services"]["http2k"] = {"count" => 10, "memory" => 
 default["redborder"]["memory_services"]["chef-server"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["postgresql"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["memcached"] = {"count" => 10, "memory" => 0}
- 
+
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default["redborder"]["cluster_info"] = {}
@@ -102,5 +104,4 @@ default["redborder"]["services"]["iptables"]            = false
 default["redborder"]["services"]["memcached"]           = false
 default["redborder"]["services"]["rb-monitor"]          = false
 default["redborder"]["services"]["secor"]               = false
-
-
+default["redborder"]["services"]["riak"]                = false
