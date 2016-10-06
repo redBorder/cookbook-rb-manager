@@ -1,7 +1,18 @@
 # rb-manager CHANGELOG
 
 ## 0.0.17
+  - cjmateos
+    - b3b5edc Update changelog
+    - 8fd399a Add attribute uploaded_s3
+    - a5b29bb Add riak to service list
   - ejimenez
+    - 7f4380d Fix postgresql integration
+    - 2bd3b3c updated changelog
+    - 2c676be fix merge issue
+    - 0f3791e Add chef and postgresql
+    - 1ec3186 Update CHANGELOG
+    - 85d8ad4 Added memcached service
+    - 4a1865a updated version
     - f628177 Fix indentation typo
     - 85d8ad4 Added memcached service
     - 0f3791e Add postgresql and chef
@@ -46,10 +57,10 @@
 ## 0.0.8
  [Enrique Jimenez]
 - Added memory_services
-- Fixed redborder in lower case error in harddisk_services lib 
+- Fixed redborder in lower case error in harddisk_services lib
 
 ## 0.0.7
- [Enrique Jimenez] 
+ [Enrique Jimenez]
 - set zk_hosts for kafka configuration
 - integration for kafka
 
@@ -60,7 +71,7 @@
 - [Enrique Jimenez] - Kafka basic integration
 
 ## 0.0.4
-- [Enrique Jimenez] - Added new library to manager disks 
+- [Enrique Jimenez] - Added new library to manager disks
 
 ## 0.0.3
 - [Enrique Jimenez] - Fixing attributes in zookeeper custom resource
@@ -70,4 +81,3 @@
 
 ## 0.0.1
 - [Enrique Jimenez] - Initial release of manager
-
