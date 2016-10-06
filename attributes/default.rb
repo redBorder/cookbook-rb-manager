@@ -11,6 +11,22 @@ default["redborder"]["locations"] = [
                                       "building", "building_uuid", "floor", "floor_uuid"
                                     ]
 
+#s3
+default["redborder"]["uploaded_s3"] = false
+
+#cookbooks
+#default["redborder"]["cookbooks"] = [ "zookeeper",
+#                                      "kafka",
+#                                      "druid",
+#                                      "nomad",
+#                                      "http2k",
+#                                      "cron",
+#                                      "memcached",
+#                                      "chef-server",
+#                                      "riak",
+#                                      "rb-manager"
+#                                    ]
+
 #chef-client
 default["chef-client"]["interval"] = 300
 default["chef-client"]["splay"] = 100
