@@ -7,6 +7,14 @@
 # AFFERO GENERAL PUBLIC LICENSE V3
 #
 
+# Set services_group related with the node mode (core, full, ...)
+
+mode = node["redborder"]["mode"]
+node["redborder"]["services_group"][mode].each do |s|
+  node.default["redborder"]["services"][s] = true
+end
+
+# Services configuration
 
 if node["redborder"]["services"]["chef-server"]  or node["redborder"]["services"]["postgresql"]
   chef_server_config "Configure chef services" do
@@ -23,7 +31,7 @@ else
 end
 
 zookeeper_config "Configure Zookeeper" do
-  port node["zookeeper"]["port"] 
+  port node["zookeeper"]["port"]
   memory node["redborder"]["memory_services"]["zookeeper"]["memory"]
   hosts node["redborder"]["managers_per_services"]["zookeeper"]
   action (node["redborder"]["services"]["zookeeper"] ? :add : :remove)
@@ -94,8 +102,8 @@ http2k_config "Configure Http2k" do
   port node["redborder"]["http2k"]["port"]
   hosts node["redborder"]["managers_per_services"]["http2k"]
   kafka_hosts node["redborder"]["managers_per_services"]["kafka"]
-  proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"] 
-  ips_nodes node["redborder"]["sensors_info"]["ips-sensor"] 
+  proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"]
+  ips_nodes node["redborder"]["sensors_info"]["ips-sensor"]
   ipsg_nodes node["redborder"]["sensors_info"]["ipsg-sensor"]
   organizations node["redborder"]["organizations"]
   locations_list node["redborder"]["locations"]

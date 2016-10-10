@@ -97,7 +97,9 @@ default["redborder"]["zookeeper_hosts"] = []
 
 default["redborder"]["memory_assigned"] = {}
 
-default["redborder"]["services_groups"]["example"] = ["zookeeper", "kafka", "chef-client"]
+default["redborder"]["services_group"]["example"] = ["zookeeper", "kafka", "chef-client"]
+default["redborder"]["services_group"]["full"] = ["chef-server"]
+default["redborder"]["services_group"]["core"] = ["chef-server"]
 
 default["redborder"]["services"] = {}
 default["redborder"]["services"]["chef-client"]         = true
