@@ -16,17 +16,17 @@ end
 
 # Services configuration
 
-if node["redborder"]["services"]["chef-server"]  or node["redborder"]["services"]["postgresql"]
+if node["redborder"]["services"]["chef-server"] or node["redborder"]["services"]["postgresql"]
   chef_server_config "Configure chef services" do
     memory node["redborder"]["memory_services"]["chef-server"]["memory"]
     postgresql node["redborder"]["services"]["postgresql"]
     postgresql_memory node["redborder"]["memory_services"]["postgresql"]["memory"]
     chef_active node["redborder"]["services"]["chef-server"]
-    action :add
+    action [:add, :register] 
   end
 else
   chef_server_config "Remove chef service" do
-    action :remove
+    action [:remove, :deregister]
   end
 end
 
