@@ -30,13 +30,14 @@ else
   end
 end
 
-consul_config "Configure Consul" do
+consul_config "Configure Consul Server" do
   confdir node["consul"]["confdir"]
   datadir node["consul"]["datadir"]
   ipaddress node["ipaddress"]
   cdomain node["redborder"]["cdomain"]
   dns_local_ip node["consul"]["dns_local_ip"]
-  action (node["redborder"]["services"]["consul"] ? :add : :remove)
+  (node["redborder"]["services"]["consul"] ? (is_server true) : (is_server false))
+  action ((node["redborder"]["services"]["consul"] or node["redborder"]["services"]["consul-client"]) ? :add : :remove)
 end
 
 zookeeper_config "Configure Zookeeper" do

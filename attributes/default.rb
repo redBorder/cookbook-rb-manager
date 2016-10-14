@@ -99,6 +99,7 @@ default["redborder"]["memory_assigned"] = {}
 
 default["redborder"]["services_group"]["full"] = ["chef-server", "consul"]
 default["redborder"]["services_group"]["core"] = ["chef-server", "consul"]
+default["redborder"]["services_group"]["custom"] = ["consul-client"]
 
 default["redborder"]["services"] = {}
 default["redborder"]["services"]["chef-client"]         = true
@@ -123,3 +124,4 @@ default["redborder"]["services"]["rb-monitor"]          = false
 default["redborder"]["services"]["secor"]               = false
 default["redborder"]["services"]["riak"]                = false
 default["redborder"]["services"]["consul"]              = false
+default["redborder"]["services"]["consul-client"]       = false
