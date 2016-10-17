@@ -22,7 +22,7 @@ if node["redborder"]["services"]["chef-server"] or node["redborder"]["services"]
     postgresql node["redborder"]["services"]["postgresql"]
     postgresql_memory node["redborder"]["memory_services"]["postgresql"]["memory"]
     chef_active node["redborder"]["services"]["chef-server"]
-    action [:add, :register] 
+    action [:add, :register]
   end
 else
   chef_server_config "Remove chef service" do
@@ -44,7 +44,7 @@ zookeeper_config "Configure Zookeeper" do
   port node["zookeeper"]["port"]
   memory node["redborder"]["memory_services"]["zookeeper"]["memory"]
   hosts node["redborder"]["managers_per_services"]["zookeeper"]
-  action (node["redborder"]["services"]["zookeeper"] ? :add : :remove)
+  action (node["redborder"]["services"]["zookeeper"] ? [:add, :register] : [:remove, :deregister])
 end
 
 kafka_config "Configure Kafka" do
