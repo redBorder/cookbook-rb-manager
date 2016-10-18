@@ -8,7 +8,7 @@
 #
 extend Rb_manager::Helpers
 
-#clean metadata to get packages upgrades 
+#clean metadata to get packages upgrades
 execute "Clean yum metadata" do
   command "yum clean metadata"
 end
@@ -52,13 +52,13 @@ node.default["redborder"]["organizations"] = get_orgs() if node["redborder"]["se
 node.default["redborder"]["sensors_info"] = get_sensors_info()
 
 #get string with all zookeeper hosts and port separated by commas, its needed for multiples services
-zk_port = node["redborder"]["zookeeper"]["port"] 
-zk_hosts = node["redborder"]["managers_per_services"]["zookeeper"].map {|z| "#{z}:#{zk_port}"}.join(',') 
+zk_port = node["redborder"]["zookeeper"]["port"]
+zk_hosts = node["redborder"]["managers_per_services"]["zookeeper"].map {|z| "#{z}:#{zk_port}"}.join(',')
 node.default["redborder"]["zookeeper"]["zk_hosts"] = zk_hosts
 
 #set kafka host index if kafka is enabled in this host
 if node["redborder"]["managers_per_services"]["kafka"].include?(node.name)
-  node.default["redborder"]["kafka"]["host_index"] = node["redborder"]["managers_per_services"]["kafka"].index(node.name) 
+  node.default["redborder"]["kafka"]["host_index"] = node["redborder"]["managers_per_services"]["kafka"].index(node.name)
 end
 
 #get an array of managers
@@ -73,17 +73,16 @@ node.default["redborder"]["manager"]["hd_services_current"] = harddisk_services(
 
 #memory
 #
-#getting total system memory less 10% reserved by system 
+#getting total system memory less 10% reserved by system
 sysmem_total = (node["memory"]["total"].to_i * 0.90).to_i
 #node attributes related with memory are changed inside the function to have simplicity using recursivity
 memory_services(sysmem_total)
 
 # create /etc/hosts
-template "/etc/hosts" do
-  source "etc_hosts.erb"
-  variables(:cluster_info => node["redborder"]["cluster_info"],
-            :cdomain => node["redborder"]["cdomain"]
-           ) 
-  mode "0644"
-end
-
+#template "/etc/hosts" do
+#  source "etc_hosts.erb"
+#  variables(:cluster_info => node["redborder"]["cluster_info"],
+#            :cdomain => node["redborder"]["cdomain"]
+#           ) 
+#  mode "0644"
+#end
