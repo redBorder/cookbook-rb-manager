@@ -97,8 +97,8 @@ default["redborder"]["zookeeper_hosts"] = []
 
 default["redborder"]["memory_assigned"] = {}
 
-default["redborder"]["services_group"]["full"] = ["chef-server", "consul"]
-default["redborder"]["services_group"]["core"] = ["chef-server", "consul"]
+default["redborder"]["services_group"]["full"] = ["consul", "chef-server"]
+default["redborder"]["services_group"]["core"] = ["consul", "chef-server"]
 default["redborder"]["services_group"]["custom"] = ["consul-client"]
 
 default["redborder"]["services"] = {}
