@@ -100,6 +100,7 @@ default["redborder"]["memory_assigned"] = {}
 default["redborder"]["services_group"]["full"] = ["consul", "chef-server"]
 default["redborder"]["services_group"]["core"] = ["consul", "chef-server"]
 default["redborder"]["services_group"]["custom"] = ["consul-client"]
+default["redborder"]["services_group"]["kafka"] = ["consul-client","kafka"]
 
 default["redborder"]["services"] = {}
 default["redborder"]["services"]["chef-client"]         = true
