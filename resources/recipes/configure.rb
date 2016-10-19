@@ -16,6 +16,16 @@ end
 
 # Services configuration
 
+consul_config "Configure Consul Server" do
+  confdir node["consul"]["confdir"]
+  datadir node["consul"]["datadir"]
+  ipaddress node["ipaddress"]
+  cdomain node["redborder"]["cdomain"]
+  dns_local_ip node["consul"]["dns_local_ip"]
+  (node["redborder"]["services"]["consul"] ? (is_server true) : (is_server false))
+  action ((node["redborder"]["services"]["consul"] or node["redborder"]["services"]["consul-client"]) ? :add : :remove)
+end
+
 if node["redborder"]["services"]["chef-server"] or node["redborder"]["services"]["postgresql"]
   chef_server_config "Configure chef services" do
     memory node["redborder"]["memory_services"]["chef-server"]["memory"]
@@ -28,16 +38,6 @@ else
   chef_server_config "Remove chef service" do
     action [:remove, :deregister]
   end
-end
-
-consul_config "Configure Consul Server" do
-  confdir node["consul"]["confdir"]
-  datadir node["consul"]["datadir"]
-  ipaddress node["ipaddress"]
-  cdomain node["redborder"]["cdomain"]
-  dns_local_ip node["consul"]["dns_local_ip"]
-  (node["redborder"]["services"]["consul"] ? (is_server true) : (is_server false))
-  action ((node["redborder"]["services"]["consul"] or node["redborder"]["services"]["consul-client"]) ? :add : :remove)
 end
 
 zookeeper_config "Configure Zookeeper" do
