@@ -40,6 +40,11 @@ else
 end
 
 #get managers information(name, ip, services...)
+cdomain = ""
+File.open('/etc/redborder/cdomain') {|f| cdomain = f.readline.chomp}
+node.default["redborder"]["cdomain"] = cdomain
+
+#get managers information(name, ip, services...)
 node.default["redborder"]["cluster_info"] = get_cluster_info()
 
 #get managers sorted by service
@@ -83,6 +88,6 @@ memory_services(sysmem_total)
 #  source "etc_hosts.erb"
 #  variables(:cluster_info => node["redborder"]["cluster_info"],
 #            :cdomain => node["redborder"]["cdomain"]
-#           ) 
+#           )
 #  mode "0644"
 #end
