@@ -10,7 +10,13 @@ extend Rb_manager::Helpers
 
 #clean metadata to get packages upgrades
 execute "Clean yum metadata" do
-  command "yum clean metadata"
+  command "yum clean all"
+end
+
+# Set services_group related with the node mode (core, full, ...)
+mode = node["redborder"]["mode"]
+node["redborder"]["services_group"][mode].each do |s|
+  node.default["redborder"]["services"][s] = true
 end
 
 #Configure and enable chef-client

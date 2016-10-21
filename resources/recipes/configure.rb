@@ -7,13 +7,6 @@
 # AFFERO GENERAL PUBLIC LICENSE V3
 #
 
-# Set services_group related with the node mode (core, full, ...)
-
-mode = node["redborder"]["mode"]
-node["redborder"]["services_group"][mode].each do |s|
-  node.default["redborder"]["services"][s] = true
-end
-
 # Services configuration
 
 consul_config "Configure Consul Server" do
