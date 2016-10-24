@@ -55,7 +55,7 @@ druid_coordinator "Configure Druid Coordinator" do
   zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   psql_user "druid"
   psql_password "druid"
-  psql_uri "jdbc:postgresql://localhost:5432/druid"
+  psql_uri "jdbc:postgresql://localhost:5432/druid" #Change
   action (node["redborder"]["services"]["druid-coordinator"] ? [:add, :register] : [:remove, :deregister])
 end
 
@@ -65,7 +65,7 @@ druid_overlord "Configure Druid Overlord" do
   zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   psql_user "druid"
   psql_password "druid"
-  psql_uri "jdbc:postgresql://localhost:5432/druid"
+  psql_uri "jdbc:postgresql://localhost:5432/druid" #Change
   action (node["redborder"]["services"]["druid-overlord"] ? [:add, :register] : [:remove, :deregister])
 end
 
@@ -75,7 +75,7 @@ druid_broker "Configure Druid Broker" do
   zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   psql_user "druid"
   psql_password "druid"
-  psql_uri "jdbc:postgresql://localhost:5432/druid"
+  psql_uri "jdbc:postgresql://localhost:5432/druid" #Change
   action (node["redborder"]["services"]["druid-broker"] ? [:add, :register] : [:remove, :deregister])
 end
 
@@ -85,7 +85,7 @@ druid_middlemanager "Configure Druid MiddleManager" do
   zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   psql_user "druid"
   psql_password "druid"
-  psql_uri "jdbc:postgresql://localhost:5432/druid"
+  psql_uri "jdbc:postgresql://localhost:5432/druid" #Change
   action (node["redborder"]["services"]["druid-middlemanager"] ? [:add, :register] : [:remove, :deregister])
 end
 

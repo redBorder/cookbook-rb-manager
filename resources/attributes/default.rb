@@ -102,7 +102,7 @@ default["redborder"]["services_group"]["custom"] = ["consul-client"]
 default["redborder"]["services_group"]["core"] = ["consul"] #consul server
 default["redborder"]["services_group"]["chef"] = ["consul-client","chef-server"]
 default["redborder"]["services_group"]["kafka"] = ["consul-client","kafka"]
-default["redborder"]["services_group"]["druid"] = ["consul-client","druid-coordinator","druid-realtime","druid-historical","druid-broker","druid-overlord","druid-middleManager"]
+default["redborder"]["services_group"]["druid"] = ["consul-client","druid-coordinator","druid-realtime","druid-historical","druid-broker","druid-overlord","druid-middlemanager"]
 
 default["redborder"]["services"] = {}
 default["redborder"]["services"]["chef-client"]         = true
@@ -112,7 +112,7 @@ default["redborder"]["services"]["druid-realtime"]      = false
 default["redborder"]["services"]["druid-historical"]    = false
 default["redborder"]["services"]["druid-broker"]        = false
 default["redborder"]["services"]["druid-overlord"]      = false
-default["redborder"]["services"]["druid-middleManager"] = false
+default["redborder"]["services"]["druid-middlemanager"] = false
 default["redborder"]["services"]["kafka"]               = false
 default["redborder"]["services"]["zookeeper"]           = false
 default["redborder"]["services"]["http2k"]              = false
