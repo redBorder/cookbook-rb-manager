@@ -56,7 +56,7 @@ druid_coordinator "Configure Druid Coordinator" do
   psql_user "druid"
   psql_password "druid"
   psql_uri "jdbc:postgresql://localhost:5432/druid"
-  action (node["redborder"]["services"]["druid-coordinator"] ? :add : :remove)
+  action (node["redborder"]["services"]["druid-coordinator"] ? [:add, :register] : [:remove, :deregister])
 end
 
 druid_overlord "Configure Druid Overlord" do
@@ -66,7 +66,7 @@ druid_overlord "Configure Druid Overlord" do
   psql_user "druid"
   psql_password "druid"
   psql_uri "jdbc:postgresql://localhost:5432/druid"
-  action (node["redborder"]["services"]["druid-overlord"] ? :add : :remove)
+  action (node["redborder"]["services"]["druid-overlord"] ? [:add, :register] : [:remove, :deregister])
 end
 
 druid_broker "Configure Druid Broker" do
@@ -76,7 +76,7 @@ druid_broker "Configure Druid Broker" do
   psql_user "druid"
   psql_password "druid"
   psql_uri "jdbc:postgresql://localhost:5432/druid"
-  action (node["redborder"]["services"]["druid-broker"] ? :add : :remove)
+  action (node["redborder"]["services"]["druid-broker"] ? [:add, :register] : [:remove, :deregister])
 end
 
 druid_middlemanager "Configure Druid MiddleManager" do
@@ -86,7 +86,7 @@ druid_middlemanager "Configure Druid MiddleManager" do
   psql_user "druid"
   psql_password "druid"
   psql_uri "jdbc:postgresql://localhost:5432/druid"
-  action (node["redborder"]["services"]["druid-middlemanager"] ? :add : :remove)
+  action (node["redborder"]["services"]["druid-middlemanager"] ? [:add, :register] : [:remove, :deregister])
 end
 
 druid_historical "Configure Druid Historical" do
@@ -96,7 +96,7 @@ druid_historical "Configure Druid Historical" do
   psql_user "druid"
   psql_password "druid"
   psql_uri "jdbc:postgresql://localhost:5432/druid"
-  action (node["redborder"]["services"]["druid-historical"] ? :add : :remove)
+  action (node["redborder"]["services"]["druid-historical"] ? [:add, :register] : [:remove, :deregister])
 end
 
 http2k_config "Configure Http2k" do

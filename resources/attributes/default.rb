@@ -97,11 +97,12 @@ default["redborder"]["zookeeper_hosts"] = []
 
 default["redborder"]["memory_assigned"] = {}
 
-default["redborder"]["services_group"]["full"] = ["consul", "chef-server"]
+default["redborder"]["services_group"]["full"] = ["consul","chef-server"]
 default["redborder"]["services_group"]["custom"] = ["consul-client"]
 default["redborder"]["services_group"]["core"] = ["consul"] #consul server
 default["redborder"]["services_group"]["chef"] = ["consul-client","chef-server"]
 default["redborder"]["services_group"]["kafka"] = ["consul-client","kafka"]
+default["redborder"]["services_group"]["druid"] = ["consul-client","druid-coordinator","druid-realtime","druid-historical","druid-broker","druid-overlord","druid-middleManager"]
 
 default["redborder"]["services"] = {}
 default["redborder"]["services"]["chef-client"]         = true
