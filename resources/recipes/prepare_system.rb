@@ -64,7 +64,7 @@ node.default["redborder"]["sensors_info"] = get_sensors_info()
 
 #get string with all zookeeper hosts and port separated by commas, its needed for multiples services
 zk_port = node["redborder"]["zookeeper"]["port"]
-zk_hosts = node["redborder"]["managers_per_services"]["zookeeper"].map {|z| "#{z}:#{zk_port}"}.join(',')
+zk_hosts = node["redborder"]["managers_per_services"]["zookeeper"].map {|z| "#{z}.node:#{zk_port}"}.join(',')
 node.default["redborder"]["zookeeper"]["zk_hosts"] = zk_hosts
 
 #set kafka host index if kafka is enabled in this host
