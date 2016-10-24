@@ -51,7 +51,7 @@ end
 
 druid_coordinator "Configure Druid Coordinator" do
   name node["hostname"]
-  memory_kb node["redborder"]["memory_services"]["druid_coordinator"]["memory"]
+  memory_kb node["redborder"]["memory_services"]["druid-coordinator"]["memory"]
   zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   psql_user "druid"
   psql_password "druid"
@@ -61,7 +61,7 @@ end
 
 druid_overlord "Configure Druid Overlord" do
   name node["hostname"]
-  memory_kb node["redborder"]["memory_services"]["druid_overlord"]["memory"]
+  memory_kb node["redborder"]["memory_services"]["druid-overlord"]["memory"]
   zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   psql_user "druid"
   psql_password "druid"
@@ -71,7 +71,7 @@ end
 
 druid_broker "Configure Druid Broker" do
   name node["hostname"]
-  memory_kb node["redborder"]["memory_services"]["druid_broker"]["memory"]
+  memory_kb node["redborder"]["memory_services"]["druid-broker"]["memory"]
   zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   psql_user "druid"
   psql_password "druid"
@@ -81,7 +81,7 @@ end
 
 druid_middlemanager "Configure Druid MiddleManager" do
   name node["hostname"]
-  memory_kb node["redborder"]["memory_services"]["druid_middlemanager"]["memory"]
+  memory_kb node["redborder"]["memory_services"]["druid-middlemanager"]["memory"]
   zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   psql_user "druid"
   psql_password "druid"
@@ -91,7 +91,7 @@ end
 
 druid_historical "Configure Druid Historical" do
   name node["hostname"]
-  memory_kb node["redborder"]["memory_services"]["druid_historical"]["memory"]
+  memory_kb node["redborder"]["memory_services"]["druid-historical"]["memory"]
   zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   psql_user "druid"
   psql_password "druid"

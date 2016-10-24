@@ -74,11 +74,11 @@ default["redborder"]["memory_services"]["kafka"]     = {"count" => 150, "memory"
 default["redborder"]["memory_services"]["zookeeper"] = {"count" => 20, "memory" => 0}
 default["redborder"]["memory_services"]["chef-client"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["keepalived"] = {"count" => 10, "memory" => 0}
-default["redborder"]["memory_services"]["druid_coordinator"] = {"count" => 10, "memory" => 0}
-default["redborder"]["memory_services"]["druid_overlord"] = {"count" => 10, "memory" => 0}
-default["redborder"]["memory_services"]["druid_historical"] = {"count" => 10, "memory" => 0}
-default["redborder"]["memory_services"]["druid_broker"] = {"count" => 10, "memory" => 0}
-default["redborder"]["memory_services"]["druid_middlemanager"] = {"count" => 10, "memory" => 0}
+default["redborder"]["memory_services"]["druid-coordinator"] = {"count" => 10, "memory" => 0}
+default["redborder"]["memory_services"]["druid-overlord"] = {"count" => 10, "memory" => 0}
+default["redborder"]["memory_services"]["druid-historical"] = {"count" => 10, "memory" => 0}
+default["redborder"]["memory_services"]["druid-broker"] = {"count" => 10, "memory" => 0}
+default["redborder"]["memory_services"]["druid-middlemanager"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["http2k"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["chef-server"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["postgresql"] = {"count" => 10, "memory" => 0}
