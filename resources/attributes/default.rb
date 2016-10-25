@@ -38,7 +38,7 @@ default["redborder"]["kafka"]["logdir"] = "/var/log/kafka"
 default["redborder"]["kafka"]["host_index"] = 0
 
 #zookeeper
-default["redborder"]["zookeeper"]["zk_hosts"] = "localhost:2181"
+default["redborder"]["zookeeper"]["zk_hosts"] = "zookeeper.service.#{node["redborder"]["cdomain"]}:2181"
 default["redborder"]["zookeeper"]["port"] = 2181
 
 #http2k
@@ -99,7 +99,7 @@ default["redborder"]["memory_assigned"] = {}
 
 default["redborder"]["services_group"]["full"] = ["consul","chef-server"]
 default["redborder"]["services_group"]["custom"] = ["consul-client"]
-default["redborder"]["services_group"]["core"] = ["consul", "druid-coordinator", "druid-overlord"] #consul server
+default["redborder"]["services_group"]["core"] = ["consul", "zookeeper", "druid-coordinator", "druid-overlord"] #consul server
 default["redborder"]["services_group"]["chef"] = ["consul-client","chef-server"]
 default["redborder"]["services_group"]["kafka"] = ["consul-client","kafka"]
 default["redborder"]["services_group"]["historical"] = ["consul-client","druid-historical"]
