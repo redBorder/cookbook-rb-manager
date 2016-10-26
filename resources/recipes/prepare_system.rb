@@ -18,6 +18,9 @@ mode = node["redborder"]["mode"]
 node["redborder"]["services_group"][mode].each do |s|
   node.default["redborder"]["services"][s] = true
 end
+if mode != "core"
+ node.default["redborder"]["services"]["consul-client"] = true
+end
 
 #Configure and enable chef-client
 yum_package "redborder-chef-client" do
