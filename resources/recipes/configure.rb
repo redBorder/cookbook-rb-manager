@@ -89,7 +89,6 @@ http2k_config "Configure Http2k" do
   memory node["redborder"]["memory_services"]["http2k"]["memory"]
   port node["redborder"]["http2k"]["port"]
   hosts node["redborder"]["managers_per_services"]["http2k"]
-  kafka_hosts node["redborder"]["managers_per_services"]["kafka"]
   proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"]
   ips_nodes node["redborder"]["sensors_info"]["ips-sensor"]
   ipsg_nodes node["redborder"]["sensors_info"]["ipsg-sensor"]
