@@ -38,7 +38,7 @@ default["redborder"]["kafka"]["logdir"] = "/var/log/kafka"
 default["redborder"]["kafka"]["host_index"] = 0
 
 #zookeeper
-default["redborder"]["zookeeper"]["zk_hosts"] = "zookeeper.service.#{node["redborder"]["cdomain"]}:2181"
+default["redborder"]["zookeeper"]["zk_hosts"] = ""
 default["redborder"]["zookeeper"]["port"] = 2181
 
 #http2k
