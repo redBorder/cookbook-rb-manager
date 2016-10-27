@@ -94,7 +94,7 @@ http2k_config "Configure Http2k" do
   ipsg_nodes node["redborder"]["sensors_info"]["ipsg-sensor"]
   organizations node["redborder"]["organizations"]
   locations_list node["redborder"]["locations"]
-  action (node["redborder"]["services"]["http2k"] ? :add : :remove)
+  action (node["redborder"]["services"]["http2k"] ? [:add, :register] : [:remove, :deregister])
 end
 
 memcached_config "Configure Memcached" do
