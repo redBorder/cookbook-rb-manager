@@ -49,38 +49,51 @@ kafka_config "Configure Kafka" do
   action (node["redborder"]["services"]["kafka"] ? [:add, :register] : [:remove, :deregister])
 end
 
+if  node["redborder"]["services"]["druid-coordinator"] or
+    node["redborder"]["services"]["druid-overlord"] or
+    node["redborder"]["services"]["druid-broker"] or
+    node["redborder"]["services"]["druid-middlemanager"] or
+    node["redborder"]["services"]["druid-historical"]
+
+  druid_common "Configure druid common resources" do
+    name node["hostname"]  
+    zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
+    action :add
+  end
+else
+  druid_common "Delete druid common resources" do
+    action :remove
+  end
+end
+
+
 druid_coordinator "Configure Druid Coordinator" do
   name node["hostname"]
   memory_kb node["redborder"]["memory_services"]["druid-coordinator"]["memory"]
-  zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   action (node["redborder"]["services"]["druid-coordinator"] ? [:add, :register] : [:remove, :deregister])
 end
 
 druid_overlord "Configure Druid Overlord" do
   name node["hostname"]
   memory_kb node["redborder"]["memory_services"]["druid-overlord"]["memory"]
-  zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   action (node["redborder"]["services"]["druid-overlord"] ? [:add, :register] : [:remove, :deregister])
 end
 
 druid_broker "Configure Druid Broker" do
   name node["hostname"]
   memory_kb node["redborder"]["memory_services"]["druid-broker"]["memory"]
-  zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   action (node["redborder"]["services"]["druid-broker"] ? [:add, :register] : [:remove, :deregister])
 end
 
 druid_middlemanager "Configure Druid MiddleManager" do
   name node["hostname"]
   memory_kb node["redborder"]["memory_services"]["druid-middlemanager"]["memory"]
-  zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   action (node["redborder"]["services"]["druid-middlemanager"] ? [:add, :register] : [:remove, :deregister])
 end
 
 druid_historical "Configure Druid Historical" do
   name node["hostname"]
   memory_kb node["redborder"]["memory_services"]["druid-historical"]["memory"]
-  zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   action (node["redborder"]["services"]["druid-historical"] ? [:add, :register] : [:remove, :deregister])
 end
 
