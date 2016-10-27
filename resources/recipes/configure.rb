@@ -88,7 +88,6 @@ http2k_config "Configure Http2k" do
   domain node["redborder"]["cdomain"]
   memory node["redborder"]["memory_services"]["http2k"]["memory"]
   port node["redborder"]["http2k"]["port"]
-  hosts node["redborder"]["managers_per_services"]["http2k"]
   proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"]
   ips_nodes node["redborder"]["sensors_info"]["ips-sensor"]
   ipsg_nodes node["redborder"]["sensors_info"]["ipsg-sensor"]
