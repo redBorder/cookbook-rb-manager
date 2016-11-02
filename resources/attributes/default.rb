@@ -32,6 +32,8 @@ default["redborder"]["zookeeper"]["port"] = 2181
 default["redborder"]["http2k"]["port"] = 7980
 
 #memcached
+default["redborder"]["memcached"]["elasticache"] = false
+default["redborder"]["memcached"]["server_list"] = []
 default["redborder"]["memcached"]["port"] = 11211
 default["redborder"]["memcached"]["maxconn"] = 1024
 default["redborder"]["memcached"]["cachesize"] = 64

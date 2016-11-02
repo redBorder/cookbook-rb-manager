@@ -62,8 +62,8 @@ node.default["redborder"]["managers_per_services"] = managers_per_service()
 #get elasticache nodes
 elasticache = Chef::DataBagItem.load("passwords", "elasticache") rescue elasticache = {}
 if !elasticache.empty?
-  node.default["memcached"]["server_list"] = getElasticacheNodes(elasticache["cfg_address"], elasticache["cfg_port"])
-  puts node.default["memcached"]["server_list"]
+  node.default["redborder"]["memcached"]["server_list"] = getElasticacheNodes(elasticache["cfg_address"], elasticache["cfg_port"])
+  node.default["redborder"]["memcached"]["port"] = elasticache["cfg_port"]
   node.default["memcached"]["elasticache"] = true
 end
 
