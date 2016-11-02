@@ -58,6 +58,7 @@ if  node["redborder"]["services"]["druid-coordinator"] or
   druid_common "Configure druid common resources" do
     name node["hostname"]
     zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
+    memcached_hosts node["redborder"]["memcached"]["hosts"]
     action :add
   end
 else
