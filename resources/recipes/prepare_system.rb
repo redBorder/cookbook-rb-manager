@@ -10,7 +10,7 @@ extend Rb_manager::Helpers
 
 #clean metadata to get packages upgrades
 execute "Clean yum metadata" do
-  command "yum clean all"
+  command "yum clean metadata"
 end
 
 # Set services_group related with the node mode (core, full, ...)
@@ -18,7 +18,7 @@ mode = node["redborder"]["mode"]
 node["redborder"]["services_group"][mode].each do |s|
   node.default["redborder"]["services"][s] = true
 end
-if mode != "core"
+if mode != "core" or mode != "full"
  node.default["redborder"]["services"]["consul-client"] = true
 end
 
@@ -86,17 +86,7 @@ node.default["redborder"]["managers_list"] = managers_list
 node.default["redborder"]["manager"]["hd_services_current"] = harddisk_services()
 
 #memory
-#
 #getting total system memory less 10% reserved by system
 sysmem_total = (node["memory"]["total"].to_i * 0.90).to_i
 #node attributes related with memory are changed inside the function to have simplicity using recursivity
 memory_services(sysmem_total)
-
-# create /etc/hosts
-#template "/etc/hosts" do
-#  source "etc_hosts.erb"
-#  variables(:cluster_info => node["redborder"]["cluster_info"],
-#            :cdomain => node["redborder"]["cdomain"]
-#           )
-#  mode "0644"
-#end
