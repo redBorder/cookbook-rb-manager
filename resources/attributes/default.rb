@@ -14,19 +14,6 @@ default["redborder"]["locations"] = [
 #s3
 default["redborder"]["uploaded_s3"] = false
 
-#cookbooks
-#default["redborder"]["cookbooks"] = [ "zookeeper",
-#                                      "kafka",
-#                                      "druid",
-#                                      "nomad",
-#                                      "http2k",
-#                                      "cron",
-#                                      "memcached",
-#                                      "chef-server",
-#                                      "riak",
-#                                      "rb-manager"
-#                                    ]
-
 #chef-client
 default["chef-client"]["interval"] = 300
 default["chef-client"]["splay"] = 100
@@ -49,6 +36,11 @@ default["redborder"]["memcached"]["port"] = 11211
 default["redborder"]["memcached"]["maxconn"] = 1024
 default["redborder"]["memcached"]["cachesize"] = 64
 default["redborder"]["memcached"]["options"] = ""
+
+#hadoop
+default["redborder"]["hadoop"]["reservedStackMemory"] = ""
+default["redborder"]["hadoop"]["yarnMemory"]          = ""
+default["redborder"]["hadoop"]["containersMemory"]    = 2048
 
 #riak
 
@@ -83,7 +75,9 @@ default["redborder"]["memory_services"]["http2k"] = {"count" => 10, "memory" => 
 default["redborder"]["memory_services"]["chef-server"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["postgresql"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["memcached"] = {"count" => 10, "memory" => 0}
-
+default["redborder"]["memory_services"]["hadoop-nodemanager"] = {"count" => 10, "memory" => 0}
+default["redborder"]["memory_services"]["hadoop-resourcemanager"] = {"count" => 10, "memory" => 0}
+default["redborder"]["memory_services"]["hadoop-zkfc"] = {"count" => 10, "memory" => 0}
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default["redborder"]["cluster_info"] = {}
@@ -107,28 +101,32 @@ default["redborder"]["services_group"]["middlemanager"] = ["druid-middlemanager"
 default["redborder"]["services_group"]["broker"] = ["druid-broker"]
 default["redborder"]["services_group"]["druid"] = ["druid-coordinator","druid-historical","druid-broker","druid-overlord","druid-middlemanager"]
 default["redborder"]["services_group"]["http2k"] = ["http2k"]
+default["redborder"]["services_group"]["hadoop"] = ["hadoop-nodemanager","hadoop-resourcemanager","hadoop-zkfc"]
 
 default["redborder"]["services"] = {}
-default["redborder"]["services"]["chef-client"]         = true
-default["redborder"]["services"]["keepalived"]          = false
-default["redborder"]["services"]["druid-coordinator"]   = false
-default["redborder"]["services"]["druid-realtime"]      = false
-default["redborder"]["services"]["druid-historical"]    = false
-default["redborder"]["services"]["druid-broker"]        = false
-default["redborder"]["services"]["druid-overlord"]      = false
-default["redborder"]["services"]["druid-middlemanager"] = false
-default["redborder"]["services"]["kafka"]               = false
-default["redborder"]["services"]["zookeeper"]           = false
-default["redborder"]["services"]["http2k"]              = false
-default["redborder"]["services"]["rb-webui"]            = false
-default["redborder"]["services"]["chef-server"]         = false
-default["redborder"]["services"]["postgresql"]          = false
-default["redborder"]["services"]["nginx"]               = false
-default["redborder"]["services"]["cep"]                 = false
-default["redborder"]["services"]["iptables"]            = false
-default["redborder"]["services"]["memcached"]           = false
-default["redborder"]["services"]["rb-monitor"]          = false
-default["redborder"]["services"]["secor"]               = false
-default["redborder"]["services"]["riak"]                = false
-default["redborder"]["services"]["consul"]              = false
-default["redborder"]["services"]["consul-client"]       = false
+default["redborder"]["services"]["chef-client"]            = true
+default["redborder"]["services"]["chef-server"]            = false
+default["redborder"]["services"]["consul"]                 = false
+default["redborder"]["services"]["consul-client"]          = false
+default["redborder"]["services"]["keepalived"]             = false
+default["redborder"]["services"]["druid-coordinator"]      = false
+default["redborder"]["services"]["druid-realtime"]         = false
+default["redborder"]["services"]["druid-historical"]       = false
+default["redborder"]["services"]["druid-broker"]           = false
+default["redborder"]["services"]["druid-overlord"]         = false
+default["redborder"]["services"]["druid-middlemanager"]    = false
+default["redborder"]["services"]["kafka"]                  = false
+default["redborder"]["services"]["zookeeper"]              = false
+default["redborder"]["services"]["http2k"]                 = false
+default["redborder"]["services"]["rb-webui"]               = false
+default["redborder"]["services"]["postgresql"]             = false
+default["redborder"]["services"]["nginx"]                  = false
+default["redborder"]["services"]["cep"]                    = false
+default["redborder"]["services"]["iptables"]               = false
+default["redborder"]["services"]["memcached"]              = false
+default["redborder"]["services"]["rb-monitor"]             = false
+default["redborder"]["services"]["secor"]                  = false
+default["redborder"]["services"]["riak"]                   = false
+default["redborder"]["services"]["hadoop-nodemanager"]     = false
+default["redborder"]["services"]["hadoop-resourcemanager"] = false
+default["redborder"]["services"]["hadoop-zkfc"]            = false
