@@ -59,6 +59,15 @@ node.default["redborder"]["cluster_info"] = get_cluster_info()
 #get managers sorted by service
 node.default["redborder"]["managers_per_services"] = managers_per_service()
 
+#get elasticache nodes
+elasticache = Chef::DataBagItem.load("rBglobal", "elasticache") rescue elasticache = {}
+if !elasticache.empty?
+  node.default["redborder"]["memcached"]["server_list"] = getElasticacheNodes(elasticache["cfg_address"], elasticache["cfg_port"])
+  node.default["redborder"]["memcached"]["port"] = elasticache["cfg_port"]
+  node.default["redborder"]["memcached"]["hosts"] = joinHostArray2port(node["redborder"]["memcached"]["server_list"], node["redborder"]["memcached"]["port"]).join(",")
+  node.default["redborder"]["memcached"]["elasticache"] = true
+end
+
 #get organizations for http2k
 node.default["redborder"]["organizations"] = get_orgs() if node["redborder"]["services"]["http2k"]
 
