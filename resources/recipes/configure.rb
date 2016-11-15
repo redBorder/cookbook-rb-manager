@@ -145,3 +145,7 @@ hadoop_nodemanager "Configure Hadoop NodeManager" do
   action (node["redborder"]["services"]["hadoop-nodemanager"] ? [:add, :register] : [:remove, :deregister])
 end
 
+nginx_config "Configure Nginx" do
+  cdomain node["redborder"]["cdomain"]
+  action (node["redborder"]["services"]["nginx"] ? [:add, :register] : [:remove, :deregister])
+end
