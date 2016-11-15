@@ -125,7 +125,7 @@ if node["redborder"]["services"]["hadoop-nodemanager"] or
   hadoop_common "Configure hadoop common resources" do
     name node["hostname"]
     zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
-    memory_kb ["redborder"]["memory_services"]["hadoop-nodemanager"]["memory"]
+    memory_kb node["redborder"]["memory_services"]["hadoop-nodemanager"]["memory"]
     containersMemory node["redborder"]["hadoop"]["containersMemory"]
     action :add
   end
