@@ -84,10 +84,6 @@ if node["redborder"]["managers_per_services"]["kafka"].include?(node.name)
   node.default["redborder"]["kafka"]["host_index"] = node["redborder"]["managers_per_services"]["kafka"].index(node.name)
 end
 
-#set hadoop Yarn and containers memory # TODO
-#node.default["redborder"]["hadoop"]["reservedStackMemory"] = [ 0.25 * node["redborder"]["memory_services"]["hadoop-nodemanager"]["memory"], 1024*1024 ].min
-#node.default["redborder"]["hadoop"]["yarnMemory"]          = ((node["redborder"]["memory_services"]["hadoop-nodemanager"]["memory"] - node["redborder"]["hadoop"]["reservedStackMemory"])/1024).to_i
-
 #get an array of managers
 managers_list = []
 node["redborder"]["cluster_info"].each_key do |mgr|

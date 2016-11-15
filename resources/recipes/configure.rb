@@ -120,14 +120,12 @@ memcached_config "Configure Memcached" do
 end
 
 if node["redborder"]["services"]["hadoop-nodemanager"] or
-   node["redborder"]["services"]["hadoop-resourcemanager"] or
-   node["redborder"]["services"]["hadoop-zkfc"]
+   node["redborder"]["services"]["hadoop-resourcemanager"]
 
   hadoop_common "Configure hadoop common resources" do
+    name node["hostname"]
     zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
-    memory_kb_nodemanager node["redborder"]["memory_services"]["hadoop-nodemanager"]["memory"]
-    reservedStackMemory node["redborder"]["hadoop"]["reservedStackMemory"]
-    yarnMemory node["redborder"]["hadoop"]["yarnMemory"]
+    memory_kb node["redborder"]["memory_services"]["hadoop-nodemanager"]["memory"]
     containersMemory node["redborder"]["hadoop"]["containersMemory"]
     action :add
   end
@@ -137,17 +135,13 @@ else
   end
 end
 
-hadoop_nodemanager "Configure Hadoop NodeManager" do
-  memory_kb node["redborder"]["memory_services"]["hadoop-nodemanager"]["memory"]
-  action (node["redborder"]["services"]["hadoop-nodemanager"] ? [:add, :register] : [:remove, :deregister])
-end
-
 hadoop_resourcemanager "Configure Hadoop ResourceManager" do
   memory_kb node["redborder"]["memory_services"]["hadoop-resourcemanager"]["memory"]
   action (node["redborder"]["services"]["hadoop-resourcemanager"] ? [:add, :register] : [:remove, :deregister])
 end
 
-hadoop_zkfc "Configure Hadoop Zkfc" do
-  memory_kb node["redborder"]["memory_services"]["hadoop-zkfc"]["memory"]
-  action (node["redborder"]["services"]["hadoop-zkfc"] ? [:add, :register] : [:remove, :deregister])
+hadoop_nodemanager "Configure Hadoop NodeManager" do
+  memory_kb node["redborder"]["memory_services"]["hadoop-nodemanager"]["memory"]
+  action (node["redborder"]["services"]["hadoop-nodemanager"] ? [:add, :register] : [:remove, :deregister])
 end
+
