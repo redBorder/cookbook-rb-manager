@@ -77,9 +77,11 @@ default["redborder"]["memory_services"]["http2k"] = {"count" => 10, "memory" => 
 default["redborder"]["memory_services"]["chef-server"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["postgresql"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["memcached"] = {"count" => 10, "memory" => 0}
-default["redborder"]["memory_services"]["hadoop-nodemanager"] = {"count" => 10, "memory" => 0}
+default["redborder"]["memory_services"]["hadoop-nodemanager"] = {"count" => 50, "memory" => 0}
 default["redborder"]["memory_services"]["hadoop-resourcemanager"] = {"count" => 10, "memory" => 0}
-default["redborder"]["memory_services"]["hadoop-zkfc"] = {"count" => 10, "memory" => 0}
+
+# Samza memory
+default["redborder"]["hadoop"]["containersMemory"] = 2048
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default["redborder"]["cluster_info"] = {}
@@ -95,7 +97,7 @@ default["redborder"]["memory_assigned"] = {}
 
 default["redborder"]["services_group"]["full"] = ["consul","chef-server"]
 default["redborder"]["services_group"]["custom"] = []
-default["redborder"]["services_group"]["core"] = ["consul", "zookeeper", "druid-coordinator", "druid-overlord"] #consul server
+default["redborder"]["services_group"]["core"] = ["consul", "zookeeper", "druid-coordinator", "druid-overlord", "hadoop-resourcemanager"] #consul server
 default["redborder"]["services_group"]["chef"] = ["chef-server"]
 default["redborder"]["services_group"]["kafka"] = ["kafka"]
 default["redborder"]["services_group"]["historical"] = ["druid-historical"]
@@ -103,7 +105,7 @@ default["redborder"]["services_group"]["middlemanager"] = ["druid-middlemanager"
 default["redborder"]["services_group"]["broker"] = ["druid-broker"]
 default["redborder"]["services_group"]["druid"] = ["druid-coordinator","druid-historical","druid-broker","druid-overlord","druid-middlemanager"]
 default["redborder"]["services_group"]["http2k"] = ["http2k"]
-default["redborder"]["services_group"]["hadoop"] = ["hadoop-nodemanager","hadoop-resourcemanager","hadoop-zkfc"]
+default["redborder"]["services_group"]["samza"] = ["hadoop-nodemanager"]
 
 default["redborder"]["services"] = {}
 default["redborder"]["services"]["chef-client"]            = true
@@ -131,4 +133,3 @@ default["redborder"]["services"]["secor"]                  = false
 default["redborder"]["services"]["riak"]                   = false
 default["redborder"]["services"]["hadoop-nodemanager"]     = false
 default["redborder"]["services"]["hadoop-resourcemanager"] = false
-default["redborder"]["services"]["hadoop-zkfc"]            = false
