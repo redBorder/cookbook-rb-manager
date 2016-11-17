@@ -40,10 +40,10 @@ default["redborder"]["memcached"]["cachesize"] = 64
 default["redborder"]["memcached"]["options"] = ""
 
 #hadoop
-default["redborder"]["hadoop"]["reservedStackMemory"] = ""
-default["redborder"]["hadoop"]["yarnMemory"]          = ""
-default["redborder"]["hadoop"]["containersMemory"]    = 2048
-
+default["redborder"]["hadoop"]["containersMemory"] = 2048
+#samza
+default["redborder"]["samza"]["num_containers"] = 1
+default["redborder"]["samza"]["memory_per_container"] = 2560
 #riak
 
 # hard disk
@@ -79,9 +79,6 @@ default["redborder"]["memory_services"]["postgresql"] = {"count" => 10, "memory"
 default["redborder"]["memory_services"]["memcached"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["hadoop-nodemanager"] = {"count" => 50, "memory" => 0}
 default["redborder"]["memory_services"]["hadoop-resourcemanager"] = {"count" => 10, "memory" => 0}
-
-# Samza memory
-default["redborder"]["hadoop"]["containersMemory"] = 2048
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default["redborder"]["cluster_info"] = {}

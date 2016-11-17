@@ -145,6 +145,12 @@ hadoop_nodemanager "Configure Hadoop NodeManager" do
   action (node["redborder"]["services"]["hadoop-nodemanager"] ? [:add, :register] : [:remove, :deregister])
 end
 
+samza_config "Configure samza applications" do
+  memory_per_container node["redborder"]["samza"]["num_containers"] 
+  num_containers node["redborder"]["samza"]["memory_per_container"]
+  action (node["redborder"]["services"]["hadoop-nodemanager"] ? :add : :remove)
+end
+
 nginx_config "Configure Nginx" do
   cdomain node["redborder"]["cdomain"]
   action (node["redborder"]["services"]["nginx"] ? [:add, :register] : [:remove, :deregister])
