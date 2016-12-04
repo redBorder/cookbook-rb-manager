@@ -146,8 +146,8 @@ hadoop_nodemanager "Configure Hadoop NodeManager" do
 end
 
 samza_config "Configure samza applications" do
-  memory_per_container node["redborder"]["samza"]["num_containers"]
-  num_containers node["redborder"]["samza"]["memory_per_container"]
+  memory_per_container node["redborder"]["samza"]["memory_per_container"]
+  num_containers node["redborder"]["samza"]["num_containers"]
   action (node["redborder"]["services"]["hadoop-nodemanager"] ? :add : :remove)
 end
 
