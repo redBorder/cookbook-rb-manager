@@ -161,7 +161,7 @@ geoip_config "Configure GeoIP" do
 end
 
 webui_config "Configure WebUI" do
-  hostname node["redborder"]["hostname"]
+  hostname node["hostname"]
   memory_kb node["redborder"]["memory_services"]["webui"]["memory"]
   cdomain node["redborder"]["cdomain"]
   action (node["redborder"]["services"]["webui"] ? [:add, :register] : [:remove, :deregister])
