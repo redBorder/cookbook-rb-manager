@@ -165,3 +165,9 @@ snmp_config "Configure snmp" do
   cdomain node["redborder"]["cdomain"]
   action (node["redborder"]["services"]["snmp"] ? :add : :remove)
 end
+
+rbmonitor_config "Configure redborder-monitor" do
+  name node["hostname"]
+  action (node["redborder"]["services"]["redborder-monitor"] ? :add : :remove)
+end
+
