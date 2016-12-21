@@ -79,6 +79,7 @@ default["redborder"]["memory_services"]["postgresql"] = {"count" => 10, "memory"
 default["redborder"]["memory_services"]["memcached"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["hadoop-nodemanager"] = {"count" => 50, "memory" => 0}
 default["redborder"]["memory_services"]["hadoop-resourcemanager"] = {"count" => 10, "memory" => 0}
+default["redborder"]["memory_services"]["webui"] = {"count" => 40, "memory" => 0}
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default["redborder"]["cluster_info"] = {}
