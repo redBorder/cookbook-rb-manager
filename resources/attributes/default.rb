@@ -136,3 +136,4 @@ default["redborder"]["services"]["hadoop-resourcemanager"] = false
 default["redborder"]["services"]["geoip"]                  = false
 default["redborder"]["services"]["redborder-monitor"]      = true
 default["redborder"]["services"]["snmp"]                   = true
+default["redborder"]["services"]["ntp"]                    = true
