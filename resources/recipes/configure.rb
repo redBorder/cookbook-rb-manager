@@ -160,6 +160,17 @@ geoip_config "Configure GeoIP" do
   action (node["redborder"]["services"]["geoip"] ? :add : :remove)
 end
 
+snmp_config "Configure snmp" do
+  hostname node["hostname"]
+  cdomain node["redborder"]["cdomain"]
+  action (node["redborder"]["services"]["snmp"] ? :add : :remove)
+end
+
+rbmonitor_config "Configure redborder-monitor" do
+  name node["hostname"]
+  action (node["redborder"]["services"]["redborder-monitor"] ? :add : :remove)
+end
+
 webui_config "Configure WebUI" do
   hostname node["hostname"]
   memory_kb node["redborder"]["memory_services"]["webui"]["memory"]
