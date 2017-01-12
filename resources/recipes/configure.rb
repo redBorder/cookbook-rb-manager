@@ -171,3 +171,9 @@ rbmonitor_config "Configure redborder-monitor" do
   action (node["redborder"]["services"]["redborder-monitor"] ? :add : :remove)
 end
 
+webui_config "Configure WebUI" do
+  hostname node["hostname"]
+  memory_kb node["redborder"]["memory_services"]["webui"]["memory"]
+  cdomain node["redborder"]["cdomain"]
+  action (node["redborder"]["services"]["webui"] ? [:add, :register] : [:remove, :deregister])
+end
