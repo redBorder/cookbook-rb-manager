@@ -177,3 +177,7 @@ webui_config "Configure WebUI" do
   cdomain node["redborder"]["cdomain"]
   action (node["redborder"]["services"]["webui"] ? [:add, :register] : [:remove, :deregister])
 end
+
+ntp_config "Configure NTP" do
+  action (node["redborder"]["services"]["ntp"] ? :add : :remove)
+end
