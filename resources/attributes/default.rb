@@ -81,7 +81,8 @@ default["redborder"]["memory_services"]["hadoop-nodemanager"] = {"count" => 50, 
 default["redborder"]["memory_services"]["hadoop-resourcemanager"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["snmp"] = {"count" => 5, "memory" => 0, "max_limit" => 10000 }
 default["redborder"]["memory_services"]["redborder-monitor"] = {"count" => 5, "memory" => 0, "max_limit" => 20000 }
-default["redborder"]["memory_services"]["webui"] = {"count" => 40, "memory" => 0}
+default["redborder"]["memory_services"]["webui"] = {"count" => 40, "memory" => 0 }  
+default["redborder"]["memory_services"]["f2k"] = { "count" => 40, "memory" => 0 }
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default["redborder"]["cluster_info"] = {}
@@ -106,6 +107,7 @@ default["redborder"]["services_group"]["broker"] = ["druid-broker"]
 default["redborder"]["services_group"]["http2k"] = ["http2k"]
 default["redborder"]["services_group"]["samza"] = ["hadoop-nodemanager", "geoip"]
 default["redborder"]["services_group"]["webui"] = ["nginx", "webui", "geoip"]
+default["redborder"]["services_group"]["f2k"] = ["geoip", "f2k"]
 
 default["redborder"]["services"] = {}
 default["redborder"]["services"]["chef-client"]            = true
@@ -137,3 +139,4 @@ default["redborder"]["services"]["geoip"]                  = false
 default["redborder"]["services"]["redborder-monitor"]      = true
 default["redborder"]["services"]["snmp"]                   = true
 default["redborder"]["services"]["ntp"]                    = true
+default["redborder"]["services"]["f2k"]                    = false
