@@ -181,3 +181,8 @@ end
 ntp_config "Configure NTP" do
   action (node["redborder"]["services"]["ntp"] ? :add : :remove)
 end
+
+f2k_config "Configure f2k" do
+  sensors node["redborder"]["sensors_info"]["flow-sensor"]
+  action (node["redborder"]["services"]["f2k"] ? [:add, :register] : [:remove, :deregister])
+end
