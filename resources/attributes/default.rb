@@ -109,7 +109,7 @@ default["redborder"]["services_group"]["http2k"] = ["http2k"]
 default["redborder"]["services_group"]["samza"] = ["hadoop-nodemanager", "geoip"]
 default["redborder"]["services_group"]["webui"] = ["nginx", "webui", "geoip"]
 default["redborder"]["services_group"]["f2k"] = ["geoip", "f2k"]
-default["redborder"]["services_group"]["s3"] = ["s3"]
+default["redborder"]["services_group"]["s3"] = ["nginx", "s3"]
 default["redborder"]["services_group"]["postgresql"] = []
 
 default["redborder"]["services"] = {}
