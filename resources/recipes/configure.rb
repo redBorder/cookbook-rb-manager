@@ -186,3 +186,8 @@ f2k_config "Configure f2k" do
   sensors node["redborder"]["sensors_info"]["flow-sensor"]
   action (node["redborder"]["services"]["f2k"] ? [:add, :register] : [:remove, :deregister])
 end
+
+logstash_config "Configure logstash" do
+  cdomain node["redborder"]["cdomain"]
+  action (node["redborder"]["services"]["logstash"] ? [:add, :register] : [:remove, :deregister])
+end

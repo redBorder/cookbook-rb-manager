@@ -1,5 +1,9 @@
 # rb-manager CHANGELOG
 
+## 0.0.18
+  [Juan J. Prieto]
+- Add logstash
+
 ## 0.0.17
   - cjmateos
     - b3b5edc Update changelog
