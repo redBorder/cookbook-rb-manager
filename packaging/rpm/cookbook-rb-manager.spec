@@ -35,5 +35,7 @@ install -D -m 0644 README.md %{buildroot}/var/chef/cookbooks/rb-manager/README.m
 %doc
 
 %changelog
+* Mon Jan 29 2018 Juan J. Prieto <jjprieto@redborder.com> - 1.0.0-1
+- Add logstash
 * Tue Oct 18 2016 Alberto Rodríguez <arodriguez@redborder.com> - 1.0.0-1
 - first spec version
