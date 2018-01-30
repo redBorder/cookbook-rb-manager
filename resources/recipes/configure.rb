@@ -53,7 +53,8 @@ if  node["redborder"]["services"]["druid-coordinator"] or
     node["redborder"]["services"]["druid-overlord"] or
     node["redborder"]["services"]["druid-broker"] or
     node["redborder"]["services"]["druid-middlemanager"] or
-    node["redborder"]["services"]["druid-historical"]
+    node["redborder"]["services"]["druid-historical"] or
+    node["redborder"]["services"]["druid-realtime"]
 
   druid_common "Configure druid common resources" do
     name node["hostname"]
@@ -96,6 +97,12 @@ druid_historical "Configure Druid Historical" do
   name node["hostname"]
   memory_kb node["redborder"]["memory_services"]["druid-historical"]["memory"]
   action (node["redborder"]["services"]["druid-historical"] ? [:add, :register] : [:remove, :deregister])
+end
+
+druid_realtime "Configure Druid Realtime" do
+  name node["hostname"]
+  memory_kb node["redborder"]["memory_services"]["druid-realtime"]["memory"]
+  action (node["redborder"]["services"]["druid-realtime"] ? [:add, :register] : [:remove, :deregister])
 end
 
 http2k_config "Configure Http2k" do

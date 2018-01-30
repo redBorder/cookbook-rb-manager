@@ -73,6 +73,7 @@ default["redborder"]["memory_services"]["druid-overlord"] = {"count" => 10, "mem
 default["redborder"]["memory_services"]["druid-historical"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["druid-broker"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["druid-middlemanager"] = {"count" => 10, "memory" => 0}
+default["redborder"]["memory_services"]["druid-realtime"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["http2k"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["chef-server"] = {"count" => 10, "memory" => 0}
 default["redborder"]["memory_services"]["postgresql"] = {"count" => 10, "memory" => 0}
