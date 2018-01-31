@@ -205,9 +205,14 @@ logstash_config "Configure logstash" do
   action (node["redborder"]["services"]["logstash"] ? [:add, :register] : [:remove, :deregister])
 end
 
+
 postgresql_config "Configure postgresql" do
   cdomain node["redborder"]["cdomain"]
   action (node["redborder"]["services"]["postgresql"] ? [:add, :register] : [:remove, :deregister])
+end
+
+minio_config "Configure S3 (minio)" do
+  action (node["redborder"]["services"]["s3"] ? [:add, :register] : [:remove, :deregister])
 end
 
 if node["redborder"]["services"]["s3"]
