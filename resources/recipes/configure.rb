@@ -198,3 +198,8 @@ logstash_config "Configure logstash" do
   cdomain node["redborder"]["cdomain"]
   action (node["redborder"]["services"]["logstash"] ? [:add, :register] : [:remove, :deregister])
 end
+
+postgresql_config "Configure postgresql" do
+  cdomain node["redborder"]["cdomain"]
+  action (node["redborder"]["services"]["postgresql"] ? [:add, :register] : [:remove, :deregister])
+end
