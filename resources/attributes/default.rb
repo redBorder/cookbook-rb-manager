@@ -97,7 +97,7 @@ default["redborder"]["zookeeper_hosts"] = []
 
 default["redborder"]["memory_assigned"] = {}
 
-default["redborder"]["services_group"]["full"] = ["consul","chef-server","zookeeper","kafka","logstash"]
+default["redborder"]["services_group"]["full"] = ["consul","chef-server","zookeeper","kafka","logstash","s3","postgresql","nginx","webui","druid-broker","druid-historical","f2k","redborder-monitor"]
 default["redborder"]["services_group"]["custom"] = []
 default["redborder"]["services_group"]["core"] = ["consul", "zookeeper", "druid-coordinator", "druid-overlord", "hadoop-resourcemanager"] #consul server
 default["redborder"]["services_group"]["chef"] = ["chef-server"]
@@ -109,8 +109,8 @@ default["redborder"]["services_group"]["http2k"] = ["http2k"]
 default["redborder"]["services_group"]["samza"] = ["hadoop-nodemanager", "geoip"]
 default["redborder"]["services_group"]["webui"] = ["nginx", "webui", "geoip"]
 default["redborder"]["services_group"]["f2k"] = ["geoip", "f2k"]
-default["redborder"]["services_group"]["s3"] = []
-default["redborder"]["services_group"]["postgresql"] = []
+default["redborder"]["services_group"]["s3"] = ["nginx", "s3"]
+default["redborder"]["services_group"]["postgresql"] = ["postgresql"]
 
 default["redborder"]["services"] = {}
 default["redborder"]["services"]["chef-client"]            = true
@@ -135,7 +135,7 @@ default["redborder"]["services"]["iptables"]               = false
 default["redborder"]["services"]["memcached"]              = false
 default["redborder"]["services"]["rb-monitor"]             = false
 default["redborder"]["services"]["secor"]                  = false
-default["redborder"]["services"]["riak"]                   = false
+default["redborder"]["services"]["s3"]                     = false
 default["redborder"]["services"]["hadoop-nodemanager"]     = false
 default["redborder"]["services"]["hadoop-resourcemanager"] = false
 default["redborder"]["services"]["geoip"]                  = false

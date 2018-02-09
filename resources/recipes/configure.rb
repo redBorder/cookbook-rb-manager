@@ -158,11 +158,6 @@ samza_config "Configure samza applications" do
   action (node["redborder"]["services"]["hadoop-nodemanager"] ? :add : :remove)
 end
 
-nginx_config "Configure Nginx" do
-  cdomain node["redborder"]["cdomain"]
-  action (node["redborder"]["services"]["nginx"] ? [:add, :register] : [:remove, :deregister])
-end
-
 geoip_config "Configure GeoIP" do
   action (node["redborder"]["services"]["geoip"] ? :add : :remove)
 end
@@ -178,11 +173,22 @@ rbmonitor_config "Configure redborder-monitor" do
   action (node["redborder"]["services"]["redborder-monitor"] ? :add : :remove)
 end
 
+nginx_config "Configure Nginx" do
+  cdomain node["redborder"]["cdomain"]
+  action (node["redborder"]["services"]["nginx"] ? [:add, :register] : [:remove, :deregister])
+end
+
 webui_config "Configure WebUI" do
   hostname node["hostname"]
   memory_kb node["redborder"]["memory_services"]["webui"]["memory"]
   cdomain node["redborder"]["cdomain"]
   action (node["redborder"]["services"]["webui"] ? [:add, :register] : [:remove, :deregister])
+end
+
+nginx_config "Configure webui nginx and certs" do
+  service_name "webui"
+  cdomain node["redborder"]["cdomain"]
+  action (node["redborder"]["services"]["webui"] ? [:add_webui, :configure_certs, :register] : [:remove, :deregister])
 end
 
 ntp_config "Configure NTP" do
@@ -199,7 +205,22 @@ logstash_config "Configure logstash" do
   action (node["redborder"]["services"]["logstash"] ? [:add, :register] : [:remove, :deregister])
 end
 
+# Determine external
+external_services = Chef::DataBagItem.load("rBglobal", "external_services")
+
 postgresql_config "Configure postgresql" do
   cdomain node["redborder"]["cdomain"]
-  action (node["redborder"]["services"]["postgresql"] ? [:add, :register] : [:remove, :deregister])
+  action (node["redborder"]["services"]["postgresql"] and external_services["postgresql"] == "onpremise" ? [:add, :register] : [:remove, :deregister])
+end
+
+minio_config "Configure S3 (minio)" do
+  action (node["redborder"]["services"]["s3"] and external_services["s3"] == "onpremise" ? [:add, :register] : [:remove, :deregister])
+end
+
+if node["redborder"]["services"]["s3"]
+  nginx_config "Configure S3 certs" do
+    service_name "s3"
+    cdomain node["redborder"]["cdomain"]
+    action :configure_certs
+  end
 end
