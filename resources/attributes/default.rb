@@ -97,7 +97,7 @@ default["redborder"]["zookeeper_hosts"] = []
 
 default["redborder"]["memory_assigned"] = {}
 
-default["redborder"]["services_group"]["full"] = ["consul","chef-server","zookeeper","kafka","logstash","s3","postgresql","nginx","webui","druid-broker","druid-historical","f2k","redborder-monitor"]
+default["redborder"]["services_group"]["full"] = ["consul","chef-server","zookeeper","kafka","logstash","s3","postgresql","nginx","webui","druid-broker","druid-historical","f2k","redborder-monitor","pmacct"]
 default["redborder"]["services_group"]["custom"] = []
 default["redborder"]["services_group"]["core"] = ["consul", "zookeeper", "druid-coordinator", "druid-overlord", "hadoop-resourcemanager"] #consul server
 default["redborder"]["services_group"]["chef"] = ["chef-server"]
