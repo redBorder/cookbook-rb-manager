@@ -15,6 +15,14 @@ depends 'zookeeper', '0.0.1'
 
 - Chef 12.0 or later
 
+# BUILDING
+
+- Build rpm package for redborder platform:
+  * git clone https://github.com/redborder/cookbook-rb-manager.git
+  * cd cookbook-rb-manager
+  * make
+  * RPM packages is under packaging/rpm/pkgs/
+
 ## Contributing
 
 1. Fork the repository on Github
