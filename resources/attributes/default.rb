@@ -144,3 +144,4 @@ default["redborder"]["services"]["snmp"]                   = true
 default["redborder"]["services"]["ntp"]                    = true
 default["redborder"]["services"]["f2k"]                    = false
 default["redborder"]["services"]["logstash"]               = false
+default["redborder"]["services"]["pmacct"]               = false
