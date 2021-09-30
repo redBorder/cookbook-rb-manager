@@ -151,6 +151,7 @@ default["redborder"]["systemdservices"]["chef-server"]            = ["opscode-er
 default["redborder"]["systemdservices"]["consul"]                 = ["consul"]
 default["redborder"]["systemdservices"]["consul-client"]          = ["consul"]
 default["redborder"]["systemdservices"]["druid-realtime"]         = ["druid-realtime"]
+default["redborder"]["systemdservices"]["druid-coordinator"]      = ["druid-coordinator"]
 default["redborder"]["systemdservices"]["druid-historical"]       = ["druid-historical"]
 default["redborder"]["systemdservices"]["druid-broker"]           = ["druid-broker"]
 default["redborder"]["systemdservices"]["kafka"]                  = ["kafka"]
