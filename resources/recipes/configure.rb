@@ -210,6 +210,16 @@ logstash_config "Configure logstash" do
   action (node["redborder"]["services"]["logstash"] ? [:add, :register] : [:remove, :deregister])
 end
 
+dswatcher_config "Configure dswatcher" do
+  cdomain node["redborder"]["cdomain"]
+  action (node["redborder"]["services"]["dswatcher"] ? [:add, :register] : [:remove, :deregister])
+end
+
+events_counter_config "Configure events-counter" do
+  cdomain node["redborder"]["cdomain"]
+  action (node["redborder"]["services"]["events-counter"] ? [:add, :register] : [:remove, :deregister])
+end
+
 # Determine external
 external_services = Chef::DataBagItem.load("rBglobal", "external_services")
 
