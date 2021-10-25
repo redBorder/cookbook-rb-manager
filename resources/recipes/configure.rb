@@ -220,6 +220,10 @@ events_counter_config "Configure events-counter" do
   action (node["redborder"]["services"]["events-counter"] ? [:add, :register] : [:remove, :deregister])
 end
 
+iptables_config "Configure iptables" do
+  action (node["redborder"]["services"]["iptables"] ? [:add, :register] : [:remove, :deregister])
+end
+
 # Determine external
 external_services = Chef::DataBagItem.load("rBglobal", "external_services")
 

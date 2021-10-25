@@ -131,7 +131,7 @@ default["redborder"]["services"]["webui"]                  = false
 default["redborder"]["services"]["postgresql"]             = false
 default["redborder"]["services"]["nginx"]                  = false
 default["redborder"]["services"]["cep"]                    = false
-default["redborder"]["services"]["iptables"]               = false
+default["redborder"]["services"]["iptables"]               = true
 default["redborder"]["services"]["memcached"]              = false
 default["redborder"]["services"]["rb-monitor"]             = false
 default["redborder"]["services"]["secor"]                  = false
@@ -173,4 +173,5 @@ default["redborder"]["systemdservices"]["logstash"]               = ["logstash"]
 default["redborder"]["systemdservices"]["pmacct"]                 = ["sfacctd"]
 default["redborder"]["systemdservices"]["dswatcher"]              = ["dswatcher"]
 default["redborder"]["systemdservices"]["events-counter"]         = ["events-counter"]
+default["redborder"]["systemdservices"]["iptables"]         = ["iptables"]
 
