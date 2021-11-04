@@ -34,9 +34,6 @@ default["redborder"]["http2k"]["port"] = 7980
 #memcached
 default["redborder"]["memcached"]["elasticache"] = false
 default["redborder"]["memcached"]["server_list"] = []
-default["redborder"]["memcached"]["port"] = 11211
-default["redborder"]["memcached"]["maxconn"] = 1024
-default["redborder"]["memcached"]["cachesize"] = 64
 default["redborder"]["memcached"]["options"] = ""
 
 #hadoop
@@ -132,7 +129,7 @@ default["redborder"]["services"]["postgresql"]             = false
 default["redborder"]["services"]["nginx"]                  = false
 default["redborder"]["services"]["cep"]                    = false
 default["redborder"]["services"]["iptables"]               = true
-default["redborder"]["services"]["memcached"]              = false
+default["redborder"]["services"]["memcached"]              = true
 default["redborder"]["services"]["rb-monitor"]             = false
 default["redborder"]["services"]["secor"]                  = false
 default["redborder"]["services"]["s3"]                     = false

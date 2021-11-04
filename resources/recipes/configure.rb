@@ -119,11 +119,7 @@ end
 
 memcached_config "Configure Memcached" do
   memory node["redborder"]["memory_services"]["memcached"]["memory"]
-  port node["redborder"]["memcached"]["port"]
-  maxconn node["redborder"]["memcached"]["maxconn"]
-  cachesize node["redborder"]["memcached"]["cachesize"]
-  options node["redborder"]["memcached"]["options"]
-  action (node["redborder"]["services"]["memcached"] ? :add : :remove)
+  action (node["redborder"]["services"]["memcached"] ? [:add, :register] : [:remove, :deregister])
 end
 
 if node["redborder"]["services"]["hadoop-nodemanager"] or
