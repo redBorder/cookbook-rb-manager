@@ -94,7 +94,7 @@ default["redborder"]["zookeeper_hosts"] = []
 
 default["redborder"]["memory_assigned"] = {}
 
-default["redborder"]["services_group"]["full"] = ["consul","chef-server","zookeeper","memcached","kafka","logstash","s3","postgresql","nginx","webui","druid-broker","druid-historical","druid-realtime","druid-coordinator","f2k","redborder-monitor","pmacct","dswatcher","events-counter"]
+default["redborder"]["services_group"]["full"] = ["consul","chef-server","zookeeper","memcached","kafka","logstash","s3","postgresql","nginx","webui","druid-broker","druid-historical","druid-realtime","druid-coordinator","f2k","redborder-monitor","pmacct","dswatcher","events-counter","http2k"]
 default["redborder"]["services_group"]["custom"] = []
 default["redborder"]["services_group"]["core"] = ["consul", "zookeeper", "druid-coordinator", "druid-overlord", "hadoop-resourcemanager"] #consul server
 default["redborder"]["services_group"]["chef"] = ["chef-server"]
@@ -123,7 +123,7 @@ default["redborder"]["services"]["druid-overlord"]         = false
 default["redborder"]["services"]["druid-middlemanager"]    = false
 default["redborder"]["services"]["kafka"]                  = false
 default["redborder"]["services"]["zookeeper"]              = false
-default["redborder"]["services"]["http2k"]                 = false
+default["redborder"]["services"]["http2k"]                 = true
 default["redborder"]["services"]["webui"]                  = false
 default["redborder"]["services"]["postgresql"]             = false
 default["redborder"]["services"]["nginx"]                  = false
@@ -170,5 +170,6 @@ default["redborder"]["systemdservices"]["logstash"]               = ["logstash"]
 default["redborder"]["systemdservices"]["pmacct"]                 = ["sfacctd"]
 default["redborder"]["systemdservices"]["dswatcher"]              = ["dswatcher"]
 default["redborder"]["systemdservices"]["events-counter"]         = ["events-counter"]
-default["redborder"]["systemdservices"]["iptables"]         = ["iptables"]
+default["redborder"]["systemdservices"]["iptables"]               = ["iptables"]
+default["redborder"]["systemdservices"]["http2k"]                 = ["http2k"]
 
