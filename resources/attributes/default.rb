@@ -94,7 +94,7 @@ default["redborder"]["zookeeper_hosts"] = []
 
 default["redborder"]["memory_assigned"] = {}
 
-default["redborder"]["services_group"]["full"] = ["consul","chef-server","zookeeper","memcached","kafka","logstash","s3","postgresql","nginx","webui","druid-broker","druid-historical","druid-realtime","druid-coordinator","f2k","redborder-monitor","pmacct","dswatcher","events-counter","http2k"]
+default["redborder"]["services_group"]["full"] = ["consul","chef-server","zookeeper","memcached","rsyslog","kafka","logstash","s3","postgresql","nginx","webui","druid-broker","druid-historical","druid-realtime","druid-coordinator","f2k","redborder-monitor","pmacct","dswatcher","events-counter","http2k"]
 default["redborder"]["services_group"]["custom"] = []
 default["redborder"]["services_group"]["core"] = ["consul", "zookeeper", "druid-coordinator", "druid-overlord", "hadoop-resourcemanager"] #consul server
 default["redborder"]["services_group"]["chef"] = ["chef-server"]
@@ -144,6 +144,7 @@ default["redborder"]["services"]["logstash"]               = false
 default["redborder"]["services"]["pmacct"]                 = false
 default["redborder"]["services"]["dswatcher"]              = false
 default["redborder"]["services"]["events-counter"]         = false
+default["redborder"]["services"]["rsyslog"]                = true
 
 default["redborder"]["systemdservices"]["chef-client"]            = ["chef-client"]
 default["redborder"]["systemdservices"]["chef-server"]            = ["opscode-erchef"]
@@ -172,4 +173,5 @@ default["redborder"]["systemdservices"]["dswatcher"]              = ["dswatcher"
 default["redborder"]["systemdservices"]["events-counter"]         = ["events-counter"]
 default["redborder"]["systemdservices"]["iptables"]               = ["iptables"]
 default["redborder"]["systemdservices"]["http2k"]                 = ["http2k"]
+default["redborder"]["systemdservices"]["rsyslog"]                = ["rsyslog"]
 

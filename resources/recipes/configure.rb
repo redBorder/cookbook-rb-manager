@@ -220,6 +220,10 @@ iptables_config "Configure iptables" do
   action (node["redborder"]["services"]["iptables"] ? [:add, :register] : [:remove, :deregister])
 end
 
+rsyslog_config "Configure rsyslog" do
+  action (node["redborder"]["services"]["rsyslog"] ? [:add, :register] : [:remove, :deregister])
+end
+
 # Determine external
 external_services = Chef::DataBagItem.load("rBglobal", "external_services")
 
