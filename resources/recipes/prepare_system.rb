@@ -74,6 +74,9 @@ node.default["redborder"]["organizations"] = get_orgs() if node["redborder"]["se
 #get sensors info
 node.default["redborder"]["sensors_info"] = get_sensors_info()
 
+#get sensors info full info
+node.default["redborder"]["sensors_info_all"] = get_sensors_all_info()
+
 #get namespaces
 node.default["redborder"]["namespaces"] = get_namespaces
 
