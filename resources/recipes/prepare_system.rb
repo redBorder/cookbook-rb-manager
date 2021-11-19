@@ -74,6 +74,9 @@ node.default["redborder"]["organizations"] = get_orgs() if node["redborder"]["se
 #get sensors info
 node.default["redborder"]["sensors_info"] = get_sensors_info()
 
+#get namespaces
+node.default["redborder"]["namespaces"] = get_namespaces
+
 #get string with all zookeeper hosts and port separated by commas, its needed for multiples services
 zk_port = node["redborder"]["zookeeper"]["port"]
 #zk_hosts = node["redborder"]["managers_per_services"]["zookeeper"].map {|z| "#{z}.node:#{zk_port}"}.join(',')
