@@ -204,6 +204,8 @@ end
 logstash_config "Configure logstash" do
   cdomain node["redborder"]["cdomain"]
   flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
+  namespaces node["redborder"]["namespaces"]
+  vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
   action (node["redborder"]["services"]["logstash"] ? [:add, :register] : [:remove, :deregister])
 end
 
