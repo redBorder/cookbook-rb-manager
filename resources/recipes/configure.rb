@@ -224,10 +224,11 @@ iptables_config "Configure iptables" do
 end
 
 rsyslog_config "Configure rsyslog" do
-  vault_nodes node["redborder"]["sensonrs_info_all"]["vault-nodes"]
-  ips_nodes node["redborder"]["sensor_info_all"]["ips-nodes"] + node["redborder"]["sensor_info_all"]["ipsv2-sensor"] + node["redborder"]["sensor_info_all"]["ipscp-sensor"]
+  vault_nodes node["redborder"]["sensors_info_all"]["vault-nodes"]
+  ips_nodes node["redborder"]["sensors_info_all"]["ips-sensor"] + node["redborder"]["sensors_info_all"]["ipsv2-sensor"] + node["redborder"]["sensors_info_all"]["ipscp-sensor"]
   action (node["redborder"]["services"]["rsyslog"] ? [:add, :register] : [:remove, :deregister])
 end
+
 
 # Determine external
 external_services = Chef::DataBagItem.load("rBglobal", "external_services")
