@@ -203,6 +203,9 @@ end
 
 logstash_config "Configure logstash" do
   cdomain node["redborder"]["cdomain"]
+  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
+  namespaces node["redborder"]["namespaces"]
+  vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
   action (node["redborder"]["services"]["logstash"] ? [:add, :register] : [:remove, :deregister])
 end
 
@@ -221,8 +224,11 @@ iptables_config "Configure iptables" do
 end
 
 rsyslog_config "Configure rsyslog" do
+  vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
+  ips_nodes node["redborder"]["sensors_info_all"]["ips-sensor"] + node["redborder"]["sensors_info_all"]["ipsv2-sensor"] + node["redborder"]["sensors_info_all"]["ipscp-sensor"]
   action (node["redborder"]["services"]["rsyslog"] ? [:add, :register] : [:remove, :deregister])
 end
+
 
 # Determine external
 external_services = Chef::DataBagItem.load("rBglobal", "external_services")
