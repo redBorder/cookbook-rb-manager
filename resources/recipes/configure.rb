@@ -224,7 +224,7 @@ iptables_config "Configure iptables" do
 end
 
 rsyslog_config "Configure rsyslog" do
-  vault_nodes node["redborder"]["sensors_info_all"]["vault-nodes"]
+  vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
   ips_nodes node["redborder"]["sensors_info_all"]["ips-sensor"] + node["redborder"]["sensors_info_all"]["ipsv2-sensor"] + node["redborder"]["sensors_info_all"]["ipscp-sensor"]
   action (node["redborder"]["services"]["rsyslog"] ? [:add, :register] : [:remove, :deregister])
 end
