@@ -219,10 +219,6 @@ events_counter_config "Configure events-counter" do
   action (node["redborder"]["services"]["events-counter"] ? [:add, :register] : [:remove, :deregister])
 end
 
-iptables_config "Configure iptables" do
-  action (node["redborder"]["services"]["iptables"] ? [:add, :register] : [:remove, :deregister])
-end
-
 rbsocial_config "Configure redborder-social" do
   social_nodes node["redborder"]["sensors_info_all"]["social-sensor"]
   action (node["redborder"]["services"]["redborder-social"] ? [:add, :register] : [:remove, :deregister])
