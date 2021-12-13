@@ -122,6 +122,10 @@ memcached_config "Configure Memcached" do
   action (node["redborder"]["services"]["memcached"] ? [:add, :register] : [:remove, :deregister])
 end
 
+mongodb_config "Configure Mongodb" do
+  action (node["redborder"]["services"]["mongodb"] ? [:add, :register] : [:remove, :deregister])
+end
+
 if node["redborder"]["services"]["hadoop-nodemanager"] or
    node["redborder"]["services"]["hadoop-resourcemanager"]
 
