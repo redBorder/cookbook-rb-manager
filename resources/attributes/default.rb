@@ -94,7 +94,7 @@ default["redborder"]["zookeeper_hosts"] = []
 
 default["redborder"]["memory_assigned"] = {}
 
-default["redborder"]["services_group"]["full"] = ["consul","chef-server","zookeeper","memcached","rsyslog","kafka","logstash","s3","postgresql","nginx","webui","druid-broker","druid-historical","druid-realtime","druid-coordinator","f2k","redborder-monitor","pmacct","dswatcher","events-counter","http2k","redborder-social"]
+default["redborder"]["services_group"]["full"] = ["consul","chef-server","zookeeper","memcached","rsyslog","kafka","logstash","s3","postgresql","nginx","webui","druid-broker","druid-historical","druid-realtime","druid-coordinator","f2k","redborder-monitor","redborder-scanner","pmacct","dswatcher","events-counter","http2k","redborder-social"]
 default["redborder"]["services_group"]["custom"] = []
 default["redborder"]["services_group"]["core"] = ["consul", "zookeeper", "druid-coordinator", "druid-overlord", "hadoop-resourcemanager"] #consul server
 default["redborder"]["services_group"]["chef"] = ["chef-server"]
@@ -136,6 +136,7 @@ default["redborder"]["services"]["hadoop-nodemanager"]     = false
 default["redborder"]["services"]["hadoop-resourcemanager"] = false
 default["redborder"]["services"]["geoip"]                  = false
 default["redborder"]["services"]["redborder-monitor"]      = true
+default["redborder"]["services"]["redborder-scanner"]      = true
 default["redborder"]["services"]["snmp"]                   = true
 default["redborder"]["services"]["ntp"]                    = true
 default["redborder"]["services"]["f2k"]                    = false
@@ -164,6 +165,7 @@ default["redborder"]["systemdservices"]["memcached"]              = ["memcached"
 default["redborder"]["systemdservices"]["s3"]                     = ["minio"]
 default["redborder"]["systemdservices"]["geoip"]                  = ["geoip"]
 default["redborder"]["systemdservices"]["redborder-monitor"]      = ["redborder-monitor"]
+default["redborder"]["systemdservices"]["redborder-scanner"]      = ["redborder-scanner"]
 default["redborder"]["systemdservices"]["snmp"]                   = ["snmpd"]
 default["redborder"]["systemdservices"]["ntp"]                    = ["ntpd"]
 default["redborder"]["systemdservices"]["f2k"]                    = ["f2k"]

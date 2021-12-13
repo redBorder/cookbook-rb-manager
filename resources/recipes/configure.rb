@@ -169,6 +169,11 @@ rbmonitor_config "Configure redborder-monitor" do
   action (node["redborder"]["services"]["redborder-monitor"] ? :add : :remove)
 end
 
+rbscanner_config "Configure redborder-scanner" do
+  scanner_nodes node["redborder"]["sensors_info_all"]["scanner-sensor"]
+  action (node["redborder"]["services"]["redborder-scanner"] ? [:add, :register] : [:remove, :deregister])
+end
+
 nginx_config "Configure Nginx" do
   cdomain node["redborder"]["cdomain"]
   action (node["redborder"]["services"]["nginx"] ? [:add, :register] : [:remove, :deregister])
@@ -206,6 +211,7 @@ logstash_config "Configure logstash" do
   flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
   namespaces node["redborder"]["namespaces"]
   vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
+  scanner_nodes node["redborder"]["sensors_info_all"]["scanner-sensor"]
   action (node["redborder"]["services"]["logstash"] ? [:add, :register] : [:remove, :deregister])
 end
 
