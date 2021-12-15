@@ -221,6 +221,7 @@ end
 
 rbsocial_config "Configure redborder-social" do
   social_nodes node["redborder"]["sensors_info_all"]["social-sensor"]
+  memory node["redborder"]["memory_services"]["redborder-social"]["memory"]
   action (node["redborder"]["services"]["redborder-social"] ? [:add, :register] : [:remove, :deregister])
 end
 
