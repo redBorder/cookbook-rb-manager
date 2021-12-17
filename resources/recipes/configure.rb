@@ -233,7 +233,7 @@ end
 rbnmsp_config "Configure redborder-nmsp" do
   memory node["redborder"]["memory_services"]["redborder-nmsp"]["memory"]
   proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"]
-  sensors node["redborder"]["sensors_info"]["flow-sensor"]
+  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
   action (node["redborder"]["services"]["redborder-nmsp"] ? [:add, :register] : [:remove, :deregister])
 end
 
