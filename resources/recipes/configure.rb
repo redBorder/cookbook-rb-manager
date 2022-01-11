@@ -230,6 +230,10 @@ rsyslog_config "Configure rsyslog" do
   action (node["redborder"]["services"]["rsyslog"] ? [:add, :register] : [:remove, :deregister])
 end
 
+rbfreeradius_config "Configure radiusd" do
+  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
+  action (node["redborder"]["services"]["radiusd"] ? [:add, :register] : [:remove, :deregister])
+end
 
 # Determine external
 external_services = Chef::DataBagItem.load("rBglobal", "external_services")
