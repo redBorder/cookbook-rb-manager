@@ -240,6 +240,12 @@ rsyslog_config "Configure rsyslog" do
   action (node["redborder"]["services"]["rsyslog"] ? [:add, :register] : [:remove, :deregister])
 end
 
+rbnmsp_config "Configure redborder-nmsp" do
+  memory node["redborder"]["memory_services"]["redborder-nmsp"]["memory"]
+  proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"]
+  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
+  action (node["redborder"]["services"]["redborder-nmsp"] ? [:add, :register] : [:remove, :deregister])
+end
 
 # Determine external
 external_services = Chef::DataBagItem.load("rBglobal", "external_services")

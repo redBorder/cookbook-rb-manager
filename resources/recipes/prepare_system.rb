@@ -105,3 +105,20 @@ node.default["redborder"]["manager"]["hd_services_current"] = harddisk_services(
 sysmem_total = (node["memory"]["total"].to_i * 0.90).to_i
 #node attributes related with memory are changed inside the function to have simplicity using recursivity
 memory_services(sysmem_total)
+
+
+#License
+
+modules = ["ips", "flow", "monitor", "location", "api", "social", "malware", "vault"]
+
+fmodules = []
+
+modules.each do |x|
+  if !node["redborder"].nil? and !node["redborder"]["manager"].nil? and !node["redborder"]["manager"]["modules"].nil? and !node["redborder"]["manager"]["modules"][x].nil?
+    fmodules << x if node["redborder"]["manager"]["modules"][x]
+  else
+    fmodules << x
+  end
+end
+
+node.set["redborder"]["license"]["fmodules"] = fmodules

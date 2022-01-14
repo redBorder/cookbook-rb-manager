@@ -1,5 +1,13 @@
 # rb-manager CHANGELOG
 
+## 0.0.20
+eareyes
+- Add rbnmsp
+
+## 0.0.19
+eareyes & vimesa
+- Add rbsocial
+
 ## 0.0.18
   [Juan J. Prieto]
 - Add logstash
