@@ -258,6 +258,14 @@ if node["redborder"]["services"]["s3"]
 end
 
 ssh_secrets = Chef::DataBagItem.load("passwords", "ssh") rescue ssh_secrets = {}
+
+directory "/root/.ssh" do
+  owner "root"
+  group "root"
+  mode 0770
+  action :create
+end
+
 if !ssh_secrets.empty?
   template "/root/.ssh/authorized_keys" do
     source "rsa.pub.erb"
