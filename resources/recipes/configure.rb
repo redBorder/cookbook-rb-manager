@@ -256,3 +256,15 @@ if node["redborder"]["services"]["s3"]
     action :configure_certs
   end
 end
+
+ssh_secrets = Chef::DataBagItem.load("passwords", "ssh") rescue ssh_secrets = {}
+if !ssh_secrets.empty?
+  template "/root/.ssh/authorized_keys" do
+    source "rsa.pub.erb"
+    owner "root"
+    group "root"
+    mode 0600
+    retries 2
+    variables(:public_rsa => ssh_secrets['public_rsa'])
+  end
+end
