@@ -262,7 +262,7 @@ ssh_secrets = Chef::DataBagItem.load("passwords", "ssh") rescue ssh_secrets = {}
 directory "/root/.ssh" do
   owner "root"
   group "root"
-  mode 0770
+  mode 0755
   action :create
 end
 
