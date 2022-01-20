@@ -235,7 +235,7 @@ rbnmsp_config "Configure redborder-nmsp" do
   proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"]
   flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
   action (node["redborder"]["services"]["redborder-nmsp"] ? [:add, :register] : [:remove, :deregister])
-
+end
 rbale_config "Configure redborder-ale" do
   ale_nodes node["redborder"]["sensors_info_all"]["ale-sensor"]
   action (node["redborder"]["services"]["redborder-ale"] ? [:add, :register] : [:remove, :deregister])
