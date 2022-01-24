@@ -247,7 +247,7 @@ rbnmsp_config "Configure redborder-nmsp" do
   memory node["redborder"]["memory_services"]["redborder-nmsp"]["memory"]
   proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"]
   flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
-  action (manager_services["redborder-nmsp"] ? [:add, :register] : [:remove, :deregister])
+  action (manager_services["redborder-nmsp"] ? [:add, :configure_keys, :register] : [:remove, :deregister])
 end
 
 # Determine external
