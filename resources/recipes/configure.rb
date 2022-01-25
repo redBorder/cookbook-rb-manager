@@ -247,6 +247,14 @@ rbnmsp_config "Configure redborder-nmsp" do
   action (node["redborder"]["services"]["redborder-nmsp"] ? [:add, :register] : [:remove, :deregister])
 end
 
+n2klocd_config "Configure n2klocd" do
+  mse_nodes node["redborder"]["sensors_info_all"]["mse-sensor"]
+  meraki_nodes node["redborder"]["sensors_info_all"]["meraki-sensor"]
+  n2klocd_managers node["redborder"]["managers_per_services"]["n2klocd"]
+  memory node["redborder"]["memory_services"]["n2klocd"]["memory"]
+  action (node["redborder"]["services"]["n2klocd"] ? [:add, :register] : [:remove, :deregister])
+end
+
 # Determine external
 external_services = Chef::DataBagItem.load("rBglobal", "external_services")
 
