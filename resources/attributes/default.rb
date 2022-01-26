@@ -82,6 +82,7 @@ default["redborder"]["memory_services"]["snmp"] = {"count" => 5, "memory" => 0, 
 default["redborder"]["memory_services"]["redborder-monitor"] = {"count" => 5, "memory" => 0, "max_limit" => 20000 }
 default["redborder"]["memory_services"]["webui"] = {"count" => 40, "memory" => 0 }
 default["redborder"]["memory_services"]["f2k"] = { "count" => 40, "memory" => 0 }
+default["redborder"]["memory_services"]["redborder-social"] = {"count" => 10, "memory" => 0 }
 default["redborder"]["memory_services"]["redborder-nmsp"] = {"count" => 10, "memory" => 0 }
 default["redborder"]["memory_services"]["n2klocd"] = {"count" => 10, "memory" => 0 }
 
