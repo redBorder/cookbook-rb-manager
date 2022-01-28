@@ -190,7 +190,7 @@ webui_config "Configure WebUI" do
   hostname node["hostname"]
   memory_kb node["redborder"]["memory_services"]["webui"]["memory"]
   cdomain node["redborder"]["cdomain"]
-  action (manager_services["webui"] ? [:add, :register] : [:remove, :deregister])
+  action (manager_services["webui"] ? [:add, :register, :configure_rsa] : [:remove, :deregister])
 end
 
 nginx_config "Configure webui nginx and certs" do
@@ -234,7 +234,8 @@ end
 
 rbsocial_config "Configure redborder-social" do
   social_nodes node["redborder"]["sensors_info_all"]["social-sensor"]
-  action (manager_services["redborder-social"] ? [:add, :register] : [:remove, :deregister])
+  memory node["redborder"]["memory_services"]["redborder-social"]["memory"]
+  action (node["redborder"]["services"]["redborder-social"] ? [:add, :register] : [:remove, :deregister])
 end
 
 rsyslog_config "Configure rsyslog" do
