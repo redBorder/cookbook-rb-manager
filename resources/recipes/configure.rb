@@ -235,7 +235,7 @@ end
 rbsocial_config "Configure redborder-social" do
   social_nodes node["redborder"]["sensors_info_all"]["social-sensor"]
   memory node["redborder"]["memory_services"]["redborder-social"]["memory"]
-  action (node["redborder"]["services"]["redborder-social"] ? [:add, :register] : [:remove, :deregister])
+  action (manager_services["redborder-social"] ? [:add, :register] : [:remove, :deregister])
 end
 
 rsyslog_config "Configure rsyslog" do
@@ -248,7 +248,20 @@ rbnmsp_config "Configure redborder-nmsp" do
   memory node["redborder"]["memory_services"]["redborder-nmsp"]["memory"]
   proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"]
   flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
-  action (manager_services["redborder-nmsp"] ? [:add, :register] : [:remove, :deregister])
+  action (manager_services["redborder-nmsp"] ? [:add, :configure_keys, :register] : [:remove, :deregister])
+end
+
+n2klocd_config "Configure n2klocd" do
+  mse_nodes node["redborder"]["sensors_info_all"]["mse-sensor"]
+  meraki_nodes node["redborder"]["sensors_info_all"]["meraki-sensor"]
+  n2klocd_managers node["redborder"]["managers_per_services"]["n2klocd"]
+  memory node["redborder"]["memory_services"]["n2klocd"]["memory"]
+  action (manager_services["n2klocd"] ? [:add, :register] : [:remove, :deregister])
+end
+
+rbale_config "Configure redborder-ale" do
+  ale_nodes node["redborder"]["sensors_info_all"]["ale-sensor"]
+  action (node["redborder"]["services"]["redborder-ale"] ? [:add, :register] : [:remove, :deregister])
 end
 
 # Determine external
