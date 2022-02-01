@@ -264,6 +264,11 @@ rbale_config "Configure redborder-ale" do
   action (node["redborder"]["services"]["redborder-ale"] ? [:add, :register] : [:remove, :deregister])
 end
 
+freeradius_config "Configure radiusd" do
+  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
+  action (node["redborder"]["services"]["radiusd"] ? [:add, :register] : [:remove, :deregister])
+end
+
 # Determine external
 external_services = Chef::DataBagItem.load("rBglobal", "external_services")
 
