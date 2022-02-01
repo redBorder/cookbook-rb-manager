@@ -259,6 +259,11 @@ n2klocd_config "Configure n2klocd" do
   action (manager_services["n2klocd"] ? [:add, :register] : [:remove, :deregister])
 end
 
+rbale_config "Configure redborder-ale" do
+  ale_nodes node["redborder"]["sensors_info_all"]["ale-sensor"]
+  action (node["redborder"]["services"]["redborder-ale"] ? [:add, :register] : [:remove, :deregister])
+end
+
 # Determine external
 external_services = Chef::DataBagItem.load("rBglobal", "external_services")
 
