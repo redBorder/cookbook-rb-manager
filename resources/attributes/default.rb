@@ -99,7 +99,7 @@ default["redborder"]["zookeeper_hosts"] = []
 default["redborder"]["memory_assigned"] = {}
 
 
-default["redborder"]["services_group"]["full"] = ["consul","chef-server","zookeeper","memcached","rsyslog","kafka","logstash","s3","postgresql","mongodb","nginx","webui","druid-broker","druid-historical","druid-realtime","druid-coordinator","f2k","redborder-monitor","redborder-scanner","pmacct","dswatcher","events-counter","http2k","redborder-social","redborder-nmsp","n2klocd","redborder-ale"]
+default["redborder"]["services_group"]["full"] = ["consul","chef-server","zookeeper","memcached","rsyslog","kafka","logstash","s3","postgresql","mongodb","nginx","webui","druid-broker","druid-historical","druid-realtime","druid-coordinator","f2k","redborder-monitor","redborder-scanner","pmacct","dswatcher","events-counter","http2k","redborder-social","redborder-nmsp","n2klocd","redborder-ale","radiusd"]
 default["redborder"]["services_group"]["custom"] = []
 default["redborder"]["services_group"]["core"] = ["consul", "zookeeper", "druid-coordinator", "druid-overlord", "hadoop-resourcemanager"] #consul server
 default["redborder"]["services_group"]["chef"] = ["chef-server"]
@@ -155,7 +155,7 @@ default["redborder"]["services"]["redborder-social"]       = true
 default["redborder"]["services"]["redborder-nmsp"]         = false
 default["redborder"]["services"]["redborder-ale"]          = false
 default["redborder"]["services"]["n2klocd"]                = false
-
+default["redborder"]["services"]["radiusd"]                = false
 
 default["redborder"]["systemdservices"]["chef-client"]            = ["chef-client"]
 default["redborder"]["systemdservices"]["chef-server"]            = ["opscode-erchef"]
@@ -190,3 +190,5 @@ default["redborder"]["systemdservices"]["redborder-social"]       = ["redborder-
 default["redborder"]["systemdservices"]["redborder-nmsp"]         = ["redborder-nmsp"]
 default["redborder"]["systemdservices"]["redborder-ale"]          = ["redborder-ale"]
 default["redborder"]["systemdservices"]["n2klocd"]                = ["n2klocd"]
+default["redborder"]["systemdservices"]["radiusd"]                = ["radiusd"]
+
