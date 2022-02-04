@@ -45,6 +45,8 @@ esac
 %doc
 
 %changelog
+* Fri Jan 28 2022 David Vanhoucke <dvanhoucke@redborder.com> - 1.2.8-1
+- exchange s3 attributes with druid
 * Wed Jan 31 2018 Juan J. Prieto <jjprieto@redborder.com> - 1.0.0-1
 - Add postgresql 
 * Mon Jan 29 2018 Juan J. Prieto <jjprieto@redborder.com> - 1.0.0-1
