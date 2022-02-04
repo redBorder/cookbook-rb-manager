@@ -63,6 +63,9 @@ if  manager_services["druid-coordinator"] or
     name node["hostname"]
     zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
     memcached_hosts node["redborder"]["memcached"]["hosts"]
+    s3_service "s3.service"
+    s3_port node["minio"]["port"]
+    cdomain node["redborder"]["cdomain"]
     action :add
   end
 else
@@ -273,7 +276,7 @@ postgresql_config "Configure postgresql" do
 end
 
 minio_config "Configure S3 (minio)" do
-  action (manager_services["s3"] and external_services["s3"] == "onpremise" ? [:add, :register] : [:remove, :deregister])
+  action ((manager_services["s3"] and external_services["s3"] == "onpremise") ? [:add, :register] : [:remove, :deregister])
 end
 
 if manager_services["s3"]
