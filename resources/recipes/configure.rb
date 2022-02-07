@@ -202,6 +202,12 @@ nginx_config "Configure webui nginx and certs" do
   action (manager_services["webui"] ? [:add_webui, :configure_certs, :register] : [:remove, :deregister])
 end
 
+nginx_config "Configure http2k nginx and certs" do
+  service_name "http2k"
+  cdomain node["redborder"]["cdomain"]
+  action (manager_services["http2k"] ? [:add_http2k, :configure_certs, :register] : [:remove, :deregister])
+end
+
 ntp_config "Configure NTP" do
   action (manager_services["ntp"] ? :add : :remove)
 end
