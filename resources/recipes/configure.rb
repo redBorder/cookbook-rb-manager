@@ -63,6 +63,9 @@ if  manager_services["druid-coordinator"] or
     name node["hostname"]
     zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
     memcached_hosts node["redborder"]["memcached"]["hosts"]
+    s3_service "s3.service"
+    s3_port node["minio"]["port"]
+    cdomain node["redborder"]["cdomain"]
     action :add
   end
 else
@@ -190,13 +193,19 @@ webui_config "Configure WebUI" do
   hostname node["hostname"]
   memory_kb node["redborder"]["memory_services"]["webui"]["memory"]
   cdomain node["redborder"]["cdomain"]
-  action (manager_services["webui"] ? [:add, :register] : [:remove, :deregister])
+  action (manager_services["webui"] ? [:add, :register, :configure_rsa] : [:remove, :deregister])
 end
 
 nginx_config "Configure webui nginx and certs" do
   service_name "webui"
   cdomain node["redborder"]["cdomain"]
   action (manager_services["webui"] ? [:add_webui, :configure_certs, :register] : [:remove, :deregister])
+end
+
+nginx_config "Configure http2k nginx and certs" do
+  service_name "http2k"
+  cdomain node["redborder"]["cdomain"]
+  action (manager_services["http2k"] ? [:add_http2k, :configure_certs, :register] : [:remove, :deregister])
 end
 
 ntp_config "Configure NTP" do
@@ -234,6 +243,7 @@ end
 
 rbsocial_config "Configure redborder-social" do
   social_nodes node["redborder"]["sensors_info_all"]["social-sensor"]
+  memory node["redborder"]["memory_services"]["redborder-social"]["memory"]
   action (manager_services["redborder-social"] ? [:add, :register] : [:remove, :deregister])
 end
 
@@ -247,7 +257,25 @@ rbnmsp_config "Configure redborder-nmsp" do
   memory node["redborder"]["memory_services"]["redborder-nmsp"]["memory"]
   proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"]
   flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
-  action (manager_services["redborder-nmsp"] ? [:add, :register] : [:remove, :deregister])
+  action (manager_services["redborder-nmsp"] ? [:add, :configure_keys, :register] : [:remove, :deregister])
+end
+
+n2klocd_config "Configure n2klocd" do
+  mse_nodes node["redborder"]["sensors_info_all"]["mse-sensor"]
+  meraki_nodes node["redborder"]["sensors_info_all"]["meraki-sensor"]
+  n2klocd_managers node["redborder"]["managers_per_services"]["n2klocd"]
+  memory node["redborder"]["memory_services"]["n2klocd"]["memory"]
+  action (manager_services["n2klocd"] ? [:add, :register] : [:remove, :deregister])
+end
+
+rbale_config "Configure redborder-ale" do
+  ale_nodes node["redborder"]["sensors_info_all"]["ale-sensor"]
+  action (node["redborder"]["services"]["redborder-ale"] ? [:add, :register] : [:remove, :deregister])
+end
+
+freeradius_config "Configure radiusd" do
+  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
+  action (node["redborder"]["services"]["radiusd"] ? [:add, :register] : [:remove, :deregister])
 end
 
 # Determine external
@@ -259,7 +287,7 @@ postgresql_config "Configure postgresql" do
 end
 
 minio_config "Configure S3 (minio)" do
-  action (manager_services["s3"] and external_services["s3"] == "onpremise" ? [:add, :register] : [:remove, :deregister])
+  action ((manager_services["s3"] and external_services["s3"] == "onpremise") ? [:add, :register] : [:remove, :deregister])
 end
 
 if manager_services["s3"]

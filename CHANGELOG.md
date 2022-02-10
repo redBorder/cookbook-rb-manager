@@ -1,5 +1,14 @@
 # rb-manager CHANGELOG
 
+## 0.0.22
+eareyes
+- Add rbale
+
+## 0.0.21
+eareyes
+- Add n2klocd
+
+
 ## 0.0.20
 eareyes
 - Add rbnmsp
