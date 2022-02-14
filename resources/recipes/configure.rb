@@ -236,9 +236,9 @@ dswatcher_config "Configure dswatcher" do
   action (manager_services["dswatcher"] ? [:add, :register] : [:remove, :deregister])
 end
 
-events_counter_config "Configure events-counter" do
+rbevents_counter_config "Configure redborder-events-counter" do
   cdomain node["redborder"]["cdomain"]
-  action (manager_services["events-counter"] ? [:add, :register] : [:remove, :deregister])
+  action (manager_services["redborder-events-counter"] ? [:add, :register] : [:remove, :deregister])
 end
 
 rbsocial_config "Configure redborder-social" do
