@@ -99,7 +99,7 @@ default["redborder"]["zookeeper_hosts"] = []
 
 default["redborder"]["memory_assigned"] = {}
 
-default["redborder"]["services_group"]["full"] = ["consul","chef-server","zookeeper","memcached","rsyslog","kafka","logstash","s3","postgresql","redborder-postgresql","mongodb","nginx","webui","druid-broker","druid-historical","druid-realtime","druid-coordinator","f2k","redborder-monitor","redborder-scanner","pmacct","dswatcher","events-counter","http2k","redborder-social","redborder-nmsp","n2klocd","redborder-ale","radiusd"]
+default["redborder"]["services_group"]["full"] = ["consul","chef-server","zookeeper","memcached","rsyslog","kafka","logstash","s3","postgresql","redborder-postgresql","mongodb","nginx","webui","druid-broker","druid-historical","druid-realtime","druid-coordinator","f2k","redborder-monitor","redborder-scanner","pmacct","redborder-dswatcher","events-counter","http2k","redborder-social","redborder-nmsp","n2klocd","redborder-ale","radiusd"]
 default["redborder"]["services_group"]["custom"] = []
 default["redborder"]["services_group"]["core"] = ["consul", "zookeeper", "druid-coordinator", "druid-overlord", "hadoop-resourcemanager"] #consul server
 default["redborder"]["services_group"]["chef"] = ["chef-server"]
