@@ -248,7 +248,7 @@ rbsocial_config "Configure redborder-social" do
 end
 
 rsyslog_config "Configure rsyslog" do
-  vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
+  vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"] + node["redborder"]["sensors_info_all"]["cep-sensor"]
   ips_nodes node["redborder"]["sensors_info_all"]["ips-sensor"] + node["redborder"]["sensors_info_all"]["ipsv2-sensor"] + node["redborder"]["sensors_info_all"]["ipscp-sensor"]
   action (manager_services["rsyslog"] ? [:add, :register] : [:remove, :deregister])
 end
@@ -276,6 +276,14 @@ end
 freeradius_config "Configure radiusd" do
   flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
   action (node["redborder"]["services"]["radiusd"] ? [:add, :register] : [:remove, :deregister])
+end
+
+rbcep_config "Configure redborder-cep" do
+  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
+  social_nodes node["redborder"]["sensors_info_all"]["social-sensor"]
+  vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
+  ips_nodes node["redborder"]["sensors_info_all"]["ips-sensor"] + node["redborder"]["sensors_info_all"]["ipsv2-sensor"] + node["redborder"]["sensors_info_all"]["ipscp-sensor"]
+  action (node["redborder"]["services"]["redborder-cep"] ? [:add, :register] : [:remove, :deregister])
 end
 
 # Determine external
