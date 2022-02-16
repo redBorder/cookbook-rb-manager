@@ -286,8 +286,10 @@ postgresql_config "Configure postgresql" do
   action (manager_services["postgresql"] and external_services["postgresql"] == "onpremise" ? [:add, :register] : [:remove, :deregister])
 end
 
+s3_servers = system('serf members -tag s3=ready | grep s3=ready &> /dev/null')
+
 minio_config "Configure S3 (minio)" do
-  action ((manager_services["s3"] and external_services["s3"] == "onpremise") ? [:add, :register] : [:remove, :deregister])
+  action ((manager_services["s3"] and external_services["s3"] == "onpremise" and !s3_servers) ? [:add, :register] : [:remove, :deregister])
 end
 
 if manager_services["s3"]
