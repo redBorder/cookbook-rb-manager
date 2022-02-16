@@ -288,8 +288,16 @@ end
 
 s3_servers = system('serf members -tag s3=ready | grep s3=ready &> /dev/null')
 
+# Allow only one s3 onpremise node for now.. TODO: Distributed MinIO
+if manager_services["s3"] and external_services["s3"] == "onpremise" and s3_servers
+  execute 'Disabling s3 from node' do
+    command "/usr/lib/redborder/bin/red service disable s3"
+  end
+  manager_services = manager_services()
+end
+
 minio_config "Configure S3 (minio)" do
-  action ((manager_services["s3"] and external_services["s3"] == "onpremise" and !s3_servers) ? [:add, :register] : [:remove, :deregister])
+  action ((manager_services["s3"] and external_services["s3"] == "onpremise") ? [:add, :register] : [:remove, :deregister])
 end
 
 if manager_services["s3"]
