@@ -286,8 +286,21 @@ postgresql_config "Configure postgresql" do
   action (manager_services["postgresql"] and external_services["postgresql"] == "onpremise" ? [:add, :register] : [:remove, :deregister])
 end
 
+s3_leader = `serf members | grep s3=ready | awk '{print $1'} | head -n 1`.strip
+
+# Allow only one s3 onpremise node for now.. TODO: Distributed MinIO
+if manager_services["s3"] and external_services["s3"] == "onpremise" and s3_leader != node.name
+  execute 'Disabling s3 from node' do
+    command "/usr/lib/redborder/bin/red service disable s3"
+    timeout 60
+    ignore_failure true
+    action :run
+  end
+  manager_services = manager_services()
+end
+
 minio_config "Configure S3 (minio)" do
-  action ((manager_services["s3"] and external_services["s3"] == "onpremise") ? [:add, :register] : [:remove, :deregister])
+  action ((manager_services["s3"] and external_services["s3"] == "onpremise" and s3_leader == node.name ) ? [:add, :register] : [:remove, :deregister])
 end
 
 if manager_services["s3"]
