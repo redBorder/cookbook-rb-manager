@@ -22,10 +22,12 @@ consul_config "Configure Consul Server" do
   action ((manager_services["consul"] or manager_services["consul-client"]) ? :add : :remove)
 end
 
-if manager_services["chef-server"] or manager_services["postgresql"]
+if manager_services["chef-server"]
   chef_server_config "Configure chef services" do
     memory node["redborder"]["memory_services"]["chef-server"]["memory"]
-    postgresql manager_services["postgresql"]
+    rabbitmq true #TODO: instead of true pass -> manager_services["rabbitmq"] ?
+    #TODO: rabbitmq_memory node["redborder"]["memory_services"]["rabbitmq"]["memory"]
+    postgresql false
     postgresql_memory node["redborder"]["memory_services"]["postgresql"]["memory"]
     chef_active manager_services["chef-server"]
     action [:add, :register]
