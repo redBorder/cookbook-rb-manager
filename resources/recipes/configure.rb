@@ -233,9 +233,9 @@ logstash_config "Configure logstash" do
   action (manager_services["logstash"] ? [:add, :register] : [:remove, :deregister])
 end
 
-dswatcher_config "Configure dswatcher" do
+rbdswatcher_config "Configure redborder-dswatcher" do
   cdomain node["redborder"]["cdomain"]
-  action (manager_services["dswatcher"] ? [:add, :register] : [:remove, :deregister])
+  action (manager_services["redborder-dswatcher"] ? [:add, :register] : [:remove, :deregister])
 end
 
 events_counter_config "Configure events-counter" do
