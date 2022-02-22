@@ -99,7 +99,7 @@ default["redborder"]["zookeeper_hosts"] = []
 
 default["redborder"]["memory_assigned"] = {}
 
-default["redborder"]["services_group"]["full"] = ["consul","chef-server","zookeeper","memcached","rsyslog","kafka","logstash","s3","postgresql","redborder-postgresql","mongodb","nginx","webui","druid-broker","druid-historical","druid-realtime","druid-coordinator","f2k","redborder-monitor","redborder-scanner","pmacct","redborder-dswatcher","events-counter","http2k","redborder-social","redborder-nmsp","n2klocd","redborder-ale","radiusd"]
+default["redborder"]["services_group"]["full"] = ["consul","chef-server","zookeeper","memcached","rsyslog","kafka","logstash","s3","postgresql","redborder-postgresql","mongodb","nginx","webui","druid-broker","druid-historical","druid-realtime","druid-coordinator","f2k","redborder-monitor","redborder-scanner","pmacct","redborder-dswatcher","redborder-events-counter","http2k","redborder-social","redborder-nmsp","n2klocd","redborder-ale","radiusd"]
 default["redborder"]["services_group"]["custom"] = []
 default["redborder"]["services_group"]["core"] = ["consul", "zookeeper", "druid-coordinator", "druid-overlord", "hadoop-resourcemanager"] #consul server
 default["redborder"]["services_group"]["chef"] = ["chef-server"]
@@ -150,7 +150,7 @@ default["redborder"]["services"]["f2k"]                    = false
 default["redborder"]["services"]["logstash"]               = false
 default["redborder"]["services"]["pmacct"]                 = false
 default["redborder"]["services"]["redborder-dswatcher"]    = false
-default["redborder"]["services"]["events-counter"]         = false
+default["redborder"]["services"]["redborder-events-counter"]         = false
 default["redborder"]["services"]["rsyslog"]                = true
 default["redborder"]["services"]["redborder-social"]       = true
 default["redborder"]["services"]["redborder-nmsp"]         = false
@@ -185,7 +185,7 @@ default["redborder"]["systemdservices"]["f2k"]                    = ["f2k"]
 default["redborder"]["systemdservices"]["logstash"]               = ["logstash"]
 default["redborder"]["systemdservices"]["pmacct"]                 = ["sfacctd"]
 default["redborder"]["systemdservices"]["redborder-dswatcher"]    = ["redborder-dswatcher"]
-default["redborder"]["systemdservices"]["events-counter"]         = ["events-counter"]
+default["redborder"]["systemdservices"]["redborder-events-counter"]   = ["redborder-events-counter"]
 default["redborder"]["systemdservices"]["http2k"]                 = ["http2k"]
 default["redborder"]["systemdservices"]["rsyslog"]                = ["rsyslog"]
 default["redborder"]["systemdservices"]["redborder-social"]       = ["redborder-social"]
