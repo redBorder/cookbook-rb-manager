@@ -113,18 +113,6 @@ druid_realtime "Configure Druid Realtime" do
   action (manager_services["druid-realtime"] ? [:add, :register] : [:remove, :deregister])
 end
 
-http2k_config "Configure Http2k" do
-  domain node["redborder"]["cdomain"]
-  memory node["redborder"]["memory_services"]["http2k"]["memory"]
-  port node["redborder"]["http2k"]["port"]
-  proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"]
-  ips_nodes node["redborder"]["sensors_info"]["ips-sensor"]
-  ipsg_nodes node["redborder"]["sensors_info"]["ipsg-sensor"]
-  organizations node["redborder"]["organizations"]
-  locations_list node["redborder"]["locations"]
-  action (manager_services["http2k"] ? [:add, :register] : [:remove, :deregister])
-end
-
 memcached_config "Configure Memcached" do
   memory node["redborder"]["memory_services"]["memcached"]["memory"]
   action (manager_services["memcached"] ? [:add, :register] : [:remove, :deregister])
@@ -195,19 +183,19 @@ webui_config "Configure WebUI" do
   hostname node["hostname"]
   memory_kb node["redborder"]["memory_services"]["webui"]["memory"]
   cdomain node["redborder"]["cdomain"]
-  action (manager_services["webui"] ? [:add, :register, :configure_rsa] : [:remove, :deregister])
+  action ((manager_services["webui"] and manager_services["nginx"]) ? [:add, :register, :configure_rsa, :configure_certs] : [:remove, :deregister])
 end
 
-nginx_config "Configure webui nginx and certs" do
-  service_name "webui"
-  cdomain node["redborder"]["cdomain"]
-  action (manager_services["webui"] ? [:add_webui, :configure_certs, :register] : [:remove, :deregister])
-end
-
-nginx_config "Configure http2k nginx and certs" do
-  service_name "http2k"
-  cdomain node["redborder"]["cdomain"]
-  action (manager_services["http2k"] ? [:add_http2k, :configure_certs, :register] : [:remove, :deregister])
+http2k_config "Configure Http2k" do
+  domain node["redborder"]["cdomain"]
+  memory node["redborder"]["memory_services"]["http2k"]["memory"]
+  port node["redborder"]["http2k"]["port"]
+  proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"]
+  ips_nodes node["redborder"]["sensors_info"]["ips-sensor"]
+  ipsg_nodes node["redborder"]["sensors_info"]["ipsg-sensor"]
+  organizations node["redborder"]["organizations"]
+  locations_list node["redborder"]["locations"]
+  action ((manager_services["http2k"] and manager_services["nginx"]) ? [:add, :register, :configure_certs] : [:remove, :deregister])
 end
 
 ntp_config "Configure NTP" do
