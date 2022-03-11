@@ -183,6 +183,7 @@ webui_config "Configure WebUI" do
   hostname node["hostname"]
   memory_kb node["redborder"]["memory_services"]["webui"]["memory"]
   cdomain node["redborder"]["cdomain"]
+  port node["redborder"]["webui"]["port"]
   action ((manager_services["webui"] and manager_services["nginx"]) ? [:add, :register, :configure_rsa, :configure_certs] : [:remove, :deregister])
 end
 
