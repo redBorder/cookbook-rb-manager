@@ -184,7 +184,8 @@ webui_config "Configure WebUI" do
   memory_kb node["redborder"]["memory_services"]["webui"]["memory"]
   cdomain node["redborder"]["cdomain"]
   port node["redborder"]["webui"]["port"]
-  action ((manager_services["webui"] and manager_services["nginx"]) ? [:add, :register, :configure_rsa, :configure_certs] : [:remove, :deregister])
+  action (manager_services["webui"] ? [:add, :register, :configure_rsa] : [:remove, :deregister])
+  action (manager_services["nginx"] ? [:configure_certs, :add_webui_conf_nginx] : :nothing)
 end
 
 http2k_config "Configure Http2k" do
@@ -196,7 +197,8 @@ http2k_config "Configure Http2k" do
   ipsg_nodes node["redborder"]["sensors_info"]["ipsg-sensor"]
   organizations node["redborder"]["organizations"]
   locations_list node["redborder"]["locations"]
-  action ((manager_services["http2k"] and manager_services["nginx"]) ? [:add, :register, :configure_certs] : [:remove, :deregister])
+  action (manager_services["http2k"]  ? [:add, :register] : [:remove, :deregister])
+  action (manager_services["nginx"]   ? [:configure_certs, :add_http2k_conf_nginx] : :nothing)
 end
 
 ntp_config "Configure NTP" do
