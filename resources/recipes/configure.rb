@@ -22,10 +22,12 @@ consul_config "Configure Consul Server" do
   action ((manager_services["consul"] or manager_services["consul-client"]) ? :add : :remove)
 end
 
-if manager_services["chef-server"] or manager_services["postgresql"]
+if manager_services["chef-server"]
   chef_server_config "Configure chef services" do
     memory node["redborder"]["memory_services"]["chef-server"]["memory"]
-    postgresql manager_services["postgresql"]
+    rabbitmq true #TODO: instead of true pass -> manager_services["rabbitmq"] ?
+    #TODO: rabbitmq_memory node["redborder"]["memory_services"]["rabbitmq"]["memory"]
+    postgresql false
     postgresql_memory node["redborder"]["memory_services"]["postgresql"]["memory"]
     chef_active manager_services["chef-server"]
     action [:add, :register]
@@ -231,14 +233,14 @@ logstash_config "Configure logstash" do
   action (manager_services["logstash"] ? [:add, :register] : [:remove, :deregister])
 end
 
-dswatcher_config "Configure dswatcher" do
+rbdswatcher_config "Configure redborder-dswatcher" do
   cdomain node["redborder"]["cdomain"]
-  action (manager_services["dswatcher"] ? [:add, :register] : [:remove, :deregister])
+  action (manager_services["redborder-dswatcher"] ? [:add, :register] : [:remove, :deregister])
 end
 
-events_counter_config "Configure events-counter" do
+rbevents_counter_config "Configure redborder-events-counter" do
   cdomain node["redborder"]["cdomain"]
-  action (manager_services["events-counter"] ? [:add, :register] : [:remove, :deregister])
+  action (manager_services["redborder-events-counter"] ? [:add, :register] : [:remove, :deregister])
 end
 
 rbsocial_config "Configure redborder-social" do
@@ -297,16 +299,6 @@ end
 s3_leader = `serf members | grep s3=ready | awk '{print $1'} | head -n 1`.strip
 
 # Allow only one s3 onpremise node for now.. TODO: Distributed MinIO
-if manager_services["s3"] and external_services["s3"] == "onpremise" and s3_leader != node.name
-  execute 'Disabling s3 from node' do
-    command "/usr/lib/redborder/bin/red service disable s3"
-    timeout 60
-    ignore_failure true
-    action :run
-  end
-  manager_services = manager_services()
-end
-
 minio_config "Configure S3 (minio)" do
   action ((manager_services["s3"] and external_services["s3"] == "onpremise" and s3_leader == node.name ) ? [:add, :register] : [:remove, :deregister])
 end
