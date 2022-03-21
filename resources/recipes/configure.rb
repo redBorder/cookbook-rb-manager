@@ -246,6 +246,7 @@ end
 rbsocial_config "Configure redborder-social" do
   social_nodes node["redborder"]["sensors_info_all"]["social-sensor"]
   memory node["redborder"]["memory_services"]["redborder-social"]["memory"]
+  zk_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   action (manager_services["redborder-social"] ? [:add, :register] : [:remove, :deregister])
 end
 
