@@ -86,6 +86,7 @@ default["redborder"]["memory_services"]["f2k"] = { "count" => 40, "memory" => 0 
 default["redborder"]["memory_services"]["redborder-social"] = {"count" => 10, "memory" => 0 }
 default["redborder"]["memory_services"]["redborder-nmsp"] = {"count" => 10, "memory" => 0 }
 default["redborder"]["memory_services"]["n2klocd"] = {"count" => 10, "memory" => 0 }
+default["redborder"]["memory_services"]["redborder-cep"] = {"count" => 10, "memory" => 0 }
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default["redborder"]["cluster_info"] = {}
@@ -99,7 +100,7 @@ default["redborder"]["zookeeper_hosts"] = []
 
 default["redborder"]["memory_assigned"] = {}
 
-default["redborder"]["services_group"]["full"] = ["consul","chef-server","zookeeper","memcached","rsyslog","kafka","logstash","s3","postgresql","redborder-postgresql","mongodb","nginx","webui","druid-broker","druid-historical","druid-realtime","druid-coordinator","f2k","redborder-monitor","redborder-scanner","pmacct","redborder-dswatcher","redborder-events-counter","http2k","redborder-social","redborder-nmsp","n2klocd","redborder-ale","radiusd"]
+default["redborder"]["services_group"]["full"] = ["consul","chef-server","zookeeper","memcached","rsyslog","kafka","logstash","s3","postgresql","redborder-postgresql","mongodb","nginx","webui","druid-broker","druid-historical","druid-realtime","druid-coordinator","f2k","redborder-monitor","redborder-scanner","pmacct","redborder-dswatcher","redborder-events-counter","http2k","redborder-social","redborder-nmsp","n2klocd","redborder-ale","radiusd","redborder-cep"]
 default["redborder"]["services_group"]["custom"] = []
 default["redborder"]["services_group"]["core"] = ["consul", "zookeeper", "druid-coordinator", "druid-overlord", "hadoop-resourcemanager"] #consul server
 default["redborder"]["services_group"]["chef"] = ["chef-server"]
@@ -115,48 +116,48 @@ default["redborder"]["services_group"]["s3"] = ["nginx", "s3"]
 default["redborder"]["services_group"]["postgresql"] = ["postgresql", "redborder-postgresql"]
 
 default["redborder"]["services"] = {}
-default["redborder"]["services"]["chef-client"]            = true
-default["redborder"]["services"]["chef-server"]            = false
-default["redborder"]["services"]["consul"]                 = false
-default["redborder"]["services"]["consul-client"]          = false
-default["redborder"]["services"]["keepalived"]             = false
-default["redborder"]["services"]["druid-coordinator"]      = false
-default["redborder"]["services"]["druid-realtime"]         = false
-default["redborder"]["services"]["druid-historical"]       = false
-default["redborder"]["services"]["druid-broker"]           = false
-default["redborder"]["services"]["druid-overlord"]         = false
-default["redborder"]["services"]["druid-middlemanager"]    = false
-default["redborder"]["services"]["kafka"]                  = false
-default["redborder"]["services"]["zookeeper"]              = false
-default["redborder"]["services"]["http2k"]                 = true
-default["redborder"]["services"]["webui"]                  = false
-default["redborder"]["services"]["postgresql"]             = false
-default["redborder"]["services"]["redborder-postgresql"]   = false
-default["redborder"]["services"]["nginx"]                  = false
-default["redborder"]["services"]["cep"]                    = false
-default["redborder"]["services"]["memcached"]              = true
-default["redborder"]["services"]["rb-monitor"]             = false
-default["redborder"]["services"]["secor"]                  = false
-default["redborder"]["services"]["s3"]                     = false
-default["redborder"]["services"]["mongodb"]                = true
-default["redborder"]["services"]["hadoop-nodemanager"]     = false
-default["redborder"]["services"]["hadoop-resourcemanager"] = false
-default["redborder"]["services"]["geoip"]                  = false
-default["redborder"]["services"]["redborder-monitor"]      = true
-default["redborder"]["services"]["redborder-scanner"]      = true
-default["redborder"]["services"]["snmp"]                   = true
-default["redborder"]["services"]["ntp"]                    = true
-default["redborder"]["services"]["f2k"]                    = false
-default["redborder"]["services"]["logstash"]               = false
-default["redborder"]["services"]["pmacct"]                 = false
-default["redborder"]["services"]["redborder-dswatcher"]    = false
-default["redborder"]["services"]["redborder-events-counter"]         = false
-default["redborder"]["services"]["rsyslog"]                = true
-default["redborder"]["services"]["redborder-social"]       = true
-default["redborder"]["services"]["redborder-nmsp"]         = false
-default["redborder"]["services"]["redborder-ale"]          = false
-default["redborder"]["services"]["n2klocd"]                = false
-default["redborder"]["services"]["radiusd"]                = false
+default["redborder"]["services"]["chef-client"]               = true
+default["redborder"]["services"]["chef-server"]               = false
+default["redborder"]["services"]["consul"]                    = false
+default["redborder"]["services"]["consul-client"]             = false
+default["redborder"]["services"]["keepalived"]                = false
+default["redborder"]["services"]["druid-coordinator"]         = false
+default["redborder"]["services"]["druid-realtime"]            = false
+default["redborder"]["services"]["druid-historical"]          = false
+default["redborder"]["services"]["druid-broker"]              = false
+default["redborder"]["services"]["druid-overlord"]            = false
+default["redborder"]["services"]["druid-middlemanager"]       = false
+default["redborder"]["services"]["kafka"]                     = false
+default["redborder"]["services"]["zookeeper"]                 = false
+default["redborder"]["services"]["http2k"]                    = false
+default["redborder"]["services"]["webui"]                     = false
+default["redborder"]["services"]["postgresql"]                = false
+default["redborder"]["services"]["redborder-postgresql"]      = false
+default["redborder"]["services"]["nginx"]                     = false
+default["redborder"]["services"]["redborder-cep"]             = false
+default["redborder"]["services"]["memcached"]                 = true
+default["redborder"]["services"]["rb-monitor"]                = false
+default["redborder"]["services"]["secor"]                     = false
+default["redborder"]["services"]["s3"]                        = false
+default["redborder"]["services"]["mongodb"]                   = false
+default["redborder"]["services"]["hadoop-nodemanager"]        = false
+default["redborder"]["services"]["hadoop-resourcemanager"]    = false
+default["redborder"]["services"]["geoip"]                     = false
+default["redborder"]["services"]["redborder-monitor"]         = true
+default["redborder"]["services"]["redborder-scanner"]         = false
+default["redborder"]["services"]["snmp"]                      = true
+default["redborder"]["services"]["ntp"]                       = true
+default["redborder"]["services"]["f2k"]                       = false
+default["redborder"]["services"]["logstash"]                  = false
+default["redborder"]["services"]["pmacct"]                    = false
+default["redborder"]["services"]["redborder-dswatcher"]       = false
+default["redborder"]["services"]["redborder-events-counter"]  = false
+default["redborder"]["services"]["rsyslog"]                   = true
+default["redborder"]["services"]["redborder-social"]          = false
+default["redborder"]["services"]["redborder-nmsp"]            = false
+default["redborder"]["services"]["redborder-ale"]             = false
+default["redborder"]["services"]["n2klocd"]                   = false
+default["redborder"]["services"]["radiusd"]                   = false
 
 default["redborder"]["systemdservices"]["chef-client"]            = ["chef-client"]
 default["redborder"]["systemdservices"]["chef-server"]            = ["opscode-erchef"]
@@ -172,7 +173,7 @@ default["redborder"]["systemdservices"]["webui"]                  = ["webui"]
 default["redborder"]["systemdservices"]["postgresql"]             = ["postgresql"]
 default["redborder"]["systemdservices"]["redborder-postgresql"]   = ["redborder-postgresql"]
 default["redborder"]["systemdservices"]["nginx"]                  = ["nginx"]
-default["redborder"]["systemdservices"]["cep"]                    = ["cep"]
+default["redborder"]["systemdservices"]["redborder-cep"]          = ["redborder-cep"]
 default["redborder"]["systemdservices"]["memcached"]              = ["memcached"]
 default["redborder"]["systemdservices"]["s3"]                     = ["minio"]
 default["redborder"]["systemdservices"]["mongodb"]                = ["mongod"]
@@ -193,4 +194,3 @@ default["redborder"]["systemdservices"]["redborder-nmsp"]         = ["redborder-
 default["redborder"]["systemdservices"]["redborder-ale"]          = ["redborder-ale"]
 default["redborder"]["systemdservices"]["n2klocd"]                = ["n2klocd"]
 default["redborder"]["systemdservices"]["radiusd"]                = ["radiusd"]
-
