@@ -185,7 +185,12 @@ webui_config "Configure WebUI" do
   cdomain node["redborder"]["cdomain"]
   port node["redborder"]["webui"]["port"]
   action (manager_services["webui"] ? [:add, :register, :configure_rsa] : [:remove, :deregister])
-  action (manager_services["nginx"] ? [:configure_certs, :add_webui_conf_nginx] : :nothing)
+end
+
+webui_config "Configure Nginx WebUI" do
+  cdomain node["redborder"]["cdomain"]
+  port node["redborder"]["webui"]["port"]
+  action ((manager_services["webui"] and manager_services["nginx"]) ? [:configure_certs, :add_webui_conf_nginx] : :nothing)
 end
 
 http2k_config "Configure Http2k" do
@@ -198,7 +203,12 @@ http2k_config "Configure Http2k" do
   organizations node["redborder"]["organizations"]
   locations_list node["redborder"]["locations"]
   action (manager_services["http2k"]  ? [:add, :register] : [:remove, :deregister])
-  action (manager_services["nginx"]   ? [:configure_certs, :add_http2k_conf_nginx] : :nothing)
+end
+
+http2k_config "Configure Nginx Http2k" do
+  domain node["redborder"]["cdomain"]
+  port node["redborder"]["http2k"]["port"]
+  action ((manager_services["http2k"] and manager_services["nginx"]) ? [:configure_certs, :add_http2k_conf_nginx] : :nothing)
 end
 
 ntp_config "Configure NTP" do
