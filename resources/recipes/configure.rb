@@ -181,7 +181,7 @@ end
 
 nginx_config "Configure Nginx Chef" do
   service_name "erchef"
-  domain node["redborder"]["cdomain"]
+  cdomain node["redborder"]["cdomain"]
   action ((manager_services["nginx"] and manager_services["chef-server"]) ? [:configure_certs, :add_erchef] : :nothing)
 end
 
