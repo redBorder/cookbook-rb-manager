@@ -179,6 +179,14 @@ nginx_config "Configure Nginx" do
   action (manager_services["nginx"] ? [:add, :register] : [:remove, :deregister])
 end
 
+if manager_services["nginx"] and manager_services["chef-server"]
+  nginx_config "Configure Nginx Chef" do
+    service_name "erchef"
+    cdomain node["redborder"]["cdomain"]
+    action [:configure_certs, :add_erchef]
+  end
+end
+
 webui_config "Configure WebUI" do
   hostname node["hostname"]
   memory_kb node["redborder"]["memory_services"]["webui"]["memory"]
