@@ -171,6 +171,10 @@ end
 
 rbscanner_config "Configure redborder-scanner" do
   scanner_nodes node["redborder"]["sensors_info_all"]["scanner-sensor"]
+  device_nodes node["redborder"]["sensors_info_all"]["device-sensor"]
+  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
+  kafka_managers node["redborder"]["managers_per_services"]["kafka"]
+  managers node["redborder"]["managers_list"]
   action (manager_services["redborder-scanner"] ? [:add, :register] : [:remove, :deregister])
 end
 
