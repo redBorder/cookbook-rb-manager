@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# for now, restart service every 24h
+
+service events-counter stop &>/dev/null
+sleep 1
+service events-counter start &>/dev/null
+

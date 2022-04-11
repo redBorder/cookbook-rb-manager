@@ -1,0 +1,1 @@
+*/5 * * * * root /opt/rb/bin/rb_awsmon.sh --mem-util <%= node["filesystem"].select {|k,v| k.start_with?"/dev/mapper/"}.map{|k,v| "--disk-path=#{v["mount"]}"}.join(" ") %> --disk-space-util --from-cron --auto-scaling

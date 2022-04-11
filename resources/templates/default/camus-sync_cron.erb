@@ -1,0 +1,10 @@
+<% 
+start=node["redborder"]["camus-sync"]["start"].to_i
+interval=node["redborder"]["camus-sync"]["interval"].to_i
+
+while ( (start - interval) >= 0 )
+  start=start-interval
+end
+%>
+30 <%= (start..23).step(interval).to_a.join(",") %> * * * root /usr/lib/redborder/rb_camus_sync.sh
+

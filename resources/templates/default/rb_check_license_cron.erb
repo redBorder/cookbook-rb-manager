@@ -1,0 +1,7 @@
+#!/bin/bash
+
+source /etc/profile.d/rvm.sh
+source /etc/profile.d/redborder*
+
+nice -n 19 /usr/lib/redborder/rb_check_license.sh -e &>/dev/null
+
