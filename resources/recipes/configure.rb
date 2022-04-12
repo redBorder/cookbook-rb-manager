@@ -113,18 +113,6 @@ druid_realtime "Configure Druid Realtime" do
   action (manager_services["druid-realtime"] ? [:add, :register] : [:remove, :deregister])
 end
 
-http2k_config "Configure Http2k" do
-  domain node["redborder"]["cdomain"]
-  memory node["redborder"]["memory_services"]["http2k"]["memory"]
-  port node["redborder"]["http2k"]["port"]
-  proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"]
-  ips_nodes node["redborder"]["sensors_info"]["ips-sensor"]
-  ipsg_nodes node["redborder"]["sensors_info"]["ipsg-sensor"]
-  organizations node["redborder"]["organizations"]
-  locations_list node["redborder"]["locations"]
-  action (manager_services["http2k"] ? [:add, :register] : [:remove, :deregister])
-end
-
 memcached_config "Configure Memcached" do
   memory node["redborder"]["memory_services"]["memcached"]["memory"]
   action (manager_services["memcached"] ? [:add, :register] : [:remove, :deregister])
@@ -191,23 +179,44 @@ nginx_config "Configure Nginx" do
   action (manager_services["nginx"] ? [:add, :register] : [:remove, :deregister])
 end
 
+if manager_services["nginx"] and manager_services["chef-server"]
+  nginx_config "Configure Nginx Chef" do
+    service_name "erchef"
+    cdomain node["redborder"]["cdomain"]
+    action [:configure_certs, :add_erchef]
+  end
+end
+
 webui_config "Configure WebUI" do
   hostname node["hostname"]
   memory_kb node["redborder"]["memory_services"]["webui"]["memory"]
   cdomain node["redborder"]["cdomain"]
+  port node["redborder"]["webui"]["port"]
   action (manager_services["webui"] ? [:add, :register, :configure_rsa] : [:remove, :deregister])
 end
 
-nginx_config "Configure webui nginx and certs" do
-  service_name "webui"
+webui_config "Configure Nginx WebUI" do
   cdomain node["redborder"]["cdomain"]
-  action (manager_services["webui"] ? [:add_webui, :configure_certs, :register] : [:remove, :deregister])
+  port node["redborder"]["webui"]["port"]
+  action ((manager_services["webui"] and manager_services["nginx"]) ? [:configure_certs, :add_webui_conf_nginx] : :nothing)
 end
 
-nginx_config "Configure http2k nginx and certs" do
-  service_name "http2k"
-  cdomain node["redborder"]["cdomain"]
-  action (manager_services["http2k"] ? [:add_http2k, :configure_certs, :register] : [:remove, :deregister])
+http2k_config "Configure Http2k" do
+  domain node["redborder"]["cdomain"]
+  memory node["redborder"]["memory_services"]["http2k"]["memory"]
+  port node["redborder"]["http2k"]["port"]
+  proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"]
+  ips_nodes node["redborder"]["sensors_info"]["ips-sensor"]
+  ipsg_nodes node["redborder"]["sensors_info"]["ipsg-sensor"]
+  organizations node["redborder"]["organizations"]
+  locations_list node["redborder"]["locations"]
+  action (manager_services["http2k"]  ? [:add, :register] : [:remove, :deregister])
+end
+
+http2k_config "Configure Nginx Http2k" do
+  domain node["redborder"]["cdomain"]
+  port node["redborder"]["http2k"]["port"]
+  action ((manager_services["http2k"] and manager_services["nginx"]) ? [:configure_certs, :add_http2k_conf_nginx] : :nothing)
 end
 
 ntp_config "Configure NTP" do
@@ -246,6 +255,7 @@ end
 rbsocial_config "Configure redborder-social" do
   social_nodes node["redborder"]["sensors_info_all"]["social-sensor"]
   memory node["redborder"]["memory_services"]["redborder-social"]["memory"]
+  zk_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   action (manager_services["redborder-social"] ? [:add, :register] : [:remove, :deregister])
 end
 
