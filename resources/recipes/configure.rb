@@ -208,6 +208,7 @@ http2k_config "Configure Http2k" do
   proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"]
   ips_nodes node["redborder"]["sensors_info"]["ips-sensor"]
   ipsg_nodes node["redborder"]["sensors_info"]["ipsg-sensor"]
+  ipscp_nodes node["redborder"]["sensors_info"]["ipscp-sensor"]
   organizations node["redborder"]["organizations"]
   locations_list node["redborder"]["locations"]
   action (manager_services["http2k"]  ? [:add, :register] : [:remove, :deregister])
