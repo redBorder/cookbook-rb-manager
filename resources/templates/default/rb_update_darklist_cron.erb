@@ -25,7 +25,7 @@ if [ -f $DARK_LIST_FILE ]; then
 fi
 
 cp $TMP_FILE $DARKLIST_FILE >> $LOG_FILE
-red node copy all $DARKLIST_FILE >> $LOG_FILE
+rb_manager_utils.sh -c -n all -p $DARKLIST_FILE >> $LOG_FILE
 rb_refresh_darklist_memcached_keys &>/dev/null
 
 PID=$(pidof memcached)
