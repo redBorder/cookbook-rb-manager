@@ -2,7 +2,7 @@
 
 # for now, restart service every 24h
 
-service events-counter stop &>/dev/null
+systemctl stop events-counter &>/dev/null
 sleep 1
-service events-counter start &>/dev/null
+systemctl start events-counter &>/dev/null
 

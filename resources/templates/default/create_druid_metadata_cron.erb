@@ -12,8 +12,8 @@ if [ $? != 0 ]; then
 fi
 
 date=$(date -d '-1 day' '+%Y-%m-%d')
-namespaces=$(/bin/s3cmd ls s3://redborder/rbdata/ | cut -d "/" -f 5)
-bucket="redborder"
+namespaces=$(/bin/s3cmd ls s3://bucket/rbdata/ | cut -d "/" -f 5)
+bucket="bucket"
 if [ -f /etc/externals.conf ]; then
   remote_bucket=$(cat /etc/externals.conf | grep S3BUCKET | cut -d "=" -f 2)
   echo $remote_bucket
@@ -23,5 +23,5 @@ if [ -f /etc/externals.conf ]; then
 fi
 
 for ns in $namespaces; do
-  /usr/lib/redborder/rb_create_druid_metadata.rb -d $ns -b $bucket -t $ns -u -g $date >> /var/log/daily_druid_metadata.log
+  /usr/lib/redborder/scripts/rb_create_druid_metadata.rb -d $ns -b $bucket -t $ns -u -g $date >> /var/log/daily_druid_metadata.log
 done

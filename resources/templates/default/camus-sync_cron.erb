@@ -6,5 +6,5 @@ while ( (start - interval) >= 0 )
   start=start-interval
 end
 %>
-30 <%= (start..23).step(interval).to_a.join(",") %> * * * root /usr/lib/redborder/rb_camus_sync.sh
+30 <%= (start..23).step(interval).to_a.join(",") %> * * * root /usr/lib/redborder/bin/rb_camus_sync.sh
 

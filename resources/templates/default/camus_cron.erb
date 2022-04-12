@@ -6,6 +6,6 @@
 <% end %>
 /usr/bin/logger -t camus-cron "start camus importing <%= real_topic %>"
 <% if @topic == "rb_event" %>
-/usr/lib/redborder/rb_camus_import.sh -t <%= @topic %> &>/dev/null
+/usr/lib/redborder/bin/rb_camus_import.sh -t <%= @topic %> &>/dev/null
 <% end %>
-/usr/lib/redborder/rb_camus_import.sh -t <%= real_topic %> &>/dev/null
+/usr/lib/redborder/bin/rb_camus_import.sh -t <%= real_topic %> &>/dev/null
