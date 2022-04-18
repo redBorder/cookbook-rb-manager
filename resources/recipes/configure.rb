@@ -208,6 +208,7 @@ http2k_config "Configure Http2k" do
   proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"]
   ips_nodes node["redborder"]["sensors_info"]["ips-sensor"]
   ipsg_nodes node["redborder"]["sensors_info"]["ipsg-sensor"]
+  ipscp_nodes node["redborder"]["sensors_info"]["ipscp-sensor"]
   organizations node["redborder"]["organizations"]
   locations_list node["redborder"]["locations"]
   action (manager_services["http2k"]  ? [:add, :register] : [:remove, :deregister])
@@ -339,4 +340,36 @@ if !ssh_secrets.empty?
     retries 2
     variables(:public_rsa => ssh_secrets['public_rsa'])
   end
+end
+
+#-------------------------------------------------------CRON JOBS------------------------------------------------------#
+
+#--------------------------Darklist-------------------------#
+
+# TODO Only the master node should have these cron jobs
+# if (manager_mode == "master")
+template "/etc/cron.weekly/rb_update_darklist.sh" do
+  source "rb_update_darklist_cron.erb"
+  owner "root"
+  group "root"
+  mode 0755
+  retries 2
+  ignore_failure true
+  notifies :run, 'execute[update_darklist]', :delayed
+end
+
+execute "update_darklist" do
+  ignore_failure true
+  command "/etc/cron.weekly/rb_update_darklist.sh"
+  action :nothing
+end
+
+
+template "/etc/cron.hourly/rb_refresh_darklist_memcached_keys.sh" do
+  source "rb_refresh_darklist_memcached_keys_cron.erb"
+  owner "root"
+  group "root"
+  mode 0755
+  retries 2
+  ignore_failure true
 end

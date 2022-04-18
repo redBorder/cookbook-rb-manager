@@ -38,6 +38,7 @@ default["redborder"]["webui"]["port"] = 8001
 default["redborder"]["memcached"]["elasticache"] = false
 default["redborder"]["memcached"]["server_list"] = []
 default["redborder"]["memcached"]["options"] = ""
+default["redborder"]["memcached"]["port"] = 11211
 
 #hadoop
 default["redborder"]["hadoop"]["containersMemory"] = 2048
