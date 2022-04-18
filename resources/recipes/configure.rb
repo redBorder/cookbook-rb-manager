@@ -299,6 +299,10 @@ rbcep_config "Configure redborder-cep" do
   action (node["redborder"]["services"]["redborder-cep"] ? [:add, :register] : [:remove, :deregister])
 end
 
+cron_d "Configure Cron" do
+  action :add
+end
+
 # Determine external
 external_services = Chef::DataBagItem.load("rBglobal", "external_services")
 
@@ -372,4 +376,20 @@ template "/etc/cron.hourly/rb_refresh_darklist_memcached_keys.sh" do
   mode 0755
   retries 2
   ignore_failure true
+end
+
+
+cron_d 'cron_test' do
+  action :create
+  minute '*'
+  hour   '*'
+  weekday '*'
+  ignore_failure true
+  command 'echo "pepe" >> /tmp/pepe.txt'
+end
+
+cron_d 'remove_entries' do
+  comment 'Remove pepes'
+  command 'rm -f /tmp/pepe.txt'
+  minute '*'
 end
