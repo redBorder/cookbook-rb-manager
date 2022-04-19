@@ -1,9 +1,5 @@
 manager_services = manager_services()
 cluster_installed = File.exist?("/etc/cluster-installed.txt")
-hadoop_resourcemanager_external = nil
-zk_hosts = "zookeeper.service:2181"
-overlords = "druid-overlord.service"
-#overlords = managers_per_service["druid_overlord"]
 
 #--------------------------Druid-------------------------#
 if (manager_services["druid_coordinator"] or manager_services["druid_historical"]) and cluster_installed
@@ -126,56 +122,4 @@ template "/etc/cron.hourly/rb_refresh_darklist_memcached_keys.sh" do
   mode 0755
   retries 2
   ignore_failure true
-end
-
-#--------------------------Hadoop-------------------------#
-
-if !node["redborder"]["manager"]["externals"].nil? and !node["redborder"]["manager"]["externals"]["hadoop_resourcemanager"].nil? and !node["redborder"]["manager"]["externals"]["hadoop_resourcemanager"].nil?
-  hadoop_resourcemanager_external=node["redborder"]["manager"]["externals"]["hadoop_resourcemanager"] if node["redborder"]["manager"]["externals"]["hadoop_resourcemanager"]["enabled"] == true
-end
-
-if ((manager_services["hadoop_namenode"] and managers_per_service["hadoop_namenode"].size>0 and managers_per_service["hadoop_namenode"].first.name == node.name) or !hadoop_namenode_external.nil?) and (!managers_per_service["druid_middleManager"].nil? and managers_per_service["druid_middleManager"].size>0) and cluster_installed
-  template "/etc/cron.daily/druid-dumbo" do
-    source "druid-dumbo_cron.erb"
-    owner "root"
-    group "root"
-    mode 0755
-    retries 2
-    variables(:zk_hosts => zk_hosts, :overlords => overlords)
-  end
-else
-  if File.exists?("/etc/cron.daily/druid-dumbo")
-    file "/etc/cron.daily/druid-dumbo" do
-      action :delete
-    end
-  end
-end
-
-if (managers_per_service["hadoop_resourcemanager"].size>0 or !hadoop_resourcemanager_external.nil?) and managers_per_service["kafka"].size>0 and cluster_installed and manager_index==0 and (managers_per_service["hadoop_namenode"].size>0 or !hadoop_namenode_external.nil?)
-  [ "rb_event", "rb_flow", "rb_monitor", "rb_state", "rb_vault" ].each do |topic|
-    if (!node["redborder"]["manager"]["topics"].nil? and node["redborder"]["manager"]["topics"][topic]=="none")
-      if File.exists?("/etc/cron.hourly/camus_#{topic}")
-        file "/etc/cron.hourly/camus_#{topic}" do
-          action :delete
-        end
-      end
-    else
-      template "/etc/cron.hourly/camus_#{topic}" do
-        source "camus_cron.erb"
-        owner "root"
-        group "root"
-        mode 0755
-        retries 2
-        variables(:topic => topic)
-      end
-    end
-  end
-else
-  [ "rb_event", "rb_flow", "rb_monitor", "rb_state", "rb_vault" ].each do |topic|
-    if File.exists?("/etc/cron.hourly/camus_#{topic}")
-      file "/etc/cron.hourly/camus_#{topic}" do
-        action :delete
-      end
-    end
-  end
 end

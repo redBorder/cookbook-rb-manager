@@ -80,7 +80,7 @@ end
 druid_coordinator "Configure Druid Coordinator" do
   name node["hostname"]
   memory_kb node["redborder"]["memory_services"]["druid-coordinator"]["memory"]
-  action (zk_hostsservices["druid-coordinator"] ? [:add, :register] : [:remove, :deregister])
+  action (manager_services["druid-coordinator"] ? [:add, :register] : [:remove, :deregister])
 end
 
 druid_overlord "Configure Druid Overlord" do
