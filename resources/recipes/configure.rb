@@ -379,17 +379,3 @@ template "/etc/cron.hourly/rb_refresh_darklist_memcached_keys.sh" do
 end
 
 
-cron_d 'cron_test' do
-  action :create
-  minute '*'
-  hour   '*'
-  weekday '*'
-  ignore_failure true
-  command 'echo "pepe" >> /tmp/pepe.txt'
-end
-
-cron_d 'remove_entries' do
-  comment 'Remove pepes'
-  command 'rm -f /tmp/pepe.txt'
-  minute '*'
-end
