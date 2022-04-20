@@ -377,5 +377,3 @@ template "/etc/cron.hourly/rb_refresh_darklist_memcached_keys.sh" do
   retries 2
   ignore_failure true
 end
-
-
