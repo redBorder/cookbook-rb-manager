@@ -1,5 +1,7 @@
 #!/bin/bash
 # Script to execute rb_create_druid_metadata.rb script daily in cron
+source /etc/profile.d/rvm.sh
+
 service="minio"
 s3_config=/root/.s3cfg_initial
 
@@ -24,6 +26,7 @@ if [ -f /etc/externals.conf ]; then
   fi
 fi
 
+rvm gemset use web &>/dev/null
 for ns in $namespaces; do
   /usr/lib/redborder/scripts/rb_create_druid_metadata.rb -d $ns -b $bucket -t $ns -u -g $date >> /var/log/daily_druid_metadata.log
 done
