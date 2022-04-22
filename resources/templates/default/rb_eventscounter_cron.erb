@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# for now, restart service every 24h
-
-systemctl stop events-counter &>/dev/null
-sleep 1
-systemctl start events-counter &>/dev/null
-
