@@ -268,7 +268,7 @@ end
 
 rbnmsp_config "Configure redborder-nmsp" do
   memory node["redborder"]["memory_services"]["redborder-nmsp"]["memory"]
-  proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"]
+  proxy_nodes node["redborder"]["sensors_info_all"]["proxy-sensor"]
   flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
   hosts node["redborder"]["zookeeper"]["zk_hosts"]
   action (manager_services["redborder-nmsp"] ? [:add, :configure_keys, :register] : [:remove, :deregister])
