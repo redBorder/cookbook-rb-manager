@@ -377,3 +377,13 @@ template "/etc/cron.hourly/rb_refresh_darklist_memcached_keys.sh" do
   retries 2
   ignore_failure true
 end
+
+#--------------------------SUDOERS--------------------------#
+
+template "/etc/sudoers.d/redborder-manager" do
+  source "redborder-manager.erb"
+  owner "root"
+  group "root"
+  mode 0440
+  retries 2
+end
