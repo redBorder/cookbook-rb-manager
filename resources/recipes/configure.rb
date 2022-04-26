@@ -289,7 +289,7 @@ end
 
 freeradius_config "Configure radiusd" do
   flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
-  action (node["redborder"]["services"]["radiusd"] ? [:add, :register] : [:remove, :deregister])
+  action (node["redborder"]["services"]["radiusd"] ? [:config_common, :config_manager, :register] : [:remove, :deregister])
 end
 
 rbcep_config "Configure redborder-cep" do
