@@ -341,3 +341,14 @@ if !ssh_secrets.empty?
     variables(:public_rsa => ssh_secrets['public_rsa'])
   end
 end
+
+
+#--------------------------SUDOERS--------------------------#
+
+template "/etc/sudoers.d/redborder-manager" do
+  source "redborder-manager.erb"
+  owner "root"
+  group "root"
+  mode 0440
+  retries 2
+end
