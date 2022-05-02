@@ -140,5 +140,5 @@ cron_d 'geoipupdate' do
   weekday '1,4'
   retries 2
   ignore_failure true
-  command "/usr/local/bin/geoipupdate -v"
+  command "/usr/bin/geoipupdate"
 end
