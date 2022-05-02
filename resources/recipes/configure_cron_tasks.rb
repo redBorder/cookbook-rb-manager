@@ -130,3 +130,15 @@ cron_d 'refresh_darklist_memcached_keys_hourly' do
   ignore_failure true
   command "/usr/lib/redborder/bin/rb_refresh_darklist_memcached_keys.sh"
 end
+
+#--------------------------Geoipupdate-------------------------#
+cron_d 'geoipupdate' do
+  comment "Update GeoIP and GeoLite Databases twice a week"
+  action :create
+  minute '41'
+  hour   '17'
+  weekday '1,4'
+  retries 2
+  ignore_failure true
+  command "/usr/local/bin/geoipupdate -v"
+end
