@@ -240,6 +240,7 @@ logstash_config "Configure logstash" do
   namespaces node["redborder"]["namespaces"]
   vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
   scanner_nodes node["redborder"]["sensors_info_all"]["scanner-sensor"]
+  device_nodes node["redborder"]["sensors_info_all"]["device-sensor"]
   action (manager_services["logstash"] ? [:add, :register] : [:remove, :deregister])
 end
 
@@ -299,10 +300,6 @@ rbcep_config "Configure redborder-cep" do
   action (node["redborder"]["services"]["redborder-cep"] ? [:add, :register] : [:remove, :deregister])
 end
 
-cron_d "Configure Cron" do
-  action :add
-end
-
 # Determine external
 external_services = Chef::DataBagItem.load("rBglobal", "external_services")
 
@@ -346,34 +343,13 @@ if !ssh_secrets.empty?
   end
 end
 
-#-------------------------------------------------------CRON JOBS------------------------------------------------------#
 
-#--------------------------Darklist-------------------------#
+#--------------------------SUDOERS--------------------------#
 
-# TODO Only the master node should have these cron jobs
-# if (manager_mode == "master")
-template "/etc/cron.weekly/rb_update_darklist.sh" do
-  source "rb_update_darklist_cron.erb"
+template "/etc/sudoers.d/redborder-manager" do
+  source "redborder-manager.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0440
   retries 2
-  ignore_failure true
-  notifies :run, 'execute[update_darklist]', :delayed
-end
-
-execute "update_darklist" do
-  ignore_failure true
-  command "/etc/cron.weekly/rb_update_darklist.sh"
-  action :nothing
-end
-
-
-template "/etc/cron.hourly/rb_refresh_darklist_memcached_keys.sh" do
-  source "rb_refresh_darklist_memcached_keys_cron.erb"
-  owner "root"
-  group "root"
-  mode 0755
-  retries 2
-  ignore_failure true
 end
