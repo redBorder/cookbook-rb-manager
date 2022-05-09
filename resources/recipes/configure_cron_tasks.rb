@@ -136,15 +136,3 @@ execute 'populate_darklist' do
   command '/usr/lib/redborder/bin/rb_update_darklist.sh -f'
   action :nothing
 end
-
-#--------------------------Geoipupdate-------------------------#
-cron_d 'geoipupdate' do
-  comment "Update GeoIP and GeoLite Databases twice a week"
-  action :create
-  minute '41'
-  hour   '17'
-  weekday '1,4'
-  retries 2
-  ignore_failure true
-  command "/usr/bin/geoipupdate"
-end
