@@ -181,6 +181,14 @@ nginx_config "Configure Nginx" do
   action (manager_services["nginx"] ? [:add, :register] : [:remove, :deregister])
 end
 
+if manager_services["nginx"] and manager_services["chef-server"]
+  nginx_config "Configure Nginx Chef" do
+    service_name "erchef"
+    cdomain node["redborder"]["cdomain"]
+    action [:configure_certs, :add_erchef]
+  end
+end
+
 webui_config "Configure WebUI" do
   hostname node["hostname"]
   memory_kb node["redborder"]["memory_services"]["webui"]["memory"]
@@ -202,6 +210,7 @@ http2k_config "Configure Http2k" do
   proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"]
   ips_nodes node["redborder"]["sensors_info"]["ips-sensor"]
   ipsg_nodes node["redborder"]["sensors_info"]["ipsg-sensor"]
+  ipscp_nodes node["redborder"]["sensors_info"]["ipscp-sensor"]
   organizations node["redborder"]["organizations"]
   locations_list node["redborder"]["locations"]
   action (manager_services["http2k"]  ? [:add, :register] : [:remove, :deregister])
@@ -233,6 +242,7 @@ logstash_config "Configure logstash" do
   namespaces node["redborder"]["namespaces"]
   vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
   scanner_nodes node["redborder"]["sensors_info_all"]["scanner-sensor"]
+  device_nodes node["redborder"]["sensors_info_all"]["device-sensor"]
   action (manager_services["logstash"] ? [:add, :register] : [:remove, :deregister])
 end
 
@@ -261,8 +271,9 @@ end
 
 rbnmsp_config "Configure redborder-nmsp" do
   memory node["redborder"]["memory_services"]["redborder-nmsp"]["memory"]
-  proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"]
+  proxy_nodes node["redborder"]["sensors_info_all"]["proxy-sensor"]
   flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
+  hosts node["redborder"]["zookeeper"]["zk_hosts"]
   action (manager_services["redborder-nmsp"] ? [:add, :configure_keys, :register] : [:remove, :deregister])
 end
 
@@ -333,4 +344,15 @@ if !ssh_secrets.empty?
     retries 2
     variables(:public_rsa => ssh_secrets['public_rsa'])
   end
+end
+
+
+#--------------------------SUDOERS--------------------------#
+
+template "/etc/sudoers.d/redborder-manager" do
+  source "redborder-manager.erb"
+  owner "root"
+  group "root"
+  mode 0440
+  retries 2
 end

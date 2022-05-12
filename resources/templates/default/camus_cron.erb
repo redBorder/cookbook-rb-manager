@@ -1,0 +1,11 @@
+#!/bin/bash
+<% if @topic != "rb_mail" and @topic != "rb_endpoint" and @topic != "rb_malware" %>
+     <% real_topic= ((!node["redborder"]["manager"]["topics"].nil? and ( node["redborder"]["manager"]["topics"][@topic]=="both" or node["redborder"]["manager"]["topics"][@topic]=="rb-enrich" or node["redborder"]["manager"]["topics"][@topic]=="samza") and @topic!="rb_monitor" and @topic!="rb_iot" ) ? "#{@topic}_post" : @topic ) %>
+<% else %>
+     <% real_topic = @topic %>
+<% end %>
+/usr/bin/logger -t camus-cron "start camus importing <%= real_topic %>"
+<% if @topic == "rb_event" %>
+/usr/lib/redborder/bin/rb_camus_import.sh -t <%= @topic %> &>/dev/null
+<% end %>
+/usr/lib/redborder/bin/rb_camus_import.sh -t <%= real_topic %> &>/dev/null

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+source /etc/profile.d/rvm.sh
+source /etc/profile.d/redborder*
+
+/var/druid-dumbo/bin/dumbo -d /var/druid-dumbo/conf/database.json --zookeeper-path /discoveryPath -z <%= @zk_hosts %>/druid --overlord <%= (@overlords.nil? ) ? "127.0.0.1:8084" : "#{@overlords}:8084" %> -s /var/druid-dumbo/conf/sources.json -n <%= node["redborder"]["manager"]["hadoop"]["clustername"] %> -m verify -w 24 -f 1 &>/dev/null

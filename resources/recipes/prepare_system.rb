@@ -66,6 +66,8 @@ if !elasticache.empty?
   node.default["redborder"]["memcached"]["port"] = elasticache["cfg_port"]
   node.default["redborder"]["memcached"]["hosts"] = joinHostArray2port(node["redborder"]["memcached"]["server_list"], node["redborder"]["memcached"]["port"]).join(",")
   node.default["redborder"]["memcached"]["elasticache"] = true
+else
+  node.default["redborder"]["memcached"]["hosts"] = "memcached.service.#{node["redborder"]["cdomain"]}:#{node["redborder"]["memcached"]["port"]}"
 end
 
 #get organizations for http2k

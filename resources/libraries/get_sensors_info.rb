@@ -8,11 +8,11 @@ module Rb_manager
 
       sensor_types.each do |s_type|
         sensors = search(:node, "role:#{s_type}").sort
-        info = {}
         found_sensor = false
 
         sensors_info[s_type] = {}
         sensors.each do |s|
+          info = {}
           found_sensor = true
           info["name"] = s.name
           info["ip"] = s["ipaddress"]
