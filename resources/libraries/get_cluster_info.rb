@@ -15,6 +15,8 @@ module Rb_manager
 
       manager_nodes.each do |mnode|
         name = mnode.name
+        mnode.set["rb_time"]=Time.now.to_i if mnode["rb_time"].nil?
+        rb_time = mnode["rb_time"]
         services = []
         # add active services to array
         mnode_services = mnode["redborder"]["services"].to_h
@@ -27,6 +29,7 @@ module Rb_manager
         cluster_info[name]["services"] = services
       end
 
+      cluster_info = cluster_info.sort{|a,b| (a[1]["rb_time"]||999999999999999999999) <=> (b[1]["rb_time"]||999999999999999999999)}.to_h
       return cluster_info
     end
   end
