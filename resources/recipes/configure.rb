@@ -301,6 +301,7 @@ rbcep_config "Configure redborder-cep" do
   action (node["redborder"]["services"]["redborder-cep"] ? [:add, :register] : [:remove, :deregister])
 end
 
+
 # Determine external
 external_services = Chef::DataBagItem.load("rBglobal", "external_services")
 
