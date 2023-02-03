@@ -45,7 +45,7 @@ esac
 %doc
 
 %changelog
-* Fri Feb 3 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.8
+* Fri Feb 3 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.7
 - integrate freeradius in proxy
 * Fri Jan 28 2022 David Vanhoucke <dvanhoucke@redborder.com> - 1.2.8-1
 - exchange s3 attributes with druid
