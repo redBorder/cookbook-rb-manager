@@ -7,7 +7,7 @@ module Rb_manager
 
 
       sensor_types.each do |s_type|
-        sensors = search(:node, "role:#{s_type}").sort
+        sensors = search(:node, "role:#{s_type} AND -redborder_parent_id:*?").sort  #get sensor where parent_id is nil
         found_sensor = false
 
         sensors_info[s_type] = {}
