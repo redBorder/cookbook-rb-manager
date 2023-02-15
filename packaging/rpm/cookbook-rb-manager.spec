@@ -45,6 +45,8 @@ esac
 %doc
 
 %changelog
+* Wed Feb 15 2023 Luis Blanco <ljblanco@redborder.com> - 
+- sensors info updated and filtered by parent_id
 * Fri Jan 28 2022 David Vanhoucke <dvanhoucke@redborder.com> - 1.2.8-1
 - exchange s3 attributes with druid
 * Wed Jan 31 2018 Juan J. Prieto <jjprieto@redborder.com> - 1.0.0-1
