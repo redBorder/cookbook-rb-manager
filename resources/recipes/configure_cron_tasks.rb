@@ -119,6 +119,7 @@ cron_d 'rb_update_darklist_weekly' do
   retries 2
   ignore_failure true
   command "/usr/lib/redborder/bin/rb_update_darklist.sh"
+  notifies :run, 'execute[populate_darklist]', :delayed
 end
 
 cron_d 'refresh_darklist_memcached_keys_hourly' do
@@ -129,4 +130,9 @@ cron_d 'refresh_darklist_memcached_keys_hourly' do
   retries 2
   ignore_failure true
   command "/usr/lib/redborder/bin/rb_refresh_darklist_memcached_keys.sh"
+end
+
+execute 'populate_darklist' do
+  command '/usr/lib/redborder/bin/rb_update_darklist.sh -f'
+  action :nothing
 end

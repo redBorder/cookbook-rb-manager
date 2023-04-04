@@ -294,7 +294,7 @@ end
 
 freeradius_config "Configure radiusd" do
   flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
-  action (node["redborder"]["services"]["radiusd"] ? [:add, :register] : [:remove, :deregister])
+  action (node["redborder"]["services"]["radiusd"] ? [:config_common, :config_manager, :register] : [:remove, :deregister])
 end
 
 rbcep_config "Configure redborder-cep" do
@@ -304,6 +304,7 @@ rbcep_config "Configure redborder-cep" do
   ips_nodes node["redborder"]["sensors_info_all"]["ips-sensor"] + node["redborder"]["sensors_info_all"]["ipsv2-sensor"] + node["redborder"]["sensors_info_all"]["ipscp-sensor"]
   action (node["redborder"]["services"]["redborder-cep"] ? [:add, :register] : [:remove, :deregister])
 end
+
 
 # Determine external
 external_services = Chef::DataBagItem.load("rBglobal", "external_services")
