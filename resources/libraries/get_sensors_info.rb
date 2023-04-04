@@ -2,18 +2,15 @@ module Rb_manager
   module Helpers
     def get_sensors_info()
       sensors_info = {}
-      sensor_types = ["ips-sensor","ipsv2-sensor","ipscp-sensor","ipsg-sensor","flow-sensor","mse-sensor","meraki-sensor","cisco-cloudproxy","proxy-sensor"]
+      sensor_types = %w(vault-sensor flow-sensor mse-sensor social-sensor scanner-sensor meraki-sensor ale-sensor device-sensor
+                        cisco-cloudproxy proxy-sensor
+                        ips-sensor ipsv2-sensor ipscp-sensor ipsg-sensor)
       locations = node["redborder"]["locations"]
-
-
       sensor_types.each do |s_type|
-        sensors = search(:node, "role:#{s_type}").sort
-        found_sensor = false
-
+        sensors = search(:node, "role:#{s_type} AND -redborder_parent_id:*?").sort  #get sensor where parent_id is nil
         sensors_info[s_type] = {}
         sensors.each do |s|
           info = {}
-          found_sensor = true
           info["name"] = s.name
           info["ip"] = s["ipaddress"]
           info["sensor_uuid"] = s["redborder"]["sensor_uuid"] if !s["redborder"]["sensor_uuid"].nil?
@@ -28,7 +25,7 @@ module Rb_manager
               info["locations"][loc] = s["redborder"][loc]
             end
           end
-          sensors_info[s_type][s.name] = info if found_sensor
+          sensors_info[s_type][s.name] = info
         end
       end
       return sensors_info
