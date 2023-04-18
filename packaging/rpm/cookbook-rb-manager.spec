@@ -45,7 +45,9 @@ esac
 %doc
 
 %changelog
-* Wed Feb 15 2023 Luis Blanco <ljblanco@redborder.com> - 
+* Tue Apr 18 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.9
+- device sensor
+* Wed Feb 15 2023 Luis Blanco <ljblanco@redborder.com> - 1.5.8
 - sensors info updated and filtered by parent_id
 * Fri Feb 3 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.7
 - integrate freeradius in proxy
