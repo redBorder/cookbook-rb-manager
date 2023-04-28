@@ -207,3 +207,6 @@ default["redborder"]["systemdservices"]["radiusd"]                = ["radiusd"]
 # Tier
 default["redborder"]["druid"]["historical"]["tier"]     = "default"
 default["redborder"]["druid"]["historical"]["maxsize"]  = -1
+
+
+default["redborder"]["pending_changes"]=0

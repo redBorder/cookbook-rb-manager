@@ -104,6 +104,7 @@ end
 druid_historical "Configure Druid Historical" do
   name node["hostname"]
   memory_kb node["redborder"]["memory_services"]["druid-historical"]["memory"]
+  tier node["redborder"]["druid"]["historical"]["tier"]
   action (manager_services["druid-historical"] ? [:add, :register] : [:remove, :deregister])
 end
 
@@ -358,4 +359,24 @@ template "/etc/sudoers.d/redborder-manager" do
   group "root"
   mode 0440
   retries 2
+end
+
+#--------------------------Pending_changes--------------------------#
+# pending_changes==0 -> has changes to apply at next chef-client run
+#  pending_changes==1 -> chef-client has to run once
+#  pending_changes==2 -> chef-client has to run twice
+#  .......
+#  pending_changes==n -> chef-client has to run n times
+#
+
+if node["redborder"]["pending_changes"]>0
+  node.set["redborder"]["pending_changes"] = (node.set["redborder"]["pending_changes"].to_i-1)
+else
+  node.set["redborder"]["pending_changes"] = 0
+end
+
+execute "force_chef_client_wakeup" do
+  command "/usr/lib/redborder/bin/rb_wakeup_chef.sh"
+  ignore_failure true
+  action ( node["redborder"]["pending_changes"].nil? or node["redborder"]["pending_changes"]==0 ) ? :nothing : :run
 end
