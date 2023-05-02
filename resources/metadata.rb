@@ -7,7 +7,6 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '0.0.18'
 
 depends 'chef-server'
-depends 'ohai'
 depends 'zookeeper'
 depends 'kafka'
 depends 'druid'
@@ -39,3 +38,4 @@ depends 'n2klocd'
 depends 'freeradius'
 depends 'rbcep'
 depends 'cron'
+depends 'ohai'
