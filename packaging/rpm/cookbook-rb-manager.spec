@@ -45,7 +45,7 @@ esac
 %doc
 
 %changelog
-* Thr May 04 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.11
+* Thu May 04 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.11
 - Add Ohai
 * Mon Apr 24 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.10
 - Permission scalling
