@@ -203,3 +203,10 @@ default["redborder"]["systemdservices"]["redborder-nmsp"]         = ["redborder-
 default["redborder"]["systemdservices"]["redborder-ale"]          = ["redborder-ale"]
 default["redborder"]["systemdservices"]["n2klocd"]                = ["n2klocd"]
 default["redborder"]["systemdservices"]["radiusd"]                = ["radiusd"]
+
+# Tier
+default["redborder"]["druid"]["historical"]["tier"]     = "default"
+default["redborder"]["druid"]["historical"]["maxsize"]  = -1
+
+
+default["redborder"]["pending_changes"]=0
