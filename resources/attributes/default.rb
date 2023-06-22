@@ -108,7 +108,7 @@ default["redborder"]["services_group"]["full"] = %w[consul chef-server zookeeper
                                                     postgresql redborder-postgresql mongodb nginx webui druid-broker
                                                     druid-historical druid-realtime druid-coordinator f2k
                                                     redborder-monitor redborder-scanner pmacct redborder-dswatcher
-                                                    redborder-events-counter http2k redborder-social redborder-nmsp
+                                                    redborder-events-counter http2k redborder-nmsp
                                                     n2klocd redborder-ale radiusd redborder-cep geoip]
 default["redborder"]["services_group"]["custom"] = []
 default["redborder"]["services_group"]["core"] = %w[consul zookeeper druid-coordinator druid-overlord hadoop-resourcemanager] #consul server
