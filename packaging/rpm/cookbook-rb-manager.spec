@@ -45,6 +45,8 @@ esac
 %doc
 
 %changelog
+* Mon Jun 26 2023 Luis J. Blanco <ljblanco@redborder.com> -
+- GeoIP removed from service list
 * Fri May 05 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.12
 - Tiers added for druid historical
 * Thu May 04 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.11
