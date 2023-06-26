@@ -165,8 +165,6 @@ snmp_config "Configure snmp" do
   action (manager_services["snmp"] ? :add : :remove)
 end
 
-monitor_dg = Chef::DataBagItem.load("rBglobal", "monitors") rescue monitor_dg = {}
-
 rbmonitor_config "Configure redborder-monitor" do
   name node["hostname"]
   device_nodes node["redborder"]["sensors_info_all"]["device-sensor"]
@@ -174,7 +172,6 @@ rbmonitor_config "Configure redborder-monitor" do
   managers node["redborder"]["managers_list"]
   cluster node["redborder"]["cluster_info"]
   hostip node["redborder"]["cluster_info"][name]["ip"]
-  monitor_dg
   action (manager_services["redborder-monitor"] ? :add : :remove)
 end
 
