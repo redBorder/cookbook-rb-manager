@@ -104,12 +104,13 @@ default["redborder"]["zookeeper_hosts"] = []
 
 default["redborder"]["memory_assigned"] = {}
 
+# geoip has been removed because is not a service
 default["redborder"]["services_group"]["full"] = %w[consul chef-server zookeeper memcached rsyslog kafka logstash s3
                                                     postgresql redborder-postgresql mongodb nginx webui druid-broker
                                                     druid-historical druid-realtime druid-coordinator f2k
                                                     redborder-monitor redborder-scanner pmacct redborder-dswatcher
-                                                    redborder-events-counter http2k redborder-nmsp
-                                                    n2klocd redborder-ale radiusd redborder-cep geoip]
+                                                    redborder-events-counter http2k redborder-social redborder-nmsp
+                                                    n2klocd redborder-ale radiusd redborder-cep] #geoip removed
 default["redborder"]["services_group"]["custom"] = []
 default["redborder"]["services_group"]["core"] = %w[consul zookeeper druid-coordinator druid-overlord hadoop-resourcemanager] #consul server
 default["redborder"]["services_group"]["chef"] = %w[chef-server]
@@ -118,9 +119,9 @@ default["redborder"]["services_group"]["historical"] = %w[druid-historical]
 default["redborder"]["services_group"]["middlemanager"] = %w[druid-middlemanager]
 default["redborder"]["services_group"]["broker"] = %w[druid-broker]
 default["redborder"]["services_group"]["http2k"] = %w[http2k]
-default["redborder"]["services_group"]["samza"] = %w[hadoop-nodemanager geoip]
-default["redborder"]["services_group"]["webui"] = %w[nginx webui geoip]
-default["redborder"]["services_group"]["f2k"] = %w[geoip f2k]
+default["redborder"]["services_group"]["samza"] = %w[hadoop-nodemanager]  #geoip removed
+default["redborder"]["services_group"]["webui"] = %w[nginx webui]         #geoip removed
+default["redborder"]["services_group"]["f2k"] = %w[f2k]                   #geoip removed
 default["redborder"]["services_group"]["s3"] = %w[nginx s3]
 default["redborder"]["services_group"]["postgresql"] = %w[postgresql redborder-postgresql]
 
@@ -151,7 +152,7 @@ default["redborder"]["services"]["s3"]                        = false
 default["redborder"]["services"]["mongodb"]                   = false
 default["redborder"]["services"]["hadoop-nodemanager"]        = false
 default["redborder"]["services"]["hadoop-resourcemanager"]    = false
-default["redborder"]["services"]["geoip"]                     = false
+# default["redborder"]["services"]["geoip"]                     = false   #geoip removed
 default["redborder"]["services"]["redborder-monitor"]         = true
 default["redborder"]["services"]["redborder-scanner"]         = false
 default["redborder"]["services"]["snmp"]                      = true
@@ -186,7 +187,7 @@ default["redborder"]["systemdservices"]["redborder-cep"]          = ["redborder-
 default["redborder"]["systemdservices"]["memcached"]              = ["memcached"]
 default["redborder"]["systemdservices"]["s3"]                     = ["minio"]
 default["redborder"]["systemdservices"]["mongodb"]                = ["mongod"]
-default["redborder"]["systemdservices"]["geoip"]                  = ["geoip"]
+# default["redborder"]["systemdservices"]["geoip"]                  = ["geoip"]
 default["redborder"]["systemdservices"]["redborder-monitor"]      = ["redborder-monitor"]
 default["redborder"]["systemdservices"]["redborder-scanner"]      = ["redborder-scanner"]
 default["redborder"]["systemdservices"]["snmp"]                   = ["snmpd"]
