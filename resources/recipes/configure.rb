@@ -171,6 +171,7 @@ rbmonitor_config "Configure redborder-monitor" do
   flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
   managers node["redborder"]["managers_list"]
   cluster node["redborder"]["cluster_info"]
+  hostip node["redborder"]["cluster_info"][name]["ip"]
   action (manager_services["redborder-monitor"] ? :add : :remove)
 end
 
