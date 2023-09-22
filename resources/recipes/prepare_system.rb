@@ -111,7 +111,7 @@ memory_services(sysmem_total)
 
 #License
 
-modules = ["ips", "flow", "monitor", "location", "api", "social", "malware", "vault"]
+modules = ["ips", "flow", "monitor", "location", "api", "malware", "vault"]
 
 fmodules = []
 

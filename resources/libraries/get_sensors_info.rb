@@ -2,7 +2,7 @@ module Rb_manager
   module Helpers
     def get_sensors_info()
       sensors_info = {}
-      sensor_types = %w(vault-sensor flow-sensor mse-sensor social-sensor scanner-sensor meraki-sensor ale-sensor device-sensor
+      sensor_types = %w(vault-sensor flow-sensor mse-sensor scanner-sensor meraki-sensor ale-sensor device-sensor
                         cisco-cloudproxy proxy-sensor
                         ips-sensor ipsv2-sensor ipscp-sensor ipsg-sensor)
       locations = node["redborder"]["locations"]

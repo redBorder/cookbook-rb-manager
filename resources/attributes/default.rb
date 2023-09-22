@@ -87,7 +87,6 @@ default["redborder"]["memory_services"]["snmp"] = {"count" => 5, "memory" => 0, 
 default["redborder"]["memory_services"]["redborder-monitor"] = {"count" => 5, "memory" => 0, "max_limit" => 20000 }
 default["redborder"]["memory_services"]["webui"] = {"count" => 40, "memory" => 0 }
 default["redborder"]["memory_services"]["f2k"] = { "count" => 40, "memory" => 0 }
-default["redborder"]["memory_services"]["redborder-social"] = {"count" => 10, "memory" => 0 }
 default["redborder"]["memory_services"]["redborder-nmsp"] = {"count" => 10, "memory" => 0 }
 default["redborder"]["memory_services"]["n2klocd"] = {"count" => 10, "memory" => 0 }
 default["redborder"]["memory_services"]["redborder-cep"] = {"count" => 10, "memory" => 0 }
@@ -109,7 +108,7 @@ default["redborder"]["services_group"]["full"] = %w[consul chef-server zookeeper
                                                     postgresql redborder-postgresql mongodb nginx webui druid-broker
                                                     druid-historical druid-realtime druid-coordinator f2k
                                                     redborder-monitor redborder-scanner pmacct redborder-dswatcher
-                                                    redborder-events-counter http2k redborder-social redborder-nmsp
+                                                    redborder-events-counter http2k redborder-nmsp
                                                     n2klocd redborder-ale radiusd redborder-cep] #geoip removed
 default["redborder"]["services_group"]["custom"] = []
 default["redborder"]["services_group"]["core"] = %w[consul zookeeper druid-coordinator druid-overlord hadoop-resourcemanager] #consul server
@@ -156,14 +155,12 @@ default["redborder"]["services"]["hadoop-resourcemanager"]    = false
 default["redborder"]["services"]["redborder-monitor"]         = true
 default["redborder"]["services"]["redborder-scanner"]         = false
 default["redborder"]["services"]["snmp"]                      = true
-default["redborder"]["services"]["ntp"]                       = true
 default["redborder"]["services"]["f2k"]                       = false
 default["redborder"]["services"]["logstash"]                  = false
 default["redborder"]["services"]["pmacct"]                    = false
 default["redborder"]["services"]["redborder-dswatcher"]       = false
 default["redborder"]["services"]["redborder-events-counter"]  = false
 default["redborder"]["services"]["rsyslog"]                   = true
-default["redborder"]["services"]["redborder-social"]          = false
 default["redborder"]["services"]["redborder-nmsp"]            = false
 default["redborder"]["services"]["redborder-ale"]             = false
 default["redborder"]["services"]["n2klocd"]                   = false
@@ -191,7 +188,6 @@ default["redborder"]["systemdservices"]["mongodb"]                = ["mongod"]
 default["redborder"]["systemdservices"]["redborder-monitor"]      = ["redborder-monitor"]
 default["redborder"]["systemdservices"]["redborder-scanner"]      = ["redborder-scanner"]
 default["redborder"]["systemdservices"]["snmp"]                   = ["snmpd"]
-default["redborder"]["systemdservices"]["ntp"]                    = ["ntpd"]
 default["redborder"]["systemdservices"]["f2k"]                    = ["f2k"]
 default["redborder"]["systemdservices"]["logstash"]               = ["logstash"]
 default["redborder"]["systemdservices"]["pmacct"]                 = ["sfacctd"]
@@ -199,7 +195,6 @@ default["redborder"]["systemdservices"]["redborder-dswatcher"]    = ["redborder-
 default["redborder"]["systemdservices"]["redborder-events-counter"]   = ["redborder-events-counter"]
 default["redborder"]["systemdservices"]["http2k"]                 = ["http2k"]
 default["redborder"]["systemdservices"]["rsyslog"]                = ["rsyslog"]
-default["redborder"]["systemdservices"]["redborder-social"]       = ["redborder-social"]
 default["redborder"]["systemdservices"]["redborder-nmsp"]         = ["redborder-nmsp"]
 default["redborder"]["systemdservices"]["redborder-ale"]          = ["redborder-ale"]
 default["redborder"]["systemdservices"]["n2klocd"]                = ["n2klocd"]

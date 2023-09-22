@@ -226,10 +226,6 @@ http2k_config "Configure Nginx Http2k" do
   action ((manager_services["http2k"] and manager_services["nginx"]) ? [:configure_certs, :add_http2k_conf_nginx] : :nothing)
 end
 
-ntp_config "Configure NTP" do
-  action (manager_services["ntp"] ? :add : :remove)
-end
-
 f2k_config "Configure f2k" do
   sensors node["redborder"]["sensors_info"]["flow-sensor"]
   action (manager_services["f2k"] ? [:add, :register] : [:remove, :deregister])
@@ -258,13 +254,6 @@ end
 rbevents_counter_config "Configure redborder-events-counter" do
   cdomain node["redborder"]["cdomain"]
   action (manager_services["redborder-events-counter"] ? [:add, :register] : [:remove, :deregister])
-end
-
-rbsocial_config "Configure redborder-social" do
-  social_nodes node["redborder"]["sensors_info_all"]["social-sensor"]
-  memory node["redborder"]["memory_services"]["redborder-social"]["memory"]
-  zk_hosts node["redborder"]["zookeeper"]["zk_hosts"]
-  action (manager_services["redborder-social"] ? [:add, :register] : [:remove, :deregister])
 end
 
 rsyslog_config "Configure rsyslog" do
@@ -301,7 +290,6 @@ end
 
 rbcep_config "Configure redborder-cep" do
   flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
-  social_nodes node["redborder"]["sensors_info_all"]["social-sensor"]
   vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
   ips_nodes node["redborder"]["sensors_info_all"]["ips-sensor"] + node["redborder"]["sensors_info_all"]["ipsv2-sensor"] + node["redborder"]["sensors_info_all"]["ipscp-sensor"]
   action (node["redborder"]["services"]["redborder-cep"] ? [:add, :register] : [:remove, :deregister])
