@@ -45,21 +45,21 @@ esac
 %doc
 
 %changelog
-* Wed Sep 27 2023 Miguel Álvarez <malvarez@redborder.com> - 1.5.16
+* Wed Sep 27 2023 Miguel Álvarez <malvarez@redborder.com> - 1.5.17-1
 - Add dependencies for rb-aioutliers cookbook
-* Mon Jun 26 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.15
+* Mon Jun 26 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.15-1
 - GeoIP removed from service list
-* Fri May 05 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.12
+* Fri May 05 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.12-1
 - Tiers added for druid historical
-* Thu May 04 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.11
+* Thu May 04 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.11-1
 - Add Ohai
-* Mon Apr 24 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.10
+* Mon Apr 24 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.10-1
 - Permission scalling
-* Tue Apr 18 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.9
+* Tue Apr 18 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.9-1
 - device sensor
-* Wed Feb 15 2023 Luis Blanco <ljblanco@redborder.com> - 1.5.8
+* Wed Feb 15 2023 Luis Blanco <ljblanco@redborder.com> - 1.5.8-1
 - sensors info updated and filtered by parent_id
-* Fri Feb 3 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.7
+* Fri Feb 3 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.7-1
 - integrate freeradius in proxy
 * Fri Jan 28 2022 David Vanhoucke <dvanhoucke@redborder.com> - 1.2.8-1
 - exchange s3 attributes with druid
