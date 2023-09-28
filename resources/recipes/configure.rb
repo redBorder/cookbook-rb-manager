@@ -294,6 +294,10 @@ rbale_config "Configure redborder-ale" do
   action (node["redborder"]["services"]["redborder-ale"] ? [:add, :register] : [:remove, :deregister])
 end
 
+rbaioutliers_config "Configure rb-aioutliers" do
+  action [:add]
+end
+
 freeradius_config "Configure radiusd" do
   flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
   action (node["redborder"]["services"]["radiusd"] ? [:config_common, :config_manager, :register] : [:remove, :deregister])
