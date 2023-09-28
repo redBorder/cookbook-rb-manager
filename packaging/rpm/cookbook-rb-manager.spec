@@ -45,8 +45,8 @@ esac
 %doc
 
 %changelog
-* Wed Sep 27 2023 Miguel Álvarez <malvarez@redborder.com> - 1.5.17-1
-- Add dependencies for rb-aioutliers cookbook
+* Thu Sep 28 2023 Miguel Negrón <manegron@redborder.com> - 1.5.17-1
+- Add rbaioutliers
 * Mon Jun 26 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.15-1
 - GeoIP removed from service list
 * Fri May 05 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.12-1
