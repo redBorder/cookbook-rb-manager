@@ -91,6 +91,7 @@ default["redborder"]["memory_services"]["redborder-social"] = {"count" => 10, "m
 default["redborder"]["memory_services"]["redborder-nmsp"] = {"count" => 10, "memory" => 0 }
 default["redborder"]["memory_services"]["n2klocd"] = {"count" => 10, "memory" => 0 }
 default["redborder"]["memory_services"]["redborder-cep"] = {"count" => 10, "memory" => 0 }
+default["redborder"]["memory_services"]["rb-aioutliers"] = {"count" => 5, "memory" => 0 }
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default["redborder"]["cluster_info"] = {}
@@ -110,7 +111,7 @@ default["redborder"]["services_group"]["full"] = %w[consul chef-server zookeeper
                                                     druid-historical druid-realtime druid-coordinator f2k
                                                     redborder-monitor redborder-scanner pmacct redborder-dswatcher
                                                     redborder-events-counter http2k redborder-social redborder-nmsp
-                                                    n2klocd redborder-ale radiusd redborder-cep] #geoip removed
+                                                    n2klocd redborder-ale radiusd redborder-cep rb-aioutliers] #geoip removed
 default["redborder"]["services_group"]["custom"] = []
 default["redborder"]["services_group"]["core"] = %w[consul zookeeper druid-coordinator druid-overlord hadoop-resourcemanager] #consul server
 default["redborder"]["services_group"]["chef"] = %w[chef-server]
@@ -145,6 +146,7 @@ default["redborder"]["services"]["postgresql"]                = false
 default["redborder"]["services"]["redborder-postgresql"]      = false
 default["redborder"]["services"]["nginx"]                     = false
 default["redborder"]["services"]["redborder-cep"]             = false
+default["redborder"]["services"]["rb-aioutliers"]             = false
 default["redborder"]["services"]["memcached"]                 = true
 default["redborder"]["services"]["rb-monitor"]                = false
 default["redborder"]["services"]["secor"]                     = false
@@ -184,6 +186,7 @@ default["redborder"]["systemdservices"]["postgresql"]             = ["postgresql
 default["redborder"]["systemdservices"]["redborder-postgresql"]   = ["redborder-postgresql"]
 default["redborder"]["systemdservices"]["nginx"]                  = ["nginx"]
 default["redborder"]["systemdservices"]["redborder-cep"]          = ["redborder-cep"]
+default["redborder"]["systemdservices"]["rb-aioutliers"]          = ["rb-aioutliers"]
 default["redborder"]["systemdservices"]["memcached"]              = ["memcached"]
 default["redborder"]["systemdservices"]["s3"]                     = ["minio"]
 default["redborder"]["systemdservices"]["mongodb"]                = ["mongod"]
