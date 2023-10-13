@@ -58,23 +58,6 @@ else
   end
 end
 
-#--------------------------Rabbitmq-------------------------#
-if manager_services["rabbitmq"] and cluster_installed
-  cron_d 'rabbitmq_rotate_logs_daily' do
-    action :create
-    minute '00'
-    hour   '01'
-    weekday '*'
-    retries 2
-    ignore_failure true
-    command "/usr/lib/redborder/bin/rb_rabbitmq_rotate_logs.sh"
-  end
-else
-  cron_d 'rabbitmq_rotate_logs_daily' do
-    action :delete
-  end
-end
-
 #--------------------------Events-counter-------------------------#
 cron_d 'eventscounter_daily' do
   action :create
