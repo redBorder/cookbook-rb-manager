@@ -23,7 +23,7 @@ if mode != "core" or mode != "full"
 end
 
 #Configure and enable chef-client
-yum_package "redborder-chef-client" do
+dnf_package "redborder-chef-client" do
   flush_cache [:before]
   action :upgrade
 end
