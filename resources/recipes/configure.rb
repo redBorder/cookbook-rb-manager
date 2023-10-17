@@ -75,11 +75,11 @@ if  manager_services["druid-coordinator"] or
     s3_port node["minio"]["port"]
     cdomain node["redborder"]["cdomain"]
     action :add
-    notifies :restart, 'service[druid-broker]', :delayed
-    notifies :restart, 'service[druid-coordinator]', :delayed
-    notifies :restart, 'service[druid-historical]', :delayed
-    notifies :restart, 'service[druid-middlemanager]', :delayed
-    notifies :restart, 'service[druid-overlord]', :delayed
+    notifies :restart, 'service[druid-broker]', :delayed if manager_services["druid-broker"] 
+    notifies :restart, 'service[druid-coordinator]', :delayed if manager_services["druid-coordinator]"] 
+    notifies :restart, 'service[druid-historical]', :delayed if manager_services["druid-historical"] 
+    notifies :restart, 'service[druid-middlemanager]', :delayed if manager_services["druid-middlemanager"] 
+    notifies :restart, 'service[druid-overlord]', :delayed if manager_services["druid-overlord"] 
   end
 else
   druid_common "Delete druid common resources" do
