@@ -59,6 +59,14 @@ if  manager_services["druid-coordinator"] or
     manager_services["druid-historical"] or
     manager_services["druid-realtime"]
 
+  ["druid-broker", "druid-coordinator", "druid-historical", 
+  "druid-middlemanager", "druid-overlord"].each do |druid_service| 
+    service druid_service do
+      supports :status => true, :start => true, :restart => true, :reload => true
+      action :nothing
+    end
+  end
+
   druid_common "Configure druid common resources" do
     name node["hostname"]
     zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
@@ -67,13 +75,17 @@ if  manager_services["druid-coordinator"] or
     s3_port node["minio"]["port"]
     cdomain node["redborder"]["cdomain"]
     action :add
+    notifies :restart, 'service[druid-broker]', :delayed
+    notifies :restart, 'service[druid-coordinator]', :delayed
+    notifies :restart, 'service[druid-historical]', :delayed
+    notifies :restart, 'service[druid-middlemanager]', :delayed
+    notifies :restart, 'service[druid-overlord]', :delayed
   end
 else
   druid_common "Delete druid common resources" do
     action :remove
   end
 end
-
 
 druid_coordinator "Configure Druid Coordinator" do
   name node["hostname"]
