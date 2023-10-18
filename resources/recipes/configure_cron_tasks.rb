@@ -3,7 +3,7 @@ cluster_installed = File.exist?("/etc/cluster-installed.txt")
 
 #--------------------------Druid-------------------------#
 cron_d 'clean_segments_daily' do
-  action ((manager_services["druid-coordinator"] or manager_services["druid-historical"]) and cluster_installed) ? :create : delete
+  action ((manager_services["druid-coordinator"] or manager_services["druid-historical"]) and cluster_installed) ? :create : :delete
   minute '00'
   hour   '01'
   weekday '*'
