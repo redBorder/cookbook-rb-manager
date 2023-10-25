@@ -123,4 +123,4 @@ modules.each do |x|
   end
 end
 
-node.default["redborder"]["license"]["fmodules"] = fmodules
+node.normal["redborder"]["license"]["fmodules"] = fmodules

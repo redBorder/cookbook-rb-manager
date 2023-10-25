@@ -369,9 +369,9 @@ end
 #
 
 if node["redborder"]["pending_changes"]>0
-  node.default["redborder"]["pending_changes"] = (node.default["redborder"]["pending_changes"].to_i-1)
+  node.normal["redborder"]["pending_changes"] = (node.normal["redborder"]["pending_changes"].to_i-1)
 else
-  node.default["redborder"]["pending_changes"] = 0
+  node.normal["redborder"]["pending_changes"] = 0
 end
 
 execute "force_chef_client_wakeup" do

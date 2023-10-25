@@ -15,7 +15,7 @@ module Rb_manager
 
       manager_nodes.each do |mnode|
         name = mnode.name
-        mnode.default["rb_time"]=Time.now.to_i if mnode["rb_time"].nil?
+        mnode.normal["rb_time"]=Time.now.to_i if mnode["rb_time"].nil?
         rb_time = mnode["rb_time"]
         services = []
         # add active services to array
