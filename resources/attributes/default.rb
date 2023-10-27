@@ -64,7 +64,6 @@ default["redborder"]["manager"]["hd_services_current"] = {}
 
 # memory
 default["redborder"]["memory_services"]    = {}
-#default["redborder"]["memory_services"]["kafka"]     = {"count" => 150, "memory" => 0,"max_limit" => 2097152}
 default["redborder"]["memory_services"]["kafka"]     = {"count" => 150, "memory" => 0,"max_limit" => 524288}
 default["redborder"]["memory_services"]["zookeeper"] = {"count" => 20, "memory" => 0}
 default["redborder"]["memory_services"]["chef-client"] = {"count" => 10, "memory" => 0}
@@ -87,7 +86,6 @@ default["redborder"]["memory_services"]["snmp"] = {"count" => 5, "memory" => 0, 
 default["redborder"]["memory_services"]["redborder-monitor"] = {"count" => 5, "memory" => 0, "max_limit" => 20000 }
 default["redborder"]["memory_services"]["webui"] = {"count" => 40, "memory" => 0 }
 default["redborder"]["memory_services"]["f2k"] = { "count" => 40, "memory" => 0 }
-default["redborder"]["memory_services"]["redborder-social"] = {"count" => 10, "memory" => 0 }
 default["redborder"]["memory_services"]["redborder-nmsp"] = {"count" => 10, "memory" => 0 }
 default["redborder"]["memory_services"]["n2klocd"] = {"count" => 10, "memory" => 0 }
 default["redborder"]["memory_services"]["redborder-cep"] = {"count" => 10, "memory" => 0 }
@@ -107,11 +105,12 @@ default["redborder"]["memory_assigned"] = {}
 
 # geoip has been removed because is not a service
 default["redborder"]["services_group"]["full"] = %w[consul chef-server zookeeper memcached rsyslog kafka logstash s3
-                                                    postgresql redborder-postgresql mongodb nginx webui druid-broker
+                                                    postgresql redborder-postgresql nginx webui druid-broker
                                                     druid-historical druid-realtime druid-coordinator f2k
-                                                    redborder-monitor redborder-scanner pmacct redborder-dswatcher
-                                                    redborder-events-counter http2k redborder-social redborder-nmsp
-                                                    n2klocd redborder-ale radiusd redborder-cep rb-aioutliers] #geoip removed
+                                                    redborder-monitor pmacct redborder-dswatcher
+                                                    redborder-events-counter http2k 
+                                                    ] 
+
 default["redborder"]["services_group"]["custom"] = []
 default["redborder"]["services_group"]["core"] = %w[consul zookeeper druid-coordinator druid-overlord hadoop-resourcemanager] #consul server
 default["redborder"]["services_group"]["chef"] = %w[chef-server]
@@ -120,9 +119,9 @@ default["redborder"]["services_group"]["historical"] = %w[druid-historical]
 default["redborder"]["services_group"]["middlemanager"] = %w[druid-middlemanager]
 default["redborder"]["services_group"]["broker"] = %w[druid-broker]
 default["redborder"]["services_group"]["http2k"] = %w[http2k]
-default["redborder"]["services_group"]["samza"] = %w[hadoop-nodemanager]  #geoip removed
-default["redborder"]["services_group"]["webui"] = %w[nginx webui]         #geoip removed
-default["redborder"]["services_group"]["f2k"] = %w[f2k]                   #geoip removed
+default["redborder"]["services_group"]["samza"] = %w[hadoop-nodemanager]  
+default["redborder"]["services_group"]["webui"] = %w[nginx webui]        
+default["redborder"]["services_group"]["f2k"] = %w[f2k]                   
 default["redborder"]["services_group"]["s3"] = %w[nginx s3]
 default["redborder"]["services_group"]["postgresql"] = %w[postgresql redborder-postgresql]
 
@@ -154,18 +153,15 @@ default["redborder"]["services"]["s3"]                        = false
 default["redborder"]["services"]["mongodb"]                   = false
 default["redborder"]["services"]["hadoop-nodemanager"]        = false
 default["redborder"]["services"]["hadoop-resourcemanager"]    = false
-# default["redborder"]["services"]["geoip"]                     = false   #geoip removed
 default["redborder"]["services"]["redborder-monitor"]         = true
 default["redborder"]["services"]["redborder-scanner"]         = false
 default["redborder"]["services"]["snmp"]                      = true
-default["redborder"]["services"]["ntp"]                       = true
 default["redborder"]["services"]["f2k"]                       = false
 default["redborder"]["services"]["logstash"]                  = false
 default["redborder"]["services"]["pmacct"]                    = false
 default["redborder"]["services"]["redborder-dswatcher"]       = false
 default["redborder"]["services"]["redborder-events-counter"]  = false
 default["redborder"]["services"]["rsyslog"]                   = true
-default["redborder"]["services"]["redborder-social"]          = false
 default["redborder"]["services"]["redborder-nmsp"]            = false
 default["redborder"]["services"]["redborder-ale"]             = false
 default["redborder"]["services"]["n2klocd"]                   = false
@@ -190,11 +186,9 @@ default["redborder"]["systemdservices"]["rb-aioutliers"]          = ["rb-aioutli
 default["redborder"]["systemdservices"]["memcached"]              = ["memcached"]
 default["redborder"]["systemdservices"]["s3"]                     = ["minio"]
 default["redborder"]["systemdservices"]["mongodb"]                = ["mongod"]
-# default["redborder"]["systemdservices"]["geoip"]                  = ["geoip"]
 default["redborder"]["systemdservices"]["redborder-monitor"]      = ["redborder-monitor"]
 default["redborder"]["systemdservices"]["redborder-scanner"]      = ["redborder-scanner"]
 default["redborder"]["systemdservices"]["snmp"]                   = ["snmpd"]
-default["redborder"]["systemdservices"]["ntp"]                    = ["ntpd"]
 default["redborder"]["systemdservices"]["f2k"]                    = ["f2k"]
 default["redborder"]["systemdservices"]["logstash"]               = ["logstash"]
 default["redborder"]["systemdservices"]["pmacct"]                 = ["sfacctd"]
@@ -202,7 +196,6 @@ default["redborder"]["systemdservices"]["redborder-dswatcher"]    = ["redborder-
 default["redborder"]["systemdservices"]["redborder-events-counter"]   = ["redborder-events-counter"]
 default["redborder"]["systemdservices"]["http2k"]                 = ["http2k"]
 default["redborder"]["systemdservices"]["rsyslog"]                = ["rsyslog"]
-default["redborder"]["systemdservices"]["redborder-social"]       = ["redborder-social"]
 default["redborder"]["systemdservices"]["redborder-nmsp"]         = ["redborder-nmsp"]
 default["redborder"]["systemdservices"]["redborder-ale"]          = ["redborder-ale"]
 default["redborder"]["systemdservices"]["n2klocd"]                = ["n2klocd"]

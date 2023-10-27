@@ -25,8 +25,6 @@ end
 if manager_services["chef-server"]
   chef_server_config "Configure chef services" do
     memory node["redborder"]["memory_services"]["chef-server"]["memory"]
-    rabbitmq true #TODO: instead of true pass -> manager_services["rabbitmq"] ?
-    #TODO: rabbitmq_memory node["redborder"]["memory_services"]["rabbitmq"]["memory"]
     postgresql false
     postgresql_memory node["redborder"]["memory_services"]["postgresql"]["memory"]
     chef_active manager_services["chef-server"]
@@ -61,6 +59,14 @@ if  manager_services["druid-coordinator"] or
     manager_services["druid-historical"] or
     manager_services["druid-realtime"]
 
+  ["druid-broker", "druid-coordinator", "druid-historical", 
+  "druid-middlemanager", "druid-overlord"].each do |druid_service| 
+    service druid_service do
+      supports :status => true, :start => true, :restart => true, :reload => true
+      action :nothing
+    end
+  end
+
   druid_common "Configure druid common resources" do
     name node["hostname"]
     zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
@@ -69,13 +75,17 @@ if  manager_services["druid-coordinator"] or
     s3_port node["minio"]["port"]
     cdomain node["redborder"]["cdomain"]
     action :add
+    notifies :restart, 'service[druid-broker]', :delayed if manager_services["druid-broker"] 
+    notifies :restart, 'service[druid-coordinator]', :delayed if manager_services["druid-coordinator]"] 
+    notifies :restart, 'service[druid-historical]', :delayed if manager_services["druid-historical"] 
+    notifies :restart, 'service[druid-middlemanager]', :delayed if manager_services["druid-middlemanager"] 
+    notifies :restart, 'service[druid-overlord]', :delayed if manager_services["druid-overlord"] 
   end
 else
   druid_common "Delete druid common resources" do
     action :remove
   end
 end
-
 
 druid_coordinator "Configure Druid Coordinator" do
   name node["hostname"]
@@ -226,10 +236,6 @@ http2k_config "Configure Nginx Http2k" do
   action ((manager_services["http2k"] and manager_services["nginx"]) ? [:configure_certs, :add_http2k_conf_nginx] : :nothing)
 end
 
-ntp_config "Configure NTP" do
-  action (manager_services["ntp"] ? :add : :remove)
-end
-
 f2k_config "Configure f2k" do
   sensors node["redborder"]["sensors_info"]["flow-sensor"]
   action (manager_services["f2k"] ? [:add, :register] : [:remove, :deregister])
@@ -260,13 +266,6 @@ rbevents_counter_config "Configure redborder-events-counter" do
   action (manager_services["redborder-events-counter"] ? [:add, :register] : [:remove, :deregister])
 end
 
-rbsocial_config "Configure redborder-social" do
-  social_nodes node["redborder"]["sensors_info_all"]["social-sensor"]
-  memory node["redborder"]["memory_services"]["redborder-social"]["memory"]
-  zk_hosts node["redborder"]["zookeeper"]["zk_hosts"]
-  action (manager_services["redborder-social"] ? [:add, :register] : [:remove, :deregister])
-end
-
 rsyslog_config "Configure rsyslog" do
   vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"] + node["redborder"]["sensors_info_all"]["cep-sensor"]
   ips_nodes node["redborder"]["sensors_info_all"]["ips-sensor"] + node["redborder"]["sensors_info_all"]["ipsv2-sensor"] + node["redborder"]["sensors_info_all"]["ipscp-sensor"]
@@ -294,22 +293,21 @@ rbale_config "Configure redborder-ale" do
   action (node["redborder"]["services"]["redborder-ale"] ? [:add, :register] : [:remove, :deregister])
 end
 
-rbaioutliers_config "Configure rb-aioutliers" do
-  action [:add]
-end
+#freeradius_config "Configure radiusd" do
+#  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
+#  action (node["redborder"]["services"]["radiusd"] ? [:config_common, :config_manager, :register] : [:remove, :deregister])
+#end
 
-freeradius_config "Configure radiusd" do
-  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
-  action (node["redborder"]["services"]["radiusd"] ? [:config_common, :config_manager, :register] : [:remove, :deregister])
-end
+#rbaioutliers_config "Configure rb-aioutliers" do
+#  action [:add]
+#end
 
-rbcep_config "Configure redborder-cep" do
-  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
-  social_nodes node["redborder"]["sensors_info_all"]["social-sensor"]
-  vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
-  ips_nodes node["redborder"]["sensors_info_all"]["ips-sensor"] + node["redborder"]["sensors_info_all"]["ipsv2-sensor"] + node["redborder"]["sensors_info_all"]["ipscp-sensor"]
-  action (node["redborder"]["services"]["redborder-cep"] ? [:add, :register] : [:remove, :deregister])
-end
+#rbcep_config "Configure redborder-cep" do
+#  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
+#  vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
+#  ips_nodes node["redborder"]["sensors_info_all"]["ips-sensor"] + node["redborder"]["sensors_info_all"]["ipsv2-sensor"] + node["redborder"]["sensors_info_all"]["ipscp-sensor"]
+#  action (node["redborder"]["services"]["redborder-cep"] ? [:add, :register] : [:remove, :deregister])
+#end
 
 
 # Determine external
@@ -375,9 +373,9 @@ end
 #
 
 if node["redborder"]["pending_changes"]>0
-  node.set["redborder"]["pending_changes"] = (node.set["redborder"]["pending_changes"].to_i-1)
+  node.normal["redborder"]["pending_changes"] = (node.normal["redborder"]["pending_changes"].to_i-1)
 else
-  node.set["redborder"]["pending_changes"] = 0
+  node.normal["redborder"]["pending_changes"] = 0
 end
 
 execute "force_chef_client_wakeup" do

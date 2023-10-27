@@ -23,7 +23,7 @@ if mode != "core" or mode != "full"
 end
 
 #Configure and enable chef-client
-yum_package "redborder-chef-client" do
+dnf_package "redborder-chef-client" do
   flush_cache [:before]
   action :upgrade
 end
@@ -111,7 +111,7 @@ memory_services(sysmem_total)
 
 #License
 
-modules = ["ips", "flow", "monitor", "location", "api", "social", "malware", "vault"]
+modules = ["ips", "flow", "monitor", "location", "api", "malware", "vault"]
 
 fmodules = []
 
@@ -123,4 +123,4 @@ modules.each do |x|
   end
 end
 
-node.set["redborder"]["license"]["fmodules"] = fmodules
+node.normal["redborder"]["license"]["fmodules"] = fmodules

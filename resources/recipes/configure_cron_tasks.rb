@@ -2,21 +2,16 @@ manager_services = manager_services()
 cluster_installed = File.exist?("/etc/cluster-installed.txt")
 
 #--------------------------Druid-------------------------#
-if (manager_services["druid-coordinator"] or manager_services["druid-historical"]) and cluster_installed
-  cron_d 'clean_segments_daily' do
-    action :create
-    minute '00'
-    hour   '01'
-    weekday '*'
-    retries 2
-    ignore_failure true
-    command "/usr/lib/redborder/bin/rb_clean_segments.sh"
-  end
-else
-  cron_d 'clean_segments_daily' do
-    action :delete
-  end
+cron_d 'clean_segments_daily' do
+  action ((manager_services["druid-coordinator"] or manager_services["druid-historical"]) and cluster_installed) ? :create : :delete
+  minute '00'
+  hour   '01'
+  weekday '*'
+  retries 2
+  ignore_failure true
+  command "/usr/lib/redborder/bin/rb_clean_segments.sh"
 end
+
 
 cron_d 'create_druid_metadata_daily' do
   action :create
@@ -41,38 +36,15 @@ end
 
 #--------------------------AWS-------------------------#
 # AWS Cloudwatch needs to be integrated
-if !node["redborder"].nil? and !node["redborder"]["dmidecode"].nil? and !node["redborder"]["dmidecode"]["manufacturer"].nil? and node["redborder"]["iscloud"] and manager_services["awslogs"]
-  cron_d 'awsmon_hourly' do
-    action :create
-    minute '5'
-    hour   '*'
-    weekday '*'
-    retries 2
-    ignore_failure true
-    environment({'MEM' => node["filesystem"].select {|k,v| k.start_with?"/dev/mapper/"}.map{|k,v| "--disk-path=#{v["mount"]}"}.join(" ") })
-    command '/usr/lib/redborder/bin/rb_awsmon.sh --mem-util $MEM --disk-space-util --from-cron --auto-scaling'
-  end
-else
-  cron_d 'awsmon_hourly' do
-    action :delete
-  end
-end
-
-#--------------------------Rabbitmq-------------------------#
-if manager_services["rabbitmq"] and cluster_installed
-  cron_d 'rabbitmq_rotate_logs_daily' do
-    action :create
-    minute '00'
-    hour   '01'
-    weekday '*'
-    retries 2
-    ignore_failure true
-    command "/usr/lib/redborder/bin/rb_rabbitmq_rotate_logs.sh"
-  end
-else
-  cron_d 'rabbitmq_rotate_logs_daily' do
-    action :delete
-  end
+cron_d 'awsmon_hourly' do
+  action (!node["redborder"].nil? and !node["redborder"]["dmidecode"].nil? and !node["redborder"]["dmidecode"]["manufacturer"].nil? and node["redborder"]["iscloud"] and manager_services["awslogs"]) ? :create : :delete
+  minute '5'
+  hour   '*'
+  weekday '*'
+  retries 2
+  ignore_failure true
+  environment({'MEM' => node["filesystem"].select {|k,v| k.start_with?"/dev/mapper/"}.map{|k,v| "--disk-path=#{v["mount"]}"}.join(" ") })
+  command '/usr/lib/redborder/bin/rb_awsmon.sh --mem-util $MEM --disk-space-util --from-cron --auto-scaling'
 end
 
 #--------------------------Events-counter-------------------------#
