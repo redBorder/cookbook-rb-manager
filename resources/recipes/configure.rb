@@ -298,6 +298,10 @@ end
 #  action (node["redborder"]["services"]["radiusd"] ? [:config_common, :config_manager, :register] : [:remove, :deregister])
 #end
 
+#rbaioutliers_config "Configure rb-aioutliers" do
+#  action [:add]
+#end
+
 #rbcep_config "Configure redborder-cep" do
 #  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
 #  vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
