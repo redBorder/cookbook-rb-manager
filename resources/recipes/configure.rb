@@ -309,10 +309,9 @@ end
 #  action (node["redborder"]["services"]["redborder-cep"] ? [:add, :register] : [:remove, :deregister])
 #end
 
-cluster_installed = `[ -e /etc/redborder/cluster-installed.txt ] && echo 1 || echo 0` 
  
 rbcgroup_config "Configure cgroups" do
-  action (cluster_installed == 1 ? :add : nil)
+  action :add 
 end
 
 # Determine external
