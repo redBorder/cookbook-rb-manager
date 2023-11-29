@@ -45,6 +45,8 @@ esac
 %doc
 
 %changelog
+* Wed Sep 29 2023 Miguel Álvarez <malvarez@redborder.com> - 1.5.18-1
+- Add cgroup
 * Thu Sep 28 2023 Miguel Negrón <manegron@redborder.com> - 1.5.17-1
 - Add rbaioutliers
 * Mon Jun 26 2023 Luis J. Blanco <ljblanco@redborder.com> - 1.5.15-1
