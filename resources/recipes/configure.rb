@@ -309,6 +309,10 @@ end
 #  action (node["redborder"]["services"]["redborder-cep"] ? [:add, :register] : [:remove, :deregister])
 #end
 
+ 
+rbcgroup_config "Configure cgroups" do
+  action :add 
+end
 
 # Determine external
 external_services = Chef::DataBagItem.load("rBglobal", "external_services")
