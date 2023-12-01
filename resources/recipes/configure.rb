@@ -60,6 +60,7 @@ kafka_config "Configure Kafka" do
   managers_list node["redborder"]["managers_per_services"]["kafka"]
   zk_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   host_index node["redborder"]["kafka"]["host_index"]
+  ipaddress node["ipaddress_sync"]
   action (manager_services["kafka"] ? [:add, :register] : [:remove, :deregister])
 end
 
