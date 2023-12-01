@@ -12,6 +12,16 @@
 # manager services
 manager_services = manager_services()
 
+manager_services = manager_services()
+
+rb_selinux_config "Configure Selinux" do
+  if shell_out("getenforce").stdout.chomp == "Disabled"
+    action :remove
+  else
+    action :add
+  end
+end
+
 consul_config "Configure Consul Server" do
   confdir node["consul"]["confdir"]
   datadir node["consul"]["datadir"]
