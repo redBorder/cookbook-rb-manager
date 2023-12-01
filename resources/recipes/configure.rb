@@ -25,7 +25,7 @@ end
 consul_config "Configure Consul Server" do
   confdir node["consul"]["confdir"]
   datadir node["consul"]["datadir"]
-  ipaddress node["ipaddress"]
+  ipaddress node["ipaddress_sync"]
   cdomain node["redborder"]["cdomain"]
   dns_local_ip node["consul"]["dns_local_ip"]
   (manager_services["consul"] ? (is_server true) : (is_server false))
@@ -38,6 +38,7 @@ if manager_services["chef-server"]
     postgresql false
     postgresql_memory node["redborder"]["memory_services"]["postgresql"]["memory"]
     chef_active manager_services["chef-server"]
+    ipaddress node["ipaddress_sync"]
     action [:add, :register]
   end
 else
@@ -59,6 +60,7 @@ kafka_config "Configure Kafka" do
   managers_list node["redborder"]["managers_per_services"]["kafka"]
   zk_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   host_index node["redborder"]["kafka"]["host_index"]
+  ipaddress node["ipaddress_sync"]
   action (manager_services["kafka"] ? [:add, :register] : [:remove, :deregister])
 end
 

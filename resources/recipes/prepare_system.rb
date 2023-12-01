@@ -22,6 +22,14 @@ if mode != "core" or mode != "full"
  node.default["redborder"]["services"]["consul-client"] = true
 end
 
+#Set :ipaddress_sync 
+ipaddress_sync=node["ipaddress"]
+node['network']['interfaces'].each do |interface, details|
+  next unless "x#{interface}" != "xlo"
+  ipaddress_sync = details['addresses'].keys[1] if (details['addresses'] and ipaddress_sync != details['addresses'].keys[1])
+end
+node.default[:ipaddress_sync]=ipaddress_sync
+
 #Configure and enable chef-client
 dnf_package "redborder-chef-client" do
   flush_cache [:before]
