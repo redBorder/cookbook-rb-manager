@@ -45,6 +45,8 @@ esac
 %doc
 
 %changelog
+* Fri Dec 01 2023 Miguel Negrón <manegron@redborder.com> - 1.6.1-1
+- Add sync ip support
 * Fri Dec 01 2023 David Vanhoucke <dvanhoucke@redborder.com> - 1.6.0-1
 - Add selinux
 * Wed Nov 29 2023 Miguel Álvarez <malvarez@redborder.com> - 1.5.18-1
