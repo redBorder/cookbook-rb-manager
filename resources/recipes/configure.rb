@@ -25,7 +25,7 @@ end
 consul_config "Configure Consul Server" do
   confdir node["consul"]["confdir"]
   datadir node["consul"]["datadir"]
-  ipaddress node["ipaddress"]
+  ipaddress node["ipaddress_sync"]
   cdomain node["redborder"]["cdomain"]
   dns_local_ip node["consul"]["dns_local_ip"]
   (manager_services["consul"] ? (is_server true) : (is_server false))
