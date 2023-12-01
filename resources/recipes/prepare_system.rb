@@ -28,7 +28,7 @@ node['network']['interfaces'].each do |interface, details|
   next if "x#{interface}" != "xlo"
   ipaddress_sync = details['addresses'].keys[1] if (details['addresses'] and ipaddress_sync != details['addresses'].keys[1])
 end
-node.default[:ipaddress_sync]=ipsync
+node.default[:ipaddress_sync]=ipaddress_sync
 
 #Configure and enable chef-client
 dnf_package "redborder-chef-client" do
