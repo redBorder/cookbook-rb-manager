@@ -38,7 +38,7 @@ if manager_services["chef-server"]
     postgresql false
     postgresql_memory node["redborder"]["memory_services"]["postgresql"]["memory"]
     chef_active manager_services["chef-server"]
-    ip node["ipaddress_sync"]
+    ipaddress node["ipaddress_sync"]
     action [:add, :register]
   end
 else
