@@ -2,7 +2,7 @@
 # Cookbook Name:: manager
 # Recipe:: configure
 #
-# Copyright 2016, redborder
+# Copyright 2024, redborder
 #
 # AFFERO GENERAL PUBLIC LICENSE V3
 #
