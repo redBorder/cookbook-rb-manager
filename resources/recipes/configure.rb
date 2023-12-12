@@ -12,8 +12,6 @@
 # manager services
 manager_services = manager_services()
 
-manager_services = manager_services()
-
 rb_selinux_config "Configure Selinux" do
   if shell_out("getenforce").stdout.chomp == "Disabled"
     action :remove
