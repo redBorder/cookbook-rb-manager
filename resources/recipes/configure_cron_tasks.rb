@@ -1,4 +1,15 @@
+#
+# Cookbook Name:: manager
+# Recipe:: configure_cron_tasks
+#
+# Copyright 2024, redborder
+#
+# AFFERO GENERAL PUBLIC LICENSE V3
+#
+
+# Services configuration
 manager_services = manager_services()
+
 cluster_installed = File.exist?("/etc/cluster-installed.txt")
 
 #--------------------------Druid-------------------------#
