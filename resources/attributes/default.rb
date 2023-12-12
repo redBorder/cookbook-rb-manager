@@ -185,6 +185,7 @@ default["redborder"]["systemdservices"]["redborder-postgresql"]   = ["redborder-
 default["redborder"]["systemdservices"]["nginx"]                  = ["nginx"]
 default["redborder"]["systemdservices"]["redborder-cep"]          = ["redborder-cep"]
 default["redborder"]["systemdservices"]["rb-aioutliers"]          = ["rb-aioutliers"]
+default["redborder"]["systemdservices"]["rb-logstatter"]          = ["rb-logstatter"]
 default["redborder"]["systemdservices"]["memcached"]              = ["memcached"]
 default["redborder"]["systemdservices"]["s3"]                     = ["minio"]
 default["redborder"]["systemdservices"]["mongodb"]                = ["mongod"]
