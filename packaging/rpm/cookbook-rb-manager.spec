@@ -45,6 +45,8 @@ esac
 %doc
 
 %changelog
+* Fri Dec 15 2023 David Vanhoucke <dvanhoucke@redborder.com> - 1.6.2-1
+- Add sync ip support for zookeeper, druid, memcached and postgresql
 * Fri Dec 01 2023 Miguel Negrón <manegron@redborder.com> - 1.6.1-1
 - Add sync ip support
 * Fri Dec 01 2023 David Vanhoucke <dvanhoucke@redborder.com> - 1.6.0-1
