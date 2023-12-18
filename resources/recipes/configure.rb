@@ -239,6 +239,7 @@ end
 
 http2k_config "Configure Http2k" do
   domain node["redborder"]["cdomain"]
+  kafka_hosts node["redborder"]["managers_per_services"]["kafka"]
   memory node["redborder"]["memory_services"]["http2k"]["memory"]
   port node["redborder"]["http2k"]["port"]
   proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"]
