@@ -51,6 +51,7 @@ zookeeper_config "Configure Zookeeper" do
   port node["zookeeper"]["port"]
   memory node["redborder"]["memory_services"]["zookeeper"]["memory"]
   hosts node["redborder"]["managers_per_services"]["zookeeper"]
+  ipaddress node["ipaddress_sync"]
   action (manager_services["zookeeper"] ? [:add, :register] : [:remove, :deregister])
 end
 
@@ -101,30 +102,35 @@ end
 
 druid_coordinator "Configure Druid Coordinator" do
   name node["hostname"]
+  ipaddress node["ipaddress_sync"]
   memory_kb node["redborder"]["memory_services"]["druid-coordinator"]["memory"]
   action (manager_services["druid-coordinator"] ? [:add, :register] : [:remove, :deregister])
 end
 
 druid_overlord "Configure Druid Overlord" do
   name node["hostname"]
+  ipaddress node["ipaddress_sync"]
   memory_kb node["redborder"]["memory_services"]["druid-overlord"]["memory"]
   action (manager_services["druid-overlord"] ? [:add, :register] : [:remove, :deregister])
 end
 
 druid_broker "Configure Druid Broker" do
   name node["hostname"]
+  ipaddress node["ipaddress_sync"]
   memory_kb node["redborder"]["memory_services"]["druid-broker"]["memory"]
   action (manager_services["druid-broker"] ? [:add, :register] : [:remove, :deregister])
 end
 
 druid_middlemanager "Configure Druid MiddleManager" do
   name node["hostname"]
+  ipaddress node["ipaddress_sync"]
   memory_kb node["redborder"]["memory_services"]["druid-middlemanager"]["memory"]
   action (manager_services["druid-middlemanager"] ? [:add, :register] : [:remove, :deregister])
 end
 
 druid_historical "Configure Druid Historical" do
   name node["hostname"]
+  ipaddress node["ipaddress_sync"]
   memory_kb node["redborder"]["memory_services"]["druid-historical"]["memory"]
   tier node["redborder"]["druid"]["historical"]["tier"]
   action (manager_services["druid-historical"] ? [:add, :register] : [:remove, :deregister])
@@ -132,12 +138,14 @@ end
 
 druid_realtime "Configure Druid Realtime" do
   name node["hostname"]
+  ipaddress node["ipaddress_sync"]
   memory_kb node["redborder"]["memory_services"]["druid-realtime"]["memory"]
   action (manager_services["druid-realtime"] ? [:add, :register] : [:remove, :deregister])
 end
 
 memcached_config "Configure Memcached" do
   memory node["redborder"]["memory_services"]["memcached"]["memory"]
+  ipaddress node["ipaddress_sync"]
   action (manager_services["memcached"] ? [:add, :register] : [:remove, :deregister])
 end
 
@@ -332,6 +340,7 @@ external_services = Chef::DataBagItem.load("rBglobal", "external_services")
 
 postgresql_config "Configure postgresql" do
   cdomain node["redborder"]["cdomain"]
+  ipaddress node["ipaddress_sync"]
   action (manager_services["postgresql"] and external_services["postgresql"] == "onpremise" ? [:add, :register] : [:remove, :deregister])
 end
 
