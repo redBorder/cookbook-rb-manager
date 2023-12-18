@@ -45,6 +45,8 @@ esac
 %doc
 
 %changelog
+* Mon Dec 18 2023 Miguel Álvarez <malvarez@redborder.com> - 1.6.4-1
+- Add rb-logstatter
 * Mon Dec 18 2023 Vicente Mesa <vimesa@redborder.com> - 1.6.3-1
 - Fix kafka configuration on http2k service
 * Fri Dec 15 2023 David Vanhoucke <dvanhoucke@redborder.com> - 1.6.2-1
