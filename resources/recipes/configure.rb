@@ -264,6 +264,7 @@ end
 
 pmacct_config "Configure pmacct" do
   sensors node["redborder"]["sensors_info"]["flow-sensor"]
+  kafka_hosts node["redborder"]["managers_per_services"]["kafka"]
   action (manager_services["pmacct"] ? [:add, :register] : [:remove, :deregister])
 end
 
