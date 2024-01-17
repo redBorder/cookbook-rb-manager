@@ -322,7 +322,6 @@ end
 rb_arubacentral_config "Configure rb-arubacentral" do
   arubacentral_nodes node["redborder"]["sensors_info_all"]["arubacentral-sensor"]
   flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
-  kafka_brokers node["redborder"]["managers_per_services"]["kafka"]
   action (node["redborder"]["services"]["rb-arubacentral"] ? :add : :remove)
 end
 
