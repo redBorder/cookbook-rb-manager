@@ -45,6 +45,14 @@ esac
 %doc
 
 %changelog
+* Thu Dec 21 2023 Nils Verschaeve <malvarez@redborder.com> - 1.6.5-1
+- Pass correct kafka brokers to pmacctd
+* Mon Dec 18 2023 Miguel Álvarez <malvarez@redborder.com> - 1.6.4-1
+- Add rb-logstatter
+* Mon Dec 18 2023 Vicente Mesa <vimesa@redborder.com> - 1.6.3-1
+- Fix kafka configuration on http2k service
+* Fri Dec 15 2023 David Vanhoucke <dvanhoucke@redborder.com> - 1.6.2-1
+- Add sync ip support for zookeeper, druid, memcached and postgresql
 * Fri Dec 01 2023 Miguel Negrón <manegron@redborder.com> - 1.6.1-1
 - Add sync ip support
 * Fri Dec 01 2023 David Vanhoucke <dvanhoucke@redborder.com> - 1.6.0-1
