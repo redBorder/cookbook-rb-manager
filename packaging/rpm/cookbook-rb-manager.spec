@@ -45,6 +45,8 @@ esac
 %doc
 
 %changelog
+* Thu Jan 18 2024 Miguel Negron <manegron@redborder.com> - 1.6.6-1
+- Add journalctld configuration
 * Thu Dec 21 2023 Nils Verschaeve <malvarez@redborder.com> - 1.6.5-1
 - Pass correct kafka brokers to pmacctd
 * Mon Dec 18 2023 Miguel Álvarez <malvarez@redborder.com> - 1.6.4-1
