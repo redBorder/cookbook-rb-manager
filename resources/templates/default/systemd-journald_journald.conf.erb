@@ -17,6 +17,11 @@
 # See journald.conf(5) for details.
 
 [Journal]
+<% if @storage %>
+#Controls where to store journal data. 
+Storage=<%=@storage%>
+<% end %>
+
 # Maximum persistent storage used by the journal.
 SystemMaxUse=500M
 

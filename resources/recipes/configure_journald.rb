@@ -7,6 +7,7 @@
 # AFFERO GENERAL PUBLIC LICENSE V3
 #
 
+storage = node["redborder"]["manager"]["journald"]["storage"] rescue nil
 template "/etc/systemd/journald.conf" do
     source "systemd-journald_journald.conf.erb"
     owner "root"
@@ -14,6 +15,7 @@ template "/etc/systemd/journald.conf" do
     mode 0440
     retries 2
     notifies :restart, 'service[systemd-journald]', :delayed
+    variables(:storage => storage)
 end
 
 service 'systemd-journald' do
