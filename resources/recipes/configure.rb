@@ -412,3 +412,19 @@ execute "force_chef_client_wakeup" do
   ignore_failure true
   action ( node["redborder"]["pending_changes"].nil? or node["redborder"]["pending_changes"]==0 ) ? :nothing : :run
 end
+
+#--------------------------MOTD--------------------------#
+
+cluster_info = node["redborder"]["cluster_info"]
+cluster_uuid_db = Chef::DataBagItem.load("rBglobal", "cluster") rescue cluster_uuid_db = {}
+cluster_installed = File.exist?("/etc/redborder/cluster-installed.txt")
+
+template "/etc/motd" do
+    source "motd.erb"
+    owner "root"
+    group "root"
+    mode 0644
+    retries 2
+    backup false
+    variables(:cluster_info => cluster_info, :uuid => cluster_uuid_db["uuid"], :manager_services => manager_services, :cluster_finished => cluster_installed)
+end
