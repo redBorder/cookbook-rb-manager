@@ -1,4 +1,3 @@
-<%= `toilet -f script -t "redborder - ng"` %>
 <% if !node["redborder"]["manager"]["cluster_name"].nil? %>
   Welcome to '<%= node["redborder"]["manager"]["cluster_name"] %>' redborder cluster:
 <% else %>
@@ -7,7 +6,7 @@
 
 <% if !node["redborder"].nil? and !node["redborder"]["rpms"].nil? %>
 <% node["redborder"]["rpms"].each do |k, v| %>
-    * <%= "redborder-%-12s" % [ k ] %> => <%= v.sub(/\.el9\.rb.*/, '') %>
+    * <%= "redborder-%-12s" % [ k ] %> => <%= v %>
 <% end %>
 <% end %>
 <%-
@@ -59,7 +58,7 @@
 <% end %>
   Host:            <%= node['ipaddress'] %> (<%= node['macaddress'].nil? ? "" : node['macaddress'] %>)
 <% if node['ipaddress'] != ipaddress_sync %>
-  IP sync :        <%= ipaddress_sync %>
+  IP sync :        <%= ipaddress_sync %> (<%= node['macaddress'].nil? ? "" : node['macaddress'] %>)
 <%end %>
   Installed on:    <% inst = `rpm -q basesystem --qf '%{installtime:date}\n'` ; inst = inst.gsub("\n","") %><%= inst %>
   Last check:      <%= Time.at(node[:ohai_time]).strftime('%a %b %d %H:%M:%S %Z %Y') %>
