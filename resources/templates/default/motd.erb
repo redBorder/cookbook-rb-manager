@@ -1,7 +1,9 @@
+
 <% if !node["redborder"]["manager"]["cluster_name"].nil? %>
   Welcome to '<%= node["redborder"]["manager"]["cluster_name"] %>' redborder cluster:
 <% else %>
   Welcome to <%= node["hostname"] %>.<%= node["redborder"]["cdomain"] %> (<%= node['platform'] %> - <%= node['platform_version'] %>):
+  Kernel <%= node['os'] %> - <%= node['os_version'] %>
 <% end %>
 
 <% if !node["redborder"].nil? and !node["redborder"]["rpms"].nil? %>
@@ -15,6 +17,7 @@
   total_manager = manager_list.size
   manager_index = manager_list.index(node.name)
   ipaddress_sync = node["ipaddress_sync"]
+
 
 %>
 
@@ -58,7 +61,7 @@
 <% end %>
   Host:            <%= node['ipaddress'] %> (<%= node['macaddress'].nil? ? "" : node['macaddress'] %>)
 <% if node['ipaddress'] != ipaddress_sync %>
-  IP sync :        <%= ipaddress_sync %> (<%= node['macaddress'].nil? ? "" : node['macaddress'] %>)
+  IP sync :        <%= ipaddress_sync %> (<%= node['mac_sync'].nil? ? "" : node['mac_sync'] %>)
 <%end %>
   Installed on:    <% inst = `rpm -q basesystem --qf '%{installtime:date}\n'` ; inst = inst.gsub("\n","") %><%= inst %>
   Last check:      <%= Time.at(node[:ohai_time]).strftime('%a %b %d %H:%M:%S %Z %Y') %>
