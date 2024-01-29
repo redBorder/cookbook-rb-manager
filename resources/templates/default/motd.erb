@@ -3,7 +3,7 @@
   Welcome to '<%= node["redborder"]["manager"]["cluster_name"] %>' redborder cluster:
 <% else %>
   Welcome to <%= node["hostname"] %>.<%= node["redborder"]["cdomain"] %> (<%= node['platform'] %> - <%= node['platform_version'] %>):
-  Kernel <%= node['os'] %> - <%= node['os_version'] %>
+  Kernel: <%= node['os'] %> - <%= node['os_version'].gsub("el9", "") %>
 <% end %>
 
 <% if !node["redborder"].nil? and !node["redborder"]["rpms"].nil? %>
