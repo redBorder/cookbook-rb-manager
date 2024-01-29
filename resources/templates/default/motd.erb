@@ -3,7 +3,7 @@
   Welcome to '<%= node["redborder"]["manager"]["cluster_name"] %>' redborder cluster:
 <% else %>
   Welcome to <%= node["hostname"] %>.<%= node["redborder"]["cdomain"] %> (<%= node['platform'] %> - <%= node['platform_version'] %>):
-  Kernel: <%= node['os'] %> - <%= node['os_version'].gsub("el9", "") %>
+  Kernel: <%= node['os_version'].gsub("el9", "") %>
 <% end %>
 
 <% if !node["redborder"].nil? and !node["redborder"]["rpms"].nil? %>
@@ -38,7 +38,7 @@
       when "s3"
         s = "minio"
       when "snmp"
-        s = "redborder-snmp"
+        s = "snmpd"
       end
 
       if node["redborder"]["cluster"]["services"].select {|x| x["name"]==s}.first["ok"]
