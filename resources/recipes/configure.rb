@@ -221,6 +221,14 @@ if manager_services["nginx"] and manager_services["chef-server"]
   end
 end
 
+if manager_services["nginx"] and manager_services["rb-aioutliers"]
+  nginx_config "Configure Nginx aioutliers" do
+    service_name "rb-aioutliers"
+    cdomain node["redborder"]["cdomain"]
+    action [:configure_certs, :add_aioutliers]
+  end
+end
+
 webui_config "Configure WebUI" do
   hostname node["hostname"]
   memory_kb node["redborder"]["memory_services"]["webui"]["memory"]
