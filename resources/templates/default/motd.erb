@@ -2,7 +2,7 @@
 <% if !node["redborder"]["manager"]["cluster_name"].nil? %>
   Welcome to '<%= node["redborder"]["manager"]["cluster_name"] %>' redborder cluster:
 <% else %>
-  Welcome to <%= node["hostname"] %>.<%= node["redborder"]["cdomain"] %> (<%= node['platform'] %> - <%= node['platform_version'] %>):
+  Welcome to redborder-ng Manager [<%= node["hostname"] %>.<%= node["redborder"]["cdomain"] %>] (<%= node['platform'] %> - <%= node['platform_version'] %>):
   Kernel: <%= node['os_version'].gsub("el9", "") %>
 <% end %>
 
@@ -17,7 +17,6 @@
   total_manager = manager_list.size
   manager_index = manager_list.index(node.name)
   ipaddress_sync = node["ipaddress_sync"]
-
 
 %>
 
