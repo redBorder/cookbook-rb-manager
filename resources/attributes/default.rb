@@ -91,7 +91,7 @@ default["redborder"]["memory_services"]["f2k"] = { "count" => 40, "memory" => 0 
 default["redborder"]["memory_services"]["redborder-nmsp"] = {"count" => 10, "memory" => 0 }
 default["redborder"]["memory_services"]["n2klocd"] = {"count" => 10, "memory" => 0 }
 default["redborder"]["memory_services"]["redborder-cep"] = {"count" => 10, "memory" => 0 }
-default["redborderƒ"]["memory_services"]["rb-aioutliers"] = {"count" => 5, "memory" => 0 }
+default["redborder"]["memory_services"]["rb-aioutliers"] = {"count" => 10, "memory" => 0 }
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default["redborder"]["cluster_info"] = {}
