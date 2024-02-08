@@ -317,6 +317,12 @@ rblogstatter_config "Configure redborder-logstatter" do
   action (node["redborder"]["services"]["rb-logstatter"] ? :add : :remove)
 end
 
+rb_arubacentral_config "Configure rb-arubacentral" do
+  arubacentral_nodes node["redborder"]["sensors_info_all"]["arubacentral-sensor"]
+  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
+  action (node["redborder"]["services"]["rb-arubacentral"] ? :add : :remove)
+end
+
 #freeradius_config "Configure radiusd" do
 #  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
 #  action (node["redborder"]["services"]["radiusd"] ? [:config_common, :config_manager, :register] : [:remove, :deregister])

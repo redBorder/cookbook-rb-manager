@@ -45,6 +45,10 @@ esac
 %doc
 
 %changelog
+* Fri Jan 19 2024 Miguel Negron <manegron@redborder.com> - 1.6.8-1
+- Add journalctld configuration
+* Fri Jan 19 2024 David Vanhoucke <dvanhoucke@redborder.com> - 1.6.7-1
+- Add arubacentral
 * Thu Jan 18 2024 Miguel Negron <manegron@redborder.com> - 1.6.6-1
 - Add journalctld configuration
 * Thu Dec 21 2023 Nils Verschaeve <malvarez@redborder.com> - 1.6.5-1

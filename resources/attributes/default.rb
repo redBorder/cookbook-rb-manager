@@ -85,6 +85,7 @@ default["redborder"]["memory_services"]["hadoop-resourcemanager"] = {"count" => 
 default["redborder"]["memory_services"]["snmp"] = {"count" => 5, "memory" => 0, "max_limit" => 10000 }
 default["redborder"]["memory_services"]["redborder-monitor"] = {"count" => 5, "memory" => 0, "max_limit" => 20000 }
 default["redborder"]["memory_services"]["rb-logstatter"] = {"count" => 5, "memory" => 0, "max_limit" => 20000 }
+default["redborder"]["memory_services"]["rb-arubacentral"] = {"count" => 5, "memory" => 0, "max_limit" => 20000 }
 default["redborder"]["memory_services"]["webui"] = {"count" => 40, "memory" => 0 }
 default["redborder"]["memory_services"]["f2k"] = { "count" => 40, "memory" => 0 }
 default["redborder"]["memory_services"]["redborder-nmsp"] = {"count" => 10, "memory" => 0 }
@@ -148,6 +149,7 @@ default["redborder"]["services"]["nginx"]                     = false
 default["redborder"]["services"]["redborder-cep"]             = false
 default["redborder"]["services"]["rb-aioutliers"]             = false
 default["redborder"]["services"]["rb-logstatter"]             = true
+default["redborder"]["services"]["rb-arubacentral"]           = false
 default["redborder"]["services"]["memcached"]                 = true
 default["redborder"]["services"]["rb-monitor"]                = false
 default["redborder"]["services"]["secor"]                     = false
@@ -186,6 +188,7 @@ default["redborder"]["systemdservices"]["nginx"]                  = ["nginx"]
 default["redborder"]["systemdservices"]["redborder-cep"]          = ["redborder-cep"]
 default["redborder"]["systemdservices"]["rb-aioutliers"]          = ["rb-aioutliers"]
 default["redborder"]["systemdservices"]["rb-logstatter"]          = ["rb-logstatter"]
+default["redborder"]["systemdservices"]["rb-arubacentral"]        = ["rb-arubacentral"]
 default["redborder"]["systemdservices"]["memcached"]              = ["memcached"]
 default["redborder"]["systemdservices"]["s3"]                     = ["minio"]
 default["redborder"]["systemdservices"]["mongodb"]                = ["mongod"]
