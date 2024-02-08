@@ -30,6 +30,10 @@ node['network']['interfaces'].each do |interface, details|
 end
 node.default[:ipaddress_sync]=ipaddress_sync
 
+#get mac
+mac_sync = `ip a | grep -w -B2 #{ipaddress_sync} | awk '{print toupper($2)}' | head -n 1 | tr -d '\n'`
+node.default["mac_sync"] = mac_sync
+
 #Configure and enable chef-client
 dnf_package "redborder-chef-client" do
   flush_cache [:before]

@@ -1,0 +1,78 @@
+
+<% if !node["redborder"]["manager"]["cluster_name"].nil? %>
+  Welcome to '<%= node["redborder"]["manager"]["cluster_name"] %>' redborder cluster:
+<% else %>
+  Welcome to redborder-ng Manager [<%= node["hostname"] %>.<%= node["redborder"]["cdomain"] %>] (<%= node['platform'] %> - <%= node['platform_version'] %>):
+  Kernel: <%= node['os_version'].gsub("el9", "") %>
+<% end %>
+
+<% if !node["redborder"].nil? and !node["redborder"]["rpms"].nil? %>
+<% node["redborder"]["rpms"].each do |k, v| %>
+    * <%= "redborder-%-12s" % [ k ] %> => <%= v %>
+<% end %>
+<% end %>
+<%-
+
+  manager_list = node["redborder"]["managers_list"]
+  total_manager = manager_list.size
+  manager_index = manager_list.index(node.name)
+  ipaddress_sync = node["ipaddress_sync"]
+
+%>
+
+  Cluster:         <%= (( @cluster_info.size == 1 ) ? "1 member" : "#{@cluster_info.size} members") unless @cluster_info.nil? %>
+  Mode:            <%= node["redborder"]["mode"] %> (index: <%= manager_index %> / total: <%= total_manager %>)
+  CPU:             <%= node["cpu"]["total"] unless node["cpu"].nil? %>
+  Memory:          <%= "%.2f GB" % [ node["memory"]["total"].to_f/(1000*1000) ] unless node["memory"].nil? %>
+<%-
+
+  manager_services  = []
+  manager_services2 = []
+
+  @manager_services.select{|k,v| v}.keys.each do |s|
+    begin
+      case s
+      when "chef-server"
+        s = "opscode-erchef"
+      when "s3"
+        s = "minio"
+      when "snmp"
+        s = "snmpd"
+      end
+
+      if node["redborder"]["cluster"]["services"].select {|x| x["name"]==s}.first["ok"]
+        manager_services << s.gsub("druid-", "").gsub("hadoop_", "") if (s!="chef-client" and s!="keepalived" and s!="riak-cs" and s!="opscode-solr4" and s!="opscode-expander" and s!="rabbitmq" and s!="redborder-monitor" and s!="rb-discover")
+      else
+        manager_services2 << s.gsub("druid-", "").gsub("hadoop_", "")
+      end
+    rescue
+      manager_services << "#{s}?".gsub("druid-", "").gsub("hadoop_", "")
+    end
+  end
+%>
+<% if manager_services.size>0 %>
+  Services:        <%= ((manager_services.size>10) ? manager_services.join(",") : manager_services.join(", ")) %>
+<% else %>
+  Services:     none
+<% end %>
+<% if manager_services2.size>0 %>
+  Errors:          <%= ((manager_services2.size>10) ? manager_services2.join(",") : manager_services2.join(", ")) %>
+<% end %>
+  Host:            <%= node['ipaddress'] %> (<%= node['macaddress'].nil? ? "" : node['macaddress'] %>)
+<% if node['ipaddress'] != ipaddress_sync %>
+  IP sync :        <%= ipaddress_sync %> (<%= node['mac_sync'].nil? ? "" : node['mac_sync'] %>)
+<%end %>
+  Installed on:    <%= node["redborder"]["install_date"] if node["redborder"] %> 
+  Last check:      <%= Time.at(node[:ohai_time]).strftime('%a %b %d %H:%M:%S %Z %Y') %>
+<% if !@uuid.nil? %>
+  Cluster UUID:    <%= @uuid %>
+<% end %>
+
+NOTE: redborder cluster time zone must be UTC
+<% if !@cluster_finished %>
+<% if File.exist?"/etc/redborder/rb_init_conf.yml" %>
+NOTE: Please execute rb_setup_wizard to configure the system
+<% else %>
+NOTE: The cluster is still initializing. Please wait ...
+<% end %>
+<% end %>
