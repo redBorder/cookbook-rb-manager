@@ -91,7 +91,7 @@ default["redborder"]["memory_services"]["f2k"] = { "count" => 40, "memory" => 0 
 default["redborder"]["memory_services"]["redborder-nmsp"] = {"count" => 10, "memory" => 0 }
 default["redborder"]["memory_services"]["n2klocd"] = {"count" => 10, "memory" => 0 }
 default["redborder"]["memory_services"]["redborder-cep"] = {"count" => 10, "memory" => 0 }
-default["redborder"]["memory_services"]["rb-aioutliers"] = {"count" => 5, "memory" => 0 }
+default["redborder"]["memory_services"]["rb-aioutliers"] = {"count" => 10, "memory" => 0 }
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default["redborder"]["cluster_info"] = {}
@@ -110,8 +110,8 @@ default["redborder"]["services_group"]["full"] = %w[consul chef-server zookeeper
                                                     postgresql redborder-postgresql nginx webui druid-broker
                                                     druid-historical druid-realtime druid-coordinator f2k
                                                     redborder-monitor pmacct redborder-dswatcher
-                                                    redborder-events-counter http2k 
-                                                    ] 
+                                                    redborder-events-counter http2k
+                                                    ]
 
 default["redborder"]["services_group"]["custom"] = []
 default["redborder"]["services_group"]["core"] = %w[consul zookeeper druid-coordinator druid-overlord hadoop-resourcemanager] #consul server
@@ -121,9 +121,9 @@ default["redborder"]["services_group"]["historical"] = %w[druid-historical]
 default["redborder"]["services_group"]["middlemanager"] = %w[druid-middlemanager]
 default["redborder"]["services_group"]["broker"] = %w[druid-broker]
 default["redborder"]["services_group"]["http2k"] = %w[http2k]
-default["redborder"]["services_group"]["samza"] = %w[hadoop-nodemanager]  
-default["redborder"]["services_group"]["webui"] = %w[nginx webui]        
-default["redborder"]["services_group"]["f2k"] = %w[f2k]                   
+default["redborder"]["services_group"]["samza"] = %w[hadoop-nodemanager]
+default["redborder"]["services_group"]["webui"] = %w[nginx webui]
+default["redborder"]["services_group"]["f2k"] = %w[f2k]
 default["redborder"]["services_group"]["s3"] = %w[nginx s3]
 default["redborder"]["services_group"]["postgresql"] = %w[postgresql redborder-postgresql]
 

@@ -70,8 +70,8 @@ if  manager_services["druid-coordinator"] or
     manager_services["druid-historical"] or
     manager_services["druid-realtime"]
 
-  ["druid-broker", "druid-coordinator", "druid-historical", 
-  "druid-middlemanager", "druid-overlord"].each do |druid_service| 
+  ["druid-broker", "druid-coordinator", "druid-historical",
+  "druid-middlemanager", "druid-overlord"].each do |druid_service|
     service druid_service do
       supports :status => true, :start => true, :restart => true, :reload => true
       action :nothing
@@ -86,11 +86,11 @@ if  manager_services["druid-coordinator"] or
     s3_port node["minio"]["port"]
     cdomain node["redborder"]["cdomain"]
     action :add
-    notifies :restart, 'service[druid-broker]', :delayed if manager_services["druid-broker"] 
-    notifies :restart, 'service[druid-coordinator]', :delayed if manager_services["druid-coordinator]"] 
-    notifies :restart, 'service[druid-historical]', :delayed if manager_services["druid-historical"] 
-    notifies :restart, 'service[druid-middlemanager]', :delayed if manager_services["druid-middlemanager"] 
-    notifies :restart, 'service[druid-overlord]', :delayed if manager_services["druid-overlord"] 
+    notifies :restart, 'service[druid-broker]', :delayed if manager_services["druid-broker"]
+    notifies :restart, 'service[druid-coordinator]', :delayed if manager_services["druid-coordinator]"]
+    notifies :restart, 'service[druid-historical]', :delayed if manager_services["druid-historical"]
+    notifies :restart, 'service[druid-middlemanager]', :delayed if manager_services["druid-middlemanager"]
+    notifies :restart, 'service[druid-overlord]', :delayed if manager_services["druid-overlord"]
   end
 else
   druid_common "Delete druid common resources" do
@@ -221,6 +221,14 @@ if manager_services["nginx"] and manager_services["chef-server"]
   end
 end
 
+if manager_services["nginx"] and manager_services["rb-aioutliers"]
+  nginx_config "Configure Nginx aioutliers" do
+    service_name "rb-aioutliers"
+    cdomain node["redborder"]["cdomain"]
+    action [:configure_certs, :add_aioutliers]
+  end
+end
+
 webui_config "Configure WebUI" do
   hostname node["hostname"]
   memory_kb node["redborder"]["memory_services"]["webui"]["memory"]
@@ -328,9 +336,9 @@ end
 #  action (node["redborder"]["services"]["radiusd"] ? [:config_common, :config_manager, :register] : [:remove, :deregister])
 #end
 
-#rbaioutliers_config "Configure rb-aioutliers" do
-#  action [:add]
-#end
+rbaioutliers_config "Configure rb-aioutliers" do
+  action (manager_services["rb-aioutliers"] ? [:add, :register] : [:remove, :deregister])
+end
 
 #rbcep_config "Configure redborder-cep" do
 #  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
@@ -339,9 +347,9 @@ end
 #  action (node["redborder"]["services"]["redborder-cep"] ? [:add, :register] : [:remove, :deregister])
 #end
 
- 
+
 rbcgroup_config "Configure cgroups" do
-  action :add 
+  action :add
 end
 
 # Determine external

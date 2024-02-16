@@ -1,5 +1,9 @@
 # rb-manager CHANGELOG
 
+## 1.6.9
+malvarez
+- Add rbaioutliers & nginx config for it
+
 ## 0.0.22
 eareyes
 - Add rbale
