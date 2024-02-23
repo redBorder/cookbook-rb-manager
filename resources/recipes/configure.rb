@@ -340,13 +340,12 @@ rbaioutliers_config "Configure rb-aioutliers" do
   action (manager_services["rb-aioutliers"] ? [:add, :register] : [:remove, :deregister])
 end
 
-#rbcep_config "Configure redborder-cep" do
-#  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
-#  vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
-#  ips_nodes node["redborder"]["sensors_info_all"]["ips-sensor"] + node["redborder"]["sensors_info_all"]["ipsv2-sensor"] + node["redborder"]["sensors_info_all"]["ipscp-sensor"]
-#  action (node["redborder"]["services"]["redborder-cep"] ? [:add, :register] : [:remove, :deregister])
-#end
-
+rbcep_config "Configure redborder-cep" do
+  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
+  vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
+  ips_nodes node["redborder"]["sensors_info_all"]["ips-sensor"] + node["redborder"]["sensors_info_all"]["ipsv2-sensor"] + node["redborder"]["sensors_info_all"]["ipscp-sensor"]
+  action (node["redborder"]["services"]["redborder-cep"] ? [:add, :register] : [:remove, :deregister])
+end
 
 rbcgroup_config "Configure cgroups" do
   action :add
