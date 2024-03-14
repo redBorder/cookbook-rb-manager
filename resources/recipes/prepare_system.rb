@@ -91,6 +91,9 @@ node.default["redborder"]["sensors_info"] = get_sensors_info()
 #get sensors info full info
 node.default["redborder"]["sensors_info_all"] = get_sensors_all_info()
 
+#get sensors info of all flow sensors
+node.default["redborder"]["all_flow_sensors_info"] = get_all_flow_sensors_info()
+
 #get namespaces
 node.default["redborder"]["namespaces"] = get_namespaces
 
