@@ -276,7 +276,7 @@ end
 
 logstash_config "Configure logstash" do
   cdomain node["redborder"]["cdomain"]
-  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
+  flow_nodes node["redborder"]["all_flow_sensors_info"]["flow-sensor"]
   namespaces node["redborder"]["namespaces"]
   vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
   scanner_nodes node["redborder"]["sensors_info_all"]["scanner-sensor"]
