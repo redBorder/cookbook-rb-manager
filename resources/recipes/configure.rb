@@ -130,7 +130,6 @@ druid_historical "Configure Druid Historical" do
   name node["hostname"]
   ipaddress node["ipaddress_sync"]
   memory_kb node["redborder"]["memory_services"]["druid-historical"]["memory"]
-  tier node["redborder"]["druid"]["historical"]["tier"]
   action (manager_services["druid-historical"] ? [:add, :register] : [:remove, :deregister])
 end
 
