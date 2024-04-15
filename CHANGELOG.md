@@ -1,5 +1,9 @@
 # rb-manager CHANGELOG
 
+## 1.7.4
+vimesa
+- Fix druid tiers
+
 ## 1.6.9
 malvarez
 - Add rbaioutliers & nginx config for it
