@@ -130,7 +130,6 @@ druid_historical "Configure Druid Historical" do
   name node["hostname"]
   ipaddress node["ipaddress_sync"]
   memory_kb node["redborder"]["memory_services"]["druid-historical"]["memory"]
-  tier node["redborder"]["druid"]["historical"]["tier"]
   action (manager_services["druid-historical"] ? [:add, :register] : [:remove, :deregister])
 end
 
@@ -276,7 +275,7 @@ end
 
 logstash_config "Configure logstash" do
   cdomain node["redborder"]["cdomain"]
-  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
+  flow_nodes node["redborder"]["all_flow_sensors_info"]["flow-sensor"]
   namespaces node["redborder"]["namespaces"]
   vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
   scanner_nodes node["redborder"]["sensors_info_all"]["scanner-sensor"]
@@ -340,13 +339,12 @@ rbaioutliers_config "Configure rb-aioutliers" do
   action (manager_services["rb-aioutliers"] ? [:add, :register] : [:remove, :deregister])
 end
 
-#rbcep_config "Configure redborder-cep" do
-#  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
-#  vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
-#  ips_nodes node["redborder"]["sensors_info_all"]["ips-sensor"] + node["redborder"]["sensors_info_all"]["ipsv2-sensor"] + node["redborder"]["sensors_info_all"]["ipscp-sensor"]
-#  action (node["redborder"]["services"]["redborder-cep"] ? [:add, :register] : [:remove, :deregister])
-#end
-
+rbcep_config "Configure redborder-cep" do
+  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
+  vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
+  ips_nodes node["redborder"]["sensors_info_all"]["ips-sensor"] + node["redborder"]["sensors_info_all"]["ipsv2-sensor"] + node["redborder"]["sensors_info_all"]["ipscp-sensor"]
+  action (node["redborder"]["services"]["redborder-cep"] ? [:add, :register] : [:remove, :deregister])
+end
 
 rbcgroup_config "Configure cgroups" do
   action :add
