@@ -363,6 +363,7 @@ s3_leader = `serf members | grep s3=ready | awk '{print $1'} | head -n 1`.strip
 
 # Allow only one s3 onpremise node for now.. TODO: Distributed MinIO
 minio_config "Configure S3 (minio)" do
+  ipaddress node["ipaddress_sync"]
   action ((manager_services["s3"] and external_services["s3"] == "onpremise" and s3_leader == node.name ) ? [:add, :register] : [:remove, :deregister])
 end
 
