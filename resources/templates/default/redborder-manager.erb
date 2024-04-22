@@ -3,9 +3,23 @@ Defaults:redborder !requiretty
 Defaults:redborder-monitor !requiretty, !syslog
 Defaults:webui !requiretty
 Defaults:hadoop !requiretty
-redborder   ALL= NOPASSWD:SETENV: /usr/lib/redborder/bin/rb_wakeup_chef.sh, /opt/rb/bin/rb_update_geoip, /bin/env BOOTUP=none /usr/lib/redborder/bin/rb_wakeup_chef.sh -c, /bin/env BOOTUP=none /usr/lib/redborder/bin/rb_wakeup_chef.sh -n *, /bin/env BOOTUP=none /usr/lib/redborder/bin/rb_wakeup_chef.sh
-redborder-monitor  ALL= NOPASSWD: /usr/lib/redborder/bin/rb_get_sensor.sh, /usr/lib/redborder/bin/cachestat.sh, /bin/nice -n 19 /usr/sbin/fping -p 1 -c 10 *, /usr/lib/redborder/bin/rb_mem.sh *
-<%# To see it well, I put it in different lines%>
+<%="
+redborder
+  ALL= NOPASSWD:SETENV:
+    /usr/lib/redborder/bin/rb_wakeup_chef.sh, 
+    /opt/rb/bin/rb_update_geoip, 
+    /bin/env BOOTUP=none /usr/lib/redborder/bin/rb_wakeup_chef.sh -c, 
+    /bin/env BOOTUP=none /usr/lib/redborder/bin/rb_wakeup_chef.sh -n *, 
+    /bin/env BOOTUP=none /usr/lib/redborder/bin/rb_wakeup_chef.sh
+".gsub(/\s+/, ' ').strip %>
+<%="
+redborder-monitor
+  ALL= NOPASSWD: 
+    /usr/lib/redborder/bin/rb_get_sensor.sh,
+    /usr/lib/redborder/bin/cachestat.sh, 
+    /bin/nice -n 19 /usr/sbin/fping -p 1 -c 10 *, 
+    /usr/lib/redborder/bin/rb_mem.sh *
+".gsub(/\s+/, ' ').strip %>
 <%="
 webui
   ALL=NOPASSWD:SETENV: 
