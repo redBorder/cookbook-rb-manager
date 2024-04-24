@@ -1,6 +1,6 @@
 # rb-manager CHANGELOG
 
-## 1.7.3
+## 1.7.4
 dvanhoucke
 - add ipaddress sync for minio
 
