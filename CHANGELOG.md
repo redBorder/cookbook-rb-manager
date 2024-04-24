@@ -1,6 +1,10 @@
 # rb-manager CHANGELOG
 
-## 1.7.4
+## 1.7.3
+dvanhoucke
+- add ipaddress sync for minio
+
+## 1.7.3
 vimesa
 - Fix druid tiers
 
