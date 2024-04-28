@@ -136,6 +136,7 @@ end
 druid_realtime "Configure Druid Realtime" do
   name node["hostname"]
   ipaddress node["ipaddress_sync"]
+  zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
   memory_kb node["redborder"]["memory_services"]["druid-realtime"]["memory"]
   action (manager_services["druid-realtime"] ? [:add, :register] : [:remove, :deregister])
 end
