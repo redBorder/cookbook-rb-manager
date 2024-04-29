@@ -107,6 +107,11 @@ if node["redborder"]["managers_per_services"]["kafka"].include?(node.name)
   node.default["redborder"]["kafka"]["host_index"] = node["redborder"]["managers_per_services"]["kafka"].index(node.name)
 end
 
+#set druid realtime partition id (its needed in cluster mode for druid brokers)
+if node["redborder"]["manager_per_services"]["druid_realtime"].include?(node.name)
+  node.default["redborder"]["druid_realtime"]["partition_num"] = node["redborder"]["manager_per_services"]["druid_realtime"].index(node.name)
+end
+
 #get an array of managers
 managers_list = []
 node["redborder"]["cluster_info"].each_key do |mgr|
