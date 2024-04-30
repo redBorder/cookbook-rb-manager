@@ -280,6 +280,7 @@ logstash_config "Configure logstash" do
   vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
   scanner_nodes node["redborder"]["sensors_info_all"]["scanner-sensor"]
   device_nodes node["redborder"]["sensors_info_all"]["device-sensor"]
+  logstash_pipelines node["redborder"]["logstash"]["pipelines"]
   action (manager_services["logstash"] ? [:add, :register] : [:remove, :deregister])
 end
 
