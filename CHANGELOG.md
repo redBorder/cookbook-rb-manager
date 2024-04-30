@@ -1,6 +1,12 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 1.7.6
+
+  - Miguel Álvarez
+    - [10301b6] Add parition id for druid realtime
+    - [17142d4] Use zookeeper.service instead of hardcoded localhost
+
 ## 1.7.5
 
   - Miguel Negron
