@@ -24,9 +24,10 @@ end
 
 #Set :ipaddress_sync 
 ipaddress_sync=node["ipaddress"]
+sync_net = `cat /etc/redborder/rb_init_conf.yml  | grep sync_net | awk '{print $2'} | sed 's|/.*||'`.strip
 node['network']['interfaces'].each do |interface, details|
   next unless "x#{interface}" != "xlo"
-  ipaddress_sync = details['addresses'].keys[1] if (details['addresses'] and ipaddress_sync != details['addresses'].keys[1])
+  ipaddress_sync = `ip route get #{sync_net} | head -n 1 | awk '{for (i=1; i<=NF; i++) if ($i == "src") print $(i+1)}'`.strip
 end
 node.default[:ipaddress_sync]=ipaddress_sync
 
