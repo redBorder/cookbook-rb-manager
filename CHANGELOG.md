@@ -1,4 +1,10 @@
-# rb-manager CHANGELOG
+cookbook-rb-manager CHANGELOG
+===============
+
+## 1.7.5
+
+  - Miguel Negron
+    - [0c6a59b] Change the way we get the sync IP using ip route
 
 ## 1.7.4
 dvanhoucke
