@@ -109,7 +109,7 @@ end
 
 #set druid realtime partition id (its needed in cluster mode for druid brokers)
 if node["redborder"]["manager_per_services"]["druid_realtime"].include?(node.name)
-  node.default["redborder"]["druid_realtime"]["partition_num"] = node["redborder"]["manager_per_services"]["druid_realtime"].index(node.name)
+  node.default["redborder"]["druid"]["realtime"]["partition_num"] = node["redborder"]["manager_per_services"]["druid_realtime"].index(node.name)
 end
 
 #get an array of managers

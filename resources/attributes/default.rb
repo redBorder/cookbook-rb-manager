@@ -211,5 +211,7 @@ default["redborder"]["systemdservices"]["radiusd"]                = ["radiusd"]
 default["redborder"]["druid"]["historical"]["tier"]     = "default"
 default["redborder"]["druid"]["historical"]["maxsize"]  = -1
 
+# Realtime
+default["redborder"]["druid"]["realtime"]["partition_num"] = 0
 
 default["redborder"]["pending_changes"]=0
