@@ -22,7 +22,7 @@ if mode != "core" or mode != "full"
  node.default["redborder"]["services"]["consul-client"] = true
 end
 
-#Set :ipaddress_sync 
+#Set :ipaddress_sync
 ipaddress_sync=node["ipaddress"]
 sync_net = `cat /etc/redborder/rb_init_conf.yml  | grep sync_net | awk '{print $2'} | sed 's|/.*||'`.strip
 node['network']['interfaces'].each do |interface, details|
@@ -94,6 +94,9 @@ node.default["redborder"]["sensors_info_all"] = get_sensors_all_info()
 
 #get sensors info of all flow sensors
 node.default["redborder"]["all_flow_sensors_info"] = get_all_flow_sensors_info()
+
+#get logstash pipelines
+node.default["redborder"]["logstash"]["pipelines"] = get_pipelines()
 
 #get namespaces
 node.default["redborder"]["namespaces"] = get_namespaces
