@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 1.7.7
+
+  - nilsver
+    - [3268d47] imported logstash template from centos6
+
 ## 1.7.6
 
   - Miguel Álvarez
