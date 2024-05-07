@@ -95,7 +95,7 @@ default["redborder"]["memory_services"]["redborder-cep"] = {"count" => 10, "memo
 default["redborder"]["memory_services"]["rb-aioutliers"] = {"count" => 10, "memory" => 0 }
 # excluded mem services
 # default['redborder']['excluded_memservices'] = Set.new(['chef-client']) # TODO: refactor to this line
-default['redborder']['excluded_memservices'] = ['chef-client'] # Don't assign memory to chef because the service will get handled
+default['redborder']['excluded_memory_services'] = %w[chef-client] # Don't assign memory to chef because the service will get handled
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default["redborder"]["cluster_info"] = {}
