@@ -1,4 +1,4 @@
-#
+# frozen_string_literal: true
 # Cookbook Name:: manager
 # Recipe:: prepare_system
 #
@@ -8,103 +8,103 @@
 #
 extend Rb_manager::Helpers
 
-#clean metadata to get packages upgrades
-execute "Clean yum metadata" do
-  command "yum clean metadata"
+# Clean metadata to get packages upgrades
+execute 'Clean yum metadata' do
+  command 'yum clean metadata'
 end
 
 # Set services_group related with the node mode (core, full, ...)
-mode = node["redborder"]["mode"]
-node["redborder"]["services_group"][mode].each do |s|
-  node.default["redborder"]["services"][s] = true
+mode = node['redborder']['mode']
+node['redborder']['services_group'][mode].each do |s|
+  node.default['redborder']['services'][s] = true
 end
-if mode != "core" or mode != "full"
- node.default["redborder"]["services"]["consul-client"] = true
+if mode != 'core' or mode != 'full'
+ node.default['redborder']['services']['consul-client'] = true
 end
 
 #Set :ipaddress_sync
-ipaddress_sync=node["ipaddress"]
+ipaddress_sync=node['ipaddress']
 sync_net = `cat /etc/redborder/rb_init_conf.yml  | grep sync_net | awk '{print $2'} | sed 's|/.*||'`.strip
 node['network']['interfaces'].each do |interface, details|
-  next unless "x#{interface}" != "xlo"
+  next unless "x#{interface}" != 'xlo'
   ipaddress_sync = `ip route get #{sync_net} | head -n 1 | awk '{for (i=1; i<=NF; i++) if ($i == "src") print $(i+1)}'`.strip
 end
 node.default[:ipaddress_sync]=ipaddress_sync
 
 #get mac
 mac_sync = `ip a | grep -w -B2 #{ipaddress_sync} | awk '{print toupper($2)}' | head -n 1 | tr -d '\n'`
-node.default["mac_sync"] = mac_sync
+node.default['mac_sync'] = mac_sync
 
 #Configure and enable chef-client
-dnf_package "redborder-chef-client" do
+dnf_package 'redborder-chef-client' do
   flush_cache [:before]
   action :upgrade
 end
 
-template "/etc/sysconfig/chef-client" do
-  source "sysconfig_chef-client.rb"
+template '/etc/sysconfig/chef-client' do
+  source 'sysconfig_chef-client.rb'
   mode 0644
   variables(
-    :interval => node["chef-client"]["interval"],
-    :splay => node["chef-client"]["splay"],
-    :options => node["chef-client"]["options"]
+    :interval => node['chef-client']['interval'],
+    :splay => node['chef-client']['splay'],
+    :options => node['chef-client']['options']
   )
 end
 
-if node["redborder"]["services"]["chef-client"]
-  service "chef-client" do
+if node['redborder']['services']['chef-client']
+  service 'chef-client' do
     action [:enable, :start]
   end
 else
-  service "chef-client" do
+  service 'chef-client' do
     action [:stop]
   end
 end
 
 #get managers information(name, ip, services...)
-cdomain = ""
+cdomain = ''
 File.open('/etc/redborder/cdomain') {|f| cdomain = f.readline.chomp}
-node.default["redborder"]["cdomain"] = cdomain
+node.default['redborder']['cdomain'] = cdomain
 
 #get managers information(name, ip, services...)
-node.default["redborder"]["cluster_info"] = get_cluster_info()
+node.default['redborder']['cluster_info'] = get_cluster_info()
 
 #get managers sorted by service
-node.default["redborder"]["managers_per_services"] = managers_per_service()
+node.default['redborder']['managers_per_services'] = managers_per_service()
 
 #get elasticache nodes
-elasticache = Chef::DataBagItem.load("rBglobal", "elasticache") rescue elasticache = {}
+elasticache = Chef::DataBagItem.load('rBglobal', 'elasticache') rescue elasticache = {}
 if !elasticache.empty?
-  node.default["redborder"]["memcached"]["server_list"] = getElasticacheNodes(elasticache["cfg_address"], elasticache["cfg_port"])
-  node.default["redborder"]["memcached"]["port"] = elasticache["cfg_port"]
-  node.default["redborder"]["memcached"]["hosts"] = joinHostArray2port(node["redborder"]["memcached"]["server_list"], node["redborder"]["memcached"]["port"]).join(",")
-  node.default["redborder"]["memcached"]["elasticache"] = true
+  node.default['redborder']['memcached']['server_list'] = getElasticacheNodes(elasticache['cfg_address'], elasticache['cfg_port'])
+  node.default['redborder']['memcached']['port'] = elasticache['cfg_port']
+  node.default['redborder']['memcached']['hosts'] = joinHostArray2port(node['redborder']['memcached']['server_list'], node['redborder']['memcached']['port']).join(',')
+  node.default['redborder']['memcached']['elasticache'] = true
 else
-  node.default["redborder"]["memcached"]["hosts"] = "memcached.service.#{node["redborder"]["cdomain"]}:#{node["redborder"]["memcached"]["port"]}"
+  node.default['redborder']['memcached']['hosts'] = "memcached.service.#{node['redborder']['cdomain']}:#{node['redborder']['memcached']['port']}"
 end
 
 #get organizations for http2k
-node.default["redborder"]["organizations"] = get_orgs() if node["redborder"]["services"]["http2k"]
+node.default['redborder']['organizations'] = get_orgs() if node['redborder']['services']['http2k']
 
 #get sensors info
-node.default["redborder"]["sensors_info"] = get_sensors_info()
+node.default['redborder']['sensors_info'] = get_sensors_info()
 
 #get sensors info full info
-node.default["redborder"]["sensors_info_all"] = get_sensors_all_info()
+node.default['redborder']['sensors_info_all'] = get_sensors_all_info()
 
 #get sensors info of all flow sensors
-node.default["redborder"]["all_flow_sensors_info"] = get_all_flow_sensors_info()
+node.default['redborder']['all_flow_sensors_info'] = get_all_flow_sensors_info()
 
 #get logstash pipelines
-node.default["redborder"]["logstash"]["pipelines"] = get_pipelines()
+node.default['redborder']['logstash']['pipelines'] = get_pipelines()
 
 #get namespaces
-node.default["redborder"]["namespaces"] = get_namespaces
+node.default['redborder']['namespaces'] = get_namespaces
 
 #get string with all zookeeper hosts and port separated by commas, its needed for multiples services
-zk_port = node["redborder"]["zookeeper"]["port"]
+zk_port = node['redborder']['zookeeper']['port']
 #zk_hosts = node["redborder"]["managers_per_services"]["zookeeper"].map {|z| "#{z}.node:#{zk_port}"}.join(',')
-node.default["redborder"]["zookeeper"]["zk_hosts"] = "zookeeper.service.#{node["redborder"]["cdomain"]}:#{node["redborder"]["zookeeper"]["port"]}"
+node.default['redborder']['zookeeper']['zk_hosts'] = "zookeeper.service.#{node['redborder']['cdomain']}:#{node['redborder']['zookeeper']['port']}"
 
 #set kafka host index if kafka is enabled in this host
 if node["redborder"]["managers_per_services"]["kafka"].include?(node.name)
