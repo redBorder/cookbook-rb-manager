@@ -116,12 +116,6 @@ if node["redborder"]["managers_per_services"]["druid-realtime"].include?(node.na
   node.default["redborder"]["druid"]["realtime"]["partition_num"] = node["redborder"]["managers_per_services"]["druid-realtime"].index(node.name)
 end
 
-if node["redborder"]["logstash"]["pipelines"].empty? and node["redborder"]["services"]["overwrite"].nil?
-  node.default["redborder"]["services"]["logstash"] = false
-else
-  node.default["redborder"]["services"]["logstash"] = true
-end
-
 #get an array of managers
 managers_list = []
 node["redborder"]["cluster_info"].each_key do |mgr|
