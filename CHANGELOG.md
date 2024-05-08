@@ -4,7 +4,6 @@ cookbook-rb-manager CHANGELOG
 ## 1.7.8
 
   - nilsver
-    - [dcd6695] Merge pull request #130 from redBorder/bugfix/#17049_logstash_pipeline_crash_fix
     - [ae88eb5] fix_logstash_crash
 
 ## 1.7.7
