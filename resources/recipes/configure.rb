@@ -136,6 +136,8 @@ end
 druid_realtime "Configure Druid Realtime" do
   name node["hostname"]
   ipaddress node["ipaddress_sync"]
+  zookeeper_hosts node["redborder"]["zookeeper"]["zk_hosts"]
+  partition_num node["redborder"]["druid"]["realtime"]["partition_num"]
   memory_kb node["redborder"]["memory_services"]["druid-realtime"]["memory"]
   action (manager_services["druid-realtime"] ? [:add, :register] : [:remove, :deregister])
 end
@@ -280,6 +282,7 @@ logstash_config "Configure logstash" do
   vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
   scanner_nodes node["redborder"]["sensors_info_all"]["scanner-sensor"]
   device_nodes node["redborder"]["sensors_info_all"]["device-sensor"]
+  logstash_pipelines node["redborder"]["logstash"]["pipelines"]
   action (manager_services["logstash"] ? [:add, :register] : [:remove, :deregister])
 end
 
@@ -363,6 +366,7 @@ s3_leader = `serf members | grep s3=ready | awk '{print $1'} | head -n 1`.strip
 
 # Allow only one s3 onpremise node for now.. TODO: Distributed MinIO
 minio_config "Configure S3 (minio)" do
+  ipaddress node["ipaddress_sync"]
   action ((manager_services["s3"] and external_services["s3"] == "onpremise" and s3_leader == node.name ) ? [:add, :register] : [:remove, :deregister])
 end
 

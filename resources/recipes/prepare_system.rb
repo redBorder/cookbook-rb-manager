@@ -22,11 +22,12 @@ if mode != "core" or mode != "full"
  node.default["redborder"]["services"]["consul-client"] = true
 end
 
-#Set :ipaddress_sync 
+#Set :ipaddress_sync
 ipaddress_sync=node["ipaddress"]
+sync_net = `cat /etc/redborder/rb_init_conf.yml  | grep sync_net | awk '{print $2'} | sed 's|/.*||'`.strip
 node['network']['interfaces'].each do |interface, details|
   next unless "x#{interface}" != "xlo"
-  ipaddress_sync = details['addresses'].keys[1] if (details['addresses'] and ipaddress_sync != details['addresses'].keys[1])
+  ipaddress_sync = `ip route get #{sync_net} | head -n 1 | awk '{for (i=1; i<=NF; i++) if ($i == "src") print $(i+1)}'`.strip
 end
 node.default[:ipaddress_sync]=ipaddress_sync
 
@@ -94,6 +95,9 @@ node.default["redborder"]["sensors_info_all"] = get_sensors_all_info()
 #get sensors info of all flow sensors
 node.default["redborder"]["all_flow_sensors_info"] = get_all_flow_sensors_info()
 
+#get logstash pipelines
+node.default["redborder"]["logstash"]["pipelines"] = get_pipelines()
+
 #get namespaces
 node.default["redborder"]["namespaces"] = get_namespaces
 
@@ -105,6 +109,11 @@ node.default["redborder"]["zookeeper"]["zk_hosts"] = "zookeeper.service.#{node["
 #set kafka host index if kafka is enabled in this host
 if node["redborder"]["managers_per_services"]["kafka"].include?(node.name)
   node.default["redborder"]["kafka"]["host_index"] = node["redborder"]["managers_per_services"]["kafka"].index(node.name)
+end
+
+#set druid realtime partition id (its needed in cluster mode for druid brokers)
+if node["redborder"]["managers_per_services"]["druid-realtime"].include?(node.name)
+  node.default["redborder"]["druid"]["realtime"]["partition_num"] = node["redborder"]["managers_per_services"]["druid-realtime"].index(node.name)
 end
 
 #get an array of managers

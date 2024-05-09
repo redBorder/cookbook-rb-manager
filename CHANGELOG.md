@@ -1,6 +1,27 @@
-# rb-manager CHANGELOG
+cookbook-rb-manager CHANGELOG
+===============
+
+## 1.7.7
+
+  - nilsver
+    - [3268d47] imported logstash template from centos6
+
+## 1.7.6
+
+  - Miguel Álvarez
+    - [10301b6] Add parition id for druid realtime
+    - [17142d4] Use zookeeper.service instead of hardcoded localhost
+
+## 1.7.5
+
+  - Miguel Negron
+    - [0c6a59b] Change the way we get the sync IP using ip route
 
 ## 1.7.4
+dvanhoucke
+- add ipaddress sync for minio
+
+## 1.7.3
 vimesa
 - Fix druid tiers
 
