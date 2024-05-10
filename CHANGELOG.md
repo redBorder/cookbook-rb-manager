@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 1.7.8
+
+  - nilsver
+    - [ae88eb5] fix_logstash_crash
+
 ## 1.7.7
 
   - nilsver
