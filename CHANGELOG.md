@@ -3,26 +3,9 @@ cookbook-rb-manager CHANGELOG
 
 ## 1.7.9
 
-  - jsotofernandez
-    - [11d5833] Merge pull request #129 from redBorder/bugfix/#17186_exclude_chef_for_being_cgrouped
-  - Luis Blanco
-    - [1c8be40] add clean operation to makefile
-    - [749a041] normalize
-    - [75329b8] Revert "must provide excluded mem services"
-    - [ec61e6a] Revert "lint quotes and frozen literal"
-    - [15303c6] must provide excluded mem services
-    - [8467504] excluded mem services is a new attribute of data structure set
-    - [04f74cf] lint quotes and frozen literal
-    - [9002a97] excluding chef-client not to be a memservice
   - Miguel Álvarez
-    - [c251329] Merge pull request #133 from redBorder/revert-132-bugfix/17236_logstash_enabled_without_pipelines
-    - [13246b8] Revert "Prevent logstash to be enabled when no pipelines are in the node (#132)"
-    - [7c0b5c4] Prevent logstash to be enabled when no pipelines are in the node (#132)
     - [1c900b6] Update prepare_system.rb
     - [f9d986c] Update memory_services.rb
-    - [3db3a14] Clean comments
-    - [ff06e73] Update prepare_system.rb
-    - [7dcba48] Update prepare_system.rb
     - [546e802] rename to excluded_memory_services
 
 ## 1.7.8
