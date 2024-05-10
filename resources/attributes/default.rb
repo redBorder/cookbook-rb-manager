@@ -93,6 +93,9 @@ default["redborder"]["memory_services"]["n2klocd"] = {"count" => 10, "memory" =>
 default["redborder"]["memory_services"]["redborder-cep"] = {"count" => 10, "memory" => 0 }
 default["redborder"]["memory_services"]["rb-aioutliers"] = {"count" => 10, "memory" => 0 }
 
+# exclude mem services, setting memory to 0 for each.
+default['redborder']['excluded_memory_services'] = %w[chef-client]
+
 # default attributes for managers_info, it would be rewriten with the cluster config
 default["redborder"]["cluster_info"] = {}
 default["redborder"]["cluster_info"][node["hostname"]] = {}
