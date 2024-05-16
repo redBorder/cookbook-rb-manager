@@ -275,15 +275,21 @@ pmacct_config "Configure pmacct" do
   action (manager_services["pmacct"] ? [:add, :register] : [:remove, :deregister])
 end
 
-logstash_config "Configure logstash" do
-  cdomain node["redborder"]["cdomain"]
-  flow_nodes node["redborder"]["all_flow_sensors_info"]["flow-sensor"]
-  namespaces node["redborder"]["namespaces"]
-  vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
-  scanner_nodes node["redborder"]["sensors_info_all"]["scanner-sensor"]
-  device_nodes node["redborder"]["sensors_info_all"]["device-sensor"]
-  logstash_pipelines node["redborder"]["logstash"]["pipelines"]
-  action (manager_services["logstash"] ? [:add, :register] : [:remove, :deregister])
+if node["redborder"]["logstash"]["pipelines"].nil? || node["redborder"]["logstash"]["pipelines"].empty?
+  service 'logstash' do
+    action [:disable, :stop]
+  end
+else
+  logstash_config "Configure logstash" do
+    cdomain node["redborder"]["cdomain"]
+    flow_nodes node["redborder"]["all_flow_sensors_info"]["flow-sensor"]
+    namespaces node["redborder"]["namespaces"]
+    vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
+    scanner_nodes node["redborder"]["sensors_info_all"]["scanner-sensor"]
+    device_nodes node["redborder"]["sensors_info_all"]["device-sensor"]
+    logstash_pipelines node["redborder"]["logstash"]["pipelines"]
+    action (manager_services["logstash"] ? [:add, :register] : [:remove, :deregister])
+  end
 end
 
 rbdswatcher_config "Configure redborder-dswatcher" do
