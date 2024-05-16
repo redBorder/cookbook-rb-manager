@@ -37,3 +37,9 @@ webui
     /usr/bin/env BOOTUP=none /usr/lib/redborder/bin/rb_create_bulkstats_columns.sh *,
     /usr/lib/redborder/bin/rb_create_rsa.sh *
 ".gsub(/\s+/, ' ').strip %>
+<%="
+redborder-ale
+  ALL=NOPASSWD:SETENV: 
+    /usr/lib/rvm/rubies/ruby-2.7.5/bin/ruby,
+    /var/rb-ale/bin/rb_ale.rb
+".gsub(/\s+/, ' ').strip %>
