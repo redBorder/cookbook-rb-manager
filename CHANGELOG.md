@@ -1,8 +1,7 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
-## 1.7.11
-
+## 1.8.0
   - Luis Blanco
     - [48c4142] add the service in redborder full installation
 
