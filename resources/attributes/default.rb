@@ -173,6 +173,7 @@ default["redborder"]["services"]["redborder-nmsp"]            = false
 default["redborder"]["services"]["redborder-ale"]             = false
 default["redborder"]["services"]["n2klocd"]                   = false
 default["redborder"]["services"]["radiusd"]                   = false
+default["redborder"]["services"]["postfix"]                   = true
 
 default["redborder"]["systemdservices"]["chef-client"]            = ["chef-client"]
 default["redborder"]["systemdservices"]["chef-server"]            = ["opscode-erchef"]
@@ -209,6 +210,7 @@ default["redborder"]["systemdservices"]["redborder-nmsp"]         = ["redborder-
 default["redborder"]["systemdservices"]["redborder-ale"]          = ["redborder-ale"]
 default["redborder"]["systemdservices"]["n2klocd"]                = ["n2klocd"]
 default["redborder"]["systemdservices"]["radiusd"]                = ["radiusd"]
+default["redborder"]["systemdservices"]["postfix"]                = ["postfix"]
 
 # Tier
 default["redborder"]["druid"]["historical"]["tier"]     = "default"
