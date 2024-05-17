@@ -170,7 +170,7 @@ default["redborder"]["services"]["redborder-dswatcher"]       = false
 default["redborder"]["services"]["redborder-events-counter"]  = false
 default["redborder"]["services"]["rsyslog"]                   = true
 default["redborder"]["services"]["redborder-nmsp"]            = false
-default["redborder"]["services"]["redborder-ale"]             = true
+default["redborder"]["services"]["redborder-ale"]             = false
 default["redborder"]["services"]["n2klocd"]                   = false
 default["redborder"]["services"]["radiusd"]                   = false
 
