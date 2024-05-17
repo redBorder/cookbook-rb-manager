@@ -1,6 +1,17 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 1.7.11
+
+  - Luis Blanco
+    - [6692d79] Merge branch 'development' into feature/#16519_integrate_rb_ale
+    - [f8570d2] Merge branch 'development' into feature/#16519_integrate_rb_ale
+    - [20c6eec] Merge remote-tracking branch 'origin/development' into feature/#16519_integrate_rb_ale
+    - [0a4aaa7] adding sudo permissions thorugh this cookbook to ale service
+    - [4542a60] Merge branch 'development' into feature/#16519_integrate_rb_ale
+    - [233c7c2] Merge remote-tracking branch 'origin/master' into development
+    - [48c4142] add the service in redborder full installation
+
 ## 1.7.10
 
   - nilsver
