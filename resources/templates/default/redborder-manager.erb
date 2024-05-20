@@ -3,43 +3,23 @@ Defaults:redborder !requiretty
 Defaults:redborder-monitor !requiretty, !syslog
 Defaults:webui !requiretty
 Defaults:hadoop !requiretty
-<%="
-redborder
-  ALL= NOPASSWD:SETENV:
-    /usr/lib/redborder/bin/rb_wakeup_chef.sh, 
-    /opt/rb/bin/rb_update_geoip, 
-    /bin/env BOOTUP=none /usr/lib/redborder/bin/rb_wakeup_chef.sh -c, 
-    /bin/env BOOTUP=none /usr/lib/redborder/bin/rb_wakeup_chef.sh -n *, 
-    /bin/env BOOTUP=none /usr/lib/redborder/bin/rb_wakeup_chef.sh
-".gsub(/\s+/, ' ').strip %>
-<%="
-redborder-monitor
-  ALL= NOPASSWD: 
-    /usr/lib/redborder/bin/rb_get_sensor.sh,
-    /usr/lib/redborder/bin/cachestat.sh, 
-    /bin/nice -n 19 /usr/sbin/fping -p 1 -c 10 *, 
-    /usr/lib/redborder/bin/rb_mem.sh *
-".gsub(/\s+/, ' ').strip %>
+redborder   ALL= NOPASSWD:SETENV: /usr/lib/redborder/bin/rb_wakeup_chef.sh, /opt/rb/bin/rb_update_geoip, /bin/env BOOTUP=none /usr/lib/redborder/bin/rb_wakeup_chef.sh -c, /bin/env BOOTUP=none /usr/lib/redborder/bin/rb_wakeup_chef.sh -n *, /bin/env BOOTUP=none /usr/lib/redborder/bin/rb_wakeup_chef.sh
+redborder-monitor  ALL= NOPASSWD: /usr/lib/redborder/bin/rb_get_sensor.sh, /usr/lib/redborder/bin/cachestat.sh, /bin/nice -n 19 /usr/sbin/fping -p 1 -c 10 *, /usr/lib/redborder/bin/rb_mem.sh *
 <%="
 webui
   ALL=NOPASSWD:SETENV: 
     /usr/lib/redborder/bin/rb_get_raw_vault.sh *,
     /usr/lib/redborder/bin/rb_update_geodb_cookbook.sh,
     /usr/lib/redborder/bin/rb_update_geoip,
-    /usr/bin/env BOOTUP=none /usr/lib/redborder/bin/rb_wakeup_chef.sh -c,
-    /usr/bin/env BOOTUP=none /usr/lib/redborder/bin/rb_wakeup_chef.sh -n *,
-    /usr/bin/env BOOTUP=none /usr/lib/redborder/bin/rb_wakeup_chef.sh,
+    /bin/env BOOTUP=none /usr/lib/redborder/bin/rb_wakeup_chef -c,
+    /usr/lib/redborder/bin/rb_wakeup_chef.sh -c
+    /bin/env BOOTUP=none /usr/lib/redborder/bin/rb_wakeup_chef -n *,
+    /bin/env BOOTUP=none /usr/lib/redborder/bin/rb_wakeup_chef,
     /usr/lib/redborder/bin/rb_reassign_partitions.sh -d -e,
     /usr/lib/redborder/bin/rb_pcp.sh up *,
     /usr/lib/redborder/bin/rb_pcp.sh recovery *,
-    /usr/bin/env BOOTUP=none /usr/lib/redborder/bin/rb_pcp.sh status,
-    /usr/bin/env BOOTUP=none /usr/lib/redborder/bin/rb_get_zkinfo.sh,
-    /usr/bin/env BOOTUP=none /usr/lib/redborder/bin/rb_create_bulkstats_columns.sh *,
+    /bin/env BOOTUP=none /usr/lib/redborder/bin/rb_pcp.sh status,
+    /bin/env BOOTUP=none /usr/lib/redborder/bin/rb_get_zkinfo.sh,
+    /bin/env BOOTUP=none /usr/lib/redborder/bin/rb_create_bulkstats_columns.sh *,
     /usr/lib/redborder/bin/rb_create_rsa.sh *
-".gsub(/\s+/, ' ').strip %>
-<%="
-redborder-ale
-  ALL=NOPASSWD:SETENV: 
-    /usr/lib/rvm/rubies/ruby-2.7.5/bin/ruby,
-    /var/rb-ale/bin/rb_ale.rb
 ".gsub(/\s+/, ' ').strip %>
