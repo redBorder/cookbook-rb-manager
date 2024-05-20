@@ -355,6 +355,10 @@ rbcep_config "Configure redborder-cep" do
   action (node["redborder"]["services"]["redborder-cep"] ? [:add, :register] : [:remove, :deregister])
 end
 
+rb_postfix_config "Configure postfix" do
+  action (node["redborder"]["services"]["postfix"] ? :add : :remove)
+end
+
 rbcgroup_config "Configure cgroups" do
   action :add
 end
