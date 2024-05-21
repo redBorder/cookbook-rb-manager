@@ -1,6 +1,26 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 1.9.0
+  - David Vanhoucke
+    - [c2df76a] add postfix service
+
+## 1.8.0
+  - Luis Blanco
+    - [48c4142] add ale service in redborder full installation
+
+## 1.7.10
+
+  - nilsver
+    - [f66e148] added conditional check on pipelines
+
+## 1.7.9
+
+  - Miguel Álvarez
+    - [1c900b6] Update prepare_system.rb
+    - [f9d986c] Update memory_services.rb
+    - [546e802] rename to excluded_memory_services
+
 ## 1.7.8
 
   - nilsver

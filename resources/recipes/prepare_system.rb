@@ -132,7 +132,6 @@ sysmem_total = (node["memory"]["total"].to_i * 0.90).to_i
 #node attributes related with memory are changed inside the function to have simplicity using recursivity
 memory_services(sysmem_total)
 
-
 #License
 
 modules = ["ips", "flow", "monitor", "location", "api", "malware", "vault"]
