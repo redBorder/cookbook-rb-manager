@@ -1,5 +1,10 @@
 cookbook-rb-manager CHANGELOG
 ===============
+## 1.8.0
+  - David Vanhoucke
+    - [c2df76a] add postfix service
+  - Luis Blanco
+    - [48c4142] add ale service in redborder full installation
 
 ## 1.7.10
 
