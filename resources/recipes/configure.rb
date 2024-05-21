@@ -63,15 +63,13 @@ kafka_config 'Configure Kafka' do
   action (manager_services['kafka'] ? [:add, :register] : [:remove, :deregister])
 end
 
-if  manager_services['druid-coordinator'] or
-    manager_services['druid-overlord'] or
-    manager_services['druid-broker'] or
-    manager_services['druid-middlemanager'] or
-    manager_services['druid-historical'] or
-    manager_services['druid-realtime']
+druid_group = %w[coordinator overlord broker middlemanager historical realtime]
+druid_group.map! { |subfix| "druid-#{subfix}" }
 
-  ['druid-broker', 'druid-coordinator', 'druid-historical',
-  'druid-middlemanager', 'druid-overlord'].each do |druid_service|
+if druid_group.any? { |druid| manager_services[druid] }
+  druid_group.each do |druid_service|
+    next if druid_service == 'druid_realtime'
+
     service druid_service do
       supports :status => true, :start => true, :restart => true, :reload => true
       action :nothing
