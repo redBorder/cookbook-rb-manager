@@ -4,8 +4,9 @@ maintainer_email 'manegron@redborder.com'
 license          'All rights reserved'
 description      'Installs/Configures redborder manager'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '1.8.0'
+version          '1.9.0'
 
+depends 'rb-common'
 depends 'chef-server'
 depends 'zookeeper'
 depends 'kafka'
