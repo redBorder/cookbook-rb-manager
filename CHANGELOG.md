@@ -5,6 +5,7 @@ cookbook-rb-manager CHANGELOG
 
   - Miguel Negrón
     - [ef94e3c] Add configure common cookbook call (#140)
+
 ## 1.8.0
   - David Vanhoucke
     - [c2df76a] add postfix service
