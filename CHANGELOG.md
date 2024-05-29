@@ -1,9 +1,16 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 1.9.0
+
+  - Miguel Negrón
+    - [ef94e3c] Add configure common cookbook call (#140)
+
 ## 1.8.0
+  - David Vanhoucke
+    - [c2df76a] add postfix service
   - Luis Blanco
-    - [48c4142] add the service in redborder full installation
+    - [48c4142] add ale service in redborder full installation
 
 ## 1.7.10
 

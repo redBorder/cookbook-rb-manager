@@ -12,6 +12,10 @@
 # manager services
 manager_services = manager_services()
 
+rb_common_config "Configure common" do
+  action :configure
+end
+
 rb_selinux_config "Configure Selinux" do
   if shell_out("getenforce").stdout.chomp == "Disabled"
     action :remove
@@ -353,6 +357,10 @@ rbcep_config "Configure redborder-cep" do
   vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
   ips_nodes node["redborder"]["sensors_info_all"]["ips-sensor"] + node["redborder"]["sensors_info_all"]["ipsv2-sensor"] + node["redborder"]["sensors_info_all"]["ipscp-sensor"]
   action (node["redborder"]["services"]["redborder-cep"] ? [:add, :register] : [:remove, :deregister])
+end
+
+rb_postfix_config "Configure postfix" do
+  action (node["redborder"]["services"]["postfix"] ? :add : :remove)
 end
 
 rbcgroup_config "Configure cgroups" do
