@@ -200,8 +200,8 @@ end
 
 rbmonitor_config "Configure redborder-monitor" do
   name node["hostname"]
-  device_nodes node["redborder"]["sensors_info_all"]["device-sensor"]
-  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
+  device_nodes node.run_state["sensors_info_all"]["device-sensor"]
+  flow_nodes node.run_state["sensors_info_all"]["flow-sensor"]
   managers node["redborder"]["managers_list"]
   cluster node["redborder"]["cluster_info"]
   hostip node["redborder"]["cluster_info"][name]["ip"]
@@ -209,7 +209,7 @@ rbmonitor_config "Configure redborder-monitor" do
 end
 
 rbscanner_config "Configure redborder-scanner" do
-  scanner_nodes node["redborder"]["sensors_info_all"]["scanner-sensor"]
+  scanner_nodes node.run_state["sensors_info_all"]["scanner-sensor"]
   action (manager_services["redborder-scanner"] ? [:add, :register] : [:remove, :deregister])
 end
 
@@ -253,10 +253,10 @@ http2k_config "Configure Http2k" do
   kafka_hosts node["redborder"]["managers_per_services"]["kafka"]
   memory node["redborder"]["memory_services"]["http2k"]["memory"]
   port node["redborder"]["http2k"]["port"]
-  proxy_nodes node["redborder"]["sensors_info"]["proxy-sensor"]
-  ips_nodes node["redborder"]["sensors_info"]["ips-sensor"]
-  ipsg_nodes node["redborder"]["sensors_info"]["ipsg-sensor"]
-  ipscp_nodes node["redborder"]["sensors_info"]["ipscp-sensor"]
+  proxy_nodes node.run_state["sensors_info"]["proxy-sensor"]
+  ips_nodes node.run_state["sensors_info"]["ips-sensor"]
+  ipsg_nodes node.run_state["sensors_info"]["ipsg-sensor"]
+  ipscp_nodes node.run_state["sensors_info"]["ipscp-sensor"]
   organizations node["redborder"]["organizations"]
   locations_list node["redborder"]["locations"]
   action (manager_services["http2k"]  ? [:add, :register] : [:remove, :deregister])
@@ -269,29 +269,29 @@ http2k_config "Configure Nginx Http2k" do
 end
 
 f2k_config "Configure f2k" do
-  sensors node["redborder"]["sensors_info"]["flow-sensor"]
+  sensors node.run_state["sensors_info"]["flow-sensor"]
   action (manager_services["f2k"] ? [:add, :register] : [:remove, :deregister])
 end
 
 pmacct_config "Configure pmacct" do
-  sensors node["redborder"]["sensors_info"]["flow-sensor"]
+  sensors node.run_state["sensors_info"]["flow-sensor"]
   kafka_hosts node["redborder"]["managers_per_services"]["kafka"]
   action (manager_services["pmacct"] ? [:add, :register] : [:remove, :deregister])
 end
 
-if node["redborder"]["logstash"]["pipelines"].nil? || node["redborder"]["logstash"]["pipelines"].empty?
+if node.run_state["pipelines"].nil? || node.run_state["pipelines"].empty?
   service 'logstash' do
     action [:disable, :stop]
   end
 else
   logstash_config "Configure logstash" do
     cdomain node["redborder"]["cdomain"]
-    flow_nodes node["redborder"]["all_flow_sensors_info"]["flow-sensor"]
-    namespaces node["redborder"]["namespaces"]
-    vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
-    scanner_nodes node["redborder"]["sensors_info_all"]["scanner-sensor"]
-    device_nodes node["redborder"]["sensors_info_all"]["device-sensor"]
-    logstash_pipelines node["redborder"]["logstash"]["pipelines"]
+    flow_nodes node.run_state["all_flow_sensors_info"]["flow-sensor"]
+    namespaces node.run_state["namespaces"]
+    vault_nodes node.run_state["sensors_info_all"]["vault-sensor"]
+    scanner_nodes node.run_state["sensors_info_all"]["scanner-sensor"]
+    device_nodes node.run_state["sensors_info_all"]["device-sensor"]
+    logstash_pipelines node.run_state["pipelines"]
     action (manager_services["logstash"] ? [:add, :register] : [:remove, :deregister])
   end
 end
@@ -307,29 +307,29 @@ rbevents_counter_config "Configure redborder-events-counter" do
 end
 
 rsyslog_config "Configure rsyslog" do
-  vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"] + node["redborder"]["sensors_info_all"]["cep-sensor"]
-  ips_nodes node["redborder"]["sensors_info_all"]["ips-sensor"] + node["redborder"]["sensors_info_all"]["ipsv2-sensor"] + node["redborder"]["sensors_info_all"]["ipscp-sensor"]
+  vault_nodes node.run_state["sensors_info_all"]["vault-sensor"] + node.run_state["sensors_info_all"]["cep-sensor"]
+  ips_nodes node.run_state["sensors_info_all"]["ips-sensor"] + node.run_state["sensors_info_all"]["ipsv2-sensor"] + node.run_state["sensors_info_all"]["ipscp-sensor"]
   action (manager_services["rsyslog"] ? [:add, :register] : [:remove, :deregister])
 end
 
 rbnmsp_config "Configure redborder-nmsp" do
   memory node["redborder"]["memory_services"]["redborder-nmsp"]["memory"]
-  proxy_nodes node["redborder"]["sensors_info_all"]["proxy-sensor"]
-  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
+  proxy_nodes node.run_state["sensors_info_all"]["proxy-sensor"]
+  flow_nodes node.run_state["sensors_info_all"]["flow-sensor"]
   hosts node["redborder"]["zookeeper"]["zk_hosts"]
   action (manager_services["redborder-nmsp"] ? [:add, :configure_keys, :register] : [:remove, :deregister])
 end
 
 n2klocd_config "Configure n2klocd" do
-  mse_nodes node["redborder"]["sensors_info_all"]["mse-sensor"]
-  meraki_nodes node["redborder"]["sensors_info_all"]["meraki-sensor"]
+  mse_nodes node.run_state["sensors_info_all"]["mse-sensor"]
+  meraki_nodes node.run_state["sensors_info_all"]["meraki-sensor"]
   n2klocd_managers node["redborder"]["managers_per_services"]["n2klocd"]
   memory node["redborder"]["memory_services"]["n2klocd"]["memory"]
   action (manager_services["n2klocd"] ? [:add, :register] : [:remove, :deregister])
 end
 
 rbale_config "Configure redborder-ale" do
-  ale_nodes node["redborder"]["sensors_info_all"]["ale-sensor"]
+  ale_nodes node.run_state["sensors_info_all"]["ale-sensor"]
   action (node["redborder"]["services"]["redborder-ale"] ? [:add, :register] : [:remove, :deregister])
 end
 
@@ -338,13 +338,13 @@ rblogstatter_config "Configure redborder-logstatter" do
 end
 
 rb_arubacentral_config "Configure rb-arubacentral" do
-  arubacentral_nodes node["redborder"]["sensors_info_all"]["arubacentral-sensor"]
-  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
+  arubacentral_nodes node.run_state["sensors_info_all"]["arubacentral-sensor"]
+  flow_nodes node.run_state["sensors_info_all"]["flow-sensor"]
   action (node["redborder"]["services"]["rb-arubacentral"] ? :add : :remove)
 end
 
 #freeradius_config "Configure radiusd" do
-#  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
+#  flow_nodes node.run_state["sensors_info_all"]["flow-sensor"]
 #  action (node["redborder"]["services"]["radiusd"] ? [:config_common, :config_manager, :register] : [:remove, :deregister])
 #end
 
@@ -353,9 +353,9 @@ rbaioutliers_config "Configure rb-aioutliers" do
 end
 
 rbcep_config "Configure redborder-cep" do
-  flow_nodes node["redborder"]["sensors_info_all"]["flow-sensor"]
-  vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
-  ips_nodes node["redborder"]["sensors_info_all"]["ips-sensor"] + node["redborder"]["sensors_info_all"]["ipsv2-sensor"] + node["redborder"]["sensors_info_all"]["ipscp-sensor"]
+  flow_nodes node.run_state["sensors_info_all"]["flow-sensor"]
+  vault_nodes node.run_state["sensors_info_all"]["vault-sensor"]
+  ips_nodes node.run_state["sensors_info_all"]["ips-sensor"] + node.run_state["sensors_info_all"]["ipsv2-sensor"] + node.run_state["sensors_info_all"]["ipscp-sensor"]
   action (node["redborder"]["services"]["redborder-cep"] ? [:add, :register] : [:remove, :deregister])
 end
 
