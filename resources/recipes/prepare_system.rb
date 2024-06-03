@@ -87,24 +87,28 @@ end
 node.default["redborder"]["organizations"] = get_orgs() if node["redborder"]["services"]["http2k"]
 
 #get sensors info
-node.run_state["sensors_info"] = get_sensors_info()
+node.default["redborder"]["sensors_info"] = get_sensors_info()
 
 #get sensors info full info
-node.run_state["sensors_info_all"] = get_sensors_all_info()
+node.default["redborder"]["sensors_info_all"] = get_sensors_all_info()
 
 #get sensors info of all flow sensors
-node.run_state["all_flow_sensors_info"] = get_all_flow_sensors_info()
+node.default["redborder"]["all_flow_sensors_info"] = get_all_flow_sensors_info()
 
 #get logstash pipelines
-node.run_state["pipelines"] = get_pipelines()
+node.default["redborder"]["logstash"]["pipelines"] = get_pipelines()
 
 #get namespaces
-node.run_state["namespaces"] = get_namespaces
+node.default["redborder"]["namespaces"] = get_namespaces
 
 #get string with all zookeeper hosts and port separated by commas, its needed for multiples services
 zk_port = node["redborder"]["zookeeper"]["port"]
 #zk_hosts = node["redborder"]["managers_per_services"]["zookeeper"].map {|z| "#{z}.node:#{zk_port}"}.join(',')
 node.default["redborder"]["zookeeper"]["zk_hosts"] = "zookeeper.service.#{node["redborder"]["cdomain"]}:#{node["redborder"]["zookeeper"]["port"]}"
+
+# Set all nodes with s3 configured (nginx load balancer)
+s3_hosts = node["redborder"]["managers_per_services"]["s3"].map {|z| "#{z}.node:9000"}
+node.default["redborder"]["s3"]["s3_hosts"] = s3_hosts
 
 #set kafka host index if kafka is enabled in this host
 if node["redborder"]["managers_per_services"]["kafka"].include?(node.name)
