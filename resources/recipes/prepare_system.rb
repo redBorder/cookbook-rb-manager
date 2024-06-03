@@ -87,19 +87,19 @@ end
 node.default["redborder"]["organizations"] = get_orgs() if node["redborder"]["services"]["http2k"]
 
 #get sensors info
-node.default["redborder"]["sensors_info"] = get_sensors_info()
+node.run_state["sensors_info"] = get_sensors_info()
 
 #get sensors info full info
-node.default["redborder"]["sensors_info_all"] = get_sensors_all_info()
+node.run_state["sensors_info_all"] = get_sensors_all_info()
 
 #get sensors info of all flow sensors
-node.default["redborder"]["all_flow_sensors_info"] = get_all_flow_sensors_info()
+node.run_state["all_flow_sensors_info"] = get_all_flow_sensors_info()
 
 #get logstash pipelines
-node.default["redborder"]["logstash"]["pipelines"] = get_pipelines()
+node.run_state["pipelines"] = get_pipelines()
 
 #get namespaces
-node.default["redborder"]["namespaces"] = get_namespaces
+node.run_state["namespaces"] = get_namespaces
 
 #get string with all zookeeper hosts and port separated by commas, its needed for multiples services
 zk_port = node["redborder"]["zookeeper"]["port"]
