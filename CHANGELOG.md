@@ -1,6 +1,17 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 1.9.1
+
+  - David Vanhoucke
+    - [f22a469] add temporary variables in node.run_state
+  - Miguel Negrón
+    - [7d26b70] Update README.md
+    - [d29155f] Update rpm.yml
+    - [4a4efaa] Update metadata.rb
+    - [1120885] Merge pull request #142 from redBorder/bugfix/missing_specific_dist_kernel_info_in_motd
+    - [31682a0] Add full kernel release info in motd
+
 ## 1.9.0
 
   - Miguel Negrón
