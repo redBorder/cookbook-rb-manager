@@ -189,7 +189,7 @@ samza_config "Configure samza applications" do
 end
 
 geoip_config "Configure GeoIP" do
-  action (manager_services["geoip"] ? :add : :remove)
+  action :add
 end
 
 snmp_config "Configure snmp" do
