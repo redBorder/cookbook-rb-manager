@@ -173,7 +173,7 @@ end
 memcached_config 'Configure Memcached' do
   memory node['redborder']['memory_services']['memcached']['memory']
   ipaddress node['ipaddress_sync']
-  if action manager_services['memcached']
+  if manager_services['memcached']
     action [:add, :register]
   else
     action [:remove, :deregister]
