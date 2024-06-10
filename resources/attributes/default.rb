@@ -13,7 +13,6 @@ default["redborder"]["locations"] = [
 
 #s3
 default["redborder"]["uploaded_s3"] = false
-default["redborder"]["s3"]["s3_hosts"] = []
 
 #chef-client
 default["chef-client"]["interval"] = 300
