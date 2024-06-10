@@ -243,7 +243,7 @@ webui_config "Configure WebUI" do
 end
 
 webui_config "Configure Nginx WebUI" do
-  hosts node["redborder"]["webui"]["webui_hosts"]
+  hosts node["redborder"]["webui"]["hosts"]
   cdomain node["redborder"]["cdomain"]
   port node["redborder"]["webui"]["port"]
   action ((manager_services["webui"] and manager_services["nginx"]) ? [:configure_certs, :add_webui_conf_nginx] : :nothing)
