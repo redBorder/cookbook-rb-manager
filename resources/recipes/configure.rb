@@ -10,7 +10,11 @@
 # Services configuration
 
 # manager services
-manager_services = manager_services()
+managers = node.run_state['managers']
+manager_services = node.run_state['manager_services']
+node.default["redborder"]["manager"]["services"]["current"] = node.run_state['manager_services']
+virtual_ips = node.run_state['virtual_ips']
+virtual_ips_per_ip = node.run_state['virtual_ips_per_ip']
 
 rb_common_config "Configure common" do
   action :configure
@@ -47,6 +51,22 @@ else
   chef_server_config "Remove chef service" do
     action [:remove, :deregister]
   end
+end
+
+vrrp_secrets = Chef::DataBagItem.load("passwords", "vrrp") rescue vrrp_secrets = {}
+keepalived_config "Configure keepalived" do
+  vrrp_secrets vrrp_secrets
+  virtual_ips virtual_ips
+  virtual_ips_per_ip virtual_ips_per_ip
+  managers managers
+  balanced_services node["redborder"]["manager"]["balanced"]
+  has_any_virtual_ip node.run_state['has_any_virtual_ip']
+  manager_services manager_services
+  ipmgt node["ipaddress"]
+  iface_management node["redborder"]["management_interface"]
+  ipaddress_sync node["ipaddress_sync"]
+  managers_per_service node["redborder"]["managers_per_services"]
+  action (manager_services["keepalived"] ? :add : :remove)
 end
 
 zookeeper_config "Configure Zookeeper" do

@@ -174,6 +174,7 @@ default["redborder"]["services"]["redborder-ale"]             = false
 default["redborder"]["services"]["n2klocd"]                   = false
 default["redborder"]["services"]["radiusd"]                   = false
 default["redborder"]["services"]["postfix"]                   = true
+default["redborder"]["services"]["keepalived"]                = false
 
 default["redborder"]["systemdservices"]["chef-client"]            = ["chef-client"]
 default["redborder"]["systemdservices"]["chef-server"]            = ["opscode-erchef"]
@@ -211,10 +212,16 @@ default["redborder"]["systemdservices"]["redborder-ale"]          = ["redborder-
 default["redborder"]["systemdservices"]["n2klocd"]                = ["n2klocd"]
 default["redborder"]["systemdservices"]["radiusd"]                = ["radiusd"]
 default["redborder"]["systemdservices"]["postfix"]                = ["postfix"]
+default["redborder"]["systemdservices"]["keepalived"]             = ["keepalived"]
+
+default["redborder"]["manager"]["balanced"] = [ {:port => 443, :protocol => "tcp", :name => "redborder webui", :service => "webui", :redirected_service=> "nginx", :persistence_timeout => 9600}, {:port => 2055, :protocol => "udp", :name => "netflow,ipfix/sflow daemon", :service => "f2k", :redirected_service=> "f2k", :persistence_timeout => 30}, {:port => 6343, :protocol => "udp", :name => "sflow daemon", :service => "sfacctd", :redirected_service=> "sfacctd", :persistence_timeout => 30}, {:port => 9092, :protocol => "tcp", :name => "kafka", :service => "kafka", :redirected_service=> "kafka", :persistence_timeout => 30} ]
 
 # Tier
 default["redborder"]["druid"]["historical"]["tier"]     = "default"
 default["redborder"]["druid"]["historical"]["maxsize"]  = -1
+
+#Virtual Ips
+default["redborder"]["manager"]["virtual_ips"] = { :external => [ {:service => "webui", "deps" => ["nginx"]}, {:service => "f2k"}, {:service => "sfacctd"}, {:service => "kafka"} ] }
 
 # Realtime
 default["redborder"]["druid"]["realtime"]["partition_num"] = 0
