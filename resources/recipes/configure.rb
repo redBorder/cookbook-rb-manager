@@ -382,15 +382,7 @@ s3_secrets = Chef::DataBagItem.load('passwords','s3')
 # Allow only s3 onpremise nodes for now..
 minio_config "Configure S3 (minio)" do
   ipaddress node["ipaddress_sync"]
-  access_key_id s3_secrets["s3_access_key_id"]
-  secret_key_id s3_secrets["s3_secret_key_id"]
-  action ((manager_services["s3"] and external_services["s3"] == "onpremise") ? [:add, :register] : [:remove, :deregister])
-end
-
-# Configure Nginx s3 onpremise nodes for now..
-minio_config "Configure Nginx S3 (minio)" do
-  s3_hosts node["redborder"]["s3"]["s3_hosts"]
-  action ((manager_services["s3"] and external_services["s3"] == "onpremise") ? [:add_s3_conf_nginx] : :nothing)
+  action ((manager_services["s3"] and external_services["s3"] == "onpremise" and s3_leader == node.name ) ? [:add, :register] : [:remove, :deregister])
 end
 
 if manager_services["s3"]
