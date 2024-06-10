@@ -377,7 +377,7 @@ postgresql_config "Configure postgresql" do
   action (manager_services["postgresql"] and external_services["postgresql"] == "onpremise" ? [:add, :register] : [:remove, :deregister])
 end
 
-s3_secrets = Chef::DataBagItem.load('passwords','s3')
+s3_leader = `serf members | grep s3=ready | awk '{print $1'} | head -n 1`.strip
 
 # Allow only s3 onpremise nodes for now..
 minio_config "Configure S3 (minio)" do
