@@ -110,7 +110,6 @@ node.default["redborder"]["zookeeper"]["zk_hosts"] = "zookeeper.service.#{node["
 webui_hosts = node["redborder"]["managers_per_services"]["webui"].map {|z| "#{z}.node"}
 node.default["redborder"]["webui"]["webui_hosts"] = webui_hosts
 
-
 #set kafka host index if kafka is enabled in this host
 if node["redborder"]["managers_per_services"]["kafka"].include?(node.name)
   node.default["redborder"]["kafka"]["host_index"] = node["redborder"]["managers_per_services"]["kafka"].index(node.name)
