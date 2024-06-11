@@ -1,4 +1,4 @@
-# manager Cookbook
+# cookbook-rb-manager
 [![Build Status][build-shield]][build-url]
 [![Linters][linters-shield]][linters-url]
 [![License][license-shield]][license-url]

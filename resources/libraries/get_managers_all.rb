@@ -1,4 +1,4 @@
-module Rb_manager
+module RbManager
   module Helpers
     def get_managers_all
       managers = []
@@ -15,12 +15,13 @@ module Rb_manager
             roles = []
           end
         end
-        unless roles.nil?
-          if roles.include?("manager")
-            managers << m
-          end
-        end
+        next unless roles.nil?
+
+        next unless roles.include?('manager')
+
+        managers << m
       end
+
       managers
     end
   end
