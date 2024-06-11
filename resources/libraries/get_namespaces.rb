@@ -1,13 +1,14 @@
-module Rb_manager
+module RbManager
   module Helpers
     def get_namespaces
       namespaces = []
-      Chef::Role.list.keys.each do |rol|
+      Chef::Role.list.each_key do |rol|
         ro = Chef::Role.load rol
-        if ro and ro.override_attributes["redborder"] and ro.override_attributes["redborder"]["namespace"] and ro.override_attributes["redborder"]["namespace_uuid"] and !ro.override_attributes["redborder"]["namespace_uuid"].empty?
-          namespaces.push(ro.override_attributes["redborder"]["namespace_uuid"])
-        end
+        next unless ro && ro.override_attributes['redborder'] && ro.override_attributes['redborder']['namespace'] && ro.override_attributes['redborder']['namespace_uuid'] && !ro.override_attributes['redborder']['namespace_uuid'].empty?
+
+        namespaces.push(ro.override_attributes['redborder']['namespace_uuid'])
       end
+
       namespaces.uniq
     end
   end
