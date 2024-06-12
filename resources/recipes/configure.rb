@@ -398,7 +398,7 @@ end
 # Configure Nginx s3 onpremise nodes for now..
 minio_config "Configure Nginx S3 (minio)" do
   s3_hosts node["redborder"]["s3"]["s3_hosts"]
-  action ((manager_services["s3"] and external_services["s3"] == "onpremise") ? [:configure_certs, :add_s3_conf_nginx] : :nothing)
+  action ((manager_services["s3"] and external_services["s3"] == "onpremise") ? [:add_s3_conf_nginx] : :nothing)
 end
 
 ssh_secrets = Chef::DataBagItem.load("passwords", "ssh") rescue ssh_secrets = {}
