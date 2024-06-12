@@ -1,6 +1,16 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 1.9.3
+
+  - Miguel Negrón
+    - [a12be85] Improvement/fix lint (#148)
+
+## 1.9.2
+
+  - Miguel Negrón
+    - [65696ef] configure not removing geoip. Geoip wont be in the list because is no longer a service
+
 ## 1.9.1
 
   - David Vanhoucke
