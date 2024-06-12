@@ -517,26 +517,26 @@ rescue
 end
 
 # Allow only s3 onpremise nodes for now..
-minio_config "Configure S3 (minio)" do
-  ipaddress node["ipaddress_sync"]
-  access_key_id s3_secrets["s3_access_key_id"]
-  secret_key_id s3_secrets["s3_secret_key_id"]
-  action ((manager_services["s3"] and external_services["s3"] == "onpremise") ? [:add, :register] : [:remove, :deregister])
+minio_config 'Configure S3 (minio)' do
+  ipaddress node['ipaddress_sync']
+  access_key_id s3_secrets['s3_access_key_id']
+  secret_key_id s3_secrets['s3_secret_key_id']
+  action((manager_services['s3'] && (external_services['s3'] == 'onpremise')) ? [:add, :register] : [:remove, :deregister])
 end
 
 # First configure the cert for the service before configuring nginx
-if manager_services["s3"]
-  nginx_config "Configure S3 certs" do
-    service_name "s3"
-    cdomain node["redborder"]["cdomain"]
+if manager_services['s3']
+  nginx_config 'Configure S3 certs' do
+    service_name 's3'
+    cdomain node['redborder']['cdomain']
     action :configure_certs
   end
 end
 
 # Configure Nginx s3 onpremise nodes for now..
-minio_config "Configure Nginx S3 (minio)" do
-  s3_hosts node["redborder"]["s3"]["s3_hosts"]
-  action ((manager_services["s3"] and external_services["s3"] == "onpremise") ? [:add_s3_conf_nginx] : :nothing)
+minio_config 'Configure Nginx S3 (minio)' do
+  s3_hosts node['redborder']['s3']['s3_hosts']
+  action((manager_services['s3'] && (external_services['s3'] == 'onpremise')) ? [:add_s3_conf_nginx] : :nothing)
 end
 
 begin
