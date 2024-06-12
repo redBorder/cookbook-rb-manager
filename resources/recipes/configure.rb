@@ -386,18 +386,19 @@ minio_config "Configure S3 (minio)" do
   action ((manager_services["s3"] and external_services["s3"] == "onpremise") ? [:add, :register] : [:remove, :deregister])
 end
 
-# Configure Nginx s3 onpremise nodes for now..
-minio_config "Configure Nginx S3 (minio)" do
-  s3_hosts node["redborder"]["s3"]["s3_hosts"]
-  action ((manager_services["s3"] and external_services["s3"] == "onpremise") ? [:add_s3_conf_nginx] : :nothing)
-end
-
+# First configure the cert for the service before configuring nginx
 if manager_services["s3"]
   nginx_config "Configure S3 certs" do
     service_name "s3"
     cdomain node["redborder"]["cdomain"]
     action :configure_certs
   end
+end
+
+# Configure Nginx s3 onpremise nodes for now..
+minio_config "Configure Nginx S3 (minio)" do
+  s3_hosts node["redborder"]["s3"]["s3_hosts"]
+  action ((manager_services["s3"] and external_services["s3"] == "onpremise") ? [:configure_certs, :add_s3_conf_nginx] : :nothing)
 end
 
 ssh_secrets = Chef::DataBagItem.load("passwords", "ssh") rescue ssh_secrets = {}
