@@ -25,9 +25,9 @@ default['redborder']['zookeeper']['port'] = 2181
 # http2k
 default['redborder']['http2k']['port'] = 7980
 
-#webui
-default["redborder"]["webui"]["port"] = 8001
-default["redborder"]["webui"]["hosts"] = []
+# webui
+default['redborder']['webui']['port'] = 8001
+default['redborder']['webui']['hosts'] = []
 
 # memcached
 default['redborder']['memcached']['elasticache'] = false
