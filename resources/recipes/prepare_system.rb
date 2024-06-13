@@ -107,14 +107,18 @@ node.run_state['namespaces'] = get_namespaces
 # zk_hosts = node['redborder']['managers_per_services']['zookeeper'].map {|z| '#{z}.node:#{zk_port}'}.join(',')
 node.default['redborder']['zookeeper']['zk_hosts'] = "zookeeper.service.#{node['redborder']['cdomain']}:#{node['redborder']['zookeeper']['port']}"
 
-# Set all nodes with s3 configured (nginx load balancer)
-s3_hosts = node['redborder']['managers_per_services']['s3'].map { |z| "#{z}.node:9000" }
-node.default['redborder']['s3']['s3_hosts'] = s3_hosts
+# set webui hosts
+webui_hosts = node['redborder']['managers_per_services']['webui'].map { |z| "#{z}.node" }
+node.default['redborder']['webui']['hosts'] = webui_hosts
 
 # set kafka host index if kafka is enabled in this host
 if node['redborder']['managers_per_services']['kafka'].include?(node.name)
   node.default['redborder']['kafka']['host_index'] = node['redborder']['managers_per_services']['kafka'].index(node.name)
 end
+
+# Set all nodes with s3 configured (nginx load balancer)
+s3_hosts = node['redborder']['managers_per_services']['s3'].map { |z| "#{z}.node:9000" }
+node.default['redborder']['s3']['s3_hosts'] = s3_hosts
 
 # set druid realtime partition id (its needed in cluster mode for druid brokers)
 if node['redborder']['managers_per_services']['druid-realtime'].include?(node.name)
