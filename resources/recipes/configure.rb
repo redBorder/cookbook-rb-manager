@@ -307,7 +307,7 @@ webui_config 'Configure WebUI' do
 end
 
 webui_config 'Configure Nginx WebUI' do
-  hosts node["redborder"]["webui"]["hosts"]
+  hosts node['redborder']['webui']['hosts']
   cdomain node['redborder']['cdomain']
   port node['redborder']['webui']['port']
   if manager_services['webui'] && manager_services['nginx']
