@@ -510,26 +510,33 @@ postgresql_config 'Configure postgresql' do
   end
 end
 
-s3_leader = `serf members | grep s3=ready | awk '{print $1'} | head -n 1`.strip
+begin
+  s3_secrets = data_bag_item('passwords', 's3')
+rescue
+  ssh_secrets = {}
+end
 
-# Allow only one s3 onpremise node for now.. TODO: Distributed MinIO
+# Allow only s3 onpremise nodes for now..
 minio_config 'Configure S3 (minio)' do
   ipaddress node['ipaddress_sync']
-  if manager_services['s3'] && external_services['s3'] == 'onpremise' && s3_leader == node.name
-    action [:add, :register]
-  else
-    action [:remove, :deregister]
+  access_key_id s3_secrets['s3_access_key_id']
+  secret_key_id s3_secrets['s3_secret_key_id']
+  action((manager_services['s3'] && (external_services['s3'] == 'onpremise')) ? [:add, :register] : [:remove, :deregister])
+end
+
+# First configure the cert for the service before configuring nginx
+if manager_services['s3']
+  nginx_config 'Configure S3 certs' do
+    service_name 's3'
+    cdomain node['redborder']['cdomain']
+    action :configure_certs
   end
 end
 
-nginx_config 'Configure S3 certs' do
-  service_name 's3'
-  cdomain node['redborder']['cdomain']
-  if manager_services['s3']
-    action :configure_certs
-  else
-    action :nothing
-  end
+# Configure Nginx s3 onpremise nodes for now..
+minio_config 'Configure Nginx S3 (minio)' do
+  s3_hosts node['redborder']['s3']['s3_hosts']
+  action((manager_services['s3'] && (external_services['s3'] == 'onpremise')) ? [:add_s3_conf_nginx] : :nothing)
 end
 
 begin
