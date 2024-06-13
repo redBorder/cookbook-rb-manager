@@ -1,6 +1,17 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.0.1
+
+  - Miguel Alvarez
+    - [d6ecac2][e748afe][2405993]  Fix lint issues
+    - [292288d] Add hosts in node data
+    - [fd63ad2] Fix prepare and configure
+    - [ac54c02] Proper use of s3 hosts
+    - [f08e447] Configure minio nodes and load balancer
+    - [78f1562][4db8fa1][e101c2d][3220e71][4ec77f8][d89bd26][ed91ff3] Updates
+    - [6e7680a] Delete resources/templates/default/minio.erb
+
 ## 2.0.0
 
   - Miguel Álvarez
