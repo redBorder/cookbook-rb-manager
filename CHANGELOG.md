@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.0.0
+
+  - Miguel Álvarez
+    - [a28b728] Configure minio nodes and load balancer (#145)
+
 ## 1.9.3
 
   - Miguel Negrón
