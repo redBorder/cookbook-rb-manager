@@ -62,15 +62,15 @@ cdomain = ''
 File.open('/etc/redborder/cdomain') { |f| cdomain = f.readline.chomp }
 node.default['redborder']['cdomain'] = cdomain
 
-#get managers information(name, ip, services...)
-node.default["redborder"]["cluster_info"] = get_cluster_info
+# get managers information(name, ip, services...)
+node.default['redborder']['cluster_info'] = get_cluster_info
 
 # manager services
 node.run_state['manager_services'] = manager_services()
-node.default["redborder"]["manager"]["services"]["current"] = node.run_state['manager_services']
+node.default['redborder']['manager']['services']['current'] = node.run_state['manager_services']
 
-#get managers sorted by service
-node.default["redborder"]["managers_per_services"] = managers_per_service
+# get managers sorted by service
+node.default['redborder']['managers_per_services'] = managers_per_service
 
 # get elasticache nodes
 begin
@@ -110,34 +110,32 @@ node.run_state['managers'] = get_managers_all
 
 # keepalived
 # Update keepalived status
-node.run_state['has_balanced_service_enable']=false
-if node.run_state['manager_services']["keepalived"]
-  node.run_state['has_balanced_service_enable']=true
+node.run_state['has_balanced_service_enable'] = false
+if node.run_state['manager_services']['keepalived']
+  node.run_state['has_balanced_service_enable'] = true
 else
-  if !node["redborder"]["manager"]["balanced"].nil?
-    node["redborder"]["manager"]["balanced"].each do |s|
-      node.run_state['has_balanced_service_enable']=true if node.run_state['manager_services'][s[:service]]
+  unless node['redborder']['manager']['balanced'].nil?
+    node['redborder']['manager']['balanced'].each do |s|
+      node.run_state['has_balanced_service_enable'] = true if node.run_state['manager_services'][s[:service]]
     end
   end
 end
 node.run_state['virtual_ips'], node.run_state['has_any_virtual_ip'] = get_virtual_ip_info(node.run_state['managers'])
 node.run_state['virtual_ips_per_ip'] = get_virtual_ips_per_ip_info(node.run_state['virtual_ips'])
-if File.exist?"/etc/lock/keepalived"
-  node.run_state['manager_services']["keepalived"] = false
-else
-  if node["redborder"].nil? or node["redborder"]["dmidecode"].nil? or node["redborder"]["dmidecode"]["manufacturer"].nil? or node["redborder"]["dmidecode"]["manufacturer"].to_s.downcase == "xen"
-    if manager_index>0 and !cluster_installed
-      node.run_state['manager_services']["keepalived"] = false
-    else
-      node.run_state['manager_services']["keepalived"] = node.run_state['has_any_virtual_ip'] and !File.exist?"/etc/lock/keepalived"
-    end
+if File.exist?'/etc/lock/keepalived'
+  node.run_state['manager_services']['keepalived'] = false
+elsif node['redborder'].nil? || node['redborder']['dmidecode'].nil? || node['redborder']['dmidecode']['manufacturer'].nil? || node['redborder']['dmidecode']['manufacturer'].to_s.downcase == 'xen'
+  if manager_index > 0 && !cluster_installed
+    node.run_state['manager_services']['keepalived'] = false
   else
-    node.run_state['manager_services']["keepalived"] = node.run_state['has_any_virtual_ip'] and !File.exist?"/etc/lock/keepalived"
+    node.run_state['manager_services']['keepalived'] = node.run_state['has_any_virtual_ip'] and !File.exist?'/etc/lock/keepalived'
   end
+else
+  node.run_state['manager_services']['keepalived'] = node.run_state['has_any_virtual_ip'] and !File.exist?'/etc/lock/keepalived'
 end
 
-#get string with all zookeeper hosts and port separated by commas, its needed for multiples services
-node.default["redborder"]["zookeeper"]["zk_hosts"] = "zookeeper.service.#{node["redborder"]["cdomain"]}:#{node["redborder"]["zookeeper"]["port"]}"
+# get string with all zookeeper hosts and port separated by commas, its needed for multiples services
+node.default['redborder']['zookeeper']['zk_hosts'] = "zookeeper.service.#{node['redborder']['cdomain']}:#{node['redborder']['zookeeper']['port']}"
 
 # set webui hosts
 webui_hosts = node['redborder']['managers_per_services']['webui'].map { |z| "#{z}.node" }

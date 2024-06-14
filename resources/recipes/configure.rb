@@ -8,7 +8,7 @@
 # manager services
 managers = node.run_state['managers']
 manager_services = node.run_state['manager_services']
-node.default["redborder"]["manager"]["services"]["current"] = node.run_state['manager_services']
+node.default['redborder']['manager']['services']['current'] = node.run_state['manager_services']
 virtual_ips = node.run_state['virtual_ips']
 virtual_ips_per_ip = node.run_state['virtual_ips_per_ip']
 
@@ -57,27 +57,31 @@ rescue
   vrrp_secrets = {}
 end
 
-keepalived_config "Configure keepalived" do
+keepalived_config 'Configure keepalived' do
   vrrp_secrets vrrp_secrets
   virtual_ips virtual_ips
   virtual_ips_per_ip virtual_ips_per_ip
   managers managers
-  balanced_services node["redborder"]["manager"]["balanced"]
+  balanced_services node['redborder']['manager']['balanced']
   has_any_virtual_ip node.run_state['has_any_virtual_ip']
   manager_services manager_services
-  ipmgt node["ipaddress"]
-  iface_management node["redborder"]["management_interface"]
-  ipaddress_sync node["ipaddress_sync"]
-  managers_per_service node["redborder"]["managers_per_services"]
-  action (manager_services["keepalived"] ? :add : :remove)
+  ipmgt node['ipaddress']
+  iface_management node['redborder']['management_interface']
+  ipaddress_sync node['ipaddress_sync']
+  managers_per_service node['redborder']['managers_per_services']
+  if manager_services['keepalived']
+    action :add
+  else
+    action :remove
+  end
 end
 
-zookeeper_config "Configure Zookeeper" do
-  port node["zookeeper"]["port"]
-  memory node["redborder"]["memory_services"]["zookeeper"]["memory"]
-  hosts node["redborder"]["managers_per_services"]["zookeeper"]
-  ipaddress node["ipaddress_sync"]
-  if manager_services["zookeeper"] 
+zookeeper_config 'Configure Zookeeper' do
+  port node['zookeeper']['port']
+  memory node['redborder']['memory_services']['zookeeper']['memory']
+  hosts node['redborder']['managers_per_services']['zookeeper']
+  ipaddress node['ipaddress_sync']
+  if manager_services['zookeeper']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -547,7 +551,7 @@ minio_config 'Configure S3 (minio)' do
   ipaddress node['ipaddress_sync']
   access_key_id s3_secrets['s3_access_key_id']
   secret_key_id s3_secrets['s3_secret_key_id']
-  if (manager_services['s3'] && (external_services['s3'] == 'onpremise'))
+  if manager_services['s3'] && (external_services['s3'] == 'onpremise')
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -566,7 +570,7 @@ end
 # Configure Nginx s3 onpremise nodes for now..
 minio_config 'Configure Nginx S3 (minio)' do
   s3_hosts node['redborder']['s3']['s3_hosts']
-  if (manager_services['s3'] && (external_services['s3'] == 'onpremise')) 
+  if manager_services['s3'] && (external_services['s3'] == 'onpremise')
     action [:add_s3_conf_nginx]
   end
 end
