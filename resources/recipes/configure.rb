@@ -275,20 +275,18 @@ pmacct_config "Configure pmacct" do
   action (manager_services["pmacct"] ? [:add, :register] : [:remove, :deregister])
 end
 
-if node["redborder"]["logstash"]["pipelines"].nil? || node["redborder"]["logstash"]["pipelines"].empty?
-  service 'logstash' do
-    action [:disable, :stop]
-  end
-else
-  logstash_config "Configure logstash" do
-    cdomain node["redborder"]["cdomain"]
-    flow_nodes node["redborder"]["all_flow_sensors_info"]["flow-sensor"]
-    namespaces node["redborder"]["namespaces"]
-    vault_nodes node["redborder"]["sensors_info_all"]["vault-sensor"]
-    scanner_nodes node["redborder"]["sensors_info_all"]["scanner-sensor"]
-    device_nodes node["redborder"]["sensors_info_all"]["device-sensor"]
-    logstash_pipelines node["redborder"]["logstash"]["pipelines"]
-    action (manager_services["logstash"] ? [:add, :register] : [:remove, :deregister])
+logstash_config 'Configure logstash' do
+  cdomain node['redborder']['cdomain']
+  flow_nodes node.run_state['all_flow_sensors_info']['flow-sensor']
+  namespaces node.run_state['namespaces']
+  vault_nodes node.run_state['sensors_info_all']['vault-sensor']
+  scanner_nodes node.run_state['sensors_info_all']['scanner-sensor']
+  device_nodes node.run_state['sensors_info_all']['device-sensor']
+  logstash_pipelines node.default['pipelines']
+  if manager_services['logstash'] && node.default['pipelines'] && !node.default['pipelines'].empty?
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
   end
 end
 

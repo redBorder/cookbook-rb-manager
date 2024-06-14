@@ -3,7 +3,7 @@ module Rb_manager
 
     def get_pipelines()
       logstash_pipelines = []
-      sensors = node["redborder"]["sensors_info_all"]
+      sensors = get_sensors_info()
       namespaces = get_namespaces()
       main_logstash = determine_main_logstash_node()
 
