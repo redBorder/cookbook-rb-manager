@@ -95,8 +95,8 @@ node.default["redborder"]["sensors_info_all"] = get_sensors_all_info()
 #get sensors info of all flow sensors
 node.default["redborder"]["all_flow_sensors_info"] = get_all_flow_sensors_info()
 
-#get logstash pipelines
-node.default["pipelines"] = get_pipelines()
+# get logstash pipelines
+node.default['pipelines'] = get_pipelines()
 
 #get namespaces
 node.default["redborder"]["namespaces"] = get_namespaces
