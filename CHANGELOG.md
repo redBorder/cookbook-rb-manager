@@ -1,6 +1,59 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.0.1
+
+  - Miguel Alvarez
+    - [d6ecac2][e748afe][2405993]  Fix lint issues
+    - [292288d] Add hosts in node data
+    - [fd63ad2] Fix prepare and configure
+    - [ac54c02] Proper use of s3 hosts
+    - [f08e447] Configure minio nodes and load balancer
+    - [78f1562][4db8fa1][e101c2d][3220e71][4ec77f8][d89bd26][ed91ff3] Updates
+    - [6e7680a] Delete resources/templates/default/minio.erb
+
+## 2.0.0
+
+  - Miguel Álvarez
+    - [a28b728] Configure minio nodes and load balancer (#145)
+
+## 1.9.3
+
+  - Miguel Negrón
+    - [a12be85] Improvement/fix lint (#148)
+
+## 1.9.2
+
+  - Miguel Negrón
+    - [65696ef] configure not removing geoip. Geoip wont be in the list because is no longer a service
+
+## 1.9.1
+
+  - David Vanhoucke
+    - [f22a469] add temporary variables in node.run_state
+  - Miguel Negrón
+    - [7d26b70] Update README.md
+    - [d29155f] Update rpm.yml
+    - [4a4efaa] Update metadata.rb
+    - [1120885] Merge pull request #142 from redBorder/bugfix/missing_specific_dist_kernel_info_in_motd
+    - [31682a0] Add full kernel release info in motd
+
+## 1.9.0
+
+  - Miguel Negrón
+    - [ef94e3c] Add configure common cookbook call (#140)
+
+## 1.8.0
+  - David Vanhoucke
+    - [c2df76a] add postfix service
+  - Luis Blanco
+    - [48c4142] add ale service in redborder full installation
+
+## 1.7.10
+
+  - nilsver
+    - [f66e148] added conditional check on pipelines
+
 ## 1.7.9
 
   - Miguel Álvarez
