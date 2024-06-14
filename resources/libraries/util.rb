@@ -1,10 +1,9 @@
-module Rb_manager
+module RbManager
   module Helpers
-  	def joinHostArray2port(hosts, port)
-	    hosts.map { |host|
-	  	  host << ":" << port.to_s
-	    }
-      return hosts
+    def joinHostArray2port(hosts, port)
+      hosts.map { |host| host << ':' << port.to_s }
+
+      hosts
     end
   end
 end
