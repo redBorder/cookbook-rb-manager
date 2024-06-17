@@ -1,4 +1,4 @@
-module Rb_manager
+module RbManager
   module Helpers
 
     def get_pipelines()
@@ -6,6 +6,7 @@ module Rb_manager
       sensors = get_sensors_info()
       namespaces = get_namespaces()
       main_logstash = determine_main_logstash_node()
+      monitor_sensor_in_proxy_nodes = find_monitor_sensor_in_proxy_nodes()
 
       if manager_services["logstash"]
         logstash_pipelines.push("rbwindow-pipeline") if main_logstash == node.name
@@ -20,8 +21,8 @@ module Rb_manager
         logstash_pipelines.push("monitor-pipeline") unless namespaces.empty?
         logstash_pipelines.push("location-pipeline") unless sensors["ale-sensor"].empty? or sensors["mse-sensor"].empty? or sensors["flow-sensor"].empty? or sensors["arubacentral-sensor"].empty?
         logstash_pipelines.push("mobility-pipeline")
-        logstash_pipelines.push("redfish-pipeline") unless sensors["device-sensor"].empty?
-        logstash_pipelines.push("bulkstats-pipeline") unless sensors["device-sensor"].empty?
+        logstash_pipelines.push("redfish-pipeline") unless sensors['device-sensor'].empty? && monitor_sensor_in_proxy_nodes.empty?
+        logstash_pipelines.push("bulkstats-pipeline") unless sensors['device-sensor'].empty? && monitor_sensor_in_proxy_nodes.empty?
       end
       logstash_pipelines
     end
@@ -35,5 +36,6 @@ module Rb_manager
       main_logstash_nodes = memcached_nodes & logstash_nodes
       main_logstash_nodes.first || logstash_nodes.first
     end
+
   end
 end
