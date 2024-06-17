@@ -6,22 +6,10 @@ module RbManager
       managers_keys.each do |m_key|
         m = Chef::Node.load m_key
         m = node if m.name == node.name
-        begin
-          roles = m.roles
-        rescue NoMethodError
-          begin
-            roles = m.run_list
-          rescue
-            roles = []
-          end
+        if m.role?('manager')
+          managers << m
         end
-        next unless roles.nil?
-
-        next unless roles.include?('manager')
-
-        managers << m
       end
-
       managers
     end
   end
