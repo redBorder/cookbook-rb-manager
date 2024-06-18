@@ -1,6 +1,12 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.1.0
+
+  - David Vanhoucke
+    - [161b5dd] add library to get virtual ips
+    - [32fe52b] add keepalived and balanced services
+
 ## 2.0.1
 
   - Miguel Alvarez
