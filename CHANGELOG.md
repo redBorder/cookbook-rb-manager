@@ -4,8 +4,6 @@ cookbook-rb-manager CHANGELOG
 ## 2.1.0
 
   - David Vanhoucke
-    - [e2a45f5] fix lint errors
-    - [70da7e0] merge with development
     - [161b5dd] add library to get virtual ips
     - [32fe52b] add keepalived and balanced services
 
