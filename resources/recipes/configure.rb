@@ -523,7 +523,7 @@ rbcgroup_config 'Configure cgroups' do
   action :add
 end
 
-clamav_config "Configure ClamAV" do
+rb_clamav_config "Configure ClamAV" do
   action (manager_services["clamav"] ? :add : :remove)
 end
 
