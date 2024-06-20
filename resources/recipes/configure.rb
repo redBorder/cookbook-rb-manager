@@ -406,7 +406,6 @@ logstash_config 'Configure logstash' do
   else
     action [:remove, :deregister]
   end
-
 end
 
 rbdswatcher_config 'Configure redborder-dswatcher' do
