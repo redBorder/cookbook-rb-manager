@@ -101,7 +101,7 @@ node.run_state['sensors_info_all'] = get_sensors_all_info()
 node.run_state['all_flow_sensors_info'] = get_all_flow_sensors_info()
 
 # get logstash pipelines
-node.run_state['pipelines'] = get_pipelines()
+node.default['pipelines'] = get_pipelines()
 
 # get namespaces
 node.run_state['namespaces'] = get_namespaces
