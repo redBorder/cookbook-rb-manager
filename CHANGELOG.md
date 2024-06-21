@@ -1,6 +1,19 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.2.0
+
+  - nilsver
+    - [c05abf5] [2a1bd7f] [040aeda] fix linter
+    - [0186ecc] add pipeline per monitor configuration
+    - [b5d56c5] fix check if pipelines are active
+    - [e557b19] add helper file
+    - [64b9adc] monitor pipelines work with proxy too
+  - Miguel Alvarez
+    - [c5d590d] Fix lint issues
+    - [2be5b59] Fix configure clamscan
+    - [2e0b86b] Add clamav
+
 ## 2.1.0
 
   - David Vanhoucke
