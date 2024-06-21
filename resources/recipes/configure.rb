@@ -523,6 +523,10 @@ rbcgroup_config 'Configure cgroups' do
   action :add
 end
 
+rb_clamav_config 'Configure ClamAV' do
+  action(manager_services['clamav'] ? :add : :remove)
+end
+
 # Determine external
 begin
   external_services = data_bag_item('rBglobal', 'external_services')
