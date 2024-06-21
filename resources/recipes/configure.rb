@@ -400,8 +400,8 @@ logstash_config 'Configure logstash' do
   vault_nodes node.run_state['sensors_info_all']['vault-sensor']
   scanner_nodes node.run_state['sensors_info_all']['scanner-sensor']
   device_nodes node.run_state['sensors_info_all']['device-sensor']
-  logstash_pipelines node.run_state['pipelines']
-  if manager_services['logstash'] && node.run_state['pipelines'] && !node.run_state['pipelines'].empty?
+  logstash_pipelines node.default['pipelines']
+  if !logstash_pipelines.nil? && !logstash_pipelines.empty?
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -521,6 +521,10 @@ end
 
 rbcgroup_config 'Configure cgroups' do
   action :add
+end
+
+rb_clamav_config 'Configure ClamAV' do
+  action(manager_services['clamav'] ? :add : :remove)
 end
 
 # Determine external
