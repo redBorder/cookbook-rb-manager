@@ -4,7 +4,6 @@ cookbook-rb-manager CHANGELOG
 ## 2.2.0
 
   - nilsver
-    - [c05abf5] [2a1bd7f] [040aeda] fix linter
     - [0186ecc] add pipeline per monitor configuration
     - [b5d56c5] fix check if pipelines are active
     - [e557b19] add helper file
