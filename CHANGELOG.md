@@ -10,7 +10,7 @@ cookbook-rb-manager CHANGELOG
     - [e557b19] add helper file
     - [64b9adc] monitor pipelines work with proxy too
   - Miguel Alvarez
-    - [c5d590d] Fix lint issues
+    - [86e6e36] Add memcached hosts to the webui
     - [2be5b59] Fix configure clamscan
     - [2e0b86b] Add clamav
 
