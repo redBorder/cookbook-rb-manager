@@ -21,6 +21,7 @@ module RbManager
         logstash_pipelines.push('mobility-pipeline')
         logstash_pipelines.push('redfish-pipeline') unless sensors['device-sensor'].empty?
         logstash_pipelines.push('bulkstats-pipeline') unless sensors['device-sensor'].empty?
+        logstash_pipelines.push('intrusion-pipeline') unless sensors['ips-sensor'].empty? || sensors['ipsv2-sensor'].empty? || sensors['ipscp-sensor'].empty? || sensors['ipsg-sensor'].empty?
       end
       logstash_pipelines
     end
