@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.2.1
+
+  - nilsver
+    - [a97909b] add arubacentral-sensor
+
 ## 2.2.0
 
   - nilsver
