@@ -8,6 +8,7 @@ module RbManager
       monitor_sensor_in_proxy_nodes = find_monitor_sensor_in_proxy_nodes()
       monitor_config = get_monitor_configuration()
       has_device_sensors = !sensors['device-sensor'].nil? && !sensors['device-sensor'].empty?
+      location_sensors = %w[ale-sensor mse-sensor flow-sensor arubacentral-sensor]
 
       logstash_pipelines.push('rbwindow-pipeline') if main_logstash == node.name
       logstash_pipelines.push('apstate-pipeline')
@@ -19,8 +20,8 @@ module RbManager
       logstash_pipelines.push('sflow-pipeline') unless sensors['flow-sensor'].empty?
       logstash_pipelines.push('meraki-pipeline') unless sensors['meraki-sensor'].empty?
       logstash_pipelines.push('monitor-pipeline') unless namespaces.empty?
-      logstash_pipelines.push('location-pipeline') unless sensors['ale-sensor'].empty? && sensors['mse-sensor'].empty? && sensors['flow-sensor'].empty? && sensors['arubacentral-sensor'].empty?
-      logstash_pipelines.push('mobility-pipeline') unless sensors['ale-sensor'].empty? && sensors['mse-sensor'].empty? && sensors['flow-sensor'].empty? && sensors['arubacentral-sensor'].empty?
+      logstash_pipelines.push('location-pipeline') unless location_sensors.any? { |sensor| sensor.nil? || sensor.empty? }
+      logstash_pipelines.push('mobility-pipeline') unless location_sensors.any? { |sensor| sensor.nil? || sensor.empty? }
       if (has_device_sensors && monitor_config.include?('thermal')) || !monitor_sensor_in_proxy_nodes.empty?
         logstash_pipelines.push('redfish-pipeline')
       end
