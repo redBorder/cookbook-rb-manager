@@ -8,7 +8,7 @@ module RbManager
       monitor_sensor_in_proxy_nodes = find_monitor_sensor_in_proxy_nodes()
       monitor_config = get_monitor_configuration()
       has_device_sensors = !sensors['device-sensor'].nil? && !sensors['device-sensor'].empty?
-      location_sensors = %w[ale-sensor mse-sensor flow-sensor arubacentral-sensor]
+      location_sensors = %w(ale-sensor mse-sensor flow-sensor arubacentral-sensor)
 
       logstash_pipelines.push('rbwindow-pipeline') if main_logstash == node.name
       logstash_pipelines.push('apstate-pipeline')
