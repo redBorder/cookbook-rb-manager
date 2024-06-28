@@ -515,7 +515,7 @@ end
 mem2incident_config 'Configure redborder-mem2incident' do
   cdomain node['redborder']['cdomain']
   memcached_servers node['redborder']['managers_per_services']['memcached'].map { |s| "#{s}:#{node['redborder']['memcached']['port']}" }
-  auth_token node['auth_token']
+  auth_token node.run_state['auth_token']
   if manager_services['redborder-mem2incident']
     action [:add, :register]
   else
