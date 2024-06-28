@@ -325,6 +325,7 @@ end
 
 webui_config 'Configure WebUI' do
   hostname node['hostname']
+  memcached_servers node['redborder']['managers_per_services']['memcached']
   memory_kb node['redborder']['memory_services']['webui']['memory']
   cdomain node['redborder']['cdomain']
   port node['redborder']['webui']['port']

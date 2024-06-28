@@ -3,7 +3,7 @@ module RbManager
     def get_sensors_info
       sensors_info = {}
       sensor_types = %w(vault-sensor flow-sensor mse-sensor scanner-sensor meraki-sensor ale-sensor device-sensor
-                        cisco-cloudproxy proxy-sensor
+                        cisco-cloudproxy proxy-sensor arubacentral-sensor
                         ips-sensor ipsv2-sensor ipscp-sensor ipsg-sensor)
       locations = node['redborder']['locations']
       sensor_types.each do |s_type|
