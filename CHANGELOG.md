@@ -1,6 +1,17 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.2.2
+
+  - Miguel Negrón
+    - [10b3f6e] Update get_pipelines.rb
+  - nilsver
+    - [d3e9e40] fix linter
+    - [9fd823c] fix bug mobility pipelines nil
+    - [a97909b] add arubacentral-sensor
+  - Miguel Negron
+    - [abe7d76] Release 2.2.1
+
 ## 2.2.1
 
   - nilsver
