@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.3.0
+
+  - Rafael Gomez
+    - [db4f4be] Feature/#17820 add intrusion pipeline
+
 ## 2.2.2
 
   - Miguel Negrón
