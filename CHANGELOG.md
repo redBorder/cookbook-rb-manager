@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.3.1
+
+  - Miguel Alvarez
+    - [4681fe2] Fix default action of minio to do nothing when disabling
+
 ## 2.3.0
 
   - Rafael Gomez
