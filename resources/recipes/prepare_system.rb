@@ -86,7 +86,7 @@ if !elasticache.empty?
   node.default['redborder']['memcached']['elasticache'] = true
 else
   memcached_hosts = []
-  managers_per_service["memcached"].uniq.each do |m|
+  managers_per_service['memcached'].uniq.each do |m|
     memcached_hosts << "#{m}.node:#{node['redborder']['memcached']['port']}"
   end
   node.default['redborder']['memcached']['hosts'] = memcached_hosts
