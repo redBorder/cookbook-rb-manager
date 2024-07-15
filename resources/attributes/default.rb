@@ -170,6 +170,7 @@ default['redborder']['services']['radiusd']                   = false
 default['redborder']['services']['postfix']                   = true
 default['redborder']['services']['keepalived']                = false
 default['redborder']['services']['clamav']                    = true
+default['redborder']['services']['chrony']                    = true
 
 default['redborder']['systemdservices']['chef-client']            = ['chef-client']
 default['redborder']['systemdservices']['chef-server']            = ['opscode-erchef']
@@ -208,6 +209,7 @@ default['redborder']['systemdservices']['n2klocd']                = ['n2klocd']
 default['redborder']['systemdservices']['radiusd']                = ['radiusd']
 default['redborder']['systemdservices']['postfix']                = ['postfix']
 default['redborder']['systemdservices']['keepalived']             = ['keepalived']
+default['redborder']['systemdservices']['chrony']                 = ['chrony']
 
 default['redborder']['manager']['balanced'] = [ { port: 443, protocol: 'tcp', name: 'redborder webui', service: 'webui', redirected_service: 'nginx', persistence_timeout: 9600 }, { port: 2055, protocol: 'udp', name: 'netflow,ipfix/sflow daemon', service: 'f2k', redirected_service: 'f2k', persistence_timeout: 30 }, { port: 6343, protocol: 'udp', name: 'sflow daemon', service: 'sfacctd', redirected_service: 'sfacctd', persistence_timeout: 30 }, { port: 9092, protocol: 'tcp', name: 'kafka', service: 'kafka', redirected_service: 'kafka', persistence_timeout: 30 } ]
 
