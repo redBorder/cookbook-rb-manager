@@ -512,6 +512,17 @@ rbcep_config 'Configure redborder-cep' do
   end
 end
 
+mem2incident_config 'Configure redborder-mem2incident' do
+  cdomain node['redborder']['cdomain']
+  memcached_servers node['redborder']['managers_per_services']['memcached'].map { |s| "#{s}:#{node['redborder']['memcached']['port']}" }
+  auth_token node.run_state['auth_token']
+  if manager_services['redborder-mem2incident']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 rb_postfix_config 'Configure postfix' do
   if node['redborder']['services']['postfix']
     action :add
@@ -577,6 +588,8 @@ minio_config 'Configure Nginx S3 (minio)' do
   s3_hosts node['redborder']['s3']['s3_hosts']
   if manager_services['s3'] && (external_services['s3'] == 'onpremise')
     action [:add_s3_conf_nginx]
+  else
+    action :nothing
   end
 end
 
