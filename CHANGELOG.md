@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.5.0
+
+  - Pablo Pérez
+    - [b0a6896] Added default value of node variable sso_enabled
+
 ## 2.4.0
 
   - Miguel Negrón
