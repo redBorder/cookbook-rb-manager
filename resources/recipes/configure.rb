@@ -523,7 +523,7 @@ mem2incident_config 'Configure redborder-mem2incident' do
   end
 end
 
-rbai_config 'Configure redborder-ai' do
+rb_ai_config 'Configure redborder-ai' do
   if manager_services['redborder-ai']
     action [:add, :register]
   else
