@@ -172,7 +172,7 @@ default['redborder']['services']['radiusd']                   = false
 default['redborder']['services']['postfix']                   = true
 default['redborder']['services']['keepalived']                = false
 default['redborder']['services']['clamav']                    = true
-default['redborder']['services']['mem2incident']              = false
+default['redborder']['services']['redborder-mem2incident']    = false
 
 default['redborder']['systemdservices']['chef-client']              = ['chef-client']
 default['redborder']['systemdservices']['chef-server']              = ['opscode-erchef']

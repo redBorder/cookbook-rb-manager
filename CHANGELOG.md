@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.5.1
+
+  - Miguel Negron
+    - [6f3647b] Fix error service name on mem2incident
+
 ## 2.5.0
 
   - Pablo Pérez
