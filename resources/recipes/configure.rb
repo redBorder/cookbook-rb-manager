@@ -112,7 +112,7 @@ if manager_services['druid-coordinator'] || manager_services['druid-overlord'] |
   end
 
   druid_common 'Configure druid common resources' do
-    druid_common_name node['hostname']
+    name node['hostname']
     zookeeper_hosts node['redborder']['zookeeper']['zk_hosts']
     memcached_hosts node['redborder']['memcached']['hosts']
     s3_service 's3.service'
@@ -132,7 +132,7 @@ else
 end
 
 druid_coordinator 'Configure Druid Coordinator' do
-  druid_coordinator_name node['hostname']
+  name node['hostname']
   ipaddress node['ipaddress_sync']
   memory_kb node['redborder']['memory_services']['druid-coordinator']['memory']
   if manager_services['druid-coordinator']
@@ -143,7 +143,7 @@ druid_coordinator 'Configure Druid Coordinator' do
 end
 
 druid_overlord 'Configure Druid Overlord' do
-  druid_overlord_name node['hostname']
+  name node['hostname']
   ipaddress node['ipaddress_sync']
   memory_kb node['redborder']['memory_services']['druid-overlord']['memory']
   if manager_services['druid-overlord']
@@ -154,7 +154,7 @@ druid_overlord 'Configure Druid Overlord' do
 end
 
 druid_broker 'Configure Druid Broker' do
-  druid_broker_name node['hostname']
+  name node['hostname']
   ipaddress node['ipaddress_sync']
   memory_kb node['redborder']['memory_services']['druid-broker']['memory']
   if manager_services['druid-broker']
@@ -165,7 +165,7 @@ druid_broker 'Configure Druid Broker' do
 end
 
 druid_middlemanager 'Configure Druid MiddleManager' do
-  druid_middlemanager_name node['hostname']
+  name node['hostname']
   ipaddress node['ipaddress_sync']
   memory_kb node['redborder']['memory_services']['druid-middlemanager']['memory']
   if manager_services['druid-middlemanager']
@@ -176,7 +176,7 @@ druid_middlemanager 'Configure Druid MiddleManager' do
 end
 
 druid_historical 'Configure Druid Historical' do
-  druid_historical_name node['hostname']
+  name node['hostname']
   ipaddress node['ipaddress_sync']
   memory_kb node['redborder']['memory_services']['druid-historical']['memory']
   if manager_services['druid-historical']
@@ -187,7 +187,7 @@ druid_historical 'Configure Druid Historical' do
 end
 
 druid_realtime 'Configure Druid Realtime' do
-  druid_realtime_name node['hostname']
+  name node['hostname']
   ipaddress node['ipaddress_sync']
   zookeeper_hosts node['redborder']['zookeeper']['zk_hosts']
   partition_num node['redborder']['druid']['realtime']['partition_num']
@@ -218,7 +218,7 @@ mongodb_config 'Configure Mongodb' do
 end
 
 hadoop_common 'Configure hadoop common resources' do
-  hadoop_common_name node['hostname']
+  name node['hostname']
   zookeeper_hosts node['redborder']['zookeeper']['zk_hosts']
   memory_kb node['redborder']['memory_services']['hadoop-nodemanager']['memory']
   containersMemory node['redborder']['hadoop']['containersMemory']
