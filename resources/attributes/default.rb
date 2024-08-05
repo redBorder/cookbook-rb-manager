@@ -114,7 +114,7 @@ default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper
                                                     postgresql redborder-postgresql nginx webui druid-broker
                                                     druid-historical druid-realtime druid-coordinator f2k
                                                     redborder-monitor pmacct redborder-dswatcher
-                                                    redborder-events-counter http2k redborder-mem2incident redborder-ai)
+                                                    redborder-events-counter http2k redborder-mem2incident)
 
 default['redborder']['services_group']['custom'] = []
 default['redborder']['services_group']['core'] = %w(consul zookeeper druid-coordinator druid-overlord hadoop-resourcemanager) # consul server
