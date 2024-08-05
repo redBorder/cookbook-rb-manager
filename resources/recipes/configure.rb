@@ -272,7 +272,7 @@ snmp_config 'Configure snmp' do
 end
 
 rbmonitor_config 'Configure redborder-monitor' do
-  rbmonitor_config_name node['hostname']
+  name node['hostname']
   device_nodes node.run_state['sensors_info_all']['device-sensor']
   flow_nodes node.run_state['sensors_info_all']['flow-sensor']
   managers node['redborder']['managers_list']
