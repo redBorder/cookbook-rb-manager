@@ -462,8 +462,9 @@ n2klocd_config 'Configure n2klocd' do
 end
 
 rbale_config 'Configure redborder-ale' do
-  ale_nodes node.run_state['sensors_info_all']['ale-sensor']
-  if node['redborder']['services']['redborder-ale']
+  ale_sensors = node.run_state['sensors_info_all']['ale-sensor']
+  if !ale_sensors.empty?
+    ale_nodes ale_sensors
     action [:add, :register]
   else
     action [:remove, :deregister]
