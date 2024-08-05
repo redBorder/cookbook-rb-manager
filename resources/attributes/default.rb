@@ -43,6 +43,9 @@ default['redborder']['samza']['num_containers'] = 1
 default['redborder']['samza']['memory_per_container'] = 2560
 # riak
 
+# redborder-ai
+default['redborder']['ai_selected_model'] = nil
+
 # hard disk
 default['redborder']['manager']['data_dev'] = {}
 default['redborder']['manager']['data_dev']['root'] = '/dev/mapper/VolGroup-lv_root'
