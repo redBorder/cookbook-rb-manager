@@ -95,7 +95,7 @@ kafka_config 'Configure Kafka' do
   zk_hosts node['redborder']['zookeeper']['zk_hosts']
   host_index node['redborder']['kafka']['host_index']
   ipaddress node['ipaddress_sync']
-  cdomain node['redborder']['cdomain'] 
+  cdomain node['redborder']['cdomain']
   if manager_services['kafka']
     action [:add, :register]
   else
