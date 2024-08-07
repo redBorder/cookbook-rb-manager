@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.5.2
+
+  - jnavarrorb
+    - [f011ad1] fix_memcached_hosts
+
 ## 2.5.1
 
   - Miguel Negron

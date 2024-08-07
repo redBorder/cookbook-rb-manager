@@ -85,7 +85,11 @@ if !elasticache.empty?
   node.default['redborder']['memcached']['hosts'] = joinHostArray2port(node['redborder']['memcached']['server_list'], node['redborder']['memcached']['port']).join(',')
   node.default['redborder']['memcached']['elasticache'] = true
 else
-  node.default['redborder']['memcached']['hosts'] = "memcached.service.#{node['redborder']['cdomain']}:#{node['redborder']['memcached']['port']}"
+  memcached_hosts = []
+  managers_per_service['memcached'].uniq.each do |m|
+    memcached_hosts << "#{m}.node:#{node['redborder']['memcached']['port']}"
+  end
+  node.default['redborder']['memcached']['hosts'] = memcached_hosts
 end
 
 # get organizations for http2k
