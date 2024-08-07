@@ -219,9 +219,20 @@ memcached_config 'Configure Memcached' do
   end
 end
 
+is_mongo_configured_consul = shell_out("curl -s http://localhost:8500/v1/health/service/mongodb | jq -r '.[].Checks[0].Status' | grep -q 'passing'")
+get_consul_registered_ip = shell_out("curl -s http://localhost:8500/v1/health/service/mongodb | jq -r '.[].Service.Address' | head -n 1")
+
 mongodb_config 'Configure Mongodb' do
   if manager_services['mongodb']
-    action [:add, :register]
+    if is_mongo_configured_consul.exitstatus == 0
+      if node['ipaddress_sync'] == get_consul_registered_ip.stdout.strip
+        action [:add, :register]
+      else
+        action [:remove, :deregister]
+      end
+    else
+      action [:add, :register]
+    end
   else
     action [:remove, :deregister]
   end
