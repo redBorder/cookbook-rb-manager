@@ -1,6 +1,33 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.5.2
+
+  - jnavarrorb
+    - [f011ad1] fix_memcached_hosts
+
+## 2.5.1
+
+  - Miguel Negron
+    - [6f3647b] Fix error service name on mem2incident
+
+## 2.5.0
+
+  - Pablo Pérez
+    - [b0a6896] Added default value of node variable sso_enabled
+
+## 2.4.0
+
+  - Miguel Negrón
+    - [b49dc76] Merge pull request #171 from redBorder/feature/incident_response
+  - Luis Blanco
+    - [d7eaeba] Release 2.3.1
+    - [291aaab] Merge pull request #162 from redBorder/bugfix/17853_minio_cannot_stop
+    - [adf0025] Merge remote-tracking branch 'origin/master' into bugfix/17853_minio_cannot_stop
+    - [4f013bc] Merge remote-tracking branch 'origin/master' into bugfix/17853_minio_cannot_stop
+  - Miguel Alvarez
+    - [4681fe2] Fix default action of minio to do nothing when disabling
+
 ## 2.3.1
 
   - Miguel Alvarez

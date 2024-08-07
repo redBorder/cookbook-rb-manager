@@ -85,7 +85,11 @@ if !elasticache.empty?
   node.default['redborder']['memcached']['hosts'] = joinHostArray2port(node['redborder']['memcached']['server_list'], node['redborder']['memcached']['port']).join(',')
   node.default['redborder']['memcached']['elasticache'] = true
 else
-  node.default['redborder']['memcached']['hosts'] = "memcached.service.#{node['redborder']['cdomain']}:#{node['redborder']['memcached']['port']}"
+  memcached_hosts = []
+  managers_per_service['memcached'].uniq.each do |m|
+    memcached_hosts << "#{m}.node:#{node['redborder']['memcached']['port']}"
+  end
+  node.default['redborder']['memcached']['hosts'] = memcached_hosts
 end
 
 # get organizations for http2k
@@ -140,6 +144,7 @@ node.default['redborder']['zookeeper']['zk_hosts'] = "zookeeper.service.#{node['
 # set webui hosts
 webui_hosts = node['redborder']['managers_per_services']['webui'].map { |z| "#{z}.node" }
 node.default['redborder']['webui']['hosts'] = webui_hosts
+node.run_state['auth_token'] = get_api_auth_token
 
 # set kafka host index if kafka is enabled in this host
 if node['redborder']['managers_per_services']['kafka'].include?(node.name)
