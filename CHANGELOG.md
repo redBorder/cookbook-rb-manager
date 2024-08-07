@@ -1,6 +1,12 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.6.0
+
+  - David Vanhoucke
+    - [c70c775] Bump release
+    - [80162bb] run rb_upload_cookbooks when triggered
+
 ## 2.5.3
 
   - nilsver
