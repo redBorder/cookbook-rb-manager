@@ -1,6 +1,16 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.5.2
+
+  - nilsver
+    - [afd6735] Merge pull request #170 from redBorder/bug/#17959_Add_memcached-hosts_to_druid_common_propiertes
+  - jnavarrorb
+    - [3636fb8] Undo cookstyle changes warning fix monitor
+    - [a379643] Undo cookstyle changes warning
+    - [0dfe5fd] Fix cookstyle
+    - [f011ad1] fix_memcached_hosts
+
 ## 2.5.1
 
   - Miguel Negron
