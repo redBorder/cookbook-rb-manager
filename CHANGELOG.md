@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.6.1
+
+  - Miguel Negrón
+    - [c0bf956] Merge pull request #177 from redBorder/feature/#18106_install_llamafile_as_service
+
 ## 2.6.0
 
   - David Vanhoucke
