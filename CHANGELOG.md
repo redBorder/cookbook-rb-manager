@@ -1,6 +1,28 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.6.0
+
+  - David Vanhoucke
+    - [c70c775] Bump release
+    - [80162bb] run rb_upload_cookbooks when triggered
+
+## 2.5.3
+
+  - nilsver
+    - [4195b55] Feature/18013 integrate mongodb (#176)
+    - [4ebc4ec] Release 2.5.2
+    - [afd6735] Merge pull request #170 from redBorder/bug/#17959_Add_memcached-hosts_to_druid_common_propiertes
+  - David Vanhoucke
+    - [80162bb] run rb_upload_cookbooks when triggered
+  - jnavarrorb
+    - [f011ad1] fix_memcached_hosts
+
+## 2.5.2
+
+  - jnavarrorb
+    - [f011ad1] fix_memcached_hosts
+
 ## 2.5.1
 
   - Miguel Negron

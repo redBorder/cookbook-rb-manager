@@ -113,7 +113,7 @@ default['redborder']['memory_assigned'] = {}
 default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
                                                     postgresql redborder-postgresql nginx webui druid-broker
                                                     druid-historical druid-realtime druid-coordinator f2k
-                                                    redborder-monitor pmacct redborder-dswatcher
+                                                    redborder-monitor pmacct redborder-dswatcher mongodb
                                                     redborder-events-counter http2k redborder-mem2incident)
 
 default['redborder']['services_group']['custom'] = []
