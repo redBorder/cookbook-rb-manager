@@ -544,6 +544,15 @@ mem2incident_config 'Configure redborder-mem2incident' do
   end
 end
 
+rb_ai_config 'Configure redborder-ai' do
+  ai_selected_model node['redborder']['ai_selected_model']
+  if manager_services['redborder-ai']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 rb_postfix_config 'Configure postfix' do
   if node['redborder']['services']['postfix']
     action :add
