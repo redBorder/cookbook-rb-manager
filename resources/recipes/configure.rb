@@ -12,6 +12,16 @@ node.default['redborder']['manager']['services']['current'] = node.run_state['ma
 virtual_ips = node.run_state['virtual_ips']
 virtual_ips_per_ip = node.run_state['virtual_ips_per_ip']
 
+bash 'upload_cookbooks' do
+  code 'bash /usr/lib/redborder/bin/rb_upload_cookbooks.sh'
+  only_if { ::File.exist?('/root/.upload-cookbooks') }
+  notifies :delete, 'file[/root/.upload-cookbooks]', :immediately
+end
+
+file '/root/.upload-cookbooks' do
+  action :nothing
+end
+
 rb_common_config 'Configure common' do
   action :configure
 end
@@ -209,9 +219,20 @@ memcached_config 'Configure Memcached' do
   end
 end
 
+is_mongo_configured_consul = shell_out("curl -s http://localhost:8500/v1/health/service/mongodb | jq -r '.[].Checks[0].Status' | grep -q 'passing'")
+get_consul_registered_ip = shell_out("curl -s http://localhost:8500/v1/health/service/mongodb | jq -r '.[].Service.Address' | head -n 1")
+
 mongodb_config 'Configure Mongodb' do
   if manager_services['mongodb']
-    action [:add, :register]
+    if is_mongo_configured_consul.exitstatus == 0
+      if node['ipaddress_sync'] == get_consul_registered_ip.stdout.strip
+        action [:add, :register]
+      else
+        action [:remove, :deregister]
+      end
+    else
+      action [:add, :register]
+    end
   else
     action [:remove, :deregister]
   end
@@ -518,6 +539,15 @@ mem2incident_config 'Configure redborder-mem2incident' do
   memcached_servers node['redborder']['managers_per_services']['memcached'].map { |s| "#{s}:#{node['redborder']['memcached']['port']}" }
   auth_token node.run_state['auth_token']
   if manager_services['redborder-mem2incident']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+rb_ai_config 'Configure redborder-ai' do
+  ai_selected_model node['redborder']['ai_selected_model']
+  if manager_services['redborder-ai']
     action [:add, :register]
   else
     action [:remove, :deregister]
