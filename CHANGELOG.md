@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.6.2
+
+  - nilsver
+    - [918fd9d] add rb_create_rsa to sudoers file
+
 ## 2.6.1
 
   - Miguel Negrón
