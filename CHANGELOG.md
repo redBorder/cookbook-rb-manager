@@ -1,6 +1,17 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.7.0
+
+  - nilsver
+    - [8b7dd1d] Merge pull request #174 from redBorder/feature/18019_add_chronyd_cookbook
+    - [78bd760] Merge branch 'development' into feature/18019_add_chronyd_cookbook
+  - Miguel Álvarez
+    - [47456fa] Update default.rb
+  - Miguel Alvarez
+    - [aac735d] Add cookbook rb chrony as dependency
+    - [ee99d8c] Add chrony service
+
 ## 2.6.2
 
   - nilsver
