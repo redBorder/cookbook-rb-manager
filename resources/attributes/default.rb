@@ -3,6 +3,7 @@ default['redborder']['cdomain'] = 'redborder.cluster'
 default['redborder']['organization_uuid'] = nil
 default['redborder']['organizations'] = []
 default['redborder']['locations'] = %w(namespace namespace_uuid organization organization_uuid service_provider service_provider_uuid deployment deployment_uuid market market_uuid campus campus_uuid building building_uuid floor floor_uuid)
+default['redborder']['sso_enabled'] = '0'
 
 # s3
 default['redborder']['uploaded_s3'] = false
@@ -41,6 +42,9 @@ default['redborder']['hadoop']['containersMemory'] = 2048
 default['redborder']['samza']['num_containers'] = 1
 default['redborder']['samza']['memory_per_container'] = 2560
 # riak
+
+# redborder-ai
+default['redborder']['ai_selected_model'] = nil
 
 # hard disk
 default['redborder']['manager']['data_dev'] = {}
@@ -87,6 +91,8 @@ default['redborder']['memory_services']['redborder-nmsp'] = { 'count': 10, 'memo
 default['redborder']['memory_services']['n2klocd'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['redborder-cep'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['rb-aioutliers'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['redborder-mem2incident'] = { 'count': 5, 'memory': 0 }
+default['redborder']['memory_services']['redborder-ai'] = { 'count': 5, 'memory': 0 }
 
 # exclude mem services, setting memory to 0 for each.
 default['redborder']['excluded_memory_services'] = %w(chef-client)
@@ -107,8 +113,8 @@ default['redborder']['memory_assigned'] = {}
 default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
                                                     postgresql redborder-postgresql nginx webui druid-broker
                                                     druid-historical druid-realtime druid-coordinator f2k
-                                                    redborder-monitor pmacct redborder-dswatcher
-                                                    redborder-events-counter http2k)
+                                                    redborder-monitor pmacct redborder-dswatcher mongodb
+                                                    redborder-events-counter http2k redborder-mem2incident)
 
 default['redborder']['services_group']['custom'] = []
 default['redborder']['services_group']['core'] = %w(consul zookeeper druid-coordinator druid-overlord hadoop-resourcemanager) # consul server
@@ -170,46 +176,50 @@ default['redborder']['services']['radiusd']                   = false
 default['redborder']['services']['postfix']                   = true
 default['redborder']['services']['keepalived']                = false
 default['redborder']['services']['clamav']                    = true
+default['redborder']['services']['redborder-mem2incident']    = false
+default['redborder']['services']['redborder-ai']              = false
 default['redborder']['services']['chrony']                    = true
 
-default['redborder']['systemdservices']['chef-client']            = ['chef-client']
-default['redborder']['systemdservices']['chef-server']            = ['opscode-erchef']
-default['redborder']['systemdservices']['consul']                 = ['consul']
-default['redborder']['systemdservices']['consul-client']          = ['consul']
-default['redborder']['systemdservices']['druid-realtime']         = ['druid-realtime']
-default['redborder']['systemdservices']['druid-coordinator']      = ['druid-coordinator']
-default['redborder']['systemdservices']['druid-historical']       = ['druid-historical']
-default['redborder']['systemdservices']['druid-broker']           = ['druid-broker']
-default['redborder']['systemdservices']['kafka']                  = ['kafka']
-default['redborder']['systemdservices']['zookeeper']              = ['zookeeper']
-default['redborder']['systemdservices']['webui']                  = ['webui']
-default['redborder']['systemdservices']['postgresql']             = ['postgresql']
-default['redborder']['systemdservices']['redborder-postgresql']   = ['redborder-postgresql']
-default['redborder']['systemdservices']['nginx']                  = ['nginx']
-default['redborder']['systemdservices']['redborder-cep']          = ['redborder-cep']
-default['redborder']['systemdservices']['rb-aioutliers']          = ['rb-aioutliers']
-default['redborder']['systemdservices']['rb-logstatter']          = ['rb-logstatter']
-default['redborder']['systemdservices']['rb-arubacentral']        = ['rb-arubacentral']
-default['redborder']['systemdservices']['memcached']              = ['memcached']
-default['redborder']['systemdservices']['s3']                     = ['minio']
-default['redborder']['systemdservices']['mongodb']                = ['mongod']
-default['redborder']['systemdservices']['redborder-monitor']      = ['redborder-monitor']
-default['redborder']['systemdservices']['redborder-scanner']      = ['redborder-scanner']
-default['redborder']['systemdservices']['snmp']                   = ['snmpd']
-default['redborder']['systemdservices']['f2k']                    = ['f2k']
-default['redborder']['systemdservices']['logstash']               = ['logstash']
-default['redborder']['systemdservices']['pmacct']                 = ['sfacctd']
-default['redborder']['systemdservices']['redborder-dswatcher']    = ['redborder-dswatcher']
+default['redborder']['systemdservices']['chef-client']              = ['chef-client']
+default['redborder']['systemdservices']['chef-server']              = ['opscode-erchef']
+default['redborder']['systemdservices']['consul']                   = ['consul']
+default['redborder']['systemdservices']['consul-client']            = ['consul']
+default['redborder']['systemdservices']['druid-realtime']           = ['druid-realtime']
+default['redborder']['systemdservices']['druid-coordinator']        = ['druid-coordinator']
+default['redborder']['systemdservices']['druid-historical']         = ['druid-historical']
+default['redborder']['systemdservices']['druid-broker']             = ['druid-broker']
+default['redborder']['systemdservices']['kafka']                    = ['kafka']
+default['redborder']['systemdservices']['zookeeper']                = ['zookeeper']
+default['redborder']['systemdservices']['webui']                    = ['webui']
+default['redborder']['systemdservices']['postgresql']               = ['postgresql']
+default['redborder']['systemdservices']['redborder-postgresql']     = ['redborder-postgresql']
+default['redborder']['systemdservices']['nginx']                    = ['nginx']
+default['redborder']['systemdservices']['redborder-cep']            = ['redborder-cep']
+default['redborder']['systemdservices']['rb-aioutliers']            = ['rb-aioutliers']
+default['redborder']['systemdservices']['rb-logstatter']            = ['rb-logstatter']
+default['redborder']['systemdservices']['rb-arubacentral']          = ['rb-arubacentral']
+default['redborder']['systemdservices']['memcached']                = ['memcached']
+default['redborder']['systemdservices']['s3']                       = ['minio']
+default['redborder']['systemdservices']['mongodb']                  = ['mongod']
+default['redborder']['systemdservices']['redborder-monitor']        = ['redborder-monitor']
+default['redborder']['systemdservices']['redborder-scanner']        = ['redborder-scanner']
+default['redborder']['systemdservices']['snmp']                     = ['snmpd']
+default['redborder']['systemdservices']['f2k']                      = ['f2k']
+default['redborder']['systemdservices']['logstash']                 = ['logstash']
+default['redborder']['systemdservices']['pmacct']                   = ['sfacctd']
+default['redborder']['systemdservices']['redborder-dswatcher']      = ['redborder-dswatcher']
 default['redborder']['systemdservices']['redborder-events-counter'] = ['redborder-events-counter']
-default['redborder']['systemdservices']['http2k']                 = ['http2k']
-default['redborder']['systemdservices']['rsyslog']                = ['rsyslog']
-default['redborder']['systemdservices']['redborder-nmsp']         = ['redborder-nmsp']
-default['redborder']['systemdservices']['redborder-ale']          = ['redborder-ale']
-default['redborder']['systemdservices']['n2klocd']                = ['n2klocd']
-default['redborder']['systemdservices']['radiusd']                = ['radiusd']
-default['redborder']['systemdservices']['postfix']                = ['postfix']
-default['redborder']['systemdservices']['keepalived']             = ['keepalived']
-default['redborder']['systemdservices']['chrony']                 = ['chronyd']
+default['redborder']['systemdservices']['http2k']                   = ['http2k']
+default['redborder']['systemdservices']['rsyslog']                  = ['rsyslog']
+default['redborder']['systemdservices']['redborder-nmsp']           = ['redborder-nmsp']
+default['redborder']['systemdservices']['redborder-ale']            = ['redborder-ale']
+default['redborder']['systemdservices']['n2klocd']                  = ['n2klocd']
+default['redborder']['systemdservices']['radiusd']                  = ['radiusd']
+default['redborder']['systemdservices']['postfix']                  = ['postfix']
+default['redborder']['systemdservices']['keepalived']               = ['keepalived']
+default['redborder']['systemdservices']['redborder-mem2incident']   = ['redborder-mem2incident']
+default['redborder']['systemdservices']['redborder-ai']             = ['redborder-ai']
+default['redborder']['systemdservices']['chrony']                   = ['chronyd']
 
 default['redborder']['manager']['balanced'] = [ { port: 443, protocol: 'tcp', name: 'redborder webui', service: 'webui', redirected_service: 'nginx', persistence_timeout: 9600 }, { port: 2055, protocol: 'udp', name: 'netflow,ipfix/sflow daemon', service: 'f2k', redirected_service: 'f2k', persistence_timeout: 30 }, { port: 6343, protocol: 'udp', name: 'sflow daemon', service: 'sfacctd', redirected_service: 'sfacctd', persistence_timeout: 30 }, { port: 9092, protocol: 'tcp', name: 'kafka', service: 'kafka', redirected_service: 'kafka', persistence_timeout: 30 } ]
 
