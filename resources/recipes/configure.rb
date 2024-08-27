@@ -546,7 +546,11 @@ end
 
 rb_ai_config 'Configure redborder-ai' do
   ai_selected_model node['redborder']['ai_selected_model']
-  ipaddress node['ipaddress_sync']
+  if node['redborder']['managers_list'].lenght > 1
+    ipaddress node['ipaddress_sync']
+  else
+    ipaddress node['ipaddress']
+  end
   if manager_services['redborder-ai']
     action [:add, :register]
   else
