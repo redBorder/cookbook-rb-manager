@@ -1,6 +1,17 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.7.0
+
+  - Miguel Alvarez
+    - [aac735d] Add cookbook rb chrony as dependency
+    - [ee99d8c] Add chrony service
+
+## 2.6.2
+
+  - nilsver
+    - [918fd9d] add rb_create_rsa to sudoers file
+
 ## 2.6.1
 
   - Miguel Negrón

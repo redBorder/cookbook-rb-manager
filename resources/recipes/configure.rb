@@ -570,6 +570,15 @@ rb_clamav_config 'Configure ClamAV' do
   action(manager_services['clamav'] ? :add : :remove)
 end
 
+rb_chrony_config 'Configure Chrony' do
+  ntp_servers node['redborder']['ntp']['servers']
+  if manager_services['chrony']
+    action :add
+  else
+    action :remove
+  end
+end
+
 # Determine external
 begin
   external_services = data_bag_item('rBglobal', 'external_services')
