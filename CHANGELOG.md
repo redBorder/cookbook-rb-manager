@@ -1,6 +1,13 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.7.1
+
+  - Pablo Pérez
+    - [3975465] fix spelling
+    - [6911bae] check if is more than one node
+    - [e1996b6] Add sync address to redborder-ai
+
 ## 2.7.0
 
   - Miguel Alvarez
