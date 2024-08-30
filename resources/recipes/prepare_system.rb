@@ -144,7 +144,7 @@ node.default['redborder']['zookeeper']['zk_hosts'] = "zookeeper.service.#{node['
 # set webui hosts
 webui_hosts = node['redborder']['managers_per_services']['webui'].map { |z| "#{z}.node" }
 node.default['redborder']['webui']['hosts'] = webui_hosts
-node.run_state['auth_token'] = get_api_auth_token
+node.run_state['auth_token'] = get_api_auth_token if File.exist?('/var/www/rb-rails/config/database.yml')
 
 # set kafka host index if kafka is enabled in this host
 if node['redborder']['managers_per_services']['kafka'].include?(node.name)
