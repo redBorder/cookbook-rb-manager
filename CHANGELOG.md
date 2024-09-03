@@ -1,6 +1,19 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.7.3
+
+  - Miguel Negrón
+    - [3ea1dac] Merge pull request #190 from redBorder/bugfix/18247_auth_token_not_accessible
+
+## 2.7.2
+
+  - Luis Blanco
+    - [bf8d086] Merge remote-tracking branch 'origin/master' into feature/#16519_fix_ale_action_logic
+    - [8154374] Merge remote-tracking branch 'origin/master' into feature/#16519_fix_ale_action_logic
+    - [084dbd2] Merge remote-tracking branch 'origin/master' into feature/#16519_fix_ale_action_logic
+    - [f2fc7eb] manage package and service based on sensor existence, instead of service status
+
 ## 2.7.1
 
   - Pablo Pérez
