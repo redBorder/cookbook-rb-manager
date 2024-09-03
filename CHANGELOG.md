@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.7.3
+
+  - Miguel Negrón
+    - [3ea1dac] Merge pull request #190 from redBorder/bugfix/18247_auth_token_not_accessible
+
 ## 2.7.2
 
   - Luis Blanco
