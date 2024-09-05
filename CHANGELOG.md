@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.7.4
+
+  - Miguel Negron
+    - [d5fd4f7] Avoid upload cookbooks while we fix bug #18576
+
 ## 2.7.3
 
   - Miguel Negrón
