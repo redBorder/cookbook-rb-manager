@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.7.5
+
+  - Pablo Pérez
+    - [58e1061] Revert sync address assignment
+
 ## 2.7.4
 
   - Miguel Negron
