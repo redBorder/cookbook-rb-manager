@@ -142,7 +142,7 @@ end
 node.default['redborder']['zookeeper']['zk_hosts'] = "zookeeper.service.#{node['redborder']['cdomain']}:#{node['redborder']['zookeeper']['port']}"
 
 # set webui hosts
-webui_hosts = node['redborder']['managers_per_services']['webui'].map { |z| "#{z}.node" }
+webui_hosts = node['redborder']['managers_per_services']['webui'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
 node.default['redborder']['webui']['hosts'] = webui_hosts
 node.run_state['auth_token'] = get_api_auth_token if File.exist?('/etc/redborder/cluster-installed.txt')
 
@@ -152,7 +152,7 @@ if node['redborder']['managers_per_services']['kafka'].include?(node.name)
 end
 
 # Set all nodes with s3 configured (nginx load balancer)
-s3_hosts = node['redborder']['managers_per_services']['s3'].map { |z| "#{z}.node:9000" }
+s3_hosts = node['redborder']['managers_per_services']['s3'].map { |z| "#{z}.#{node['redborder']['cdomain']}:9000" if node['redborder']['cdomain']}
 node.default['redborder']['s3']['s3_hosts'] = s3_hosts
 
 # set druid realtime partition id (its needed in cluster mode for druid brokers)
@@ -188,3 +188,17 @@ modules.each do |x|
 end
 
 node.normal['redborder']['license']['fmodules'] = fmodules
+
+# For each node add <node ip> <hostname>.<domain> to /etc/hosts
+hosts_entries = node.run_state['managers'].map do |m|
+  if m['ipaddress_sync'] && m['name'] && node['redborder']['cdomain']
+    "#{m['ipaddress_sync']} #{m['name']}.#{node['redborder']['cdomain']}"
+  end
+end
+
+hosts_entries.each do |line|
+  execute "Add #{line} to /etc/hosts" do
+    command "echo '#{line}' >> /etc/hosts"
+    not_if "grep -q '^#{line}' /etc/hosts"
+  end
+end
