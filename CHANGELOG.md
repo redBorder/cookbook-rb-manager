@@ -1,6 +1,24 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.7.6
+
+  - Miguel Negrón
+    - [18d928f] Merge pull request #197 from redBorder/bugfix/#18648_dont_use_point_node_in_nginx
+  - Miguel Negron
+    - [526894f] Add space
+    - [1481bf1] Add node domain in etc/hosts
+
+## 2.7.5
+
+  - Pablo Pérez
+    - [58e1061] Revert sync address assignment
+
+## 2.7.4
+
+  - Miguel Negron
+    - [d5fd4f7] Avoid upload cookbooks while we fix bug #18576
+
 ## 2.7.3
 
   - Miguel Negrón

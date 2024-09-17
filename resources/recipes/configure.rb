@@ -12,11 +12,11 @@ node.default['redborder']['manager']['services']['current'] = node.run_state['ma
 virtual_ips = node.run_state['virtual_ips']
 virtual_ips_per_ip = node.run_state['virtual_ips_per_ip']
 
-bash 'upload_cookbooks' do
-  code 'bash /usr/lib/redborder/bin/rb_upload_cookbooks.sh'
-  only_if { ::File.exist?('/root/.upload-cookbooks') }
-  notifies :delete, 'file[/root/.upload-cookbooks]', :immediately
-end
+# bash 'upload_cookbooks' do
+#   code 'bash /usr/lib/redborder/bin/rb_upload_cookbooks.sh'
+#   only_if { ::File.exist?('/root/.upload-cookbooks') }
+#   notifies :delete, 'file[/root/.upload-cookbooks]', :immediately
+# end
 
 file '/root/.upload-cookbooks' do
   action :nothing
@@ -547,11 +547,7 @@ end
 
 rb_ai_config 'Configure redborder-ai' do
   ai_selected_model node['redborder']['ai_selected_model']
-  if node['redborder']['managers_list'].length > 1
-    ipaddress node['ipaddress_sync']
-  else
-    ipaddress node['ipaddress']
-  end
+  ipaddress node['ipaddress_sync']
   if manager_services['redborder-ai']
     action [:add, :register]
   else
