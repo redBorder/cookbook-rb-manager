@@ -547,7 +547,7 @@ end
 
 rb_ai_config 'Configure redborder-ai' do
   ai_selected_model node['redborder']['ai_selected_model']
-  ai_allowed_cpus JSON.parse(node['redborder']['ai_allowed_cpus'].gsub("=>", ":").gsub("'", '"'))[node['hostname']]
+  ai_allowed_cpus JSON.parse(node['redborder']['ai_allowed_cpus'])[node['hostname']].nil? ? '0': JSON.parse(node['redborder']['ai_allowed_cpus'])[node['hostname']]
   ipaddress node['ipaddress_sync']
   if manager_services['redborder-ai']
     action [:add, :register]
