@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 name             'rb-manager'
 maintainer       'Eneo Tecnología S.L.'
 maintainer_email 'git@redborder.com'
 license          'AGPL-3.0'
 description      'Installs/Configures redborder manager'
-version          '2.7.4'
+version          '2.7.6'
 
 depends 'rb-common'
 depends 'chef-server'
