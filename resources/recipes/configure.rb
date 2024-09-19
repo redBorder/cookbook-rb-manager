@@ -547,6 +547,7 @@ end
 
 rb_ai_config 'Configure redborder-ai' do
   ai_selected_model node['redborder']['ai_selected_model']
+  cpus node['redborder']['redborder-ai']['cpus']
   ipaddress node['ipaddress_sync']
   if manager_services['redborder-ai']
     action [:add, :register]
