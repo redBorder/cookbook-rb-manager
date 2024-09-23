@@ -12,6 +12,14 @@ node.default['redborder']['manager']['services']['current'] = node.run_state['ma
 virtual_ips = node.run_state['virtual_ips']
 virtual_ips_per_ip = node.run_state['virtual_ips_per_ip']
 
+begin
+  split_traffic_logstash_db = data_bag_item('rBglobal', 'splittraffic')
+  split_traffic_logstash = split_traffic_logstash_db['active']
+rescue
+  split_traffic_logstash = false
+end
+
+
 # bash 'upload_cookbooks' do
 #   code 'bash /usr/lib/redborder/bin/rb_upload_cookbooks.sh'
 #   only_if { ::File.exist?('/root/.upload-cookbooks') }
@@ -420,9 +428,11 @@ logstash_config 'Configure logstash' do
   flow_nodes node.run_state['all_flow_sensors_info']['flow-sensor']
   namespaces node.run_state['namespaces']
   vault_nodes node.run_state['sensors_info_all']['vault-sensor']
+  proxy_nodes node.run_state['sensors_info_all']['proxy-sensor']
   scanner_nodes node.run_state['sensors_info_all']['scanner-sensor']
   device_nodes node.run_state['sensors_info_all']['device-sensor']
   logstash_pipelines node.default['pipelines']
+  split_traffic_logstash split_traffic_logstash
   if !logstash_pipelines.nil? && !logstash_pipelines.empty?
     action [:add, :register]
   else
