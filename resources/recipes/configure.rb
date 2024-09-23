@@ -19,7 +19,6 @@ rescue
   split_traffic_logstash = false
 end
 
-
 # bash 'upload_cookbooks' do
 #   code 'bash /usr/lib/redborder/bin/rb_upload_cookbooks.sh'
 #   only_if { ::File.exist?('/root/.upload-cookbooks') }
