@@ -237,3 +237,4 @@ default['redborder']['pending_changes'] = 0
 
 # redborder-ai
 default['redborder']['redborder-ai']['cpus'] = '0'
+default['redborder']['incidents_priority_filter'] = 'high'
