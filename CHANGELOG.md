@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.9.0
+  - Vicente Mesa
+    - Fix incident priority filter
+
+
 ## 2.8.0
 
   - Miguel Negrón
