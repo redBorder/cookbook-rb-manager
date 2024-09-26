@@ -14,7 +14,7 @@ virtual_ips_per_ip = node.run_state['virtual_ips_per_ip']
 
 begin
   split_traffic_logstash_db = data_bag_item('rBglobal', 'splittraffic')
-  split_traffic_logstash = split_traffic_logstash_db['active']
+  split_traffic_logstash = split_traffic_logstash_db['logstash']
 rescue
   split_traffic_logstash = false
 end
