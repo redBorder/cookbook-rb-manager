@@ -1,6 +1,27 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.9.0
+  - Vicente Mesa
+    - Fix incident priority filter
+
+
+## 2.8.0
+
+  - Miguel Negrón
+    - [83656ac] Merge pull request #195 from redBorder/feature/#18290_add_option_setup_cores_on_redborder-ai_will_use
+  - Miguel Negron
+    - [ddbd865] Adapt redborder-ai
+  - Pablo Pérez
+    - [5702c72] Merge branch 'master' into feature/#18290_add_option_setup_cores_on_redborder-ai_will_use
+    - [02fea0c] revert
+    - [31334ef] condicional ternario
+    - [808220d] fix
+    - [b5ee662] parsing json
+    - [59f513f] rename variable
+    - [ee9ce9c] Modified value of allowed_cpu
+    - [f8bb525] Added cpu variable of redborder-ai service
+
 ## 2.7.6
 
   - Miguel Negrón

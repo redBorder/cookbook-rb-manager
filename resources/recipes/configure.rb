@@ -422,6 +422,7 @@ logstash_config 'Configure logstash' do
   vault_nodes node.run_state['sensors_info_all']['vault-sensor']
   scanner_nodes node.run_state['sensors_info_all']['scanner-sensor']
   device_nodes node.run_state['sensors_info_all']['device-sensor']
+  incidents_priority_filter node['redborder']['incidents_priority_filter']
   logstash_pipelines node.default['pipelines']
   if !logstash_pipelines.nil? && !logstash_pipelines.empty?
     action [:add, :register]
@@ -547,6 +548,7 @@ end
 
 rb_ai_config 'Configure redborder-ai' do
   ai_selected_model node['redborder']['ai_selected_model']
+  cpus node['redborder']['redborder-ai']['cpus']
   ipaddress node['ipaddress_sync']
   if manager_services['redborder-ai']
     action [:add, :register]

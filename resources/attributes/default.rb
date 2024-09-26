@@ -234,3 +234,7 @@ default['redborder']['manager']['virtual_ips'] = { external: [ { service: 'webui
 default['redborder']['druid']['realtime']['partition_num'] = 0
 
 default['redborder']['pending_changes'] = 0
+
+# redborder-ai
+default['redborder']['redborder-ai']['cpus'] = '0'
+default['redborder']['incidents_priority_filter'] = 'high'
