@@ -6,7 +6,7 @@
 # Services configuration
 manager_services = manager_services()
 
-cluster_installed = File.exist?('/etc/cluster-installed.txt')
+cluster_installed = File.exist?('/etc/redborder/cluster-installed.txt')
 
 # Druid
 cron_d 'clean_segments_daily' do
