@@ -1,6 +1,10 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.9.1
+  - jnavarrorb
+    - [d39786a] Fix path to avoid cron_d action delete
+
 ## 2.9.0
   - Vicente Mesa
     - Fix incident priority filter
