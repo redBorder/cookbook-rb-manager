@@ -1,6 +1,13 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.10.0
+
+  - David Vanhoucke
+    - [c54069a] use descrfptive name
+    - [6592bd1] remove blank line
+    - [8b401f1] add method to activate the split of the traffic through logstash
+
 ## 2.9.1
   - jnavarrorb
     - [d39786a] Fix path to avoid cron_d action delete
