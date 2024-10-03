@@ -7,7 +7,7 @@ module RbManager
 
     def get_ip_of_manager_ips
       # IPS in manager mode has the role ips-sensor
-      sensors = search(:node, "role:ips-sensor AND -redborder_parent_id:*?").sort
+      sensors = search(:node, 'role:ips-sensor AND -redborder_parent_id:*?').sort
       sensors.map { |s| { ipaddress: s['ipaddress'] } }
     end
 
@@ -62,7 +62,7 @@ module RbManager
           end
         end
       end
-      system("firewall-cmd --reload") if reload_needed
+      system('firewall-cmd --reload') if reload_needed
     end
   end
 end
