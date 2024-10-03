@@ -66,7 +66,6 @@ default['redborder']['memory_services'] = {}
 default['redborder']['memory_services']['kafka'] = { 'count': 150, 'memory': 0, 'max_limit': 524288 }
 default['redborder']['memory_services']['zookeeper'] = { 'count': 20, 'memory': 0 }
 default['redborder']['memory_services']['chef-client'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['keepalived'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['druid-coordinator'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['druid-overlord'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['druid-historical'] = { 'count': 10, 'memory': 0 }
