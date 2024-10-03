@@ -29,6 +29,10 @@ node['network']['interfaces'].each do |interface, _details|
   ipaddress_sync = `ip route get #{sync_net} | head -n 1 | awk '/src/ {print $5}'`.strip
 end
 
+# Opens the kafka port for the IP of the IPS if in manager/ssh mode.
+# If the manager has 2 or more interfaces.
+open_ports_for_ips
+
 node.default[:ipaddress_sync] = ipaddress_sync
 
 # get mac
