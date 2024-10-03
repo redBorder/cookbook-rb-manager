@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.10.1
+
+  - Miguel Álvarez
+    - [66ab004] Delete keepalived from memory services (#205)
+
 ## 2.10.0
 
   - David Vanhoucke
