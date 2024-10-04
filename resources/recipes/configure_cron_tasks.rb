@@ -20,7 +20,7 @@ cron_d 'clean_segments_daily' do
   weekday '*'
   retries 2
   ignore_failure true
-  command '/usr/lib/redborder/bin/rb_clean_segments'
+  command '/usr/lib/redborder/bin/rb_clean_segments.sh'
 end
 
 cron_d 'create_druid_metadata_daily' do
