@@ -1,10 +1,5 @@
 module RbManager
   module Helpers
-    def interfaces
-      init_conf = YAML.load_file('/etc/redborder/rb_init_conf.yml')
-      init_conf['network']['interfaces']
-    end
-
     def get_ip_of_manager_ips
       # IPS in manager mode has the role ips-sensor
       sensors = search(:node, 'role:ips-sensor AND -redborder_parent_id:*?').sort
@@ -29,7 +24,6 @@ module RbManager
     end
 
     def open_ports_for_ips
-      return unless interfaces.count > 1
       manager_ips = get_ip_of_manager_ips
       existing_ips = get_existing_ips_for_port
       reload_needed = false
