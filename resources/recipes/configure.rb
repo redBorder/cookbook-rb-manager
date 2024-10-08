@@ -566,6 +566,14 @@ rb_ai_config 'Configure redborder-ai' do
   end
 end
 
+rb_firewall_config 'Configure Firewall' do
+  if manager_services['firewall']
+    action :add
+  else
+    action :remove
+  end
+end
+
 rb_postfix_config 'Configure postfix' do
   if node['redborder']['services']['postfix']
     action :add
