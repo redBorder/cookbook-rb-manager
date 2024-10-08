@@ -1,11 +1,6 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
-## 2.10.2
-
-  - nilsver
-    - [e788b6b] Bugfix/18447 open port kafka public zone (#207)
-
 ## 2.10.1
 
   - Miguel Álvarez
