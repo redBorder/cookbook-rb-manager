@@ -84,7 +84,6 @@ keepalived_config 'Configure keepalived' do
   manager_services manager_services
   ipmgt node['ipaddress']
   iface_management node['redborder']['management_interface']
-  iface_sync node['redborder']['sync_interface']
   ipaddress_sync node['ipaddress_sync']
   managers_per_service node['redborder']['managers_per_services']
   if manager_services['keepalived']
