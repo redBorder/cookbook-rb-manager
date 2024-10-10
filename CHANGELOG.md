@@ -1,6 +1,20 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 2.10.3
+
+  - Miguel Negrón
+    - [9e67532] Add pre and postun to clean the cookbook
+  - david vhk
+    - [0d95408] Merge branch 'master' into development
+  - David Vanhoucke
+    - [484f2e2] release 2.10.2
+    - [f9d5c6b] release 2.10.1
+  - nilsver
+    - [e788b6b] Bugfix/18447 open port kafka public zone (#207)
+  - Miguel Álvarez
+    - [66ab004] Delete keepalived from memory services (#205)
+
 ## 2.10.2
 
   - nilsver
@@ -31,7 +45,7 @@ cookbook-rb-manager CHANGELOG
 
   - Miguel Negrón
     - [83656ac] Merge pull request #195 from redBorder/feature/#18290_add_option_setup_cores_on_redborder-ai_will_use
-  - Miguel Negron
+  - Miguel Negrón
     - [ddbd865] Adapt redborder-ai
   - Pablo Pérez
     - [5702c72] Merge branch 'master' into feature/#18290_add_option_setup_cores_on_redborder-ai_will_use
@@ -47,7 +61,7 @@ cookbook-rb-manager CHANGELOG
 
   - Miguel Negrón
     - [18d928f] Merge pull request #197 from redBorder/bugfix/#18648_dont_use_point_node_in_nginx
-  - Miguel Negron
+  - Miguel Negrón
     - [526894f] Add space
     - [1481bf1] Add node domain in etc/hosts
 
@@ -58,7 +72,7 @@ cookbook-rb-manager CHANGELOG
 
 ## 2.7.4
 
-  - Miguel Negron
+  - Miguel Negrón
     - [d5fd4f7] Avoid upload cookbooks while we fix bug #18576
 
 ## 2.7.3
@@ -121,7 +135,7 @@ cookbook-rb-manager CHANGELOG
 
 ## 2.5.1
 
-  - Miguel Negron
+  - Miguel Negrón
     - [6f3647b] Fix error service name on mem2incident
 
 ## 2.5.0
@@ -159,7 +173,7 @@ cookbook-rb-manager CHANGELOG
     - [d3e9e40] fix linter
     - [9fd823c] fix bug mobility pipelines nil
     - [a97909b] add arubacentral-sensor
-  - Miguel Negron
+  - Miguel Negrón
     - [abe7d76] Release 2.2.1
 
 ## 2.2.1
@@ -263,7 +277,7 @@ cookbook-rb-manager CHANGELOG
 
 ## 1.7.5
 
-  - Miguel Negron
+  - Miguel Negrón
     - [0c6a59b] Change the way we get the sync IP using ip route
 
 ## 1.7.4
