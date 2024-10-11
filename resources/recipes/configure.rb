@@ -245,46 +245,6 @@ mongodb_config 'Configure Mongodb' do
   end
 end
 
-hadoop_common 'Configure hadoop common resources' do
-  name node['hostname']
-  zookeeper_hosts node['redborder']['zookeeper']['zk_hosts']
-  memory_kb node['redborder']['memory_services']['hadoop-nodemanager']['memory']
-  containersMemory node['redborder']['hadoop']['containersMemory']
-  if manager_services['hadoop-nodemanager'] || manager_services['hadoop-resourcemanager']
-    action :add
-  else
-    action :remove
-  end
-end
-
-hadoop_resourcemanager 'Configure Hadoop ResourceManager' do
-  memory_kb node['redborder']['memory_services']['hadoop-resourcemanager']['memory']
-  if manager_services['hadoop-resourcemanager']
-    action [:add, :register]
-  else
-    action [:remove, :deregister]
-  end
-end
-
-hadoop_nodemanager 'Configure Hadoop NodeManager' do
-  memory_kb node['redborder']['memory_services']['hadoop-nodemanager']['memory']
-  if manager_services['hadoop-nodemanager']
-    action [:add, :register]
-  else
-    action [:remove, :deregister]
-  end
-end
-
-samza_config 'Configure samza applications' do
-  memory_per_container node['redborder']['samza']['memory_per_container']
-  num_containers node['redborder']['samza']['num_containers']
-  if manager_services['hadoop-nodemanager']
-    action :add
-  else
-    action :remove
-  end
-end
-
 geoip_config 'Configure GeoIP' do
   action :add
 end
