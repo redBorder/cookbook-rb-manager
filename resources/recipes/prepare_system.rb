@@ -54,7 +54,7 @@ template '/etc/sysconfig/chef-client' do
 end
 
 service 'chef-client' do
-  if node['redborder']['services']['chef-client']
+  if node['redborder']['services']['chef-client'] && cluster_installed
     action [:enable, :start]
   else
     action [:stop]
