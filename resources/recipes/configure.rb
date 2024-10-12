@@ -392,7 +392,7 @@ end
 logstash_config 'Configure logstash' do
   if manager_services['logstash'] && node.run_state['pipelines'] && !node.run_state['pipelines'].empty?
     cdomain node['redborder']['cdomain']
-    flow_nodes get_all_flow_sensors_info['flow-sensor']
+    flow_nodes node.run_state['flow_sensors_info']
     namespaces node.run_state['namespaces']
     vault_nodes node.run_state['sensors_info_all']['vault-sensor']
     proxy_nodes node.run_state['sensors_info_all']['proxy-sensor']
