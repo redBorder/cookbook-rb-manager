@@ -13,7 +13,7 @@ end
 # Set services_group related with the node mode (core, full, ...)
 node['redborder']['services_group'][node['redborder']['mode']].each { |s| node.default['redborder']['services'][s] = true }
 
-node.default['redborder']['services']['consul-client'] = (mode != 'core' && mode != 'full')
+node.default['redborder']['services']['consul-client'] = (node['redborder']['mode'] != 'core' && node['redborder']['mode'] != 'full')
 
 node.run_state['cluster_installed'] = File.exist?('/etc/redborder/cluster-installed.txt')
 
