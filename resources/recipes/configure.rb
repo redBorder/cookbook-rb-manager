@@ -536,7 +536,7 @@ rb_postfix_config 'Configure postfix' do
 end
 
 rbcgroup_config 'Configure cgroups' do
-  check_groups cluster_installed
+  check_cgroups cluster_installed
   action :add
 end
 
