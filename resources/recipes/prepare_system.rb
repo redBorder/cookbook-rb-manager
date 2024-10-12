@@ -73,6 +73,8 @@ node.default['redborder']['manager']['services']['current'] = node.run_state['ma
 # get managers sorted by service
 node.default['redborder']['managers_per_services'] = managers_per_service
 
+node.run_state['organizations'] = get_orgs if node['redborder']['services']['http2k']
+
 # get elasticache nodes
 begin
   elasticache = data_bag_item('rBglobal', 'elasticache')

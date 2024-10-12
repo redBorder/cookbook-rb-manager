@@ -3,8 +3,6 @@
 # Copyright:: 2024, redborder
 # License:: Affero General Public License, Version 3
 
-Chef::Recipe.send(:include, RbManager::Helpers)
-
 # Services configuration
 
 # manager services
@@ -343,7 +341,7 @@ http2k_config 'Configure Http2k' do
     ips_nodes node.run_state['sensors_info']['ips-sensor']
     ipsg_nodes node.run_state['sensors_info']['ipsg-sensor']
     ipscp_nodes node.run_state['sensors_info']['ipscp-sensor']
-    organizations get_orgs
+    organizations node.run_state['organizations']
     locations_list node['redborder']['locations']
     action [:add, :register]
   else
