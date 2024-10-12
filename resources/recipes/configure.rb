@@ -379,7 +379,6 @@ pmacct_config 'Configure pmacct' do
 end
 
 # Configure logstash
-pipelines = []
 split_traffic = false
 
 if manager_services['logstash']
@@ -388,12 +387,10 @@ if manager_services['logstash']
   rescue
     split_traffic = false
   end
-
-  pipelines = get_pipelines
 end
 
 logstash_config 'Configure logstash' do
-  if manager_services['logstash'] && pipelines && !pipelines.empty?
+  if manager_services['logstash'] && node.run_state['pipelines'] && !node.run_state['pipelines'].empty?
     cdomain node['redborder']['cdomain']
     flow_nodes get_all_flow_sensors_info['flow-sensor']
     namespaces node.run_state['namespaces']
@@ -402,7 +399,7 @@ logstash_config 'Configure logstash' do
     scanner_nodes node.run_state['sensors_info_all']['scanner-sensor']
     device_nodes node.run_state['sensors_info_all']['device-sensor']
     incidents_priority_filter node['redborder']['incidents_priority_filter']
-    logstash_pipelines pipelines
+    logstash_pipelines node.run_state['pipelines']
     split_traffic_logstash split_traffic
     action [:add, :register]
   else

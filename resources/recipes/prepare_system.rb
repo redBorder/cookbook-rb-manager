@@ -75,6 +75,8 @@ node.default['redborder']['managers_per_services'] = managers_per_service
 
 node.run_state['organizations'] = get_orgs if node['redborder']['services']['http2k']
 
+node.run_state['pipelines'] = get_pipelines if node['redborder']['services']['logstash']
+
 # get elasticache nodes
 begin
   elasticache = data_bag_item('rBglobal', 'elasticache')
