@@ -11,6 +11,7 @@ manager_services = node.run_state['manager_services']
 node.default['redborder']['manager']['services']['current'] = node.run_state['manager_services']
 virtual_ips = node.run_state['virtual_ips']
 virtual_ips_per_ip = node.run_state['virtual_ips_per_ip']
+cluster_installed = File.exist?('/etc/redborder/cluster-installed.txt')
 
 begin
   split_traffic_logstash_db = data_bag_item('rBglobal', 'splittraffic')
@@ -535,6 +536,7 @@ rb_postfix_config 'Configure postfix' do
 end
 
 rbcgroup_config 'Configure cgroups' do
+  check_groups cluster_installed
   action :add
 end
 
@@ -665,8 +667,6 @@ begin
 rescue
   cluster_uuid_db = {}
 end
-
-cluster_installed = File.exist?('/etc/redborder/cluster-installed.txt')
 
 template '/etc/motd' do
   source 'motd.erb'
