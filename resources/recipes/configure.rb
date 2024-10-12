@@ -11,7 +11,6 @@ manager_services = node.run_state['manager_services']
 node.default['redborder']['manager']['services']['current'] = node.run_state['manager_services']
 virtual_ips = node.run_state['virtual_ips']
 virtual_ips_per_ip = node.run_state['virtual_ips_per_ip']
-cluster_installed = File.exist?('/etc/redborder/cluster-installed.txt')
 
 begin
   split_traffic_logstash_db = data_bag_item('rBglobal', 'splittraffic')
@@ -345,7 +344,7 @@ http2k_config 'Configure Http2k' do
   ips_nodes node.run_state['sensors_info']['ips-sensor']
   ipsg_nodes node.run_state['sensors_info']['ipsg-sensor']
   ipscp_nodes node.run_state['sensors_info']['ipscp-sensor']
-  organizations node['redborder']['organizations']
+  organizations get_orgs
   locations_list node['redborder']['locations']
   if manager_services['http2k']
     action [:add, :register]
@@ -385,14 +384,14 @@ end
 
 logstash_config 'Configure logstash' do
   cdomain node['redborder']['cdomain']
-  flow_nodes node.run_state['all_flow_sensors_info']['flow-sensor']
+  flow_nodes get_all_flow_sensors_info['flow-sensor']
   namespaces node.run_state['namespaces']
   vault_nodes node.run_state['sensors_info_all']['vault-sensor']
   proxy_nodes node.run_state['sensors_info_all']['proxy-sensor']
   scanner_nodes node.run_state['sensors_info_all']['scanner-sensor']
   device_nodes node.run_state['sensors_info_all']['device-sensor']
   incidents_priority_filter node['redborder']['incidents_priority_filter']
-  logstash_pipelines node.default['pipelines']
+  logstash_pipelines get_pipelines
   split_traffic_logstash split_traffic_logstash
   if !logstash_pipelines.nil? && !logstash_pipelines.empty?
     action [:add, :register]
@@ -536,7 +535,7 @@ rb_postfix_config 'Configure postfix' do
 end
 
 rbcgroup_config 'Configure cgroups' do
-  check_cgroups cluster_installed
+  check_cgroups node.run_state['cluster_installed']
   action :add
 end
 
@@ -678,5 +677,5 @@ template '/etc/motd' do
   variables(cluster_info: cluster_info,
             uuid: cluster_uuid_db['uuid'],
             manager_services: manager_services,
-            cluster_finished: cluster_installed)
+            cluster_finished: node.run_state['cluster_installed'])
 end

@@ -11,14 +11,11 @@ execute 'Clean yum metadata' do
 end
 
 # Set services_group related with the node mode (core, full, ...)
-mode = node['redborder']['mode']
-node['redborder']['services_group'][mode].each { |s| node.default['redborder']['services'][s] = true }
+node['redborder']['services_group'][node['redborder']['mode']].each { |s| node.default['redborder']['services'][s] = true }
 
-cluster_installed = File.exist?('/etc/redborder/cluster-installed.txt')
+node.default['redborder']['services']['consul-client'] = (mode != 'core' && mode != 'full')
 
-if mode != 'core' || mode != 'full'
-  node.default['redborder']['services']['consul-client'] = true
-end
+node.run_state['cluster_installed'] = File.exist?('/etc/redborder/cluster-installed.txt')
 
 # Set :ipaddress_sync
 ipaddress_sync = node['ipaddress']
@@ -56,23 +53,21 @@ template '/etc/sysconfig/chef-client' do
 end
 
 service 'chef-client' do
-  if node['redborder']['services']['chef-client'] && cluster_installed
+  if node['redborder']['services']['chef-client'] && node.run_state['cluster_installed']
     action [:enable, :start]
   else
     action [:stop]
   end
 end
 
-# get managers information(name, ip, services...)
-cdomain = ''
-File.open('/etc/redborder/cdomain') { |f| cdomain = f.readline.chomp }
-node.default['redborder']['cdomain'] = cdomain
+# get cluster domain
+node.default['redborder']['cdomain'] = File.read('/etc/redborder/cdomain').chomp
 
 # get managers information(name, ip, services...)
 node.default['redborder']['cluster_info'] = get_cluster_info
 
 # manager services
-node.run_state['manager_services'] = manager_services()
+node.run_state['manager_services'] = manager_services
 node.default['redborder']['manager']['services']['current'] = node.run_state['manager_services']
 
 # get managers sorted by service
@@ -98,20 +93,11 @@ else
   node.default['redborder']['memcached']['hosts'] = memcached_hosts
 end
 
-# get organizations for http2k
-node.default['redborder']['organizations'] = get_orgs() if node['redborder']['services']['http2k']
-
 # get sensors info
-node.run_state['sensors_info'] = get_sensors_info()
+node.run_state['sensors_info'] = get_sensors_info
 
 # get sensors info full info
-node.run_state['sensors_info_all'] = get_sensors_all_info()
-
-# get sensors info of all flow sensors
-node.run_state['all_flow_sensors_info'] = get_all_flow_sensors_info()
-
-# get logstash pipelines
-node.default['pipelines'] = get_pipelines()
+node.run_state['sensors_info_all'] = get_sensors_all_info
 
 # get namespaces
 node.run_state['namespaces'] = get_namespaces
@@ -135,7 +121,7 @@ node.run_state['virtual_ips_per_ip'] = get_virtual_ips_per_ip_info(node.run_stat
 if File.exist?'/etc/lock/keepalived'
   node.run_state['manager_services']['keepalived'] = false
 elsif node['redborder'].nil? || node['redborder']['dmidecode'].nil? || node['redborder']['dmidecode']['manufacturer'].nil? || node['redborder']['dmidecode']['manufacturer'].to_s.downcase == 'xen'
-  if manager_index > 0 && !cluster_installed
+  if manager_index > 0 && !node.run_state['cluster_installed']
     node.run_state['manager_services']['keepalived'] = false
   else
     node.run_state['manager_services']['keepalived'] = node.run_state['has_any_virtual_ip'] and !File.exist?'/etc/lock/keepalived'
