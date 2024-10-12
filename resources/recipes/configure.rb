@@ -3,7 +3,7 @@
 # Copyright:: 2024, redborder
 # License:: Affero General Public License, Version 3
 
-extend RbManager::Helpers
+Chef::Recipe.send(:include, RbManager::Helpers)
 
 # Services configuration
 
