@@ -75,9 +75,8 @@ node.default['redborder']['managers_per_services'] = managers_per_service
 
 node.run_state['organizations'] = get_orgs if node['redborder']['services']['http2k']
 
-
 if node['redborder']['services']['logstash']
-  node.run_state['pipelines'] = get_pipelines 
+  node.run_state['pipelines'] = get_pipelines
   node.run_state['flow_sensors_info'] = get_all_flow_sensors_info['flow-sensor']
 end
 

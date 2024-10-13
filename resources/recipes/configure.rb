@@ -226,11 +226,7 @@ enable_mongodb = false
 if manager_services['mongodb']
   is_mongo_configured_consul = shell_out("curl -s http://localhost:8500/v1/health/service/mongodb | jq -r '.[].Checks[0].Status' | grep -q 'passing'")
   get_consul_registered_ip = shell_out("curl -s http://localhost:8500/v1/health/service/mongodb | jq -r '.[].Service.Address' | head -n 1")
-  if is_mongo_configured_consul.exitstatus == 0
-    enable_mongodb = (node['ipaddress_sync'] == get_consul_registered_ip.stdout.strip)
-  else
-    enable_mongodb = true
-  end
+  enable_mongodb = (is_mongo_configured_consul.exitstatus != 0) ? true : (node['ipaddress_sync'] == get_consul_registered_ip.stdout.strip)
 end
 
 mongodb_config 'Configure Mongodb' do
