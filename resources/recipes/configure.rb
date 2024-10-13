@@ -62,6 +62,8 @@ chef_server_config 'Configure chef services' do
   end
 end
 
+vrrp_secrets = {}
+
 if manager_services['keepalived']
   begin
     vrrp_secrets = data_bag_item('passwords', 'vrrp')
@@ -72,7 +74,7 @@ end
 
 keepalived_config 'Configure keepalived' do
   if manager_services['keepalived']
-    vrrp_secrets (vrrp_secrets || {})
+    vrrp_secrets vrrp_secrets
     virtual_ips virtual_ips
     virtual_ips_per_ip virtual_ips_per_ip
     managers managers
