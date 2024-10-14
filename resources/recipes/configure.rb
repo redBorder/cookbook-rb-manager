@@ -601,6 +601,7 @@ end
 postgresql_config 'Configure postgresql' do
   cdomain node['redborder']['cdomain']
   ipaddress node['ipaddress_sync']
+  virtual_ips virtual_ips
   if manager_services['postgresql'] && external_services['postgresql'] == 'onpremise'
     action [:add, :register]
   else
