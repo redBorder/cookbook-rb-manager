@@ -616,6 +616,7 @@ end
 
 # Allow only s3 onpremise nodes for now..
 minio_config 'Configure S3 (minio)' do
+  managers_with_minio node['redborder']['managers_per_services']['minio']
   ipaddress node['ipaddress_sync']
   access_key_id s3_secrets['s3_access_key_id']
   secret_key_id s3_secrets['s3_secret_key_id']
