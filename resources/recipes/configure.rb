@@ -621,9 +621,9 @@ minio_config 'Configure S3 (minio)' do
   access_key_id s3_secrets['s3_access_key_id']
   secret_key_id s3_secrets['s3_secret_key_id']
   if manager_services['s3'] && (external_services['s3'] == 'onpremise')
-    action [:add, :register]
+    action [:add, :register, :add_mcli]
   else
-    action [:remove, :deregister]
+    action [:remove, :deregister, :add_mcli]
   end
 end
 
