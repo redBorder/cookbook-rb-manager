@@ -41,6 +41,16 @@ rb_selinux_config 'Configure Selinux' do
   end
 end
 
+rb_firewall_config 'Configure Firewall' do
+  sync_ip node['ipaddress_sync']
+  ip_addr node['ipaddress']
+  if manager_services['firewall']
+    action :add
+  else
+    action :remove
+  end
+end
+
 consul_config 'Configure Consul Server' do
   confdir node['consul']['confdir']
   datadir node['consul']['datadir']
@@ -563,14 +573,6 @@ rb_ai_config 'Configure redborder-ai' do
     action [:add, :register]
   else
     action [:remove, :deregister]
-  end
-end
-
-rb_firewall_config 'Configure Firewall' do
-  if manager_services['firewall']
-    action :add
-  else
-    action :remove
   end
 end
 

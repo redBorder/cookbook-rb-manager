@@ -33,7 +33,7 @@ node.default[:ipaddress_sync] = ipaddress_sync
 
 # Opens the kafka port for the IP of the IPS if in manager/ssh mode.
 # If the manager has 2 or more interfaces.
-open_ports_for_ips if ipaddress_sync != node['ip_address']
+#open_ports_for_ips if ipaddress_sync != node['ip_address']
 
 # get mac
 mac_sync = `ip a | grep -w -B2 #{ipaddress_sync} | awk '{print toupper($2)}' | head -n 1 | tr -d '\n'`
