@@ -19,6 +19,12 @@ rescue
   split_traffic_logstash = false
 end
 
+begin
+  split_intrusion_logstash_db = data_bag_item('rBglobal', 'splitintrusion')
+  split_intrusion_logstash = split_intrusion_logstash_db['logstash']
+rescue
+  split_intrusion_logstash = false
+end
 # bash 'upload_cookbooks' do
 #   code 'bash /usr/lib/redborder/bin/rb_upload_cookbooks.sh'
 #   only_if { ::File.exist?('/root/.upload-cookbooks') }
@@ -433,6 +439,7 @@ logstash_config 'Configure logstash' do
   incidents_priority_filter node['redborder']['incidents_priority_filter']
   logstash_pipelines node.default['pipelines']
   split_traffic_logstash split_traffic_logstash
+  split_intrusion_logstash split_intrusion_logstash
   if !logstash_pipelines.nil? && !logstash_pipelines.empty?
     action [:add, :register]
   else
