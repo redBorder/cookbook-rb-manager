@@ -41,12 +41,12 @@
       end
 
       if node["redborder"]["cluster"]["services"].select {|x| x["name"]==s}.first["ok"]
-        manager_services << s.gsub("druid-", "").gsub("hadoop_", "") if (s!="chef-client" and s!="keepalived" and s!="riak-cs" and s!="opscode-solr4" and s!="opscode-expander" and s!="rabbitmq" and s!="redborder-monitor" and s!="rb-discover")
+        manager_services << s.gsub("druid-", "") if (s!="chef-client" and s!="keepalived" and s!="riak-cs" and s!="opscode-solr4" and s!="opscode-expander" and s!="rabbitmq" and s!="redborder-monitor" and s!="rb-discover")
       else
-        manager_services2 << s.gsub("druid-", "").gsub("hadoop_", "")
+        manager_services2 << s.gsub("druid-", "")
       end
     rescue
-      manager_services << "#{s}?".gsub("druid-", "").gsub("hadoop_", "")
+      manager_services << "#{s}?".gsub("druid-", "")
     end
   end
 %>
