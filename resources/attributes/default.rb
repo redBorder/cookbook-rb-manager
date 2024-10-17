@@ -225,4 +225,7 @@ default['redborder']['pending_changes'] = 0
 
 # redborder-ai
 default['redborder']['redborder-ai']['cpus'] = '0'
-default['redborder']['incidents_priority_filter'] = 'high'
+
+# Priority Filter
+default['redborder']['intrusion_incidents_priority_filter'] = 'high'
+default['redborder']['vault_incidents_priority_filter'] = 'high'
