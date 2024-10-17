@@ -5,7 +5,7 @@ module RbManager
       sensors = get_sensors_info()
       namespaces = get_namespaces()
       main_logstash = determine_main_logstash_node()
-      monitor_sensor_in_proxy_nodes = find_monitor_sensor_in_proxy_nodes()
+      monitor_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('device')
       vault_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('vault')
       monitor_config = get_monitor_configuration()
       has_device_sensors = !sensors['device-sensor'].nil? && !sensors['device-sensor'].empty?
