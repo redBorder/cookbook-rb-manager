@@ -36,11 +36,6 @@ default['redborder']['memcached']['server_list'] = []
 default['redborder']['memcached']['options'] = ''
 default['redborder']['memcached']['port'] = 11211
 
-# hadoop
-default['redborder']['hadoop']['containersMemory'] = 2048
-# samza
-default['redborder']['samza']['num_containers'] = 1
-default['redborder']['samza']['memory_per_container'] = 2560
 # riak
 
 # redborder-ai
@@ -56,7 +51,6 @@ default['redborder']['manager']['hd_services'] = [
                                                    { 'name': 'zookeeper', 'count': 1, 'prefered': 'aggregate' },
                                                    { 'name': 'riak', 'count': 50, 'prefered': 'raw' },
                                                    { 'name': 'druid_historical', 'count': 50, 'prefered': 'raw' },
-                                                   { 'name': 'hadoop_datanode', 'count': 50, 'prefered': 'raw' },
                                                  ]
 
 default['redborder']['manager']['hd_services_current'] = {}
@@ -78,8 +72,6 @@ default['redborder']['memory_services']['postgresql'] = { 'count': 10, 'memory':
 default['redborder']['memory_services']['redborder-postgresql'] = { 'count': 5, 'memory': 0 }
 default['redborder']['memory_services']['mongodb'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['memcached'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['hadoop-nodemanager'] = { 'count': 50, 'memory': 0 }
-default['redborder']['memory_services']['hadoop-resourcemanager'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['snmp'] = { 'count': 5, 'memory': 0, 'max_limit': 10000 }
 default['redborder']['memory_services']['redborder-monitor'] = { 'count': 5, 'memory': 0, 'max_limit': 20000 }
 default['redborder']['memory_services']['rb-logstatter'] = { 'count': 5, 'memory': 0, 'max_limit': 20000 }
@@ -116,14 +108,13 @@ default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper
                                                     redborder-events-counter http2k redborder-mem2incident)
 
 default['redborder']['services_group']['custom'] = []
-default['redborder']['services_group']['core'] = %w(consul zookeeper druid-coordinator druid-overlord hadoop-resourcemanager) # consul server
+default['redborder']['services_group']['core'] = %w(consul zookeeper druid-coordinator druid-overlord) # consul server
 default['redborder']['services_group']['chef'] = %w(chef-server)
 default['redborder']['services_group']['kafka'] = %w(kafka)
 default['redborder']['services_group']['historical'] = %w(druid-historical)
 default['redborder']['services_group']['middlemanager'] = %w(druid-middlemanager)
 default['redborder']['services_group']['broker'] = %w(druid-broker)
 default['redborder']['services_group']['http2k'] = %w(http2k)
-default['redborder']['services_group']['samza'] = %w(hadoop-nodemanager)
 default['redborder']['services_group']['webui'] = %w(nginx webui)
 default['redborder']['services_group']['f2k'] = %w(f2k)
 default['redborder']['services_group']['s3'] = %w(nginx s3)
@@ -157,8 +148,6 @@ default['redborder']['services']['rb-monitor']                = false
 default['redborder']['services']['secor']                     = false
 default['redborder']['services']['s3']                        = false
 default['redborder']['services']['mongodb']                   = false
-default['redborder']['services']['hadoop-nodemanager']        = false
-default['redborder']['services']['hadoop-resourcemanager']    = false
 default['redborder']['services']['redborder-monitor']         = true
 default['redborder']['services']['redborder-scanner']         = false
 default['redborder']['services']['snmp']                      = true
