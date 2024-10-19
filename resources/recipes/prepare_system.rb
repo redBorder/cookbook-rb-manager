@@ -200,7 +200,7 @@ hosts_entries.each do |line|
   end
 end
 
-# Build service.list for rbcli
+# Build service list for rbcli
 services = node['redborder']['services'] ||  []
 systemd_services = node['redborder']['systemdservices'] || []
 service_enablement = {}
