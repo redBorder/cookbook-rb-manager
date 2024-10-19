@@ -210,4 +210,4 @@ systemd_services.each do |service_name, systemd_name|
 end
 
 Chef::Log.info('Saving services enablement into /etc/redborder/services.json')
-File.write("/etc/redborder/services.json", JSON.pretty_generate(service_enablement))
+File.write('/etc/redborder/services.json', JSON.pretty_generate(service_enablement))
