@@ -38,7 +38,7 @@ consul_config 'Configure Consul Server' do
   cdomain node['redborder']['cdomain']
   dns_local_ip node['consul']['dns_local_ip']
 
-  if manager_services['consul'] || manager_services['consul-client']
+  if manager_services['consul']
     confdir node['consul']['confdir']
     datadir node['consul']['datadir']
     ipaddress node['ipaddress_sync']
@@ -546,11 +546,7 @@ rbcgroup_config 'Configure cgroups' do
 end
 
 rb_clamav_config 'Configure ClamAV' do
-  if manager_services['clamav']
-    action :add
-  else
-    action :remove
-  end
+  action :add
 end
 
 rb_chrony_config 'Configure Chrony' do
