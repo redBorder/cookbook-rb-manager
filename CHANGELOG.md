@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 3.1.0
+
+  - Miguel Negrón
+    - [ab45adc] Merge pull request #217 from redBorder/bugfix/#18863_license_in_settings
+
 ## 3.0.0
 
   - Miguel Negrón
