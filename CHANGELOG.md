@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.0.0
+
+  - Miguel Negrón
+    - [fa2f5c2] Merge pull request #223 from redBorder/improvement/#18961_service_list_without_chef
+
 ## 3.1.0
 
   - Miguel Negrón
