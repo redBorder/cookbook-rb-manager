@@ -57,36 +57,32 @@ default['redborder']['manager']['hd_services_current'] = {}
 
 # memory
 default['redborder']['memory_services'] = {}
-default['redborder']['memory_services']['kafka'] = { 'count': 150, 'memory': 0, 'max_limit': 524288 }
-default['redborder']['memory_services']['zookeeper'] = { 'count': 20, 'memory': 0 }
-default['redborder']['memory_services']['chef-client'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['druid-coordinator'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['druid-overlord'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['druid-historical'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['druid-broker'] = { 'count' => 10, 'memory' => 0 }
-default['redborder']['memory_services']['druid-middlemanager'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['druid-realtime'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['http2k'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['chef-server'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['postgresql'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['redborder-postgresql'] = { 'count': 5, 'memory': 0 }
-default['redborder']['memory_services']['mongodb'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['memcached'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['snmp'] = { 'count': 5, 'memory': 0, 'max_limit': 10000 }
-default['redborder']['memory_services']['redborder-monitor'] = { 'count': 5, 'memory': 0, 'max_limit': 20000 }
-default['redborder']['memory_services']['rb-logstatter'] = { 'count': 5, 'memory': 0, 'max_limit': 20000 }
-default['redborder']['memory_services']['rb-arubacentral'] = { 'count': 5, 'memory': 0, 'max_limit': 20000 }
-default['redborder']['memory_services']['webui'] = { 'count': 40, 'memory': 0 }
+default['redborder']['memory_services']['druid-broker'] = { 'count' => 10, 'memory' => 0 }
+default['redborder']['memory_services']['druid-coordinator'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['druid-historical'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['druid-middlemanager'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['druid-overlord'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['druid-realtime'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['f2k'] = { 'count': 40, 'memory': 0 }
-default['redborder']['memory_services']['redborder-nmsp'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['http2k'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['kafka'] = { 'count': 150, 'memory': 0, 'max_limit': 524288 }
+default['redborder']['memory_services']['memcached'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['mongodb'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['n2klocd'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['redborder-cep'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['postgresql'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['rb-aioutliers'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['redborder-mem2incident'] = { 'count': 5, 'memory': 0 }
+default['redborder']['memory_services']['rb-arubacentral'] = { 'count': 5, 'memory': 0, 'max_limit': 20000 }
+default['redborder']['memory_services']['rb-logstatter'] = { 'count': 5, 'memory': 0, 'max_limit': 20000 }
 default['redborder']['memory_services']['redborder-ai'] = { 'count': 5, 'memory': 0 }
-
-# exclude mem services, setting memory to 0 for each.
-default['redborder']['excluded_memory_services'] = %w(chef-client)
+default['redborder']['memory_services']['redborder-cep'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['redborder-mem2incident'] = { 'count': 5, 'memory': 0 }
+default['redborder']['memory_services']['redborder-monitor'] = { 'count': 5, 'memory': 0, 'max_limit': 20000 }
+default['redborder']['memory_services']['redborder-nmsp'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['redborder-postgresql'] = { 'count': 5, 'memory': 0 }
+default['redborder']['memory_services']['snmp'] = { 'count': 5, 'memory': 0, 'max_limit': 10000 }
+default['redborder']['memory_services']['webui'] = { 'count': 40, 'memory': 0 }
+default['redborder']['memory_services']['zookeeper'] = { 'count': 20, 'memory': 0 }
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default['redborder']['cluster_info'] = {}
