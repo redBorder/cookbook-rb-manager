@@ -143,6 +143,15 @@ webui_hosts = node['redborder']['managers_per_services']['webui'].map { |z| "#{z
 node.default['redborder']['webui']['hosts'] = webui_hosts
 node.run_state['auth_token'] = get_api_auth_token if File.exist?('/etc/redborder/cluster-installed.txt')
 
+erchef_hosts = node['redborder']['managers_per_services']['chef-server'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
+node.default['redborder']['erchef']['hosts'] = erchef_hosts
+
+http2k_hosts = node['redborder']['managers_per_services']['http2k'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
+node.default['redborder']['http2k']['hosts'] = http2k_hosts
+
+rb_aioutliers_hosts = node['redborder']['managers_per_services']['rb-aioutliers'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
+node.default['redborder']['rb-aioutliers']['hosts'] = rb_aioutliers_hosts
+
 # set kafka host index if kafka is enabled in this host
 if node['redborder']['managers_per_services']['kafka'].include?(node.name)
   node.default['redborder']['kafka']['host_index'] = node['redborder']['managers_per_services']['kafka'].index(node.name)
