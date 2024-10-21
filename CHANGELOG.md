@@ -220,7 +220,6 @@ cookbook-rb-manager CHANGELOG
   - Vicente Mesa
     - Fix incident priority filter
 
-
 ## 2.8.0
 
   - Miguel Negrón
