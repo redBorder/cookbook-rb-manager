@@ -300,6 +300,7 @@ end
 
 nginx_config 'Configure Nginx aioutliers' do
   if manager_services['nginx'] && node['redborder']['rb-aioutliers']['hosts'] && !node['redborder']['rb-aioutliers']['hosts'].empty?
+    aioutliers_hosts node['redborder']['rb-aioutliers']['hosts']
     service_name 'rb-aioutliers'
     cdomain node['redborder']['cdomain']
     action [:configure_certs, :add_aioutliers]
