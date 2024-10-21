@@ -1,6 +1,12 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.0.1
+
+  - Daniel Castro
+    - [4b6e062] Remove `get_monitor_in_proxy` and use `get_sensor_in_proxy` from task 19032
+    - [d42b496] Search for sensors in proxy and enable vault if a vault sensor found
+
 ## 4.0.0
 
   - Miguel Negrón
