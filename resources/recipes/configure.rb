@@ -592,7 +592,6 @@ minio_config 'Configure S3 (minio)' do
   secret_key_id s3_secrets['s3_secret_key_id']
   if manager_services['s3'] && (external_services['s3'] == 'onpremise')
     ipaddress node['ipaddress_sync']
-    action [:add, :register]
     action [:add, :register, :add_mcli]
   else
     action [:remove, :deregister, :add_mcli]
