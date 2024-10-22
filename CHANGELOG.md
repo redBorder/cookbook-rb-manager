@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.0.2
+
+  - Miguel Negron
+    - [fd534ba] Fix minio_config
+
 ## 4.0.1
 
   - Daniel Castro
