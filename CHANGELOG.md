@@ -1,6 +1,27 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.0.2
+
+  - Miguel Negron
+    - [fd534ba] Fix minio_config
+
+## 4.0.1
+
+  - Daniel Castro
+    - [4b6e062] Remove `get_monitor_in_proxy` and use `get_sensor_in_proxy` from task 19032
+    - [d42b496] Search for sensors in proxy and enable vault if a vault sensor found
+
+## 4.0.0
+
+  - Miguel Negrón
+    - [fa2f5c2] Merge pull request #223 from redBorder/improvement/#18961_service_list_without_chef
+
+## 3.1.0
+
+  - Miguel Negrón
+    - [ab45adc] Merge pull request #217 from redBorder/bugfix/#18863_license_in_settings
+
 ## 3.0.0
 
   - Miguel Negrón

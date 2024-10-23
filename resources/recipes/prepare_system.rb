@@ -13,8 +13,6 @@ end
 # Set services_group related with the node mode (core, full, ...)
 node['redborder']['services_group'][node['redborder']['mode']].each { |s| node.default['redborder']['services'][s] = true }
 
-node.default['redborder']['services']['consul-client'] = (node['redborder']['mode'] != 'core' && node['redborder']['mode'] != 'full')
-
 node.run_state['cluster_installed'] = File.exist?('/etc/redborder/cluster-installed.txt')
 
 # Set :ipaddress_sync
@@ -201,3 +199,15 @@ hosts_entries.each do |line|
     not_if "grep -q '^#{line}' /etc/hosts"
   end
 end
+
+# Build service list for rbcli
+services = node['redborder']['services'] || []
+systemd_services = node['redborder']['systemdservices'] || []
+service_enablement = {}
+
+systemd_services.each do |service_name, systemd_name|
+  service_enablement[systemd_name.first] = services[service_name]
+end
+
+Chef::Log.info('Saving services enablement into /etc/redborder/services.json')
+File.write('/etc/redborder/services.json', JSON.pretty_generate(service_enablement))

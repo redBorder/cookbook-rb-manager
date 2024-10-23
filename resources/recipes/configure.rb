@@ -38,7 +38,7 @@ consul_config 'Configure Consul Server' do
   cdomain node['redborder']['cdomain']
   dns_local_ip node['consul']['dns_local_ip']
 
-  if manager_services['consul'] || manager_services['consul-client']
+  if manager_services['consul']
     confdir node['consul']['confdir']
     datadir node['consul']['datadir']
     ipaddress node['ipaddress_sync']
@@ -240,6 +240,8 @@ mongodb_config 'Configure Mongodb' do
 end
 
 geoip_config 'Configure GeoIP' do
+  user_id node['redborder']['geoip_user']
+  license_key node['redborder']['geoip_key']
   action :add
 end
 
@@ -545,11 +547,7 @@ rbcgroup_config 'Configure cgroups' do
 end
 
 rb_clamav_config 'Configure ClamAV' do
-  if manager_services['clamav']
-    action :add
-  else
-    action :remove
-  end
+  action :add
 end
 
 rb_chrony_config 'Configure Chrony' do
@@ -595,7 +593,6 @@ minio_config 'Configure S3 (minio)' do
   secret_key_id s3_secrets['s3_secret_key_id']
   if manager_services['s3'] && (external_services['s3'] == 'onpremise')
     ipaddress node['ipaddress_sync']
-    action [:add, :register]
     action [:add, :register, :add_mcli]
   else
     action [:remove, :deregister, :add_mcli]
