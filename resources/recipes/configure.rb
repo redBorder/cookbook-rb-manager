@@ -315,7 +315,7 @@ webui_config 'Configure WebUI' do
     cdomain node['redborder']['cdomain']
     port node['redborder']['webui']['port']
     webui_version node['redborder']['webui']['version']
-    redborder_version node['redborder']['version']
+    redborder_version node['repo']['version']
     action [:add, :register, :configure_rsa]
   else
     action [:remove, :deregister]

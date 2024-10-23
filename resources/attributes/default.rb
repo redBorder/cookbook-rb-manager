@@ -4,6 +4,8 @@ default['redborder']['organization_uuid'] = nil
 default['redborder']['organizations'] = []
 default['redborder']['locations'] = %w(namespace namespace_uuid organization organization_uuid service_provider service_provider_uuid deployment deployment_uuid market market_uuid campus campus_uuid building building_uuid floor floor_uuid)
 default['redborder']['sso_enabled'] = '0'
+default['redborder']['repo'] = []
+default['redborder']['repo']['version'] = nil
 
 # s3
 default['redborder']['uploaded_s3'] = false
@@ -29,6 +31,7 @@ default['redborder']['http2k']['port'] = 7980
 # webui
 default['redborder']['webui']['port'] = 8001
 default['redborder']['webui']['hosts'] = []
+default['redborder']['webui']['version'] = nil
 
 # memcached
 default['redborder']['memcached']['elasticache'] = false
