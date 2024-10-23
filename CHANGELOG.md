@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.1.0
+
+  - Miguel Negrón
+    - [cdc5848] Merge pull request #221 from redBorder/feature/#18816_Split_Filter_Incident_Priority
+
 ## 4.0.2
 
   - Miguel Negron
