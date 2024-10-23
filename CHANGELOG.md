@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.2.0
+
+  - manegron
+    - [90d4ca5] fix attribute
+
 ## 4.1.0
 
   - Miguel Negrón

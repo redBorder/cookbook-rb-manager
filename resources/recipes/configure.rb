@@ -314,6 +314,8 @@ webui_config 'Configure WebUI' do
     memory_kb node['redborder']['memory_services']['webui']['memory']
     cdomain node['redborder']['cdomain']
     port node['redborder']['webui']['port']
+    webui_version node['redborder']['webui']['version']
+    redborder_version node['redborder']['repo']['version']
     action [:add, :register, :configure_rsa]
   else
     action [:remove, :deregister]
