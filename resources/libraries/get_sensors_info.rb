@@ -4,11 +4,11 @@ module RbManager
       sensors_info = {}
       sensor_types = %w(vault-sensor flow-sensor mse-sensor scanner-sensor meraki-sensor ale-sensor device-sensor
                         cisco-cloudproxy proxy-sensor arubacentral-sensor
-                        ips-sensor ipsv2-sensor ipscp-sensor ipsg-sensor)
+                        ips-sensor intrusion-sensor ipsv2-sensor ipscp-sensor ipsg-sensor)
       locations = node['redborder']['locations']
       sensor_types.each do |s_type|
-        # get sensor where parent_id is nil
-        sensors = search(:node, "role:#{s_type} AND -redborder_parent_id:*?").sort
+        # get sensor where parent_id is nil, note: temporary intrusion rule added
+        sensors = search(:node, "role:#{s_type}#{s_type == 'intrusion-sensor' ? '' : ' AND -redborder_parent_id:*?'}").sort
         sensors_info[s_type] = {}
         sensors.each do |s|
           info = {}
