@@ -370,8 +370,8 @@ f2k_config 'Configure f2k' do
   end
 end
 
-pmacct_config 'Configure pmacct' do
-  if manager_services['pmacct']
+pmacct_config 'Configure pmacct (sfacctd)' do
+  if manager_services['sfacctd']
     sensors node.run_state['sensors_info']['flow-sensor']
     kafka_hosts node['redborder']['managers_per_services']['kafka']
     action [:add, :register]

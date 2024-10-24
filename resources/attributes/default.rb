@@ -103,7 +103,7 @@ default['redborder']['memory_assigned'] = {}
 default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
                                                     postgresql redborder-postgresql nginx webui rb-workers druid-broker
                                                     druid-historical druid-realtime druid-coordinator f2k
-                                                    redborder-monitor pmacct redborder-dswatcher mongodb
+                                                    redborder-monitor sfacctd redborder-dswatcher mongodb
                                                     redborder-events-counter http2k redborder-mem2incident)
 
 default['redborder']['services_group']['custom'] = %w(consul)
@@ -139,7 +139,7 @@ default['redborder']['services']['memcached']                 = true
 default['redborder']['services']['mongodb']                   = false
 default['redborder']['services']['n2klocd']                   = false
 default['redborder']['services']['nginx']                     = false
-default['redborder']['services']['pmacct']                    = false
+default['redborder']['services']['sfacct']                    = false
 default['redborder']['services']['postfix']                   = true
 default['redborder']['services']['postgresql']                = false
 default['redborder']['services']['radiusd']                   = false
@@ -182,7 +182,7 @@ default['redborder']['systemdservices']['memcached']                = ['memcache
 default['redborder']['systemdservices']['mongodb']                  = ['mongod']
 default['redborder']['systemdservices']['n2klocd']                  = ['n2klocd']
 default['redborder']['systemdservices']['nginx']                    = ['nginx']
-default['redborder']['systemdservices']['pmacct']                   = ['sfacctd']
+default['redborder']['systemdservices']['sfacctd']                  = ['sfacctd']
 default['redborder']['systemdservices']['postfix']                  = ['postfix']
 default['redborder']['systemdservices']['postgresql']               = ['postgresql']
 default['redborder']['systemdservices']['radiusd']                  = ['radiusd']
