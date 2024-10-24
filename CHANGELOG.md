@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.3.0
+
+  - Miguel Negron
+    - [8c6f578] Add rb-workers to service list
+
 ## 4.2.0
 
   - manegron
