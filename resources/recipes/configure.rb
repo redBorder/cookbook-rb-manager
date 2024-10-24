@@ -371,10 +371,10 @@ f2k_config 'Configure f2k' do
 end
 
 if manager_services['sfacctd'] &&
-  node.run_state['virtual_ips'] &&
-  node.run_state['virtual_ips']['external'] &&
-  node.run_state['virtual_ips']['external']['sfacctd'] &&
-  node.run_state['virtual_ips']['external']['sfacctd']['ip']
+   node.run_state['virtual_ips'] &&
+   node.run_state['virtual_ips']['external'] &&
+   node.run_state['virtual_ips']['external']['sfacctd'] &&
+   node.run_state['virtual_ips']['external']['sfacctd']['ip']
 
   sfacctd_ip = '0.0.0.0'
 end
