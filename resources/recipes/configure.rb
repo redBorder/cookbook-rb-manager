@@ -374,6 +374,7 @@ pmacct_config 'Configure pmacct (sfacctd)' do
   if manager_services['sfacctd']
     sensors node.run_state['sensors_info']['flow-sensor']
     kafka_hosts node['redborder']['managers_per_services']['kafka']
+    sfacctd_ip node.run_state['virtual_ips']['external']['sfacctd']['ip'] ? '0.0.0.0' : node['ipaddress']
     action [:add, :register]
   else
     action [:remove, :deregister]
