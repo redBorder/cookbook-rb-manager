@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.4.0
+
+  - Miguel Negrón
+    - [48ee415] Merge pull request #232 from redBorder/bugfix/#18169_rename_pmacctd_to_sfacctd_service
+
 ## 4.3.0
 
   - Miguel Negron
