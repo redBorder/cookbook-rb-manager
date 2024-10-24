@@ -370,11 +370,20 @@ f2k_config 'Configure f2k' do
   end
 end
 
+if manager_services['sfacctd'] &&
+  node.run_state['virtual_ips'] &&
+  node.run_state['virtual_ips']['external'] &&
+  node.run_state['virtual_ips']['external']['sfacctd'] &&
+  node.run_state['virtual_ips']['external']['sfacctd']['ip']
+
+  sfacctd_ip = '0.0.0.0'
+end
+
 pmacct_config 'Configure pmacct (sfacctd)' do
   if manager_services['sfacctd']
     sensors node.run_state['sensors_info']['flow-sensor']
     kafka_hosts node['redborder']['managers_per_services']['kafka']
-    sfacctd_ip node.run_state['virtual_ips']['external']['sfacctd']['ip'] ? '0.0.0.0' : node['ipaddress']
+    sfacctd_ip sfacctd_ip || node['ipaddress']
     action [:add, :register]
   else
     action [:remove, :deregister]
