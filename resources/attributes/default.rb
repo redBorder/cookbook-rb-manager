@@ -75,7 +75,6 @@ default['redborder']['memory_services']['druid-realtime'] = { 'count': 10, 'memo
 default['redborder']['memory_services']['http2k'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['chef-server'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['postgresql'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['redborder-postgresql'] = { 'count': 5, 'memory': 0 }
 default['redborder']['memory_services']['mongodb'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['memcached'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['hadoop-nodemanager'] = { 'count': 50, 'memory': 0 }
@@ -110,7 +109,7 @@ default['redborder']['memory_assigned'] = {}
 
 # geoip has been removed because is not a service
 default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
-                                                    postgresql redborder-postgresql nginx webui druid-broker
+                                                    postgresql nginx webui druid-broker
                                                     druid-historical druid-realtime druid-coordinator f2k
                                                     redborder-monitor pmacct redborder-dswatcher mongodb
                                                     redborder-events-counter http2k redborder-mem2incident)
@@ -127,7 +126,7 @@ default['redborder']['services_group']['samza'] = %w(hadoop-nodemanager)
 default['redborder']['services_group']['webui'] = %w(nginx webui)
 default['redborder']['services_group']['f2k'] = %w(f2k)
 default['redborder']['services_group']['s3'] = %w(nginx s3)
-default['redborder']['services_group']['postgresql'] = %w(postgresql redborder-postgresql)
+default['redborder']['services_group']['postgresql'] = %w(postgresql)
 
 default['redborder']['services'] = {}
 default['redborder']['services']['chef-client']               = true
@@ -146,7 +145,6 @@ default['redborder']['services']['zookeeper']                 = false
 default['redborder']['services']['http2k']                    = false
 default['redborder']['services']['webui']                     = false
 default['redborder']['services']['postgresql']                = false
-default['redborder']['services']['redborder-postgresql']      = false
 default['redborder']['services']['nginx']                     = false
 default['redborder']['services']['redborder-cep']             = false
 default['redborder']['services']['rb-aioutliers']             = false
@@ -191,7 +189,6 @@ default['redborder']['systemdservices']['kafka']                    = ['kafka']
 default['redborder']['systemdservices']['zookeeper']                = ['zookeeper']
 default['redborder']['systemdservices']['webui']                    = ['webui']
 default['redborder']['systemdservices']['postgresql']               = ['postgresql']
-default['redborder']['systemdservices']['redborder-postgresql']     = ['redborder-postgresql']
 default['redborder']['systemdservices']['nginx']                    = ['nginx']
 default['redborder']['systemdservices']['redborder-cep']            = ['redborder-cep']
 default['redborder']['systemdservices']['rb-aioutliers']            = ['rb-aioutliers']
