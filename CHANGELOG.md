@@ -1,6 +1,217 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.4.0
+
+  - Miguel Negrón
+    - [48ee415] Merge pull request #232 from redBorder/bugfix/#18169_rename_pmacctd_to_sfacctd_service
+
+## 4.3.0
+
+  - Miguel Negron
+    - [8c6f578] Add rb-workers to service list
+
+## 4.2.0
+
+  - manegron
+    - [90d4ca5] fix attribute
+
+## 4.1.0
+
+  - Miguel Negrón
+    - [cdc5848] Merge pull request #221 from redBorder/feature/#18816_Split_Filter_Incident_Priority
+
+## 4.0.2
+
+  - Miguel Negron
+    - [fd534ba] Fix minio_config
+
+## 4.0.1
+
+  - Daniel Castro
+    - [4b6e062] Remove `get_monitor_in_proxy` and use `get_sensor_in_proxy` from task 19032
+    - [d42b496] Search for sensors in proxy and enable vault if a vault sensor found
+
+## 4.0.0
+
+  - Miguel Negrón
+    - [fa2f5c2] Merge pull request #223 from redBorder/improvement/#18961_service_list_without_chef
+
+## 3.1.0
+
+  - Miguel Negrón
+    - [ab45adc] Merge pull request #217 from redBorder/bugfix/#18863_license_in_settings
+
+## 3.0.0
+
+  - Miguel Negrón
+    - [334ed51] Merge pull request #211 from redBorder/improvement/boost_installation_stage_1
+    - [52a09e9] Merge pull request #212 from redBorder/feature/add_mc_tool
+    - [9a90ca7] Merge pull request #203 from redBorder/development
+    - [1c23569] Merge pull request #202 from redBorder/development
+    - [6ffe147] Solve conflic on mini_config
+    - [7b966ba] Bump version
+    - [570bced] Bump version
+    - [62ebf24] Update configure.rb
+    - [e9d74b4] add mc tool
+    - [c0a9103] Bump version
+    - [334ed51] Merge pull request #211 from redBorder/improvement/boost_installation_stage_1
+    - [6ffe147] Solve conflic on mini_config
+    - [7b966ba] Bump version
+    - [c426557] Change mini config call
+    - [9e8dc4d] Call add_mcli
+    - [570bced] Bump version
+    - [52a09e9] Merge pull request #212 from redBorder/feature/add_mc_tool
+    - [62ebf24] Update configure.rb
+    - [e9d74b4] add mc tool
+    - [0d0699e] Fix lint
+    - [d89d6c4] Fix lint
+    - [c9a66d2] Fix typo
+    - [7dfbd25] Put back get_pipelines in prepare
+    - [c84d789] Put back get_pipelines in prepare
+    - [ca80f21] Put back get_org in prepare
+    - [c1b0c05] Extend libs in configure.rb
+    - [cb4bcfb] Extend libs in configure.rb
+    - [e02016e] Fix typo
+    - [fac7de3] fix bugs and optimize configure.rb
+    - [8ed9d57] Optimize rb-manager
+    - [5b975d8] Fix typo
+    - [1c37ad2] Dont run check_cgroup while installing
+    - [f5e72c2] Fix typo
+    - [ae380d2] fix bug related with cluster_install variable on prepare_system
+    - [5a3fc4a] Dont run chef-client service till cluster is installed
+    - [906f2eb] Remove hadoop & samza
+    - [44700e9] Bump version
+    - [9e67532] Add pre and postun to clean the cookbook
+    - [9a90ca7] Merge pull request #203 from redBorder/development
+    - [1c23569] Merge pull request #202 from redBorder/development
+    - [c0a9103] Bump version
+  - david vhk
+    - [0d95408] Merge branch 'master' into development
+    - [57e00e8] release 2.10.1 (#206)
+  - David Vanhoucke
+    - [484f2e2] release 2.10.2
+    - [f9d5c6b] release 2.10.1
+    - [c54069a] use descrfptive name
+    - [6592bd1] remove blank line
+    - [8b401f1] add method to activate the split of the traffic through logstash
+  - nilsver
+    - [e788b6b] Bugfix/18447 open port kafka public zone (#207)
+  - Miguel Álvarez
+    - [66ab004] Delete keepalived from memory services (#205)
+  - Juan Soto
+    - [533c53c] Merge pull request #204 from redBorder/development
+    - [56d3541] Merge pull request #200 from redBorder/feature/#18681_split_traffic_with_logstash
+  - JuanSheba
+    - [5f2cea6] Release 2.10.0
+    - [291b8a1] resolve conflicts
+  - Rafael Gomez
+    - [27ae44a] Release 2.9.1
+    - [5f10c8f] Merge branch 'master' into bug/#18544_rb_clean_segments_not_working_and_its_not_being_call
+    - [a20e4f6] Merge remote-tracking branch 'origin/master' into bug/#18544_rb_clean_segments_not_working_and_its_not_being_call
+  - Rafa Gómez
+    - [225809a] Merge pull request #192 from redBorder/bug/#18544_rb_clean_segments_not_working_and_its_not_being_call
+  - jnavarrorb
+    - [d39786a] Fix path to avoid cron_d action delete
+
+## 2.12.0
+
+  - manegron
+    - [c426557] Change mini config call
+    - [9e8dc4d] Call add_mcli
+    - [570bced] Bump version
+    - [52a09e9] Merge pull request #212 from redBorder/feature/add_mc_tool
+    - [62ebf24] Update configure.rb
+    - [e9d74b4] add mc tool
+    - [44700e9] Bump version
+    - [9e67532] Add pre and postun to clean the cookbook
+    - [9a90ca7] Merge pull request #203 from redBorder/development
+    - [1c23569] Merge pull request #202 from redBorder/development
+    - [c0a9103] Bump version
+  - Miguel Negron
+    - [570bced] Bump version
+    - [62ebf24] Update configure.rb
+    - [e9d74b4] add mc tool
+    - [c0a9103] Bump version
+  - Miguel Negrón
+    - [52a09e9] Merge pull request #212 from redBorder/feature/add_mc_tool
+    - [9a90ca7] Merge pull request #203 from redBorder/development
+    - [1c23569] Merge pull request #202 from redBorder/development
+  - david vhk
+    - [0d95408] Merge branch 'master' into development
+    - [57e00e8] release 2.10.1 (#206)
+  - David Vanhoucke
+    - [484f2e2] release 2.10.2
+    - [f9d5c6b] release 2.10.1
+    - [c54069a] use descrfptive name
+    - [6592bd1] remove blank line
+    - [8b401f1] add method to activate the split of the traffic through logstash
+  - nilsver
+    - [e788b6b] Bugfix/18447 open port kafka public zone (#207)
+  - Miguel Álvarez
+    - [66ab004] Delete keepalived from memory services (#205)
+  - Juan Soto
+    - [533c53c] Merge pull request #204 from redBorder/development
+    - [56d3541] Merge pull request #200 from redBorder/feature/#18681_split_traffic_with_logstash
+  - JuanSheba
+    - [5f2cea6] Release 2.10.0
+    - [291b8a1] resolve conflicts
+  - Rafael Gomez
+    - [27ae44a] Release 2.9.1
+    - [5f10c8f] Merge branch 'master' into bug/#18544_rb_clean_segments_not_working_and_its_not_being_call
+    - [a20e4f6] Merge remote-tracking branch 'origin/master' into bug/#18544_rb_clean_segments_not_working_and_its_not_being_call
+  - Rafa Gómez
+    - [225809a] Merge pull request #192 from redBorder/bug/#18544_rb_clean_segments_not_working_and_its_not_being_call
+  - jnavarrorb
+    - [d39786a] Fix path to avoid cron_d action delete
+
+## 2.11.0
+
+  - Miguel Negrón
+    - [52a09e9] Merge pull request #212 from redBorder/feature/add_mc_tool
+    - [9a90ca7] Merge pull request #203 from redBorder/development
+    - [1c23569] Merge pull request #202 from redBorder/development
+  - Miguel Negron
+    - [62ebf24] Update configure.rb
+    - [e9d74b4] add mc tool
+    - [c0a9103] Bump version
+  - manegron
+    - [52a09e9] Merge pull request #212 from redBorder/feature/add_mc_tool
+    - [62ebf24] Update configure.rb
+    - [e9d74b4] add mc tool
+    - [44700e9] Bump version
+    - [9e67532] Add pre and postun to clean the cookbook
+    - [9a90ca7] Merge pull request #203 from redBorder/development
+    - [1c23569] Merge pull request #202 from redBorder/development
+    - [c0a9103] Bump version
+  - david vhk
+    - [0d95408] Merge branch 'master' into development
+    - [57e00e8] release 2.10.1 (#206)
+  - David Vanhoucke
+    - [484f2e2] release 2.10.2
+    - [f9d5c6b] release 2.10.1
+    - [c54069a] use descrfptive name
+    - [6592bd1] remove blank line
+    - [8b401f1] add method to activate the split of the traffic through logstash
+  - nilsver
+    - [e788b6b] Bugfix/18447 open port kafka public zone (#207)
+  - Miguel Álvarez
+    - [66ab004] Delete keepalived from memory services (#205)
+  - Juan Soto
+    - [533c53c] Merge pull request #204 from redBorder/development
+    - [56d3541] Merge pull request #200 from redBorder/feature/#18681_split_traffic_with_logstash
+  - JuanSheba
+    - [5f2cea6] Release 2.10.0
+    - [291b8a1] resolve conflicts
+  - Rafael Gomez
+    - [27ae44a] Release 2.9.1
+    - [5f10c8f] Merge branch 'master' into bug/#18544_rb_clean_segments_not_working_and_its_not_being_call
+    - [a20e4f6] Merge remote-tracking branch 'origin/master' into bug/#18544_rb_clean_segments_not_working_and_its_not_being_call
+  - Rafa Gómez
+    - [225809a] Merge pull request #192 from redBorder/bug/#18544_rb_clean_segments_not_working_and_its_not_being_call
+  - jnavarrorb
+    - [d39786a] Fix path to avoid cron_d action delete
+
 ## 2.10.3
 
   - Miguel Negrón
