@@ -1,6 +1,37 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.4.0
+
+  - Miguel Negrón
+    - [48ee415] Merge pull request #232 from redBorder/bugfix/#18169_rename_pmacctd_to_sfacctd_service
+
+## 4.3.0
+
+  - Miguel Negron
+    - [8c6f578] Add rb-workers to service list
+
+## 4.2.0
+
+  - manegron
+    - [90d4ca5] fix attribute
+
+## 4.1.0
+
+  - Miguel Negrón
+    - [cdc5848] Merge pull request #221 from redBorder/feature/#18816_Split_Filter_Incident_Priority
+
+## 4.0.2
+
+  - Miguel Negron
+    - [fd534ba] Fix minio_config
+
+## 4.0.1
+
+  - Daniel Castro
+    - [4b6e062] Remove `get_monitor_in_proxy` and use `get_sensor_in_proxy` from task 19032
+    - [d42b496] Search for sensors in proxy and enable vault if a vault sensor found
+
 ## 4.0.0
 
   - Miguel Negrón
@@ -219,7 +250,6 @@ cookbook-rb-manager CHANGELOG
 ## 2.9.0
   - Vicente Mesa
     - Fix incident priority filter
-
 
 ## 2.8.0
 

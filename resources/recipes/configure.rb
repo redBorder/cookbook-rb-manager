@@ -316,6 +316,8 @@ webui_config 'Configure WebUI' do
     memory_kb node['redborder']['memory_services']['webui']['memory']
     cdomain node['redborder']['cdomain']
     port node['redborder']['webui']['port']
+    webui_version node['redborder']['webui']['version']
+    redborder_version node['redborder']['repo']['version']
     action [:add, :register, :configure_rsa]
   else
     action [:remove, :deregister]
@@ -371,10 +373,20 @@ f2k_config 'Configure f2k' do
   end
 end
 
-pmacct_config 'Configure pmacct' do
-  if manager_services['pmacct']
+if manager_services['sfacctd'] &&
+   node.run_state['virtual_ips'] &&
+   node.run_state['virtual_ips']['external'] &&
+   node.run_state['virtual_ips']['external']['sfacctd'] &&
+   node.run_state['virtual_ips']['external']['sfacctd']['ip']
+
+  sfacctd_ip = '0.0.0.0'
+end
+
+pmacct_config 'Configure pmacct (sfacctd)' do
+  if manager_services['sfacctd']
     sensors node.run_state['sensors_info']['flow-sensor']
     kafka_hosts node['redborder']['managers_per_services']['kafka']
+    sfacctd_ip sfacctd_ip || node['ipaddress']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -401,7 +413,8 @@ logstash_config 'Configure logstash' do
     proxy_nodes node.run_state['sensors_info_all']['proxy-sensor']
     scanner_nodes node.run_state['sensors_info_all']['scanner-sensor']
     device_nodes node.run_state['sensors_info_all']['device-sensor']
-    incidents_priority_filter node['redborder']['incidents_priority_filter']
+    intrusion_incidents_priority_filter node['redborder']['intrusion_incidents_priority_filter']
+    vault_incidents_priority_filter node['redborder']['vault_incidents_priority_filter']
     logstash_pipelines node.run_state['pipelines']
     split_traffic_logstash split_traffic
     action [:add, :register]
@@ -595,7 +608,6 @@ minio_config 'Configure S3 (minio)' do
   secret_key_id s3_secrets['s3_secret_key_id']
   if manager_services['s3'] && (external_services['s3'] == 'onpremise')
     ipaddress node['ipaddress_sync']
-    action [:add, :register]
     action [:add, :register, :add_mcli]
   else
     action [:remove, :deregister, :add_mcli]
