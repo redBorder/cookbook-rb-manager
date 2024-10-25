@@ -579,8 +579,6 @@ rescue
 end
 
 postgresql_config 'Configure postgresql' do
-  cdomain node['redborder']['cdomain']
-  ipaddress node['ipaddress_sync']
   if manager_services['postgresql'] && external_services['postgresql'] == 'onpremise'
     cdomain node['redborder']['cdomain']
     ipaddress node['ipaddress_sync']

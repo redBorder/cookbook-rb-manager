@@ -102,24 +102,11 @@ default['redborder']['memory_assigned'] = {}
 # geoip has been removed because is not a service
 default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
                                                     postgresql nginx webui druid-broker
-                                                    postgresql redborder-postgresql nginx webui rb-workers druid-broker
+                                                    postgresql nginx webui rb-workers druid-broker
                                                     druid-historical druid-realtime druid-coordinator f2k
                                                     redborder-monitor sfacctd redborder-dswatcher mongodb
                                                     redborder-events-counter http2k redborder-mem2incident)
 
-default['redborder']['services_group']['custom'] = []
-default['redborder']['services_group']['core'] = %w(consul zookeeper druid-coordinator druid-overlord hadoop-resourcemanager) # consul server
-default['redborder']['services_group']['chef'] = %w(chef-server)
-default['redborder']['services_group']['kafka'] = %w(kafka)
-default['redborder']['services_group']['historical'] = %w(druid-historical)
-default['redborder']['services_group']['middlemanager'] = %w(druid-middlemanager)
-default['redborder']['services_group']['broker'] = %w(druid-broker)
-default['redborder']['services_group']['http2k'] = %w(http2k)
-default['redborder']['services_group']['samza'] = %w(hadoop-nodemanager)
-default['redborder']['services_group']['webui'] = %w(nginx webui)
-default['redborder']['services_group']['f2k'] = %w(f2k)
-default['redborder']['services_group']['s3'] = %w(nginx s3)
-default['redborder']['services_group']['postgresql'] = %w(postgresql)
 default['redborder']['services_group']['custom'] = %w(consul)
 default['redborder']['services_group']['core'] = %w(consul zookeeper druid-coordinator druid-overlord) # consul server
 default['redborder']['services_group']['chef'] = %w(consul chef-server)
@@ -131,7 +118,7 @@ default['redborder']['services_group']['http2k'] = %w(consul http2k)
 default['redborder']['services_group']['webui'] = %w(consul nginx webui rb-workers)
 default['redborder']['services_group']['f2k'] = %w(consul f2k)
 default['redborder']['services_group']['s3'] = %w(consul nginx s3)
-default['redborder']['services_group']['postgresql'] = %w(consul postgresql redborder-postgresql)
+default['redborder']['services_group']['postgresql'] = %w(consul postgresql)
 
 default['redborder']['services'] = {}
 default['redborder']['services']['chef-client']               = true
@@ -156,8 +143,6 @@ default['redborder']['services']['nginx']                     = false
 default['redborder']['services']['sfacct']                    = false
 default['redborder']['services']['postfix']                   = true
 default['redborder']['services']['postgresql']                = false
-default['redborder']['services']['nginx']                     = false
-default['redborder']['services']['redborder-cep']             = false
 default['redborder']['services']['radiusd']                   = false
 default['redborder']['services']['rb-aioutliers']             = false
 default['redborder']['services']['rb-arubacentral']           = false
