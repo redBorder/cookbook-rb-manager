@@ -1,6 +1,12 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.4.1
+
+  - JuanSheba
+    - [8e22478] Add creatiion of the logrotate file with the template
+    - [77bbbfb] Create Template
+
 ## 4.4.0
 
   - Miguel Negrón
