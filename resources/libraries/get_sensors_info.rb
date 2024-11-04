@@ -13,7 +13,7 @@ module RbManager
         sensors.each do |s|
           if s['redborder_parent_id']
             parent_sensor = search(:node, "id:#{s['redborder_parent_id']}").first
-            next if parent_sensor && parent_sensor['role']&.include?("proxy")
+            next if parent_sensor && parent_sensor['role']&.include?('proxy')
           end
 
           info = {}
@@ -38,7 +38,6 @@ module RbManager
       end
 
       sensors_info
-
     end
   end
 end

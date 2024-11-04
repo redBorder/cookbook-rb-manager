@@ -8,11 +8,10 @@ module RbManager
         sensors = search(:node, "role:#{s_type}").sort  # get sensor where parent_id is nil or sensor at parent_id is not a proxy
 
         sensors_info[s_type] = []
-        
-        sensors.each do |sensor|
 
+        sensors.each do |sensor|
           if sensor['parent_id']
-            parent_sensor = search(:node,"id:#{sensor['parent_id']}").first
+            parent_sensor = search(:node, "id:#{sensor['parent_id']}").first
             unless parent_sensor && parent_sensor['role']&.include?('proxy')
               sensors_info[s_type] << sensor
             end
