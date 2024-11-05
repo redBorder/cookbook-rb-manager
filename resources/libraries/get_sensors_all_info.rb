@@ -10,8 +10,8 @@ module RbManager
         sensors_info[s_type] = []
 
         sensors.each do |sensor|
-          if sensor['parent_id']
-            parent_sensor = search(:node, "id:#{sensor['parent_id']}").first
+          if sensor['redborder_parent_id']
+            parent_sensor = search(:node, "id:#{sensor['redborder_parent_id']}").first
             unless parent_sensor && parent_sensor['role']&.include?('proxy')
               sensors_info[s_type] << sensor
             end
