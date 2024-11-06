@@ -5,7 +5,7 @@ module RbManager
       sensor_types = %w(ips-sensor ipsv2-sensor ipscp-sensor ipsg-sensor vault-sensor flow-sensor arubacentral-sensor mse-sensor meraki-sensor cisco-cloudproxy proxy-sensor scanner-sensor mse-sensor meraki-sensor ale-sensor cep-sensor device-sensor)
 
       sensor_types.each do |s_type|
-        sensors = search(:node, "role:#{s_type}").sort  #get all s_type's sensor
+        sensors = search(:node, "role:#{s_type}").sort  # get all s_type's sensor
 
         sensors_info[s_type] = []
 
