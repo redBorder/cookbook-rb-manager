@@ -2,7 +2,7 @@ module RbManager
   module Helpers
     def get_ip_of_manager_ips
       # IPS in manager mode has the role ips-sensor
-      sensors = search(:node, 'role:ips-sensor AND -redborder_parent_id:*?').sort
+      sensors = search(:node, 'role:ips-sensor').sort
       sensors.map { |s| { ipaddress: s['ipaddress'] } }
     end
 
