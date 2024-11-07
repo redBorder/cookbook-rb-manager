@@ -7,8 +7,8 @@ module RbManager
                         ips-sensor ipsv2-sensor ipscp-sensor ipsg-sensor)
       locations = node['redborder']['locations']
       sensor_types.each do |s_type|
-        # get sensor where parent_id is nil
-        sensors = search(:node, "role:#{s_type} AND -redborder_parent_id:*?").sort
+        # get all s_type's sensor
+        sensors = search(:node, "role:#{s_type}").sort
         sensors_info[s_type] = {}
         sensors.each do |s|
           info = {}
@@ -27,6 +27,7 @@ module RbManager
 
             info['locations'][loc] = s['redborder'][loc]
           end
+
           sensors_info[s_type][s.name] = info
         end
       end
