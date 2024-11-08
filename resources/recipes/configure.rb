@@ -34,6 +34,15 @@ rb_selinux_config 'Configure Selinux' do
   end
 end
 
+# Sudoers
+template '/etc/sudoers.d/redborder-manager' do
+  source 'redborder-manager.erb'
+  owner 'root'
+  group 'root'
+  mode '0440'
+  retries 2
+end
+
 consul_config 'Configure Consul Server' do
   cdomain node['redborder']['cdomain']
   dns_local_ip node['consul']['dns_local_ip']
@@ -656,15 +665,6 @@ unless ssh_secrets.empty?
     retries 2
     variables(public_rsa: ssh_secrets['public_rsa'])
   end
-end
-
-# Sudoers
-template '/etc/sudoers.d/redborder-manager' do
-  source 'redborder-manager.erb'
-  owner 'root'
-  group 'root'
-  mode '0440'
-  retries 2
 end
 
 # Pending Changes..
