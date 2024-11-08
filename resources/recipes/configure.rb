@@ -370,10 +370,20 @@ f2k_config 'Configure f2k' do
   end
 end
 
-pmacct_config 'Configure pmacct' do
-  if manager_services['pmacct']
+if manager_services['sfacctd'] &&
+   node.run_state['virtual_ips'] &&
+   node.run_state['virtual_ips']['external'] &&
+   node.run_state['virtual_ips']['external']['sfacctd'] &&
+   node.run_state['virtual_ips']['external']['sfacctd']['ip']
+
+  sfacctd_ip = '0.0.0.0'
+end
+
+pmacct_config 'Configure pmacct (sfacctd)' do
+  if manager_services['sfacctd']
     sensors node.run_state['sensors_info']['flow-sensor']
     kafka_hosts node['redborder']['managers_per_services']['kafka']
+    sfacctd_ip sfacctd_ip || node['ipaddress']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -391,6 +401,14 @@ if manager_services['logstash']
   end
 end
 
+if manager_services['logstash']
+  begin
+    split_intrusion = data_bag_item('rBglobal', 'splitintrusion')['logstash']
+  rescue
+    split_intrusion = false
+  end
+end
+
 logstash_config 'Configure logstash' do
   if manager_services['logstash'] && node.run_state['pipelines'] && !node.run_state['pipelines'].empty?
     cdomain node['redborder']['cdomain']
@@ -404,6 +422,7 @@ logstash_config 'Configure logstash' do
     vault_incidents_priority_filter node['redborder']['vault_incidents_priority_filter']
     logstash_pipelines node.run_state['pipelines']
     split_traffic_logstash split_traffic
+    split_intrusion_logstash split_intrusion
     action [:add, :register]
   else
     action [:remove, :deregister]
