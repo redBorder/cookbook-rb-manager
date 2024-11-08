@@ -1,6 +1,21 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.4.3
+
+  - Juan Soto
+    - [da722bb] Create and pass split_intrusion variables to logstash config (#216)
+  - Rafael Gomez
+    - [0fc8265] pump version
+    - [b0e84e3] Merge branch 'master' into bugfix/#19260_Wrong_check_in_get_sensors_all_info_and_get_sensors_info_on-_sensores_with_parent_id
+  - Rafa Gómez
+    - [146cac6] Merge pull request #237 from redBorder/bugfix/#19260_Wrong_check_in_get_sensors_all_info_and_get_sensors_info_on-_sensores_with_parent_id
+  - jnavarrorb
+    - [72d2b00] Fix sensors info with all sensors (proxy childs too)
+    - [87628c7] Fix parent_id to real_parent_id
+    - [060f5d9] Fix open kafka port for all IPS
+    - [a9a3efe] check if redborder_parent_id is nil or sensor at redborder_parent_id is not a proxy
+
 ## 4.4.2
 
   - jnavarrorb
