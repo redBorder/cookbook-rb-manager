@@ -401,6 +401,14 @@ if manager_services['logstash']
   end
 end
 
+if manager_services['logstash']
+  begin
+    split_intrusion = data_bag_item('rBglobal', 'splitintrusion')['logstash']
+  rescue
+    split_intrusion = false
+  end
+end
+
 logstash_config 'Configure logstash' do
   if manager_services['logstash'] && node.run_state['pipelines'] && !node.run_state['pipelines'].empty?
     cdomain node['redborder']['cdomain']
@@ -414,6 +422,7 @@ logstash_config 'Configure logstash' do
     vault_incidents_priority_filter node['redborder']['vault_incidents_priority_filter']
     logstash_pipelines node.run_state['pipelines']
     split_traffic_logstash split_traffic
+    split_intrusion_logstash split_intrusion
     action [:add, :register]
   else
     action [:remove, :deregister]
