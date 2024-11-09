@@ -6,8 +6,7 @@ module RbManager
       node['redborder']['manager']['hd_services'].each do |service|
         service_name = service['name']
         service_count = service['count']
-        porcentage = service_count / 100
-        allocated_bytes = root_dev_bytes * porcentage
+        allocated_bytes = root_dev_bytes * (service_count.to_f / 100)
         hd_services[service_name] = allocated_bytes.to_i
       end
       hd_services # hard disk services sizes are pased in bytes
