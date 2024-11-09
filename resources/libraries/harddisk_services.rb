@@ -3,21 +3,14 @@ module RbManager
     def harddisk_services
       hd_services = {}
       root_dev_bytes = node['filesystem']['by_mountpoint']['/']['kb_size'].to_i * 1024
-      
       node['redborder']['manager']['hd_services'].each do |service|
         service_name = service['name']
         service_count = service['count']
-
-        allocated_bytes = if service_count > 1
-                            (root_dev_bytes * 0.4).to_f
-                          else
-                            (root_dev_bytes * 0.01).to_f
-                          end
-
-        hd_services[service_name] = allocated_bytes
+        porcentage = service_count / 100
+        allocated_bytes = root_dev_bytes * porcentage
+        hd_services[service_name] = allocated_bytes.to_i
       end
-
-      hd_services
+      hd_services # hard disk services sizes are pased in bytes
     end
   end
 end
