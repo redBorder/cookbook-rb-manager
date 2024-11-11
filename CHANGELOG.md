@@ -1,6 +1,24 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.4.4
+
+  - ptorresred
+    - [80dda4a] Redmine #19198: Change vault priority default filter
+
+## 4.4.3
+
+  - Juan Soto
+    - [da722bb] Create and pass split_intrusion variables to logstash config (#216)
+
+## 4.4.2
+
+  - jnavarrorb
+    - [72d2b00] Fix sensors info with all sensors (proxy childs too)
+    - [87628c7] Fix parent_id to real_parent_id
+    - [060f5d9] Fix open kafka port for all IPS
+    - [a9a3efe] check if redborder_parent_id is nil or sensor at redborder_parent_id is not a proxy
+
 ## 4.4.1
 
   - JuanSheba
