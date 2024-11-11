@@ -491,7 +491,7 @@ rbale_config 'Configure redborder-ale' do
 end
 
 rblogstatter_config 'Configure redborder-logstatter' do
-  if manager_services['rb-logstatter']
+  if manager_services['rb-logstatter'] && manager_services['logstash'] && node.run_state['pipelines'] && !node.run_state['pipelines'].empty?
     action :add
   else
     action :remove
