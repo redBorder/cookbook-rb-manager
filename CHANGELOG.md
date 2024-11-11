@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.4.5
+
+  - Daniel Castro
+    - [77547bd] create sudoers file before redborder-monitor install
+
 ## 4.4.4
 
   - ptorresred
