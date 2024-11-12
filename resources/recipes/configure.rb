@@ -608,7 +608,6 @@ end
 
 s3_secrets = {}
 
-
 begin
   s3_secrets = data_bag_item('passwords', 's3')
 rescue
@@ -682,7 +681,7 @@ end
 #  .......
 #  pending_changes==n -> chef-client has to run n times
 #
-node.normal['redborder']['pending_changes'] = node['redborder']['pending_changes'] > 0 ? node.normal['redborder']['pending_changes'].to_i - 1 : 0
+node.override['redborder']['pending_changes'] = node['redborder']['pending_changes'] > 0 ? node.override['redborder']['pending_changes'].to_i - 1 : 0
 
 execute 'force_chef_client_wakeup' do
   command '/usr/lib/redborder/bin/rb_wakeup_chef.sh'

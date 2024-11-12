@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+unified_mode true
+
 
 name             'rb-manager'
 maintainer       'Eneo Tecnología S.L.'
