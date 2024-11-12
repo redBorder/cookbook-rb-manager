@@ -204,7 +204,7 @@ druid_historical 'Configure Druid Historical' do
     name node['hostname']
     ipaddress node['ipaddress_sync']
     memory_kb node['redborder']['memory_services']['druid-historical']['memory']
-    maxsize node['redborder']['manager']['hd_services_current']['druid_historical']
+    maxsize node['redborder']['manager']['hd_services_current']['druid-historical']
     action [:add, :register]
   else
     action [:remove, :deregister]
