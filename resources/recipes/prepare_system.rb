@@ -50,6 +50,14 @@ template '/etc/sysconfig/chef-client' do
             options: node['chef-client']['options'])
 end
 
+template '/etc/logrotate.d/logstash' do
+  source 'logstash_log-rotate.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
+  retries 2
+end
+
 service 'chef-client' do
   if node['redborder']['services']['chef-client'] && node.run_state['cluster_installed']
     action [:enable, :start]

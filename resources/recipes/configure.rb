@@ -34,6 +34,15 @@ rb_selinux_config 'Configure Selinux' do
   end
 end
 
+# Sudoers
+template '/etc/sudoers.d/redborder-manager' do
+  source 'redborder-manager.erb'
+  owner 'root'
+  group 'root'
+  mode '0440'
+  retries 2
+end
+
 consul_config 'Configure Consul Server' do
   cdomain node['redborder']['cdomain']
   dns_local_ip node['consul']['dns_local_ip']
@@ -406,6 +415,14 @@ if manager_services['logstash']
   end
 end
 
+if manager_services['logstash']
+  begin
+    split_intrusion = data_bag_item('rBglobal', 'splitintrusion')['logstash']
+  rescue
+    split_intrusion = false
+  end
+end
+
 logstash_config 'Configure logstash' do
   if manager_services['logstash'] && node.run_state['pipelines'] && !node.run_state['pipelines'].empty?
     cdomain node['redborder']['cdomain']
@@ -419,6 +436,7 @@ logstash_config 'Configure logstash' do
     vault_incidents_priority_filter node['redborder']['vault_incidents_priority_filter']
     logstash_pipelines node.run_state['pipelines']
     split_traffic_logstash split_traffic
+    split_intrusion_logstash split_intrusion
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -661,15 +679,6 @@ unless ssh_secrets.empty?
     retries 2
     variables(public_rsa: ssh_secrets['public_rsa'])
   end
-end
-
-# Sudoers
-template '/etc/sudoers.d/redborder-manager' do
-  source 'redborder-manager.erb'
-  owner 'root'
-  group 'root'
-  mode '0440'
-  retries 2
 end
 
 # Pending Changes..
