@@ -34,6 +34,15 @@ rb_selinux_config 'Configure Selinux' do
   end
 end
 
+# Sudoers
+template '/etc/sudoers.d/redborder-manager' do
+  source 'redborder-manager.erb'
+  owner 'root'
+  group 'root'
+  mode '0440'
+  retries 2
+end
+
 consul_config 'Configure Consul Server' do
   cdomain node['redborder']['cdomain']
   dns_local_ip node['consul']['dns_local_ip']
@@ -314,6 +323,8 @@ webui_config 'Configure WebUI' do
     memory_kb node['redborder']['memory_services']['webui']['memory']
     cdomain node['redborder']['cdomain']
     port node['redborder']['webui']['port']
+    webui_version node['redborder']['webui']['version']
+    redborder_version node['redborder']['repo']['version']
     action [:add, :register, :configure_rsa]
   else
     action [:remove, :deregister]
@@ -368,10 +379,20 @@ f2k_config 'Configure f2k' do
   end
 end
 
-pmacct_config 'Configure pmacct' do
-  if manager_services['pmacct']
+if manager_services['sfacctd'] &&
+   node.run_state['virtual_ips'] &&
+   node.run_state['virtual_ips']['external'] &&
+   node.run_state['virtual_ips']['external']['sfacctd'] &&
+   node.run_state['virtual_ips']['external']['sfacctd']['ip']
+
+  sfacctd_ip = '0.0.0.0'
+end
+
+pmacct_config 'Configure pmacct (sfacctd)' do
+  if manager_services['sfacctd']
     sensors node.run_state['sensors_info']['flow-sensor']
     kafka_hosts node['redborder']['managers_per_services']['kafka']
+    sfacctd_ip sfacctd_ip || node['ipaddress']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -389,6 +410,14 @@ if manager_services['logstash']
   end
 end
 
+if manager_services['logstash']
+  begin
+    split_intrusion = data_bag_item('rBglobal', 'splitintrusion')['logstash']
+  rescue
+    split_intrusion = false
+  end
+end
+
 logstash_config 'Configure logstash' do
   if manager_services['logstash'] && node.run_state['pipelines'] && !node.run_state['pipelines'].empty?
     cdomain node['redborder']['cdomain']
@@ -398,9 +427,11 @@ logstash_config 'Configure logstash' do
     proxy_nodes node.run_state['sensors_info_all']['proxy-sensor']
     scanner_nodes node.run_state['sensors_info_all']['scanner-sensor']
     device_nodes node.run_state['sensors_info_all']['device-sensor']
-    incidents_priority_filter node['redborder']['incidents_priority_filter']
+    intrusion_incidents_priority_filter node['redborder']['intrusion_incidents_priority_filter']
+    vault_incidents_priority_filter node['redborder']['vault_incidents_priority_filter']
     logstash_pipelines node.run_state['pipelines']
     split_traffic_logstash split_traffic
+    split_intrusion_logstash split_intrusion
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -469,7 +500,7 @@ rbale_config 'Configure redborder-ale' do
 end
 
 rblogstatter_config 'Configure redborder-logstatter' do
-  if manager_services['rb-logstatter']
+  if manager_services['rb-logstatter'] && manager_services['logstash'] && node.run_state['pipelines'] && !node.run_state['pipelines'].empty?
     action :add
   else
     action :remove
@@ -642,15 +673,6 @@ unless ssh_secrets.empty?
     retries 2
     variables(public_rsa: ssh_secrets['public_rsa'])
   end
-end
-
-# Sudoers
-template '/etc/sudoers.d/redborder-manager' do
-  source 'redborder-manager.erb'
-  owner 'root'
-  group 'root'
-  mode '0440'
-  retries 2
 end
 
 # Pending Changes..

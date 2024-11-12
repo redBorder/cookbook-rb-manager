@@ -4,6 +4,8 @@ default['redborder']['organization_uuid'] = nil
 default['redborder']['organizations'] = []
 default['redborder']['locations'] = %w(namespace namespace_uuid organization organization_uuid service_provider service_provider_uuid deployment deployment_uuid market market_uuid campus campus_uuid building building_uuid floor floor_uuid)
 default['redborder']['sso_enabled'] = '0'
+default['redborder']['repo'] = {}
+default['redborder']['repo']['version'] = nil
 
 # s3
 default['redborder']['uploaded_s3'] = false
@@ -29,6 +31,7 @@ default['redborder']['http2k']['port'] = 7980
 # webui
 default['redborder']['webui']['port'] = 8001
 default['redborder']['webui']['hosts'] = []
+default['redborder']['webui']['version'] = nil
 
 # memcached
 default['redborder']['memcached']['elasticache'] = false
@@ -98,9 +101,9 @@ default['redborder']['memory_assigned'] = {}
 
 # geoip has been removed because is not a service
 default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
-                                                    postgresql redborder-postgresql nginx webui druid-broker
+                                                    postgresql redborder-postgresql nginx webui rb-workers druid-broker
                                                     druid-historical druid-realtime druid-coordinator f2k
-                                                    redborder-monitor pmacct redborder-dswatcher mongodb
+                                                    redborder-monitor sfacctd redborder-dswatcher mongodb
                                                     redborder-events-counter http2k redborder-mem2incident)
 
 default['redborder']['services_group']['custom'] = %w(consul)
@@ -111,7 +114,7 @@ default['redborder']['services_group']['historical'] = %w(consul druid-historica
 default['redborder']['services_group']['middlemanager'] = %w(consul druid-middlemanager)
 default['redborder']['services_group']['broker'] = %w(consul druid-broker)
 default['redborder']['services_group']['http2k'] = %w(consul http2k)
-default['redborder']['services_group']['webui'] = %w(consul nginx webui)
+default['redborder']['services_group']['webui'] = %w(consul nginx webui rb-workers)
 default['redborder']['services_group']['f2k'] = %w(consul f2k)
 default['redborder']['services_group']['s3'] = %w(consul nginx s3)
 default['redborder']['services_group']['postgresql'] = %w(consul postgresql redborder-postgresql)
@@ -136,13 +139,14 @@ default['redborder']['services']['memcached']                 = true
 default['redborder']['services']['mongodb']                   = false
 default['redborder']['services']['n2klocd']                   = false
 default['redborder']['services']['nginx']                     = false
-default['redborder']['services']['pmacct']                    = false
+default['redborder']['services']['sfacct']                    = false
 default['redborder']['services']['postfix']                   = true
 default['redborder']['services']['postgresql']                = false
 default['redborder']['services']['radiusd']                   = false
 default['redborder']['services']['rb-aioutliers']             = false
 default['redborder']['services']['rb-arubacentral']           = false
 default['redborder']['services']['rb-logstatter']             = true
+default['redborder']['services']['rb-workers']                = false
 default['redborder']['services']['redborder-ai']              = false
 default['redborder']['services']['redborder-ale']             = false
 default['redborder']['services']['redborder-cep']             = false
@@ -178,13 +182,14 @@ default['redborder']['systemdservices']['memcached']                = ['memcache
 default['redborder']['systemdservices']['mongodb']                  = ['mongod']
 default['redborder']['systemdservices']['n2klocd']                  = ['n2klocd']
 default['redborder']['systemdservices']['nginx']                    = ['nginx']
-default['redborder']['systemdservices']['pmacct']                   = ['sfacctd']
+default['redborder']['systemdservices']['sfacctd']                  = ['sfacctd']
 default['redborder']['systemdservices']['postfix']                  = ['postfix']
 default['redborder']['systemdservices']['postgresql']               = ['postgresql']
 default['redborder']['systemdservices']['radiusd']                  = ['radiusd']
 default['redborder']['systemdservices']['rb-aioutliers']            = ['rb-aioutliers']
 default['redborder']['systemdservices']['rb-arubacentral']          = ['rb-arubacentral']
 default['redborder']['systemdservices']['rb-logstatter']            = ['rb-logstatter']
+default['redborder']['systemdservices']['rb-workers']               = ['rb-workers']
 default['redborder']['systemdservices']['redborder-ai']             = ['redborder-ai']
 default['redborder']['systemdservices']['redborder-ale']            = ['redborder-ale']
 default['redborder']['systemdservices']['redborder-cep']            = ['redborder-cep']
@@ -217,4 +222,7 @@ default['redborder']['pending_changes'] = 0
 
 # redborder-ai
 default['redborder']['redborder-ai']['cpus'] = '0'
-default['redborder']['incidents_priority_filter'] = 'high'
+
+# Priority Filter
+default['redborder']['intrusion_incidents_priority_filter'] = 'high'
+default['redborder']['vault_incidents_priority_filter'] = 'error'
