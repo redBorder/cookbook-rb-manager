@@ -52,8 +52,8 @@ default['redborder']['manager']['data_dev']['aggregate'] = '/dev/mapper/vg_rbdat
 default['redborder']['manager']['hd_services'] = [
                                                    { 'name': 'kafka', 'count': 5, 'prefered': 'aggregate' },
                                                    { 'name': 'zookeeper', 'count': 1, 'prefered': 'aggregate' },
-                                                   { 'name': 'riak', 'count': 50, 'prefered': 'raw' },
-                                                   { 'name': 'druid_historical', 'count': 50, 'prefered': 'raw' },
+                                                   { 'name': 's3', 'count': 50, 'prefered': 'raw' },
+                                                   { 'name': 'druid-historical', 'count': 50, 'prefered': 'raw' },
                                                  ]
 
 default['redborder']['manager']['hd_services_current'] = {}
