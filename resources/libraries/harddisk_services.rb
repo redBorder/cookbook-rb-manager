@@ -2,7 +2,7 @@ module RbManager
   module Helpers
     def harddisk_services
       hd_services = {}
-      root_dev_kb = node['filesystem']['by_mountpoint']['/']['kb_size'] 
+      root_dev_kb = node['filesystem']['by_mountpoint']['/']['kb_size']
       size_bytes = root_dev_kb.to_i * 1024
       size_bytes -= 7 * 1024 * 1024 * 1024
       maxsize = size_bytes
@@ -10,7 +10,7 @@ module RbManager
       hd_services_dev = node['redborder']['manager']['hd_services'].map do |service|
         {
           name: service[:name],
-          count: node['redborder']['services'][service[:name]] ? service[:count] + 1 : service[:count]
+          count: node['redborder']['services'][service[:name]] ? service[:count] + 1 : service[:count],
         }
       end
 
