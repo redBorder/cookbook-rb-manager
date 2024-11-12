@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.4.6
+
+  - Miguel Álvarez
+    - [7930ce6] Make same check for logstatter and logstash to configure
+
 ## 4.4.5
 
   - Daniel Castro
