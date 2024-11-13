@@ -614,12 +614,10 @@ end
 
 s3_secrets = {}
 
-if manager_services['s3'] && (external_services['s3'] == 'onpremise')
-  begin
-    s3_secrets = data_bag_item('passwords', 's3')
-  rescue
-    s3_secrets = {}
-  end
+begin
+  s3_secrets = data_bag_item('passwords', 's3')
+rescue
+  s3_secrets = {}
 end
 
 # Allow only s3 onpremise nodes for now..
@@ -629,9 +627,9 @@ minio_config 'Configure S3 (minio)' do
   secret_key_id s3_secrets['s3_secret_key_id']
   if manager_services['s3'] && (external_services['s3'] == 'onpremise')
     ipaddress node['ipaddress_sync']
-    action [:add, :register, :add_mcli]
+    action [:add_mcli, :add, :register]
   else
-    action [:remove, :deregister, :add_mcli]
+    action [:add_mcli, :remove, :deregister]
   end
 end
 
