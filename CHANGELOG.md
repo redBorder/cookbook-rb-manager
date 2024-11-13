@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.6.0
+
+  - David Vanhoucke
+    - [b4abc7a] execute add_mcli before installing and registering minio
+
 ## 4.5.0
 
   - Miguel Negrón
