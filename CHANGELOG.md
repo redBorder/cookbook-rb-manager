@@ -1,6 +1,35 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.6.0
+
+  - David Vanhoucke
+    - [b4abc7a] execute add_mcli before installing and registering minio
+
+## 4.5.0
+
+  - Miguel Negrón
+    - [99f02b0] Merge pull request #226 from redBorder/bugfix/#19144_missing_nginx_confd_files
+    - [917b21b] Merge branch 'development' into bugfix/#19144_missing_nginx_confd_files
+  - David Vanhoucke
+    - [a5e7fda] remove files if service disabled
+    - [06dc4b6] Merge remote-tracking branch 'origin/development' into bugfix/#19144_missing_nginx_confd_files
+  - Miguel Negron
+    - [617db93] Add outliers
+    - [967cdc1] Calling add nginx conf
+
+## 4.4.7
+
+  - Rafael Gomez
+    - [a50d54f] Changing riak service to s3
+    - [787d0ae] Passing hd_services_current maxsize to druid-historical
+    - [55d679c] First version of harddisk_services NG
+
+## 4.4.6
+
+  - Miguel Álvarez
+    - [7930ce6] Make same check for logstatter and logstash to configure
+
 ## 4.4.5
 
   - Daniel Castro
