@@ -106,10 +106,10 @@ else
   node.default['redborder']['memcached']['hosts'] = memcached_hosts
 end
 
-# get sensors info
+# get sensors info (skipping childs of proxy sensors)
 node.run_state['sensors_info'] = get_sensors_info
 
-# get sensors info full info
+# get sensors info full info of all sensors
 node.run_state['sensors_info_all'] = get_sensors_all_info
 
 # get namespaces

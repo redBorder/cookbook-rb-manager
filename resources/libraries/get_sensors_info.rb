@@ -11,7 +11,7 @@ module RbManager
         sensors = search(:node, "role:#{s_type}").sort
         sensors_info[s_type] = {}
         sensors.each do |s|
-          # skip child proxy sensors
+          # skip childs of proxy sensors
           if s['redborder']['parent_id']
             parent_sensor = search(:node, "sensor_id:#{s['redborder']['parent_id']}").first
             next if parent_sensor && parent_sensor.to_s.include?('proxy')
