@@ -1,6 +1,23 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.4.7
+
+  - Rafael Gomez
+    - [a50d54f] Changing riak service to s3
+    - [787d0ae] Passing hd_services_current maxsize to druid-historical
+    - [55d679c] First version of harddisk_services NG
+
+## 4.4.6
+
+  - Miguel Álvarez
+    - [7930ce6] Make same check for logstatter and logstash to configure
+
+## 4.4.5
+
+  - Daniel Castro
+    - [77547bd] create sudoers file before redborder-monitor install
+
 ## 4.4.4
 
   - ptorresred
