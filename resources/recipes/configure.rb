@@ -204,6 +204,7 @@ druid_historical 'Configure Druid Historical' do
     name node['hostname']
     ipaddress node['ipaddress_sync']
     memory_kb node['redborder']['memory_services']['druid-historical']['memory']
+    maxsize node['redborder']['manager']['hd_services_current']['druid-historical'].to_i
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -297,9 +298,9 @@ nginx_config 'Configure Nginx' do
 end
 
 nginx_config 'Configure Nginx Chef' do
-  if manager_services['nginx'] && manager_services['chef-server']
+  if manager_services['nginx'] && node['redborder']['erchef']['hosts'] && !node['redborder']['erchef']['hosts'].empty?
+    erchef_hosts node['redborder']['erchef']['hosts']
     service_name 'erchef'
-    cdomain node['redborder']['cdomain']
     action [:configure_certs, :add_erchef]
   else
     action :nothing
@@ -307,10 +308,12 @@ nginx_config 'Configure Nginx Chef' do
 end
 
 nginx_config 'Configure Nginx aioutliers' do
-  if manager_services['nginx'] && manager_services['rb-aioutliers']
+  if manager_services['nginx'] && node['redborder']['rb-aioutliers']['hosts'] && !node['redborder']['rb-aioutliers']['hosts'].empty?
+    aioutliers_hosts node['redborder']['rb-aioutliers']['hosts']
     service_name 'rb-aioutliers'
-    cdomain node['redborder']['cdomain']
     action [:configure_certs, :add_aioutliers]
+  elsif manager_services['nginx']
+    action :remove_aioutliers
   else
     action :nothing
   end
@@ -332,7 +335,7 @@ webui_config 'Configure WebUI' do
 end
 
 webui_config 'Configure Nginx WebUI' do
-  if manager_services['webui'] && manager_services['nginx']
+  if manager_services['nginx'] && node['redborder']['webui']['hosts'] && !node['redborder']['webui']['hosts'].empty?
     hosts node['redborder']['webui']['hosts']
     cdomain node['redborder']['cdomain']
     port node['redborder']['webui']['port']
@@ -360,11 +363,14 @@ http2k_config 'Configure Http2k' do
   end
 end
 
-http2k_config 'Configure Nginx Http2k' do
-  if manager_services['http2k'] && manager_services['nginx']
-    domain node['redborder']['cdomain']
-    port node['redborder']['http2k']['port']
-    action [:configure_certs, :add_http2k_conf_nginx]
+nginx_config 'Configure Nginx Http2k' do
+  if manager_services['nginx'] && node['redborder']['http2k']['hosts'] && !node['redborder']['http2k']['hosts'].empty?
+    http2k_hosts node['redborder']['http2k']['hosts']
+    http2k_port node['redborder']['http2k']['port']
+    service_name 'http2k'
+    action [:configure_certs, :add_http2k]
+  elsif manager_services['nginx']
+    action :remove_http2k
   else
     action :nothing
   end
@@ -500,7 +506,7 @@ rbale_config 'Configure redborder-ale' do
 end
 
 rblogstatter_config 'Configure redborder-logstatter' do
-  if manager_services['rb-logstatter']
+  if manager_services['rb-logstatter'] && manager_services['logstash'] && node.run_state['pipelines'] && !node.run_state['pipelines'].empty?
     action :add
   else
     action :remove
@@ -608,12 +614,10 @@ end
 
 s3_secrets = {}
 
-if manager_services['s3'] && (external_services['s3'] == 'onpremise')
-  begin
-    s3_secrets = data_bag_item('passwords', 's3')
-  rescue
-    s3_secrets = {}
-  end
+begin
+  s3_secrets = data_bag_item('passwords', 's3')
+rescue
+  s3_secrets = {}
 end
 
 # Allow only s3 onpremise nodes for now..
@@ -623,9 +627,9 @@ minio_config 'Configure S3 (minio)' do
   secret_key_id s3_secrets['s3_secret_key_id']
   if manager_services['s3'] && (external_services['s3'] == 'onpremise')
     ipaddress node['ipaddress_sync']
-    action [:add, :register, :add_mcli]
+    action [:add_mcli, :add, :register]
   else
-    action [:remove, :deregister, :add_mcli]
+    action [:add_mcli, :remove, :deregister]
   end
 end
 
