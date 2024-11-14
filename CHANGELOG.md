@@ -1,6 +1,13 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.6.1
+
+  - Rafa Gómez
+    - [b873b58] skip child proxy sensors
+  - jnavarrorb
+    - [b450479] fix pipelines for flow if proxy has flow sensors
+
 ## 4.6.0
 
   - David Vanhoucke
