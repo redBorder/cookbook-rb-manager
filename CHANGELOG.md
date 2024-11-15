@@ -1,6 +1,30 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.6.1
+
+  - Rafa Gómez
+    - [b873b58] skip child proxy sensors
+  - jnavarrorb
+    - [b450479] fix pipelines for flow if proxy has flow sensors
+
+## 4.6.0
+
+  - David Vanhoucke
+    - [b4abc7a] execute add_mcli before installing and registering minio
+
+## 4.5.0
+
+  - Miguel Negrón
+    - [99f02b0] Merge pull request #226 from redBorder/bugfix/#19144_missing_nginx_confd_files
+    - [917b21b] Merge branch 'development' into bugfix/#19144_missing_nginx_confd_files
+  - David Vanhoucke
+    - [a5e7fda] remove files if service disabled
+    - [06dc4b6] Merge remote-tracking branch 'origin/development' into bugfix/#19144_missing_nginx_confd_files
+  - Miguel Negron
+    - [617db93] Add outliers
+    - [967cdc1] Calling add nginx conf
+
 ## 4.4.7
 
   - Rafael Gomez
