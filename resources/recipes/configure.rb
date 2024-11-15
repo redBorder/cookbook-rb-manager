@@ -75,7 +75,7 @@ vrrp_secrets = {}
 
 if manager_services['keepalived']
   begin
-    vrrp_secrets = data_bag_item('passwords', 'vrrp')
+    vrrp_secrets = Chef::EncryptedDataBagItem.load('passwords', 'vrrp').to_hash
   rescue
     vrrp_secrets = {}
   end
