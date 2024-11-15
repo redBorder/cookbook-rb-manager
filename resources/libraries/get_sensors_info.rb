@@ -7,10 +7,15 @@ module RbManager
                         ips-sensor ipsv2-sensor ipscp-sensor ipsg-sensor)
       locations = node['redborder']['locations']
       sensor_types.each do |s_type|
-        # get sensor where parent_id is nil
-        sensors = search(:node, "role:#{s_type} AND -redborder_parent_id:*?").sort
+        # get all s_type's sensor
+        sensors = search(:node, "role:#{s_type}").sort
         sensors_info[s_type] = {}
         sensors.each do |s|
+          # skip childs of proxy sensors
+          if s['redborder']['parent_id']
+            parent_sensor = search(:node, "sensor_id:#{s['redborder']['parent_id']}").first
+            next if parent_sensor && parent_sensor.to_s.include?('proxy')
+          end
           info = {}
           info['name'] = s.name
           info['ip'] = s['ipaddress']
@@ -27,6 +32,7 @@ module RbManager
 
             info['locations'][loc] = s['redborder'][loc]
           end
+
           sensors_info[s_type][s.name] = info
         end
       end
