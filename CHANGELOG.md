@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.6.2
+
+  - Juan Soto
+    - [3b4542f] Change definition of vrrp_secrets
+
 ## 4.6.1
 
   - Rafa Gómez
