@@ -100,6 +100,23 @@ keepalived_config 'Configure keepalived' do
   end
 end
 
+# Determine external
+begin
+  external_services = data_bag_item('rBglobal', 'external_services')
+rescue
+  external_services = {}
+end
+
+postgresql_config 'Configure postgresql' do
+  if manager_services['postgresql'] && external_services['postgresql'] == 'onpremise'
+    cdomain node['redborder']['cdomain']
+    ipaddress node['ipaddress_sync']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 zookeeper_config 'Configure Zookeeper' do
   if manager_services['zookeeper']
     port node['zookeeper']['port']
@@ -592,23 +609,6 @@ rb_chrony_config 'Configure Chrony' do
     action :add
   else
     action :remove
-  end
-end
-
-# Determine external
-begin
-  external_services = data_bag_item('rBglobal', 'external_services')
-rescue
-  external_services = {}
-end
-
-postgresql_config 'Configure postgresql' do
-  if manager_services['postgresql'] && external_services['postgresql'] == 'onpremise'
-    cdomain node['redborder']['cdomain']
-    ipaddress node['ipaddress_sync']
-    action [:add, :register]
-  else
-    action [:remove, :deregister]
   end
 end
 
