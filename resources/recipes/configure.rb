@@ -43,6 +43,16 @@ template '/etc/sudoers.d/redborder-manager' do
   retries 2
 end
 
+rb_firewall_config 'Configure Firewall' do
+  sync_ip node['ipaddress_sync']
+  ip_addr node['ipaddress']
+  if manager_services['firewall']
+    action :add
+  else
+    action :remove
+  end
+end
+
 consul_config 'Configure Consul Server' do
   cdomain node['redborder']['cdomain']
   dns_local_ip node['consul']['dns_local_ip']

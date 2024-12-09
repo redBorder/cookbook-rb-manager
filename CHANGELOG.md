@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.6.3
+
+  - Nils
+    - Add cookbook for firewall
+
 ## 4.6.2
 
   - Juan Soto
