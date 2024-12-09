@@ -85,7 +85,7 @@ vrrp_secrets = {}
 
 if manager_services['keepalived']
   begin
-    vrrp_secrets = Chef::EncryptedDataBagItem.load('passwords', 'vrrp').to_hash
+    vrrp_secrets = data_bag_item('passwords', 'vrrp').to_hash
   rescue
     vrrp_secrets = {}
   end
@@ -639,8 +639,10 @@ template '/root/.s3cfg_initial' do
     s3_endpoint: 's3.service'
   )
   action :create
-  only_if { s3_secrets['s3_access_key_id'] && !s3_secrets['s3_access_key_id'].empty? &&
-            s3_secrets['s3_secret_key_id'] && !s3_secrets['s3_secret_key_id'].empty? }
+  only_if do
+    s3_secrets['s3_access_key_id'] && !s3_secrets['s3_access_key_id'].empty? &&
+      s3_secrets['s3_secret_key_id'] && !s3_secrets['s3_secret_key_id'].empty?
+  end
 end
 
 # Allow only s3 onpremise nodes for now..
