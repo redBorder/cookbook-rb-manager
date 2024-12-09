@@ -630,6 +630,19 @@ rescue
   s3_secrets = {}
 end
 
+template '/root/.s3cfg_initial' do
+  source 's3cfg_initial.erb'
+  cookbook 'minio'
+  variables(
+    s3_user: s3_secrets['s3_access_key_id'],
+    s3_password: s3_secrets['s3_secret_key_id'],
+    s3_endpoint: 's3.service'
+  )
+  action :create
+  only_if { s3_secrets['s3_access_key_id'] && !s3_secrets['s3_access_key_id'].empty? &&
+            s3_secrets['s3_secret_key_id'] && !s3_secrets['s3_secret_key_id'].empty? }
+end
+
 # Allow only s3 onpremise nodes for now..
 minio_config 'Configure S3 (minio)' do
   managers_with_minio node['redborder']['managers_per_services']['s3']
