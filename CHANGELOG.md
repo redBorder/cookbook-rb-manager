@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.6.4
+
+  - Miguel Alvarez
+    - [e461f49] Always create s3cfg_initial
+
 ## 4.6.3
 
   - Nils
