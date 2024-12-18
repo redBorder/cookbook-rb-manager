@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.7.0
+
+  - Miguel Negrón
+    - [bc1f5b4] Always enable vault pipeline for the alarms
+
 ## 4.6.4
 
   - Miguel Alvarez
