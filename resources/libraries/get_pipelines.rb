@@ -30,7 +30,7 @@ module RbManager
         logstash_pipelines.push('mobility-pipeline')
       end
 
-      logstash_pipelines.push('vault-pipeline') unless vault_sensor_in_proxy_nodes.empty? && sensors['vault-sensor'].empty?
+      logstash_pipelines.push('vault-pipeline')
 
       if (has_device_sensors && monitor_config.include?('thermal')) || !monitor_sensor_in_proxy_nodes.empty?
         logstash_pipelines.push('redfish-pipeline')
