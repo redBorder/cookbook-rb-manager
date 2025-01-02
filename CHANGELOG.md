@@ -1,6 +1,16 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.7.1
+
+  - Miguel Negrón
+    - [7a34132] Fix lint
+
+## 4.7.0
+
+  - Miguel Negrón
+    - [bc1f5b4] Always enable vault pipeline for the alarms
+
 ## 4.6.4
 
   - Miguel Alvarez

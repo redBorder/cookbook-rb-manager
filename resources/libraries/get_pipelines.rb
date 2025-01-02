@@ -6,7 +6,6 @@ module RbManager
       namespaces = get_namespaces()
       main_logstash = determine_main_logstash_node()
       monitor_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('device')
-      vault_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('vault')
       flow_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('flow')
       monitor_config = get_monitor_configuration()
       has_device_sensors = !sensors['device-sensor'].nil? && !sensors['device-sensor'].empty?
@@ -30,7 +29,7 @@ module RbManager
         logstash_pipelines.push('mobility-pipeline')
       end
 
-      logstash_pipelines.push('vault-pipeline') unless vault_sensor_in_proxy_nodes.empty? && sensors['vault-sensor'].empty?
+      logstash_pipelines.push('vault-pipeline')
 
       if (has_device_sensors && monitor_config.include?('thermal')) || !monitor_sensor_in_proxy_nodes.empty?
         logstash_pipelines.push('redfish-pipeline')
