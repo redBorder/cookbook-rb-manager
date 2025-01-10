@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.7.2
+
+  - David Vanhoucke
+    - [2971573] load s3_host from s3_secrets databag
+
 ## 4.7.1
 
   - Miguel Negrón
