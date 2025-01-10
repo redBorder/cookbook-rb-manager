@@ -136,6 +136,14 @@ kafka_config 'Configure Kafka' do
   end
 end
 
+s3_secrets = {}
+
+begin
+  s3_secrets = data_bag_item('passwords', 's3')
+rescue
+  s3_secrets = {}
+end
+
 if manager_services['druid-coordinator'] || manager_services['druid-overlord'] || manager_services['druid-broker'] || manager_services['druid-middlemanager'] || manager_services['druid-historical'] || manager_services['druid-realtime']
   %w(druid-broker druid-coordinator druid-historical
   druid-middlemanager druid-overlord).each do |druid_service|
@@ -149,12 +157,12 @@ if manager_services['druid-coordinator'] || manager_services['druid-overlord'] |
     name node['hostname']
     zookeeper_hosts node['redborder']['zookeeper']['zk_hosts']
     memcached_hosts node['redborder']['memcached']['hosts']
-    s3_service 's3.service'
+    s3_service s3_secrets['s3_host']
     s3_port node['minio']['port']
     cdomain node['redborder']['cdomain']
     action :add
     notifies :restart, 'service[druid-broker]', :delayed if manager_services['druid-broker']
-    notifies :restart, 'service[druid-coordinator]', :delayed if manager_services['druid-coordinator]']
+    notifies :restart, 'service[druid-coordinator]', :delayed if manager_services['druid-coordinator']
     notifies :restart, 'service[druid-historical]', :delayed if manager_services['druid-historical']
     notifies :restart, 'service[druid-middlemanager]', :delayed if manager_services['druid-middlemanager']
     notifies :restart, 'service[druid-overlord]', :delayed if manager_services['druid-overlord']
@@ -321,6 +329,7 @@ nginx_config 'Configure Nginx aioutliers' do
   if manager_services['nginx'] && node['redborder']['rb-aioutliers']['hosts'] && !node['redborder']['rb-aioutliers']['hosts'].empty?
     aioutliers_hosts node['redborder']['rb-aioutliers']['hosts']
     service_name 'rb-aioutliers'
+    s3_hostname "#{s3_secrets['s3_host']}:9000"
     action [:configure_certs, :add_aioutliers]
   elsif manager_services['nginx']
     action :remove_aioutliers
@@ -622,26 +631,19 @@ postgresql_config 'Configure postgresql' do
   end
 end
 
-s3_secrets = {}
-
-begin
-  s3_secrets = data_bag_item('passwords', 's3')
-rescue
-  s3_secrets = {}
-end
-
 template '/root/.s3cfg_initial' do
   source 's3cfg_initial.erb'
   cookbook 'minio'
   variables(
     s3_user: s3_secrets['s3_access_key_id'],
     s3_password: s3_secrets['s3_secret_key_id'],
-    s3_endpoint: 's3.service'
+    s3_endpoint: s3_secrets['s3_host']
   )
   action :create
   only_if do
     s3_secrets['s3_access_key_id'] && !s3_secrets['s3_access_key_id'].empty? &&
-      s3_secrets['s3_secret_key_id'] && !s3_secrets['s3_secret_key_id'].empty?
+      s3_secrets['s3_secret_key_id'] && !s3_secrets['s3_secret_key_id'].empty? &&
+      s3_secrets['s3_host'] && !s3_secrets['s3_host'].empty?
   end
 end
 
