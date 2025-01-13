@@ -89,10 +89,16 @@ rescue
   elasticache = {}
 end
 
-if !elasticache.empty?
-  node.default['redborder']['memcached']['server_list'] = getElasticacheNodes(elasticache['cfg_address'], elasticache['cfg_port'])
+# Previous code treated memcached hosts as an array of strings, but now it is a single string.
+# if !elasticache.empty?
+#   node.default['redborder']['memcached']['server_list'] = getElasticacheNodes(elasticache['cfg_address'], elasticache['cfg_port'])
+#   node.default['redborder']['memcached']['port'] = elasticache['cfg_port']
+#   node.default['redborder']['memcached']['hosts'] = joinHostArray2port(node['redborder']['memcached']['server_list'], node['redborder']['memcached']['port']).join(',')
+#   node.default['redborder']['memcached']['elasticache'] = true
+if !elasticache.empty? && !elasticache['cfg_address'].nil? && !elasticache['cfg_port'].nil?
+  node.default['redborder']['memcached']['server_list'] = elasticache['cfg_address']
   node.default['redborder']['memcached']['port'] = elasticache['cfg_port']
-  node.default['redborder']['memcached']['hosts'] = joinHostArray2port(node['redborder']['memcached']['server_list'], node['redborder']['memcached']['port']).join(',')
+  node.default['redborder']['memcached']['hosts'] = "#{elasticache['cfg_address']}:#{elasticache['cfg_port']}"
   node.default['redborder']['memcached']['elasticache'] = true
 else
   memcached_hosts = []

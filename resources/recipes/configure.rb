@@ -22,6 +22,12 @@ virtual_ips_per_ip = node.run_state['virtual_ips_per_ip']
 #   action :nothing
 # end
 
+begin
+  external_services = data_bag_item('rBglobal', 'external_services')
+rescue
+  external_services = {}
+end
+
 rb_common_config 'Configure common' do
   action :configure
 end
@@ -243,7 +249,7 @@ druid_realtime 'Configure Druid Realtime' do
 end
 
 memcached_config 'Configure Memcached' do
-  if manager_services['memcached']
+  if manager_services['memcached'] && external_services['memcached'] == 'onpremise'
     memory node['redborder']['memory_services']['memcached']['memory']
     ipaddress node['ipaddress_sync']
     action [:add, :register]
@@ -346,6 +352,7 @@ webui_config 'Configure WebUI' do
     port node['redborder']['webui']['port']
     webui_version node['redborder']['webui']['version']
     redborder_version node['redborder']['repo']['version']
+    elasticache_hosts node['redborder']['memcached']['hosts']
     action [:add, :register, :configure_rsa]
   else
     action [:remove, :deregister]
@@ -453,6 +460,7 @@ logstash_config 'Configure logstash' do
     device_nodes node.run_state['sensors_info_all']['device-sensor']
     intrusion_incidents_priority_filter node['redborder']['intrusion_incidents_priority_filter']
     vault_incidents_priority_filter node['redborder']['vault_incidents_priority_filter']
+    memcached_server node['redborder']['memcached']['hosts']
     logstash_pipelines node.run_state['pipelines']
     split_traffic_logstash split_traffic
     split_intrusion_logstash split_intrusion
@@ -611,13 +619,6 @@ rb_chrony_config 'Configure Chrony' do
   else
     action :remove
   end
-end
-
-# Determine external
-begin
-  external_services = data_bag_item('rBglobal', 'external_services')
-rescue
-  external_services = {}
 end
 
 postgresql_config 'Configure postgresql' do
