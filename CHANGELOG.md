@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.7.3
+
+  - Miguel Negrón
+    - [46efa0c] dont pass s3_hostname con configure_certs && add_aioutliers
+
 ## 4.7.2
 
   - David Vanhoucke
