@@ -329,7 +329,6 @@ nginx_config 'Configure Nginx aioutliers' do
   if manager_services['nginx'] && node['redborder']['rb-aioutliers']['hosts'] && !node['redborder']['rb-aioutliers']['hosts'].empty?
     aioutliers_hosts node['redborder']['rb-aioutliers']['hosts']
     service_name 'rb-aioutliers'
-    s3_hostname "#{s3_secrets['s3_host']}:9000"
     action [:configure_certs, :add_aioutliers]
   elsif manager_services['nginx']
     action :remove_aioutliers
