@@ -89,7 +89,7 @@ rescue
   elasticache = {}
 end
 
-if !elasticache.empty?
+if !elasticache.empty? && !elasticache['cfg_address'].nil? && !elasticache['cfg_address'].empty? && !elasticache['cfg_port'].nil? && !elasticache['cfg_port'].empty?
   node.default['redborder']['memcached']['server_list'] = getElasticacheNodes(elasticache['cfg_address'], elasticache['cfg_port'])
   node.default['redborder']['memcached']['port'] = elasticache['cfg_port']
   node.default['redborder']['memcached']['hosts'] = joinHostArray2port(node['redborder']['memcached']['server_list'], node['redborder']['memcached']['port']).join(',')
