@@ -595,11 +595,6 @@ rb_postfix_config 'Configure postfix' do
   end
 end
 
-rbcgroup_config 'Configure cgroups' do
-  check_cgroups node.run_state['cluster_installed']
-  action :add
-end
-
 rb_clamav_config 'Configure ClamAV' do
   action :add
 end
@@ -675,6 +670,11 @@ secor_config 'Configure Secor Service' do
   else
     action :remove
   end
+end
+
+rbcgroup_config 'Configure cgroups' do
+  check_cgroups node.run_state['cluster_installed']
+  action :add
 end
 
 # First configure the cert for the service before configuring nginx
