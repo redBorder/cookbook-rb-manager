@@ -168,7 +168,6 @@ default['redborder']['services']['firewall']                  = true
 default['redborder']['services']['secor']                     = false
 default['redborder']['services']['secor-vault']               = false
 
-
 default['redborder']['systemdservices']['chef-client']              = ['chef-client']
 default['redborder']['systemdservices']['chef-server']              = ['opscode-erchef']
 default['redborder']['systemdservices']['chrony']                   = ['chronyd']
