@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.7.5
+
+  - Miguel Alvarez
+    - [c54973b] Use CPU num
+
 ## 4.7.4
 
   - nilsver
