@@ -598,11 +598,6 @@ rb_postfix_config 'Configure postfix' do
   end
 end
 
-rbcgroup_config 'Configure cgroups' do
-  check_cgroups node.run_state['cluster_installed']
-  action :add
-end
-
 rb_clamav_config 'Configure ClamAV' do
   action :add
 end
@@ -660,6 +655,29 @@ minio_config 'Configure S3 (minio)' do
   else
     action [:add_mcli, :remove, :deregister]
   end
+end
+
+# Configure secor service for backup kafka data in case of data lose and for view raw vault data
+secor_config 'Configure Secor Service' do
+  if manager_services['secor'] || manager_services['secor-vault']
+    kafka_hosts node['redborder']['managers_per_services']['kafka']
+    zk_hosts node['redborder']['zookeeper']['zk_hosts']
+    manager_services manager_services
+    s3_server 's3.service'
+    s3_hostname 's3.service'
+    s3_user s3_secrets['s3_access_key_id']
+    s3_pass s3_secrets['s3_secret_key_id']
+    s3_bucket 'bucket'
+    s3_port node['minio']['port']
+    action :add
+  else
+    action :remove
+  end
+end
+
+rbcgroup_config 'Configure cgroups' do
+  check_cgroups node.run_state['cluster_installed']
+  action :add
 end
 
 # First configure the cert for the service before configuring nginx
