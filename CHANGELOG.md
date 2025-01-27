@@ -1,6 +1,16 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.8.0
+
+  - Miguel Alvarez
+    - [729685f] Add secor cookbook rb-secor
+
+## 4.7.5
+
+  - Miguel Alvarez
+    - [c54973b] Use CPU num
+
 ## 4.7.4
 
   - nilsver
