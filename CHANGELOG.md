@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.8.1
+
+  - Rafael Gomez
+    - [d56908f] Update core services group
+
 ## 4.8.0
 
   - Miguel Alvarez

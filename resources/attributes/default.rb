@@ -109,7 +109,7 @@ default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper
                                                     redborder-events-counter http2k redborder-mem2incident)
 
 default['redborder']['services_group']['custom'] = %w(consul)
-default['redborder']['services_group']['core'] = %w(consul zookeeper druid-coordinator druid-overlord) # consul server
+default['redborder']['services_group']['core'] = %w(consul chef-server s3 postgresql redborder-postgresql nginx)
 default['redborder']['services_group']['chef'] = %w(consul chef-server)
 default['redborder']['services_group']['kafka'] = %w(consul kafka)
 default['redborder']['services_group']['historical'] = %w(consul druid-historical)
