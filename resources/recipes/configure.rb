@@ -696,6 +696,9 @@ minio_config 'Configure Nginx S3 (minio)' do
   if manager_services['s3'] && (external_services['s3'] == 'onpremise')
     s3_hosts node['redborder']['s3']['s3_hosts']
     action [:add_s3_conf_nginx]
+  elsif !manager_services['s3'] && manager_services['nginx']
+    s3_hosts node['redborder']['s3']['s3_hosts']
+    action [:add_s3_conf_nginx]
   else
     action :nothing
   end
