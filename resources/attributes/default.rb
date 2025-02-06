@@ -105,7 +105,7 @@ default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper
                                                     postgresql nginx webui rb-workers druid-broker
                                                     druid-historical druid-realtime druid-coordinator f2k
                                                     redborder-monitor sfacctd redborder-dswatcher mongodb
-                                                    redborder-events-counter http2k redborder-mem2incident)
+                                                    redborder-events-counter http2k redborder-mem2incident rb-logstatter)
 
 default['redborder']['services_group']['custom'] = %w(consul)
 default['redborder']['services_group']['core'] = %w(consul chef-server s3 postgresql nginx)
@@ -146,7 +146,7 @@ default['redborder']['services']['postgresql']                = false
 default['redborder']['services']['radiusd']                   = false
 default['redborder']['services']['rb-aioutliers']             = false
 default['redborder']['services']['rb-arubacentral']           = false
-default['redborder']['services']['rb-logstatter']             = true
+default['redborder']['services']['rb-logstatter']             = false
 default['redborder']['services']['rb-workers']                = false
 default['redborder']['services']['redborder-ai']              = false
 default['redborder']['services']['redborder-ale']             = false

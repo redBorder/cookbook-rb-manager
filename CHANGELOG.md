@@ -1,6 +1,16 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.8.3
+
+  - nilsver
+    - [be38558] ensure configuration
+
+## 4.8.2
+
+  - nilsver
+    - [d1b76b6] disable logstatter if logstash not running
+
 ## 4.8.1
 
   - Rafael Gomez
