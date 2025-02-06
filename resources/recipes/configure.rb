@@ -579,10 +579,10 @@ mem2incident_config 'Configure redborder-mem2incident' do
   end
 end
 
-rb_ai_config 'Configure redborder-ai' do
-  if manager_services['redborder-ai']
-    ai_selected_model node['redborder']['ai_selected_model']
-    cpus node['redborder']['redborder-ai']['cpus']
+rb_llm_config 'Configure redborder-llm' do
+  if manager_services['redborder-llm']
+    llm_selected_model node['redborder']['llm_selected_model']
+    cpus node['redborder']['redborder-llm']['cpus']
     ipaddress node['ipaddress_sync']
     action [:add, :register]
   else
