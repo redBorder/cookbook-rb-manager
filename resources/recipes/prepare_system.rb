@@ -28,10 +28,6 @@ end
 
 node.default[:ipaddress_sync] = ipaddress_sync
 
-# Opens the kafka port for the IP of the IPS if in manager/ssh mode.
-# If the manager has 2 or more interfaces.
-open_ports_for_ips if ipaddress_sync != node['ip_address']
-
 # get mac
 mac_sync = `ip a | grep -w -B2 #{ipaddress_sync} | awk '{print toupper($2)}' | head -n 1 | tr -d '\n'`
 node.default['mac_sync'] = mac_sync
@@ -48,6 +44,14 @@ template '/etc/sysconfig/chef-client' do
   variables(interval: node['chef-client']['interval'],
             splay: node['chef-client']['splay'],
             options: node['chef-client']['options'])
+end
+
+template '/etc/logrotate.d/logstash' do
+  source 'logstash_log-rotate.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
+  retries 2
 end
 
 service 'chef-client' do
@@ -85,7 +89,7 @@ rescue
   elasticache = {}
 end
 
-if !elasticache.empty?
+if !elasticache.empty? && !elasticache['cfg_address'].nil? && !elasticache['cfg_address'].empty? && !elasticache['cfg_port'].nil? && !elasticache['cfg_port'].empty?
   node.default['redborder']['memcached']['server_list'] = getElasticacheNodes(elasticache['cfg_address'], elasticache['cfg_port'])
   node.default['redborder']['memcached']['port'] = elasticache['cfg_port']
   node.default['redborder']['memcached']['hosts'] = joinHostArray2port(node['redborder']['memcached']['server_list'], node['redborder']['memcached']['port']).join(',')
@@ -98,10 +102,10 @@ else
   node.default['redborder']['memcached']['hosts'] = memcached_hosts
 end
 
-# get sensors info
+# get sensors info (skipping childs of proxy sensors)
 node.run_state['sensors_info'] = get_sensors_info
 
-# get sensors info full info
+# get sensors info full info of all sensors
 node.run_state['sensors_info_all'] = get_sensors_all_info
 
 # get namespaces
@@ -142,6 +146,15 @@ node.default['redborder']['zookeeper']['zk_hosts'] = "zookeeper.service.#{node['
 webui_hosts = node['redborder']['managers_per_services']['webui'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
 node.default['redborder']['webui']['hosts'] = webui_hosts
 node.run_state['auth_token'] = get_api_auth_token if File.exist?('/etc/redborder/cluster-installed.txt')
+
+erchef_hosts = node['redborder']['managers_per_services']['chef-server'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
+node.default['redborder']['erchef']['hosts'] = erchef_hosts
+
+http2k_hosts = node['redborder']['managers_per_services']['http2k'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
+node.default['redborder']['http2k']['hosts'] = http2k_hosts
+
+rb_aioutliers_hosts = node['redborder']['managers_per_services']['rb-aioutliers'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
+node.default['redborder']['rb-aioutliers']['hosts'] = rb_aioutliers_hosts
 
 # set kafka host index if kafka is enabled in this host
 if node['redborder']['managers_per_services']['kafka'].include?(node.name)

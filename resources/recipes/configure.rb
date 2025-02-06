@@ -34,6 +34,25 @@ rb_selinux_config 'Configure Selinux' do
   end
 end
 
+# Sudoers
+template '/etc/sudoers.d/redborder-manager' do
+  source 'redborder-manager.erb'
+  owner 'root'
+  group 'root'
+  mode '0440'
+  retries 2
+end
+
+rb_firewall_config 'Configure Firewall' do
+  sync_ip node['ipaddress_sync']
+  ip_addr node['ipaddress']
+  if manager_services['firewall']
+    action :add
+  else
+    action :remove
+  end
+end
+
 consul_config 'Configure Consul Server' do
   cdomain node['redborder']['cdomain']
   dns_local_ip node['consul']['dns_local_ip']
@@ -66,7 +85,7 @@ vrrp_secrets = {}
 
 if manager_services['keepalived']
   begin
-    vrrp_secrets = data_bag_item('passwords', 'vrrp')
+    vrrp_secrets = data_bag_item('passwords', 'vrrp').to_hash
   rescue
     vrrp_secrets = {}
   end
@@ -117,6 +136,14 @@ kafka_config 'Configure Kafka' do
   end
 end
 
+s3_secrets = {}
+
+begin
+  s3_secrets = data_bag_item('passwords', 's3')
+rescue
+  s3_secrets = {}
+end
+
 if manager_services['druid-coordinator'] || manager_services['druid-overlord'] || manager_services['druid-broker'] || manager_services['druid-middlemanager'] || manager_services['druid-historical'] || manager_services['druid-realtime']
   %w(druid-broker druid-coordinator druid-historical
   druid-middlemanager druid-overlord).each do |druid_service|
@@ -130,12 +157,12 @@ if manager_services['druid-coordinator'] || manager_services['druid-overlord'] |
     name node['hostname']
     zookeeper_hosts node['redborder']['zookeeper']['zk_hosts']
     memcached_hosts node['redborder']['memcached']['hosts']
-    s3_service 's3.service'
+    s3_service s3_secrets['s3_host']
     s3_port node['minio']['port']
     cdomain node['redborder']['cdomain']
     action :add
     notifies :restart, 'service[druid-broker]', :delayed if manager_services['druid-broker']
-    notifies :restart, 'service[druid-coordinator]', :delayed if manager_services['druid-coordinator]']
+    notifies :restart, 'service[druid-coordinator]', :delayed if manager_services['druid-coordinator']
     notifies :restart, 'service[druid-historical]', :delayed if manager_services['druid-historical']
     notifies :restart, 'service[druid-middlemanager]', :delayed if manager_services['druid-middlemanager']
     notifies :restart, 'service[druid-overlord]', :delayed if manager_services['druid-overlord']
@@ -173,6 +200,7 @@ druid_broker 'Configure Druid Broker' do
     name node['hostname']
     ipaddress node['ipaddress_sync']
     memory_kb node['redborder']['memory_services']['druid-broker']['memory']
+    cpu_num node['cpu']['total'].to_i
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -195,6 +223,8 @@ druid_historical 'Configure Druid Historical' do
     name node['hostname']
     ipaddress node['ipaddress_sync']
     memory_kb node['redborder']['memory_services']['druid-historical']['memory']
+    maxsize node['redborder']['manager']['hd_services_current']['druid-historical'].to_i
+    cpu_num node['cpu']['total'].to_i
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -208,6 +238,7 @@ druid_realtime 'Configure Druid Realtime' do
     zookeeper_hosts node['redborder']['zookeeper']['zk_hosts']
     partition_num node['redborder']['druid']['realtime']['partition_num']
     memory_kb node['redborder']['memory_services']['druid-realtime']['memory']
+    cpu_num node['cpu']['total'].to_i
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -288,9 +319,9 @@ nginx_config 'Configure Nginx' do
 end
 
 nginx_config 'Configure Nginx Chef' do
-  if manager_services['nginx'] && manager_services['chef-server']
+  if manager_services['nginx'] && node['redborder']['erchef']['hosts'] && !node['redborder']['erchef']['hosts'].empty?
+    erchef_hosts node['redborder']['erchef']['hosts']
     service_name 'erchef'
-    cdomain node['redborder']['cdomain']
     action [:configure_certs, :add_erchef]
   else
     action :nothing
@@ -298,10 +329,12 @@ nginx_config 'Configure Nginx Chef' do
 end
 
 nginx_config 'Configure Nginx aioutliers' do
-  if manager_services['nginx'] && manager_services['rb-aioutliers']
+  if manager_services['nginx'] && node['redborder']['rb-aioutliers']['hosts'] && !node['redborder']['rb-aioutliers']['hosts'].empty?
+    aioutliers_hosts node['redborder']['rb-aioutliers']['hosts']
     service_name 'rb-aioutliers'
-    cdomain node['redborder']['cdomain']
     action [:configure_certs, :add_aioutliers]
+  elsif manager_services['nginx']
+    action :remove_aioutliers
   else
     action :nothing
   end
@@ -323,7 +356,7 @@ webui_config 'Configure WebUI' do
 end
 
 webui_config 'Configure Nginx WebUI' do
-  if manager_services['webui'] && manager_services['nginx']
+  if manager_services['nginx'] && node['redborder']['webui']['hosts'] && !node['redborder']['webui']['hosts'].empty?
     hosts node['redborder']['webui']['hosts']
     cdomain node['redborder']['cdomain']
     port node['redborder']['webui']['port']
@@ -351,11 +384,14 @@ http2k_config 'Configure Http2k' do
   end
 end
 
-http2k_config 'Configure Nginx Http2k' do
-  if manager_services['http2k'] && manager_services['nginx']
-    domain node['redborder']['cdomain']
-    port node['redborder']['http2k']['port']
-    action [:configure_certs, :add_http2k_conf_nginx]
+nginx_config 'Configure Nginx Http2k' do
+  if manager_services['nginx'] && node['redborder']['http2k']['hosts'] && !node['redborder']['http2k']['hosts'].empty?
+    http2k_hosts node['redborder']['http2k']['hosts']
+    http2k_port node['redborder']['http2k']['port']
+    service_name 'http2k'
+    action [:configure_certs, :add_http2k]
+  elsif manager_services['nginx']
+    action :remove_http2k
   else
     action :nothing
   end
@@ -370,10 +406,20 @@ f2k_config 'Configure f2k' do
   end
 end
 
-pmacct_config 'Configure pmacct' do
-  if manager_services['pmacct']
+if manager_services['sfacctd'] &&
+   node.run_state['virtual_ips'] &&
+   node.run_state['virtual_ips']['external'] &&
+   node.run_state['virtual_ips']['external']['sfacctd'] &&
+   node.run_state['virtual_ips']['external']['sfacctd']['ip']
+
+  sfacctd_ip = '0.0.0.0'
+end
+
+pmacct_config 'Configure pmacct (sfacctd)' do
+  if manager_services['sfacctd']
     sensors node.run_state['sensors_info']['flow-sensor']
     kafka_hosts node['redborder']['managers_per_services']['kafka']
+    sfacctd_ip sfacctd_ip || node['ipaddress']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -391,6 +437,14 @@ if manager_services['logstash']
   end
 end
 
+if manager_services['logstash']
+  begin
+    split_intrusion = data_bag_item('rBglobal', 'splitintrusion')['logstash']
+  rescue
+    split_intrusion = false
+  end
+end
+
 logstash_config 'Configure logstash' do
   if manager_services['logstash'] && node.run_state['pipelines'] && !node.run_state['pipelines'].empty?
     cdomain node['redborder']['cdomain']
@@ -404,6 +458,7 @@ logstash_config 'Configure logstash' do
     vault_incidents_priority_filter node['redborder']['vault_incidents_priority_filter']
     logstash_pipelines node.run_state['pipelines']
     split_traffic_logstash split_traffic
+    split_intrusion_logstash split_intrusion
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -472,7 +527,7 @@ rbale_config 'Configure redborder-ale' do
 end
 
 rblogstatter_config 'Configure redborder-logstatter' do
-  if manager_services['rb-logstatter']
+  if manager_services['rb-logstatter'] && manager_services['logstash'] && node.run_state['pipelines'] && !node.run_state['pipelines'].empty?
     action :add
   else
     action :remove
@@ -543,11 +598,6 @@ rb_postfix_config 'Configure postfix' do
   end
 end
 
-rbcgroup_config 'Configure cgroups' do
-  check_cgroups node.run_state['cluster_installed']
-  action :add
-end
-
 rb_clamav_config 'Configure ClamAV' do
   action :add
 end
@@ -578,13 +628,19 @@ postgresql_config 'Configure postgresql' do
   end
 end
 
-s3_secrets = {}
-
-if manager_services['s3'] && (external_services['s3'] == 'onpremise')
-  begin
-    s3_secrets = data_bag_item('passwords', 's3')
-  rescue
-    s3_secrets = {}
+template '/root/.s3cfg_initial' do
+  source 's3cfg_initial.erb'
+  cookbook 'minio'
+  variables(
+    s3_user: s3_secrets['s3_access_key_id'],
+    s3_password: s3_secrets['s3_secret_key_id'],
+    s3_endpoint: s3_secrets['s3_host']
+  )
+  action :create
+  only_if do
+    s3_secrets['s3_access_key_id'] && !s3_secrets['s3_access_key_id'].empty? &&
+      s3_secrets['s3_secret_key_id'] && !s3_secrets['s3_secret_key_id'].empty? &&
+      s3_secrets['s3_host'] && !s3_secrets['s3_host'].empty?
   end
 end
 
@@ -595,10 +651,33 @@ minio_config 'Configure S3 (minio)' do
   secret_key_id s3_secrets['s3_secret_key_id']
   if manager_services['s3'] && (external_services['s3'] == 'onpremise')
     ipaddress node['ipaddress_sync']
-    action [:add, :register, :add_mcli]
+    action [:add_mcli, :add, :register]
   else
-    action [:remove, :deregister, :add_mcli]
+    action [:add_mcli, :remove, :deregister]
   end
+end
+
+# Configure secor service for backup kafka data in case of data lose and for view raw vault data
+secor_config 'Configure Secor Service' do
+  if manager_services['secor'] || manager_services['secor-vault']
+    kafka_hosts node['redborder']['managers_per_services']['kafka']
+    zk_hosts node['redborder']['zookeeper']['zk_hosts']
+    manager_services manager_services
+    s3_server 's3.service'
+    s3_hostname 's3.service'
+    s3_user s3_secrets['s3_access_key_id']
+    s3_pass s3_secrets['s3_secret_key_id']
+    s3_bucket 'bucket'
+    s3_port node['minio']['port']
+    action :add
+  else
+    action :remove
+  end
+end
+
+rbcgroup_config 'Configure cgroups' do
+  check_cgroups node.run_state['cluster_installed']
+  action :add
 end
 
 # First configure the cert for the service before configuring nginx
@@ -615,6 +694,9 @@ end
 # Configure Nginx s3 onpremise nodes for now..
 minio_config 'Configure Nginx S3 (minio)' do
   if manager_services['s3'] && (external_services['s3'] == 'onpremise')
+    s3_hosts node['redborder']['s3']['s3_hosts']
+    action [:add_s3_conf_nginx]
+  elsif !manager_services['s3'] && manager_services['nginx']
     s3_hosts node['redborder']['s3']['s3_hosts']
     action [:add_s3_conf_nginx]
   else
@@ -646,15 +728,6 @@ unless ssh_secrets.empty?
     retries 2
     variables(public_rsa: ssh_secrets['public_rsa'])
   end
-end
-
-# Sudoers
-template '/etc/sudoers.d/redborder-manager' do
-  source 'redborder-manager.erb'
-  owner 'root'
-  group 'root'
-  mode '0440'
-  retries 2
 end
 
 # Pending Changes..

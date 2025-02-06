@@ -1,6 +1,146 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.8.3
+
+  - nilsver
+    - [be38558] ensure configuration
+
+## 4.8.2
+
+  - nilsver
+    - [d1b76b6] disable logstatter if logstash not running
+
+## 4.8.1
+
+  - Rafael Gomez
+    - [d56908f] Update core services group
+
+## 4.8.0
+
+  - Miguel Alvarez
+    - [729685f] Add secor cookbook rb-secor
+
+## 4.7.5
+
+  - Miguel Alvarez
+    - [c54973b] Use CPU num
+
+## 4.7.4
+
+  - nilsver
+    - [78005ed] add more checks2
+
+## 4.7.3
+
+  - Miguel Negrón
+    - [46efa0c] dont pass s3_hostname con configure_certs && add_aioutliers
+
+## 4.7.2
+
+  - David Vanhoucke
+    - [2971573] load s3_host from s3_secrets databag
+
+## 4.7.1
+
+  - Miguel Negrón
+    - [7a34132] Fix lint
+
+## 4.7.0
+
+  - Miguel Negrón
+    - [bc1f5b4] Always enable vault pipeline for the alarms
+
+## 4.6.4
+
+  - Miguel Alvarez
+    - [e461f49] Always create s3cfg_initial
+
+## 4.6.3
+
+  - Nils
+    - Add cookbook for firewall
+
+## 4.6.2
+
+  - Juan Soto
+    - [3b4542f] Change definition of vrrp_secrets
+
+## 4.6.1
+
+  - Rafa Gómez
+    - [b873b58] skip child proxy sensors
+  - jnavarrorb
+    - [b450479] fix pipelines for flow if proxy has flow sensors
+
+## 4.6.0
+
+  - David Vanhoucke
+    - [b4abc7a] execute add_mcli before installing and registering minio
+
+## 4.5.0
+
+  - Miguel Negrón
+    - [99f02b0] Merge pull request #226 from redBorder/bugfix/#19144_missing_nginx_confd_files
+    - [917b21b] Merge branch 'development' into bugfix/#19144_missing_nginx_confd_files
+  - David Vanhoucke
+    - [a5e7fda] remove files if service disabled
+    - [06dc4b6] Merge remote-tracking branch 'origin/development' into bugfix/#19144_missing_nginx_confd_files
+  - Miguel Negron
+    - [617db93] Add outliers
+    - [967cdc1] Calling add nginx conf
+
+## 4.4.7
+
+  - Rafael Gomez
+    - [a50d54f] Changing riak service to s3
+    - [787d0ae] Passing hd_services_current maxsize to druid-historical
+    - [55d679c] First version of harddisk_services NG
+
+## 4.4.6
+
+  - Miguel Álvarez
+    - [7930ce6] Make same check for logstatter and logstash to configure
+
+## 4.4.5
+
+  - Daniel Castro
+    - [77547bd] create sudoers file before redborder-monitor install
+
+## 4.4.4
+
+  - ptorresred
+    - [80dda4a] Redmine #19198: Change vault priority default filter
+
+## 4.4.3
+
+  - Juan Soto
+    - [da722bb] Create and pass split_intrusion variables to logstash config (#216)
+
+## 4.4.2
+
+  - jnavarrorb
+    - [72d2b00] Fix sensors info with all sensors (proxy childs too)
+    - [87628c7] Fix parent_id to real_parent_id
+    - [060f5d9] Fix open kafka port for all IPS
+    - [a9a3efe] check if redborder_parent_id is nil or sensor at redborder_parent_id is not a proxy
+
+## 4.4.1
+
+  - JuanSheba
+    - [8e22478] Add creation of the logrotate file with the template
+    - [77bbbfb] Create Template
+
+## 4.4.0
+
+  - Miguel Negrón
+    - [48ee415] Merge pull request #232 from redBorder/bugfix/#18169_rename_pmacctd_to_sfacctd_service
+
+## 4.3.0
+
+  - Miguel Negron
+    - [8c6f578] Add rb-workers to service list
+
 ## 4.2.0
 
   - manegron

@@ -6,7 +6,7 @@ module RbManager
       namespaces = get_namespaces()
       main_logstash = determine_main_logstash_node()
       monitor_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('device')
-      vault_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('vault')
+      flow_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('flow')
       monitor_config = get_monitor_configuration()
       has_device_sensors = !sensors['device-sensor'].nil? && !sensors['device-sensor'].empty?
 
@@ -15,8 +15,8 @@ module RbManager
       logstash_pipelines.push('scanner-pipeline') unless sensors['scanner-sensor'].empty?
       logstash_pipelines.push('nmsp-pipeline') if main_logstash == node.name && !sensors['flow-sensor'].empty?
       logstash_pipelines.push('radius-pipeline') if main_logstash == node.name
-      logstash_pipelines.push('netflow-pipeline') unless sensors['flow-sensor'].empty?
-      logstash_pipelines.push('sflow-pipeline') unless sensors['flow-sensor'].empty?
+      logstash_pipelines.push('netflow-pipeline') unless sensors['flow-sensor'].empty? && flow_sensor_in_proxy_nodes.empty?
+      logstash_pipelines.push('sflow-pipeline') unless sensors['flow-sensor'].empty? && flow_sensor_in_proxy_nodes.empty?
       logstash_pipelines.push('meraki-pipeline') unless sensors['meraki-sensor'].empty?
       logstash_pipelines.push('monitor-pipeline') unless namespaces.empty?
       logstash_pipelines.push('intrusion-pipeline') unless sensors['intrusion-sensor'].empty? && sensors['ips-sensor'].empty? && sensors['ipsv2-sensor'].empty? && sensors['ipscp-sensor'].empty? && sensors['ipsg-sensor'].empty?
@@ -29,7 +29,7 @@ module RbManager
         logstash_pipelines.push('mobility-pipeline')
       end
 
-      logstash_pipelines.push('vault-pipeline') unless vault_sensor_in_proxy_nodes.empty? && sensors['vault-sensor'].empty?
+      logstash_pipelines.push('vault-pipeline')
 
       if (has_device_sensors && monitor_config.include?('thermal')) || !monitor_sensor_in_proxy_nodes.empty?
         logstash_pipelines.push('redfish-pipeline')
