@@ -26,7 +26,11 @@ module RbManager
             hash['virtual'] = true
             hash['run_anywhere'] = true
             has_any_virtual_ip = true if hash['ip'] && manager_services[service['service']]
-            hash['iface'] = node['redborder']['management_interface']
+            if type.to_s == 'external'
+              hash['iface'] = node['redborder']['management_interface']
+            elsif type.to_s == 'internal'
+              hash['iface'] = node['redborder']['sync_interface']
+            end
             if manager_services[service['service']]
               all_deps_enabled = true
               unless service['deps'].nil?
@@ -44,7 +48,11 @@ module RbManager
             hash['run_anywhere'] = false
             nodeservice = nil
             managers.each do |m|
-              hash['iface'] = node['redborder']['management_interface']
+              if type.to_s == 'external'
+                hash['iface'] = node['redborder']['management_interface']
+              elsif type.to_s == 'internal'
+                hash['iface'] = node['redborder']['sync_interface']
+              end
               run_anywhere_flag = false
 
               if m.name == node.name
@@ -61,7 +69,11 @@ module RbManager
 
             if nodeservice.nil?
               managers.each do |m|
-                hash['iface'] = node['redborder']['management_interface']
+                if type.to_s == 'external'
+                  hash['iface'] = node['redborder']['management_interface']
+                elsif type.to_s == 'internal'
+                  hash['iface'] = node['redborder']['sync_interface']
+                end
                 run_anywhere_flag = false
                 run_anywhere_flag = m['redborder']['manager']['services']['overwrite'][service['service']] unless m['redborder']['manager']['services']['overwrite'].nil?
                 run_anywhere_flag = m['redborder']['manager']['services'][m['redborder']['manager']['mode']][service['service']] if run_anywhere_flag != true && !m['redborder']['manager']['services'][m['redborder']['manager']['mode']].nil?
