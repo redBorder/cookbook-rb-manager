@@ -220,7 +220,7 @@ rescue
 end
 # set internal virtual ip's in /etc/hosts
 result = set_internal_vip(postgresql_vip['ip'], 'master.postgresql.service', 'postgresql=ready')
-if result
+if result && File.exist?('/etc/redborder/cluster-installed.txt')
   service 'webui' do
     action :restart
   end
