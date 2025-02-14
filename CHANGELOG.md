@@ -1,6 +1,12 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.9.0
+
+  - Pablo Pérez
+    - [7733638] align elements
+    - [3118dbb] rename redborder-ai to redborder-llm
+
 ## 4.8.3
 
   - nilsver
