@@ -19,7 +19,7 @@ module RbManager
       logstash_pipelines.push('sflow-pipeline') unless sensors['flow-sensor'].empty? && flow_sensor_in_proxy_nodes.empty?
       logstash_pipelines.push('meraki-pipeline') unless sensors['meraki-sensor'].empty?
       logstash_pipelines.push('monitor-pipeline') unless namespaces.empty?
-      logstash_pipelines.push('intrusion-pipeline') unless sensors['ips-sensor'].empty? && sensors['ipsv2-sensor'].empty? && sensors['ipscp-sensor'].empty? && sensors['ipsg-sensor'].empty?
+      logstash_pipelines.push('intrusion-pipeline') unless sensors['intrusion-sensor'].empty? && sensors['ips-sensor'].empty? && sensors['ipsv2-sensor'].empty? && sensors['ipscp-sensor'].empty? && sensors['ipsg-sensor'].empty? && sensors['intrusion-sensor'].empty?
 
       if (sensors['ale-sensor'] && !sensors['ale-sensor'].empty?) ||
          (sensors['mse-sensor'] && !sensors['mse-sensor'].empty?) ||
