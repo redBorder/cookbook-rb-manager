@@ -237,3 +237,5 @@ default['redborder']['vault_incidents_priority_filter'] = 'error'
 
 # Save Secor S3 raw path
 default['redborder']['manager']['s3rawpath'] = 'rbraw'
+
+default['redborder']['sso'] = ''
