@@ -349,6 +349,7 @@ webui_config 'Configure WebUI' do
     port node['redborder']['webui']['port']
     webui_version node['redborder']['webui']['version']
     redborder_version node['redborder']['repo']['version']
+    user_sensor_map get_user_sensor_map
     action [:add, :register, :configure_rsa]
   else
     action [:remove, :deregister]
