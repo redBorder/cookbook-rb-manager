@@ -41,8 +41,8 @@ default['redborder']['memcached']['port'] = 11211
 
 # riak
 
-# redborder-ai
-default['redborder']['ai_selected_model'] = nil
+# redborder-llm
+default['redborder']['llm_selected_model'] = nil
 
 # hard disk
 default['redborder']['manager']['data_dev'] = {}
@@ -77,7 +77,7 @@ default['redborder']['memory_services']['postgresql'] = { 'count': 10, 'memory':
 default['redborder']['memory_services']['rb-aioutliers'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['rb-arubacentral'] = { 'count': 5, 'memory': 0, 'max_limit': 20000 }
 default['redborder']['memory_services']['rb-logstatter'] = { 'count': 5, 'memory': 0, 'max_limit': 20000 }
-default['redborder']['memory_services']['redborder-ai'] = { 'count': 5, 'memory': 0 }
+default['redborder']['memory_services']['redborder-llm'] = { 'count': 5, 'memory': 0 }
 default['redborder']['memory_services']['redborder-cep'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['redborder-mem2incident'] = { 'count': 5, 'memory': 0 }
 default['redborder']['memory_services']['redborder-monitor'] = { 'count': 5, 'memory': 0, 'max_limit': 20000 }
@@ -149,7 +149,7 @@ default['redborder']['services']['rb-aioutliers']             = false
 default['redborder']['services']['rb-arubacentral']           = false
 default['redborder']['services']['rb-logstatter']             = false
 default['redborder']['services']['rb-workers']                = false
-default['redborder']['services']['redborder-ai']              = false
+default['redborder']['services']['redborder-llm']             = false
 default['redborder']['services']['redborder-ale']             = false
 default['redborder']['services']['redborder-cep']             = false
 default['redborder']['services']['redborder-dswatcher']       = false
@@ -195,7 +195,7 @@ default['redborder']['systemdservices']['rb-aioutliers']            = ['rb-aiout
 default['redborder']['systemdservices']['rb-arubacentral']          = ['rb-arubacentral']
 default['redborder']['systemdservices']['rb-logstatter']            = ['rb-logstatter']
 default['redborder']['systemdservices']['rb-workers']               = ['rb-workers']
-default['redborder']['systemdservices']['redborder-ai']             = ['redborder-ai']
+default['redborder']['systemdservices']['redborder-llm']            = ['redborder-llm']
 default['redborder']['systemdservices']['redborder-ale']            = ['redborder-ale']
 default['redborder']['systemdservices']['redborder-cep']            = ['redborder-cep']
 default['redborder']['systemdservices']['redborder-dswatcher']      = ['redborder-dswatcher']
@@ -228,8 +228,8 @@ default['redborder']['druid']['realtime']['partition_num'] = 0
 
 default['redborder']['pending_changes'] = 0
 
-# redborder-ai
-default['redborder']['redborder-ai']['cpus'] = '0'
+# redborder-llm
+default['redborder']['redborder-llm']['cpus'] = '0'
 
 # Priority Filter
 default['redborder']['intrusion_incidents_priority_filter'] = 'high'
