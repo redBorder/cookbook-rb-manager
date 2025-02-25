@@ -1,6 +1,13 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.10.0
+
+  - David Vanhoucke
+    - [78d4d6c] activate logstash intrusion for intrusion sensor
+  - Miguel Alvarez
+    - [03b0ad5] Add rules for intrusion sensor
+
 ## 4.9.0
 
   - Pablo Pérez
