@@ -251,7 +251,7 @@ druid_router 'Configure Druid Router' do
   end
 end
 
-rb_druid_indexer 'Configure Rb Druid Indexer' do
+rb_druid_indexer_config 'Configure Rb Druid Indexer' do
   if manager_services['rb-druid-indexer']
     action [:add, :register]
   else
