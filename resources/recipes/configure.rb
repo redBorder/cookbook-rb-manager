@@ -241,6 +241,16 @@ druid_indexer 'Configure Druid Indexer' do
   end
 end
 
+druid_router 'Configure Druid Router' do
+  if manager_services['druid-router']
+    name node['hostname']
+    ipaddress node['ipaddress_sync']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 rb_druid_indexer 'Configure Rb Druid Indexer' do
   if manager_services['rb-druid-indexer']
     action [:add, :register]
