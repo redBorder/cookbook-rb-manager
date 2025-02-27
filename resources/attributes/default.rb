@@ -66,7 +66,8 @@ default['redborder']['memory_services']['druid-coordinator'] = { 'count': 10, 'm
 default['redborder']['memory_services']['druid-historical'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['druid-middlemanager'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['druid-overlord'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['druid-realtime'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['druid-indexer'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['druid-router'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['f2k'] = { 'count': 40, 'memory': 0 }
 default['redborder']['memory_services']['http2k'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['kafka'] = { 'count': 150, 'memory': 0, 'max_limit': 524288 }
@@ -103,10 +104,11 @@ default['redborder']['memory_assigned'] = {}
 
 # geoip has been removed because is not a service
 default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
-                                                    postgresql redborder-postgresql nginx webui rb-workers druid-broker
-                                                    druid-historical druid-realtime druid-coordinator f2k
+                                                    druid-broker druid-historical druid-coordinator druid-router druid-indexer  druid-overlord
+                                                    postgresql redborder-postgresql nginx webui rb-workers f2k
                                                     redborder-monitor sfacctd redborder-dswatcher mongodb
                                                     redborder-events-counter http2k redborder-mem2incident rb-logstatter)
+
 
 default['redborder']['services_group']['custom'] = %w(consul)
 default['redborder']['services_group']['core'] = %w(consul chef-server s3 postgresql redborder-postgresql nginx)
@@ -131,7 +133,8 @@ default['redborder']['services']['druid-coordinator']         = false
 default['redborder']['services']['druid-historical']          = false
 default['redborder']['services']['druid-middlemanager']       = false
 default['redborder']['services']['druid-overlord']            = false
-default['redborder']['services']['druid-realtime']            = false
+default['redborder']['services']['druid-indexer ']            = false
+default['redborder']['services']['druid-router ']             = false
 default['redborder']['services']['f2k']                       = false
 default['redborder']['services']['http2k']                    = false
 default['redborder']['services']['kafka']                     = false
@@ -177,7 +180,8 @@ default['redborder']['systemdservices']['druid-coordinator']        = ['druid-co
 default['redborder']['systemdservices']['druid-middlemanager']      = ['druid-middlemanager']
 default['redborder']['systemdservices']['druid-historical']         = ['druid-historical']
 default['redborder']['systemdservices']['druid-overlord']           = ['druid-overlord']
-default['redborder']['systemdservices']['druid-realtime']           = ['druid-realtime']
+default['redborder']['systemdservices']['druid-indexer']            = ['druid-indexer']
+default['redborder']['systemdservices']['druid-router ']            = ['druid-router']
 default['redborder']['systemdservices']['f2k']                      = ['f2k']
 default['redborder']['systemdservices']['http2k']                   = ['http2k']
 default['redborder']['systemdservices']['kafka']                    = ['kafka']

@@ -144,7 +144,7 @@ rescue
   s3_secrets = {}
 end
 
-if manager_services['druid-coordinator'] || manager_services['druid-overlord'] || manager_services['druid-broker'] || manager_services['druid-middlemanager'] || manager_services['druid-historical'] || manager_services['druid-realtime']
+if manager_services['druid-coordinator'] || manager_services['druid-overlord'] || manager_services['druid-broker'] || manager_services['druid-middlemanager'] || manager_services['druid-historical'] || manager_services['druid-indexer']
   %w(druid-broker druid-coordinator druid-historical
   druid-middlemanager druid-overlord).each do |druid_service|
     service druid_service do
@@ -231,14 +231,18 @@ druid_historical 'Configure Druid Historical' do
   end
 end
 
-druid_realtime 'Configure Druid Realtime' do
-  if manager_services['druid-realtime']
+druid_indexer 'Configure Druid Indexer' do
+  if manager_services['druid-indexer']
     name node['hostname']
     ipaddress node['ipaddress_sync']
-    zookeeper_hosts node['redborder']['zookeeper']['zk_hosts']
-    partition_num node['redborder']['druid']['realtime']['partition_num']
-    memory_kb node['redborder']['memory_services']['druid-realtime']['memory']
-    cpu_num node['cpu']['total'].to_i
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+rb_druid_indexer 'Configure Rb Druid Indexer' do
+  if manager_services['rb-druid-indexer']
     action [:add, :register]
   else
     action [:remove, :deregister]
