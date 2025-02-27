@@ -7,7 +7,6 @@ module RbManager
                         ips-sensor intrusion-sensor ipsv2-sensor ipscp-sensor ipsg-sensor)
       locations = node['redborder']['locations']
       sensor_types.each do |s_type|
-        # get sensor where parent_id is nil, note: temporary intrusion rule added
         sensors = search(:node, "role:#{s_type}").sort
         sensors_info[s_type] = {}
         sensors.each do |s|
