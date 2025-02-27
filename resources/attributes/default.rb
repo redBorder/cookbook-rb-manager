@@ -105,7 +105,7 @@ default['redborder']['memory_assigned'] = {}
 # geoip has been removed because is not a service
 default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
                                                     druid-broker druid-historical druid-coordinator druid-router druid-indexer  druid-overlord
-                                                    postgresql redborder-postgresql nginx webui rb-workers f2k
+                                                    postgresql redborder-postgresql nginx webui rb-workers f2k rb-druid-indexer
                                                     redborder-monitor sfacctd redborder-dswatcher mongodb
                                                     redborder-events-counter http2k redborder-mem2incident rb-logstatter)
 
@@ -133,8 +133,9 @@ default['redborder']['services']['druid-coordinator']         = false
 default['redborder']['services']['druid-historical']          = false
 default['redborder']['services']['druid-middlemanager']       = false
 default['redborder']['services']['druid-overlord']            = false
-default['redborder']['services']['druid-indexer ']            = false
-default['redborder']['services']['druid-router ']             = false
+default['redborder']['services']['druid-indexer']             = false
+default['redborder']['services']['druid-router']              = false
+default['redborder']['services']['rb-druid-indexer']          = false
 default['redborder']['services']['f2k']                       = false
 default['redborder']['services']['http2k']                    = false
 default['redborder']['services']['kafka']                     = false
@@ -181,7 +182,8 @@ default['redborder']['systemdservices']['druid-middlemanager']      = ['druid-mi
 default['redborder']['systemdservices']['druid-historical']         = ['druid-historical']
 default['redborder']['systemdservices']['druid-overlord']           = ['druid-overlord']
 default['redborder']['systemdservices']['druid-indexer']            = ['druid-indexer']
-default['redborder']['systemdservices']['druid-router ']            = ['druid-router']
+default['redborder']['systemdservices']['druid-router']             = ['druid-router']
+default['redborder']['systemdservices']['rb-druid-indexer']         = ['rb-druid-indexer']
 default['redborder']['systemdservices']['f2k']                      = ['f2k']
 default['redborder']['systemdservices']['http2k']                   = ['http2k']
 default['redborder']['systemdservices']['kafka']                    = ['kafka']

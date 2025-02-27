@@ -166,8 +166,8 @@ s3_hosts = node['redborder']['managers_per_services']['s3'].map { |z| "#{z}.#{no
 node.default['redborder']['s3']['s3_hosts'] = s3_hosts
 
 # set druid realtime partition id (its needed in cluster mode for druid brokers)
-if node['redborder']['managers_per_services']['druid-realtime'].include?(node.name)
-  node.default['redborder']['druid']['realtime']['partition_num'] = node['redborder']['managers_per_services']['druid-realtime'].index(node.name)
+if node['redborder']['managers_per_services']['druid-indexer'].include?(node.name)
+  node.default['redborder']['druid']['realtime']['partition_num'] = node['redborder']['managers_per_services']['druid-indexer'].index(node.name)
 end
 
 # get an array of managers
