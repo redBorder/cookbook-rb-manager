@@ -3,6 +3,8 @@
 # Copyright:: 2024, redborder
 # License:: Affero General Public License, Version 3
 
+Chef::Recipe.include RbManager::Helpers
+
 # Services configuration
 
 # manager services
@@ -11,6 +13,7 @@ manager_services = node.run_state['manager_services']
 node.default['redborder']['manager']['services']['current'] = node.run_state['manager_services']
 virtual_ips = node.run_state['virtual_ips']
 virtual_ips_per_ip = node.run_state['virtual_ips_per_ip']
+user_sensor_map_data = get_user_sensor_map
 
 # bash 'upload_cookbooks' do
 #   code 'bash /usr/lib/redborder/bin/rb_upload_cookbooks.sh'
@@ -354,6 +357,7 @@ webui_config 'Configure WebUI' do
     port node['redborder']['webui']['port']
     webui_version node['redborder']['webui']['version']
     redborder_version node['redborder']['repo']['version']
+    user_sensor_map user_sensor_map_data
     action [:add, :register, :configure_rsa]
   else
     action [:remove, :deregister]
