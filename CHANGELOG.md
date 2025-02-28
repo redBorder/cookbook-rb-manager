@@ -1,6 +1,23 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.10.2
+
+  - nilsver
+    - [f1c7741] add cdomain
+
+## 4.10.1
+
+  - nilsver
+    - [0b1c65d] remove parent_id check
+
+## 4.10.0
+
+  - David Vanhoucke
+    - [78d4d6c] activate logstash intrusion for intrusion sensor
+  - Miguel Alvarez
+    - [03b0ad5] Add rules for intrusion sensor
+
 ## 4.9.0
 
   - Pablo Pérez
