@@ -159,7 +159,6 @@ if manager_services['druid-coordinator'] || manager_services['druid-overlord'] |
     memcached_hosts node['redborder']['memcached']['hosts']
     s3_service s3_secrets['s3_host']
     s3_port node['minio']['port']
-    cdomain node['redborder']['cdomain']
     action :add
     notifies :restart, 'service[druid-broker]', :delayed if manager_services['druid-broker']
     notifies :restart, 'service[druid-coordinator]', :delayed if manager_services['druid-coordinator']
@@ -176,6 +175,7 @@ end
 druid_coordinator 'Configure Druid Coordinator' do
   if manager_services['druid-coordinator']
     name node['hostname']
+    cdomain node['redborder']['cdomain']
     ipaddress node['ipaddress_sync']
     memory_kb node['redborder']['memory_services']['druid-coordinator']['memory']
     action [:add, :register]
@@ -187,6 +187,7 @@ end
 druid_overlord 'Configure Druid Overlord' do
   if manager_services['druid-overlord']
     name node['hostname']
+    cdomain node['redborder']['cdomain']
     ipaddress node['ipaddress_sync']
     memory_kb node['redborder']['memory_services']['druid-overlord']['memory']
     action [:add, :register]
@@ -198,6 +199,7 @@ end
 druid_broker 'Configure Druid Broker' do
   if manager_services['druid-broker']
     name node['hostname']
+    cdomain node['redborder']['cdomain']
     ipaddress node['ipaddress_sync']
     memory_kb node['redborder']['memory_services']['druid-broker']['memory']
     cpu_num node['cpu']['total'].to_i
@@ -210,6 +212,7 @@ end
 druid_middlemanager 'Configure Druid MiddleManager' do
   if manager_services['druid-middlemanager']
     name node['hostname']
+    cdomain node['redborder']['cdomain']
     ipaddress node['ipaddress_sync']
     memory_kb node['redborder']['memory_services']['druid-middlemanager']['memory']
     action [:add, :register]
@@ -221,6 +224,7 @@ end
 druid_historical 'Configure Druid Historical' do
   if manager_services['druid-historical']
     name node['hostname']
+    cdomain node['redborder']['cdomain']
     ipaddress node['ipaddress_sync']
     memory_kb node['redborder']['memory_services']['druid-historical']['memory']
     maxsize node['redborder']['manager']['hd_services_current']['druid-historical'].to_i
@@ -234,6 +238,7 @@ end
 druid_realtime 'Configure Druid Realtime' do
   if manager_services['druid-realtime']
     name node['hostname']
+    cdomain node['redborder']['cdomain']
     ipaddress node['ipaddress_sync']
     zookeeper_hosts node['redborder']['zookeeper']['zk_hosts']
     partition_num node['redborder']['druid']['realtime']['partition_num']
