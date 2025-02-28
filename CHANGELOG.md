@@ -1,6 +1,13 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.10.3
+
+  - Pablo Pérez
+    - [443e1ca] refactor for no usage of node
+    - [1c68a80] Done saving data in node
+    - [88ce85f] Created the helper and added into web
+
 ## 4.10.2
 
   - nilsver
