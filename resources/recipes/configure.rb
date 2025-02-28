@@ -166,6 +166,8 @@ if manager_services['druid-coordinator'] || manager_services['druid-overlord'] |
     notifies :restart, 'service[druid-historical]', :delayed if manager_services['druid-historical']
     notifies :restart, 'service[druid-middlemanager]', :delayed if manager_services['druid-middlemanager']
     notifies :restart, 'service[druid-overlord]', :delayed if manager_services['druid-overlord']
+    notifies :restart, 'service[druid-indexer]', :delayed if manager_services['druid-indexer']
+    notifies :restart, 'service[druid-router]', :delayed if manager_services['druid-router']
   end
 else
   druid_common 'Delete druid common resources' do
