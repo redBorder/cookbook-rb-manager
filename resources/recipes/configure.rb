@@ -146,7 +146,7 @@ end
 
 if manager_services['druid-coordinator'] || manager_services['druid-overlord'] || manager_services['druid-broker'] || manager_services['druid-middlemanager'] || manager_services['druid-historical'] || manager_services['druid-indexer']
   %w(druid-broker druid-coordinator druid-historical
-  druid-middlemanager druid-overlord).each do |druid_service|
+  druid-middlemanager druid-overlord druid-router druid-indexer).each do |druid_service|
     service druid_service do
       supports status: true, start: true, restart: true, reload: true
       action :nothing
