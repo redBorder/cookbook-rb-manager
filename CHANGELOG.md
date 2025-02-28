@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.10.2
+
+  - nilsver
+    - [f1c7741] add cdomain
+
 ## 4.10.1
 
   - nilsver
