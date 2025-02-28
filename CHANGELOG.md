@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 4.10.1
+
+  - nilsver
+    - [0b1c65d] remove parent_id check
+
 ## 4.10.0
 
   - David Vanhoucke
