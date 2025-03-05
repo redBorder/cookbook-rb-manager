@@ -94,6 +94,23 @@ if manager_services['keepalived']
   end
 end
 
+# Determine external
+begin
+  external_services = data_bag_item('rBglobal', 'external_services')
+rescue
+  external_services = {}
+end
+
+postgresql_config 'Configure postgresql' do
+  if manager_services['postgresql'] && external_services['postgresql'] == 'onpremise'
+    cdomain node['redborder']['cdomain']
+    ipaddress node['ipaddress_sync']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 keepalived_config 'Configure keepalived' do
   if manager_services['keepalived']
     vrrp_secrets vrrp_secrets
@@ -617,23 +634,6 @@ rb_chrony_config 'Configure Chrony' do
     action :add
   else
     action :remove
-  end
-end
-
-# Determine external
-begin
-  external_services = data_bag_item('rBglobal', 'external_services')
-rescue
-  external_services = {}
-end
-
-postgresql_config 'Configure postgresql' do
-  if manager_services['postgresql'] && external_services['postgresql'] == 'onpremise'
-    cdomain node['redborder']['cdomain']
-    ipaddress node['ipaddress_sync']
-    action [:add, :register]
-  else
-    action [:remove, :deregister]
   end
 end
 
