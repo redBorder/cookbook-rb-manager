@@ -255,6 +255,7 @@ end
 
 rb_druid_indexer_config 'Configure Rb Druid Indexer' do
   if manager_services['rb-druid-indexer']
+    namespaces node.run_state['namespaces']
     action [:add, :register]
   else
     action [:remove, :deregister]
