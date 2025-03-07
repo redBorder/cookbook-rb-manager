@@ -233,6 +233,15 @@ druid_historical 'Configure Druid Historical' do
   end
 end
 
+rb_druid_indexer_config 'Configure Rb Druid Indexer' do
+  if manager_services['rb-druid-indexer']
+    namespaces node.run_state['namespaces']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 druid_indexer 'Configure Druid Indexer' do
   if manager_services['druid-indexer']
     name node['hostname']
@@ -247,15 +256,6 @@ druid_router 'Configure Druid Router' do
   if manager_services['druid-router']
     name node['hostname']
     ipaddress node['ipaddress_sync']
-    action [:add, :register]
-  else
-    action [:remove, :deregister]
-  end
-end
-
-rb_druid_indexer_config 'Configure Rb Druid Indexer' do
-  if manager_services['rb-druid-indexer']
-    namespaces node.run_state['namespaces']
     action [:add, :register]
   else
     action [:remove, :deregister]
