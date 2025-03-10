@@ -237,7 +237,6 @@ rb_druid_indexer_config 'Configure Rb Druid Indexer' do
   if manager_services['rb-druid-indexer']
     namespaces node.run_state['namespaces']
     action [:add, :register]
-    notifies :restart, 'service[rb-druid-indexer]', :delayed if manager_services['rb-druid-indexer']
   else
     action [:remove, :deregister]
   end
