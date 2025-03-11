@@ -229,9 +229,6 @@ default['redborder']['druid']['historical']['maxsize'] = -1
 # Virtual Ips
 default['redborder']['manager']['virtual_ips'] = { external: [ { service: 'webui', deps: ['nginx'] }, { service: 'f2k' }, { service: 'sfacctd' }, { service: 'kafka' } ] }
 
-# Realtime
-default['redborder']['druid']['realtime']['partition_num'] = 0
-
 default['redborder']['pending_changes'] = 0
 
 # redborder-llm

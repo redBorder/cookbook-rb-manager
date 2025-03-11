@@ -246,6 +246,8 @@ druid_indexer 'Configure Druid Indexer' do
   if manager_services['druid-indexer']
     name node['hostname']
     ipaddress node['ipaddress_sync']
+    memory_kb node['redborder']['memory_services']['druid-indexer']['memory']
+    cpu_num node['cpu']['total'].to_i
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -255,6 +257,8 @@ end
 druid_router 'Configure Druid Router' do
   if manager_services['druid-router']
     name node['hostname']
+    memory_kb node['redborder']['memory_services']['druid-router']['memory']
+    cpu_num node['cpu']['total'].to_i
     ipaddress node['ipaddress_sync']
     action [:add, :register]
   else
