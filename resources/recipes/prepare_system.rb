@@ -50,7 +50,7 @@ template '/etc/logrotate.d/logstash' do
   source 'logstash_log-rotate.erb'
   owner 'root'
   group 'root'
-  mode 0644
+  mode '644'
   retries 2
 end
 

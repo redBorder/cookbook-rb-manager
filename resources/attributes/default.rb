@@ -104,11 +104,10 @@ default['redborder']['memory_assigned'] = {}
 
 # geoip has been removed because is not a service
 default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
-                                                    druid-broker druid-historical druid-coordinator druid-router druid-indexer  druid-overlord
+                                                    druid-broker druid-historical druid-coordinator druid-router druid-indexer druid-overlord
                                                     postgresql redborder-postgresql nginx webui rb-workers f2k rb-druid-indexer
                                                     redborder-monitor sfacctd redborder-dswatcher mongodb
                                                     redborder-events-counter http2k redborder-mem2incident rb-logstatter)
-
 
 default['redborder']['services_group']['custom'] = %w(consul)
 default['redborder']['services_group']['core'] = %w(consul chef-server s3 postgresql redborder-postgresql nginx)
