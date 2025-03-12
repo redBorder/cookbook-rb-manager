@@ -235,6 +235,8 @@ end
 
 rb_druid_indexer_config 'Configure Rb Druid Indexer' do
   if manager_services['rb-druid-indexer']
+    zk_hosts node['redborder']['managers_per_services']['zookeeper']
+    kafka_brokers node['redborder']['managers_per_services']['kafka']
     namespaces node.run_state['namespaces']
     action [:add, :register]
   else
