@@ -26,6 +26,7 @@ module RbManager
         cluster_info[name]['ip'] = mnode['ipaddress']
         cluster_info[name]['rb_time'] = rb_time
         cluster_info[name]['services'] = services
+        cluster_info[name]['cpu_cores'] = mnode['cpu']['total']
       end
 
       cluster_info = cluster_info.sort { |a, b| (a[1]['rb_time'] || 999999999999999999999) <=> (b[1]['rb_time'] || 999999999999999999999) }.to_h

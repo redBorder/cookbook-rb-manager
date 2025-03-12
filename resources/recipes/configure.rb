@@ -147,9 +147,9 @@ rescue
   s3_secrets = {}
 end
 
-if manager_services['druid-coordinator'] || manager_services['druid-overlord'] || manager_services['druid-broker'] || manager_services['druid-middlemanager'] || manager_services['druid-historical'] || manager_services['druid-realtime']
+if manager_services['druid-coordinator'] || manager_services['druid-overlord'] || manager_services['druid-broker'] || manager_services['druid-middlemanager'] || manager_services['druid-historical'] || manager_services['druid-indexer']
   %w(druid-broker druid-coordinator druid-historical
-  druid-middlemanager druid-overlord).each do |druid_service|
+  druid-middlemanager druid-overlord druid-router druid-indexer).each do |druid_service|
     service druid_service do
       supports status: true, start: true, restart: true, reload: true
       action :nothing
@@ -168,6 +168,8 @@ if manager_services['druid-coordinator'] || manager_services['druid-overlord'] |
     notifies :restart, 'service[druid-historical]', :delayed if manager_services['druid-historical']
     notifies :restart, 'service[druid-middlemanager]', :delayed if manager_services['druid-middlemanager']
     notifies :restart, 'service[druid-overlord]', :delayed if manager_services['druid-overlord']
+    notifies :restart, 'service[druid-indexer]', :delayed if manager_services['druid-indexer']
+    notifies :restart, 'service[druid-router]', :delayed if manager_services['druid-router']
   end
 else
   druid_common 'Delete druid common resources' do
@@ -238,15 +240,36 @@ druid_historical 'Configure Druid Historical' do
   end
 end
 
-druid_realtime 'Configure Druid Realtime' do
-  if manager_services['druid-realtime']
+rb_druid_indexer_config 'Configure Rb Druid Indexer' do
+  if manager_services['rb-druid-indexer']
+    zk_hosts node['redborder']['managers_per_services']['zookeeper']
+    kafka_brokers node['redborder']['managers_per_services']['kafka']
+    namespaces node.run_state['namespaces']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+druid_indexer 'Configure Druid Indexer' do
+  if manager_services['druid-indexer']
     name node['hostname']
     cdomain node['redborder']['cdomain']
     ipaddress node['ipaddress_sync']
-    zookeeper_hosts node['redborder']['zookeeper']['zk_hosts']
-    partition_num node['redborder']['druid']['realtime']['partition_num']
-    memory_kb node['redborder']['memory_services']['druid-realtime']['memory']
+    memory_kb node['redborder']['memory_services']['druid-indexer']['memory']
     cpu_num node['cpu']['total'].to_i
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+druid_router 'Configure Druid Router' do
+  if manager_services['druid-router']
+    name node['hostname']
+    memory_kb node['redborder']['memory_services']['druid-router']['memory']
+    cpu_num node['cpu']['total'].to_i
+    ipaddress node['ipaddress_sync']
     action [:add, :register]
   else
     action [:remove, :deregister]

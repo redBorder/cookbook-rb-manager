@@ -50,7 +50,7 @@ template '/etc/logrotate.d/logstash' do
   source 'logstash_log-rotate.erb'
   owner 'root'
   group 'root'
-  mode 0644
+  mode '644'
   retries 2
 end
 
@@ -164,11 +164,6 @@ end
 # Set all nodes with s3 configured (nginx load balancer)
 s3_hosts = node['redborder']['managers_per_services']['s3'].map { |z| "#{z}.#{node['redborder']['cdomain']}:9000" if node['redborder']['cdomain'] }
 node.default['redborder']['s3']['s3_hosts'] = s3_hosts
-
-# set druid realtime partition id (its needed in cluster mode for druid brokers)
-if node['redborder']['managers_per_services']['druid-realtime'].include?(node.name)
-  node.default['redborder']['druid']['realtime']['partition_num'] = node['redborder']['managers_per_services']['druid-realtime'].index(node.name)
-end
 
 # get an array of managers
 managers_list = []
