@@ -278,7 +278,6 @@ end
 
 memcached_config 'Configure Memcached' do
   if manager_services['memcached']
-    memory node['redborder']['memory_services']['memcached']['memory']
     ipaddress node['ipaddress_sync']
     action [:add, :register]
   else
