@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.0.1
+
+  - Miguel Negrón
+    - [05cccc8] New memory distribution
+
 ## 5.0.0
 
   - Miguel Álvarez
