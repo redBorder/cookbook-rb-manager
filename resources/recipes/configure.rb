@@ -352,6 +352,7 @@ end
 nginx_config 'Configure Nginx Chef' do
   if manager_services['nginx'] && node['redborder']['erchef']['hosts'] && !node['redborder']['erchef']['hosts'].empty?
     erchef_hosts node['redborder']['erchef']['hosts']
+    cdomain node['redborder']['cdomain']
     service_name 'erchef'
     action [:configure_certs, :add_erchef]
   else
@@ -420,6 +421,7 @@ nginx_config 'Configure Nginx Http2k' do
   if manager_services['nginx'] && node['redborder']['http2k']['hosts'] && !node['redborder']['http2k']['hosts'].empty?
     http2k_hosts node['redborder']['http2k']['hosts']
     http2k_port node['redborder']['http2k']['port']
+    cdomain node['redborder']['cdomain']
     service_name 'http2k'
     action [:configure_certs, :add_http2k]
   elsif manager_services['nginx']
