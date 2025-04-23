@@ -60,35 +60,30 @@ default['redborder']['manager']['hd_services_current'] = {}
 
 # memory
 default['redborder']['memory_services'] = {}
-default['redborder']['memory_services']['chef-server'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['druid-broker'] = { 'count' => 10, 'memory' => 0 }
-default['redborder']['memory_services']['druid-coordinator'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['druid-historical'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['druid-middlemanager'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['druid-overlord'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['druid-indexer'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['druid-router'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['f2k'] = { 'count': 40, 'memory': 0 }
+default['redborder']['memory_services']['chef-server'] = { 'count': 25, 'memory': 0 }
+default['redborder']['memory_services']['druid-broker'] = { 'count': 100, 'memory': 0 }
+default['redborder']['memory_services']['druid-coordinator'] = { 'count': 30, 'memory': 0 }
+default['redborder']['memory_services']['druid-historical'] = { 'count': 90, 'memory': 0 }
+default['redborder']['memory_services']['druid-middlemanager'] = { 'count': 1000, 'memory': 0 }
+default['redborder']['memory_services']['druid-overlord'] = { 'count': 20, 'memory': 0 }
+default['redborder']['memory_services']['druid-indexer'] = { 'count': 130, 'memory': 0 }
+default['redborder']['memory_services']['druid-router'] = { 'count': 20, 'memory': 0 }
+default['redborder']['memory_services']['f2k'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['http2k'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['kafka'] = { 'count': 150, 'memory': 0, 'max_limit': 524288 }
-default['redborder']['memory_services']['memcached'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['kafka'] = { 'count': 120, 'memory': 0, 'max_limit': 524288 }
 default['redborder']['memory_services']['mongodb'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['n2klocd'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['postgresql'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['postgresql'] = { 'count': 25, 'memory': 0 }
 default['redborder']['memory_services']['rb-aioutliers'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['rb-arubacentral'] = { 'count': 5, 'memory': 0, 'max_limit': 20000 }
-default['redborder']['memory_services']['rb-logstatter'] = { 'count': 5, 'memory': 0, 'max_limit': 20000 }
 default['redborder']['memory_services']['redborder-llm'] = { 'count': 5, 'memory': 0 }
-default['redborder']['memory_services']['redborder-cep'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['redborder-cep'] = { 'count': 80, 'memory': 0 }
 default['redborder']['memory_services']['redborder-mem2incident'] = { 'count': 5, 'memory': 0 }
-default['redborder']['memory_services']['redborder-monitor'] = { 'count': 5, 'memory': 0, 'max_limit': 20000 }
-default['redborder']['memory_services']['redborder-nmsp'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['redborder-postgresql'] = { 'count': 5, 'memory': 0 }
-default['redborder']['memory_services']['snmp'] = { 'count': 5, 'memory': 0, 'max_limit': 10000 }
-default['redborder']['memory_services']['webui'] = { 'count': 40, 'memory': 0 }
-default['redborder']['memory_services']['zookeeper'] = { 'count': 20, 'memory': 0 }
-default['redborder']['memory_services']['secor'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['secor-vault'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['redborder-nmsp'] = { 'count': 100, 'memory': 0 }
+default['redborder']['memory_services']['webui'] = { 'count': 100, 'memory': 0 }
+default['redborder']['memory_services']['zookeeper'] = { 'count': 40, 'memory': 0 }
+default['redborder']['memory_services']['secor'] = { 'count': 30, 'memory': 0 }
+default['redborder']['memory_services']['secor-vault'] = { 'count': 30, 'memory': 0 }
+
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default['redborder']['cluster_info'] = {}
