@@ -407,6 +407,8 @@ http2k_config 'Configure Http2k' do
     ips_nodes node.run_state['sensors_info']['ips-sensor']
     ipsg_nodes node.run_state['sensors_info']['ipsg-sensor']
     ipscp_nodes node.run_state['sensors_info']['ipscp-sensor']
+    intrusion_nodes node.run_state['sensors_info']['intrusion-sensor']
+    intrusioncp_nodes node.run_state['sensors_info']['intrusioncp-sensor']
     organizations node.run_state['organizations']
     locations_list node['redborder']['locations']
     action [:add, :register]
