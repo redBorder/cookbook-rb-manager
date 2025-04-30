@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.0.2
+
+  - jnavarrorb
+    - [a4fa7e3] Fix empty string
+
 ## 5.0.1
 
   - Miguel Negrón
