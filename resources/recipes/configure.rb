@@ -645,17 +645,21 @@ end
 # Determine external
 begin
   external_services = data_bag_item('rBglobal', 'external_services')
-rescue
-  external_services = {}
+rescue => e
+  Chef::Log.warn("Failed to load external_services data bag: #{e.message}")
+  external_services = nil
 end
 
 postgresql_config 'Configure postgresql' do
-  if manager_services['postgresql'] && external_services['postgresql'] == 'onpremise'
+  if manager_services['postgresql'] && external_services&.dig('postgresql') == 'onpremise'
     cdomain node['redborder']['cdomain']
     ipaddress node['ipaddress_sync']
     action [:add, :register]
-  else
+  elsif !external_services.nil?
     action [:remove, :deregister]
+  else
+    Chef::Log.warn('Skipped PostgreSQL removal/deregistration due to missing external_services data')
+    action :nothing
   end
 end
 
@@ -680,11 +684,14 @@ minio_config 'Configure S3 (minio)' do
   managers_with_minio node['redborder']['managers_per_services']['s3']
   access_key_id s3_secrets['s3_access_key_id']
   secret_key_id s3_secrets['s3_secret_key_id']
-  if manager_services['s3'] && (external_services['s3'] == 'onpremise')
+  if manager_services['s3'] && external_services&.dig('s3') == 'onpremise'
     ipaddress node['ipaddress_sync']
     action [:add_mcli, :add, :register]
-  else
+  elsif !external_services.nil?
     action [:add_mcli, :remove, :deregister]
+  else
+    Chef::Log.warn('Skipped MinIO removal/deregistration due to missing external_services data')
+    action :nothing
   end
 end
 
@@ -724,7 +731,7 @@ end
 
 # Configure Nginx s3 onpremise nodes for now..
 minio_config 'Configure Nginx S3 (minio)' do
-  if manager_services['s3'] && (external_services['s3'] == 'onpremise')
+  if manager_services['s3'] && external_services&.dig('s3') == 'onpremise'
     s3_hosts node['redborder']['s3']['s3_hosts']
     action [:add_s3_conf_nginx]
   elsif !manager_services['s3'] && manager_services['nginx']
