@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.0.3
+
+  - Rafael Gomez
+    - [91557b9] Improve error handling for external services in PostgreSQL and MinIO configurations
+
 ## 5.0.2
 
   - jnavarrorb
