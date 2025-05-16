@@ -1,6 +1,13 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.1.0
+
+  - Miguel Alvarez
+    - [a93b7a5] Add intrusion & intrusioncp sensors
+    - [b512c3b] add intrusioncp to logstash pipelines
+    - [64d856c] Add intrusioncp sensor type
+
 ## 5.0.3
 
   - Rafael Gomez
