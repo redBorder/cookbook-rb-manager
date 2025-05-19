@@ -242,7 +242,6 @@ end
 
 rb_druid_indexer_config 'Configure Rb Druid Indexer' do
   if manager_services['rb-druid-indexer']
-    cdomain node['redborder']['cdomain']
     zk_hosts node['redborder']['managers_per_services']['zookeeper']
     kafka_brokers node['redborder']['managers_per_services']['kafka']
     namespaces node.run_state['namespaces']
@@ -268,6 +267,7 @@ end
 druid_router 'Configure Druid Router' do
   if manager_services['druid-router']
     name node['hostname']
+    cdomain node['redborder']['cdomain']
     memory_kb node['redborder']['memory_services']['druid-router']['memory']
     cpu_num node['cpu']['total'].to_i
     ipaddress node['ipaddress_sync']
