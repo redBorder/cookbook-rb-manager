@@ -267,6 +267,7 @@ end
 druid_router 'Configure Druid Router' do
   if manager_services['druid-router']
     name node['hostname']
+    cdomain node['redborder']['cdomain']
     memory_kb node['redborder']['memory_services']['druid-router']['memory']
     cpu_num node['cpu']['total'].to_i
     ipaddress node['ipaddress_sync']
@@ -351,6 +352,7 @@ end
 nginx_config 'Configure Nginx Chef' do
   if manager_services['nginx'] && node['redborder']['erchef']['hosts'] && !node['redborder']['erchef']['hosts'].empty?
     erchef_hosts node['redborder']['erchef']['hosts']
+    cdomain node['redborder']['cdomain']
     service_name 'erchef'
     action [:configure_certs, :add_erchef]
   else
@@ -421,6 +423,7 @@ nginx_config 'Configure Nginx Http2k' do
   if manager_services['nginx'] && node['redborder']['http2k']['hosts'] && !node['redborder']['http2k']['hosts'].empty?
     http2k_hosts node['redborder']['http2k']['hosts']
     http2k_port node['redborder']['http2k']['port']
+    cdomain node['redborder']['cdomain']
     service_name 'http2k'
     action [:configure_certs, :add_http2k]
   elsif manager_services['nginx']
