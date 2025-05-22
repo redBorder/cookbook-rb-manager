@@ -488,6 +488,7 @@ logstash_config 'Configure logstash' do
     scanner_nodes node.run_state['sensors_info_all']['scanner-sensor']
     device_nodes node.run_state['sensors_info_all']['device-sensor']
     ips_nodes node.run_state['ips_sensors_info']
+    mobility_nodes node.run_state['mobility_sensors_info']
     intrusion_incidents_priority_filter node['redborder']['intrusion_incidents_priority_filter']
     vault_incidents_priority_filter node['redborder']['vault_incidents_priority_filter']
     logstash_pipelines node.run_state['pipelines']
