@@ -3,7 +3,7 @@
 # Copyright:: 2024, redborder
 # License:: Affero General Public License, Version 3
 
-Chef::DSL::Recipe.include RbManager::Helpers
+Chef::Recipe.include RbManager::Helpers
 
 # Services configuration
 
