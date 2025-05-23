@@ -3,7 +3,7 @@
 # Copyright:: 2024, redborder
 # License:: Affero General Public License, Version 3
 
-Chef::Recipe.include RbManager::Helpers
+Chef::DSL::Recipe.include RbManager::Helpers
 
 # Services configuration
 
@@ -388,8 +388,8 @@ end
 
 webui_config 'Configure Nginx WebUI' do
   if manager_services['nginx'] && node['redborder']['webui']['hosts'] && !node['redborder']['webui']['hosts'].empty?
-    nginx_segment_file_size node['redborder']["nginx_segment_file_size"]
-    nginx_segment_max_timeout node['redborder']["nginx_segment_max_timeout"]
+    nginx_segment_file_size node['redborder']['nginx_segment_file_size']
+    nginx_segment_max_timeout node['redborder']['nginx_segment_max_timeout']
     hosts node['redborder']['webui']['hosts']
     cdomain node['redborder']['cdomain']
     port node['redborder']['webui']['port']
