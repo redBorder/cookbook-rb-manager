@@ -379,8 +379,6 @@ webui_config 'Configure WebUI' do
     port node['redborder']['webui']['port']
     webui_version node['redborder']['webui']['version']
     redborder_version node['redborder']['repo']['version']
-    nginx_segment_file_size node['redborder']["nginx_segment_file_size"]
-    nginx_segment_max_timeout node['redborder']["nginx_segment_max_timeout"]
     user_sensor_map user_sensor_map_data
     action [:add, :register, :configure_rsa]
   else
@@ -390,6 +388,8 @@ end
 
 webui_config 'Configure Nginx WebUI' do
   if manager_services['nginx'] && node['redborder']['webui']['hosts'] && !node['redborder']['webui']['hosts'].empty?
+    nginx_segment_file_size node['redborder']["nginx_segment_file_size"]
+    nginx_segment_max_timeout node['redborder']["nginx_segment_max_timeout"]
     hosts node['redborder']['webui']['hosts']
     cdomain node['redborder']['cdomain']
     port node['redborder']['webui']['port']
