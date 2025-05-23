@@ -1,6 +1,42 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.1.0
+
+  - Miguel Alvarez
+    - [a93b7a5] Add intrusion & intrusioncp sensors
+    - [b512c3b] add intrusioncp to logstash pipelines
+    - [64d856c] Add intrusioncp sensor type
+
+## 5.0.3
+
+  - Rafael Gomez
+    - [91557b9] Improve error handling for external services in PostgreSQL and MinIO configurations
+
+## 5.0.2
+
+  - jnavarrorb
+    - [a4fa7e3] Fix empty string
+
+## 5.0.1
+
+  - Miguel Negrón
+    - [05cccc8] New memory distribution
+
+## 5.0.0
+
+  - Miguel Álvarez
+    - [be3af6e] Add all zk servers and kafka brokers
+    - [fdd3e3e] Update cluster info to include cpu cores and remove druid realtime
+    - [4cc17f5] Notify delayed restart of druid indexer if change
+    - [29d0a38] Fix order of druid indexer config to allow acc to node druid-indexer-tasks
+    - [dd7ae0b] Add namespaces to druid-indexer
+    - [c081a5f] Add indexer and router
+    - [5180361] Restart druid indexer and router if common runtime updated
+    - [3719436] Add rb-druid-indexer cookbook as dependency
+    - [5afd48e] use rb_druid_indexer_config
+    - [6747b9c] Configure druid indexer
+
 ## 4.10.3
 
   - Pablo Pérez

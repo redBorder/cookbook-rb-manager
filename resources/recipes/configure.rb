@@ -147,9 +147,9 @@ rescue
   s3_secrets = {}
 end
 
-if manager_services['druid-coordinator'] || manager_services['druid-overlord'] || manager_services['druid-broker'] || manager_services['druid-middlemanager'] || manager_services['druid-historical'] || manager_services['druid-realtime']
+if manager_services['druid-coordinator'] || manager_services['druid-overlord'] || manager_services['druid-broker'] || manager_services['druid-middlemanager'] || manager_services['druid-historical'] || manager_services['druid-indexer']
   %w(druid-broker druid-coordinator druid-historical
-  druid-middlemanager druid-overlord).each do |druid_service|
+  druid-middlemanager druid-overlord druid-router druid-indexer).each do |druid_service|
     service druid_service do
       supports status: true, start: true, restart: true, reload: true
       action :nothing
@@ -168,6 +168,8 @@ if manager_services['druid-coordinator'] || manager_services['druid-overlord'] |
     notifies :restart, 'service[druid-historical]', :delayed if manager_services['druid-historical']
     notifies :restart, 'service[druid-middlemanager]', :delayed if manager_services['druid-middlemanager']
     notifies :restart, 'service[druid-overlord]', :delayed if manager_services['druid-overlord']
+    notifies :restart, 'service[druid-indexer]', :delayed if manager_services['druid-indexer']
+    notifies :restart, 'service[druid-router]', :delayed if manager_services['druid-router']
   end
 else
   druid_common 'Delete druid common resources' do
@@ -238,15 +240,36 @@ druid_historical 'Configure Druid Historical' do
   end
 end
 
-druid_realtime 'Configure Druid Realtime' do
-  if manager_services['druid-realtime']
+rb_druid_indexer_config 'Configure Rb Druid Indexer' do
+  if manager_services['rb-druid-indexer']
+    zk_hosts node['redborder']['managers_per_services']['zookeeper']
+    kafka_brokers node['redborder']['managers_per_services']['kafka']
+    namespaces node.run_state['namespaces']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+druid_indexer 'Configure Druid Indexer' do
+  if manager_services['druid-indexer']
     name node['hostname']
     cdomain node['redborder']['cdomain']
     ipaddress node['ipaddress_sync']
-    zookeeper_hosts node['redborder']['zookeeper']['zk_hosts']
-    partition_num node['redborder']['druid']['realtime']['partition_num']
-    memory_kb node['redborder']['memory_services']['druid-realtime']['memory']
+    memory_kb node['redborder']['memory_services']['druid-indexer']['memory']
     cpu_num node['cpu']['total'].to_i
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+druid_router 'Configure Druid Router' do
+  if manager_services['druid-router']
+    name node['hostname']
+    memory_kb node['redborder']['memory_services']['druid-router']['memory']
+    cpu_num node['cpu']['total'].to_i
+    ipaddress node['ipaddress_sync']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -255,7 +278,6 @@ end
 
 memcached_config 'Configure Memcached' do
   if manager_services['memcached']
-    memory node['redborder']['memory_services']['memcached']['memory']
     ipaddress node['ipaddress_sync']
     action [:add, :register]
   else
@@ -385,6 +407,8 @@ http2k_config 'Configure Http2k' do
     ips_nodes node.run_state['sensors_info']['ips-sensor']
     ipsg_nodes node.run_state['sensors_info']['ipsg-sensor']
     ipscp_nodes node.run_state['sensors_info']['ipscp-sensor']
+    intrusion_nodes node.run_state['sensors_info']['intrusion-sensor']
+    intrusioncp_nodes node.run_state['sensors_info']['intrusioncp-sensor']
     organizations node.run_state['organizations']
     locations_list node['redborder']['locations']
     action [:add, :register]
@@ -625,17 +649,21 @@ end
 # Determine external
 begin
   external_services = data_bag_item('rBglobal', 'external_services')
-rescue
-  external_services = {}
+rescue => e
+  Chef::Log.warn("Failed to load external_services data bag: #{e.message}")
+  external_services = nil
 end
 
 postgresql_config 'Configure postgresql' do
-  if manager_services['postgresql'] && external_services['postgresql'] == 'onpremise'
+  if manager_services['postgresql'] && external_services&.dig('postgresql') == 'onpremise'
     cdomain node['redborder']['cdomain']
     ipaddress node['ipaddress_sync']
     action [:add, :register]
-  else
+  elsif !external_services.nil?
     action [:remove, :deregister]
+  else
+    Chef::Log.warn('Skipped PostgreSQL removal/deregistration due to missing external_services data')
+    action :nothing
   end
 end
 
@@ -660,11 +688,14 @@ minio_config 'Configure S3 (minio)' do
   managers_with_minio node['redborder']['managers_per_services']['s3']
   access_key_id s3_secrets['s3_access_key_id']
   secret_key_id s3_secrets['s3_secret_key_id']
-  if manager_services['s3'] && (external_services['s3'] == 'onpremise')
+  if manager_services['s3'] && external_services&.dig('s3') == 'onpremise'
     ipaddress node['ipaddress_sync']
     action [:add_mcli, :add, :register]
-  else
+  elsif !external_services.nil?
     action [:add_mcli, :remove, :deregister]
+  else
+    Chef::Log.warn('Skipped MinIO removal/deregistration due to missing external_services data')
+    action :nothing
   end
 end
 
@@ -704,7 +735,7 @@ end
 
 # Configure Nginx s3 onpremise nodes for now..
 minio_config 'Configure Nginx S3 (minio)' do
-  if manager_services['s3'] && (external_services['s3'] == 'onpremise')
+  if manager_services['s3'] && external_services&.dig('s3') == 'onpremise'
     s3_hosts node['redborder']['s3']['s3_hosts']
     action [:add_s3_conf_nginx]
   elsif !manager_services['s3'] && manager_services['nginx']
