@@ -1,6 +1,14 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.2.0
+
+  - Miguel Negrón
+    - [ef809f8] Merge pull request #297 from redBorder/feature/#21232_refactor_license_system_ng
+  - Rafael Gomez
+    - [b8eaaf9] Add get_all_mobility_sensors_info method and integrate into system configuration
+    - [5edc7ca] Add get_all_ips_sensors_info method and integrate into pipeline configuration
+
 ## 5.1.0
 
   - Miguel Alvarez
