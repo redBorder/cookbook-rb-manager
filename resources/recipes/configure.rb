@@ -706,8 +706,8 @@ secor_config 'Configure Secor Service' do
     kafka_hosts node['redborder']['managers_per_services']['kafka']
     zk_hosts node['redborder']['zookeeper']['zk_hosts']
     manager_services manager_services
-    s3_server 's3.service'
-    s3_hostname 's3.service'
+    s3_server s3_secrets['s3_host']
+    s3_hostname s3_secrets['s3_host']
     s3_user s3_secrets['s3_access_key_id']
     s3_pass s3_secrets['s3_secret_key_id']
     s3_bucket 'bucket'
