@@ -64,7 +64,7 @@ consul_config 'Configure Consul Server' do
     confdir node['consul']['confdir']
     datadir node['consul']['datadir']
     ipaddress node['ipaddress_sync']
-    (manager_services['consul'] ? (is_server true) : (is_server false))
+    is_server should_be_consul_server?
     action :add
   else
     action :remove
