@@ -1,6 +1,6 @@
 module RbManager
   module Helpers
-    def should_be_consul_server?
+    def consul_server?
       consul_managers = node['redborder']['managers_per_services']['consul']
       hostname = node['hostname']
       total = consul_managers.size

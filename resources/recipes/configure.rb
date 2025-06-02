@@ -14,6 +14,7 @@ node.default['redborder']['manager']['services']['current'] = node.run_state['ma
 virtual_ips = node.run_state['virtual_ips']
 virtual_ips_per_ip = node.run_state['virtual_ips_per_ip']
 user_sensor_map_data = get_user_sensor_map
+is_consul_server = consul_server?
 
 # bash 'upload_cookbooks' do
 #   code 'bash /usr/lib/redborder/bin/rb_upload_cookbooks.sh'
@@ -64,7 +65,7 @@ consul_config 'Configure Consul Server' do
     confdir node['consul']['confdir']
     datadir node['consul']['datadir']
     ipaddress node['ipaddress_sync']
-    is_server should_be_consul_server?
+    is_server is_consul_server
     action :add
   else
     action :remove
