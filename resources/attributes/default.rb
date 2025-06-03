@@ -220,7 +220,7 @@ default['redborder']['druid']['historical']['tier'] = 'default'
 default['redborder']['druid']['historical']['maxsize'] = -1
 
 # Virtual Ips
-default['redborder']['manager']['virtual_ips'] = { external: [ { service: 'webui', deps: ['nginx'] }, { service: 'f2k' }, { service: 'sfacctd' }, { service: 'kafka' } ] }
+default['redborder']['manager']['virtual_ips'] = { external: [ { service: 'nginx' }, { service: 'f2k' }, { service: 'sfacctd' }, { service: 'kafka' } ] }
 
 default['redborder']['pending_changes'] = 0
 

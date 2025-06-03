@@ -29,10 +29,8 @@ module RbManager
             hash['iface'] = node['redborder']['management_interface']
             if manager_services[service['service']]
               all_deps_enabled = true
-              unless service['deps'].nil?
-                service['deps'].each do |srv_dep|
-                  all_deps_enabled = false if manager_services[srv_dep].nil? || manager_services[srv_dep] == false
-                end
+              unless service['deps'].nil? #in case webui, deps is nginx
+                all_deps_enabled = !service['deps'].any? { |srv_dep| manager_services[srv_dep].nil? || manager_services[srv_dep] == false }
               end
               hash['enable'] = all_deps_enabled
             else
@@ -90,7 +88,7 @@ module RbManager
     def get_virtual_ips_per_ip_info(virtual_ips)
       virtual_ips_per_ip = {}
       virtual_ips.each do |_type, data|
-        data.each.each do |_service, vi|
+        data.each.each_value do |vi|
           if vi['ip']
             virtual_ips_per_ip[vi['ip']] = [] if virtual_ips_per_ip[vi['ip']].nil?
             virtual_ips_per_ip[vi['ip']] << vi
