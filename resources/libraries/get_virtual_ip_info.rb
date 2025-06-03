@@ -88,7 +88,7 @@ module RbManager
     def get_virtual_ips_per_ip_info(virtual_ips)
       virtual_ips_per_ip = {}
       virtual_ips.each do |_type, data|
-        data.each.each_value do |vi|
+        data.each.each do |_service, vi|
           if vi['ip']
             virtual_ips_per_ip[vi['ip']] = [] if virtual_ips_per_ip[vi['ip']].nil?
             virtual_ips_per_ip[vi['ip']] << vi
