@@ -3,8 +3,6 @@ cookbook-rb-manager CHANGELOG
 
 ## 5.3.0
 
-  - nilsver
-    - [5cfe1ee] Merge pull request #300 from redBorder/feature/#21365_rework_consul_configuration
   - Rafael Gomez
     - [000215f] Add consul_server? method and integrate into configuration logic
     - [43ce16a] Add should_be_consul_server? method to determine server eligibility
