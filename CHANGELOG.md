@@ -1,6 +1,12 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.3.0
+
+  - Rafael Gomez
+    - [000215f] Add consul_server? method and integrate into configuration logic
+    - [43ce16a] Add should_be_consul_server? method to determine server eligibility
+
 ## 5.2.0
 
   - Miguel Negrón
