@@ -13,7 +13,6 @@ manager_services = node.run_state['manager_services']
 node.default['redborder']['manager']['services']['current'] = node.run_state['manager_services']
 virtual_ips = node.run_state['virtual_ips']
 virtual_ips_per_ip = node.run_state['virtual_ips_per_ip']
-flow_sensors = get_all_flow_sensors_info
 flow_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('flow')
 user_sensor_map_data = get_user_sensor_map
 is_consul_server = consul_server?
