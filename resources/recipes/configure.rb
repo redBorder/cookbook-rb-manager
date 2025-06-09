@@ -16,6 +16,7 @@ virtual_ips_per_ip = node.run_state['virtual_ips_per_ip']
 flow_sensors = get_all_flow_sensors_info
 flow_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('flow')
 user_sensor_map_data = get_user_sensor_map
+is_consul_server = consul_server?
 
 # bash 'upload_cookbooks' do
 #   code 'bash /usr/lib/redborder/bin/rb_upload_cookbooks.sh'
@@ -68,7 +69,7 @@ consul_config 'Configure Consul Server' do
     confdir node['consul']['confdir']
     datadir node['consul']['datadir']
     ipaddress node['ipaddress_sync']
-    (manager_services['consul'] ? (is_server true) : (is_server false))
+    is_server is_consul_server
     action :add
   else
     action :remove
