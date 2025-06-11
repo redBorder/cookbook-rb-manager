@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.3.1
+
+  - nilsver
+    - [2986e63] Bugfix/20867 change erchef service to cdomain (#289)
+
 ## 5.3.0
 
   - Rafael Gomez
