@@ -1,6 +1,17 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.3.2
+
+  - Pablo Pérez
+    - [c865f4d] Merge pull request #305 from redBorder/feature/#21708_remove_darklist
+  - vimesa
+    - [be023a4] Remove darklist
+  - David Vanhoucke
+    - [a6dd297] bump version
+  - nilsver
+    - [2986e63] Bugfix/20867 change erchef service to cdomain (#289)
+
 ## 5.3.1
 
   - nilsver
