@@ -89,32 +89,3 @@ cron_d 'check_licences_weekly' do
   ignore_failure true
   command '/usr/lib/redborder/bin/rb_check_licenses_weekly.sh'
 end
-
-# Darklist
-# TODO: Only the master node should have these cron jobs
-# if (manager_mode == 'master')
-cron_d 'rb_update_darklist_weekly' do
-  action :create
-  minute '00'
-  hour   '00'
-  weekday '1'
-  retries 2
-  ignore_failure true
-  command '/usr/lib/redborder/bin/rb_update_darklist.sh'
-  notifies :run, 'execute[populate_darklist]', :delayed
-end
-
-cron_d 'refresh_darklist_memcached_keys_hourly' do
-  action :create
-  minute '00'
-  hour   '*'
-  weekday '*'
-  retries 2
-  ignore_failure true
-  command '/usr/lib/redborder/bin/rb_refresh_darklist_memcached_keys.sh'
-end
-
-execute 'populate_darklist' do
-  command '/usr/lib/redborder/bin/rb_update_darklist.sh -f'
-  action :nothing
-end
