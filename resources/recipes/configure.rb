@@ -766,13 +766,30 @@ directory '/root/.ssh' do
 end
 
 unless ssh_secrets.empty?
-  template '/root/.ssh/authorized_keys' do
+  template '/root/.ssh/rsa.pub' do
     source 'rsa.pub.erb'
     owner 'root'
     group 'root'
     mode '0600'
     retries 2
     variables(public_rsa: ssh_secrets['public_rsa'])
+  end
+end
+
+begin
+  rsa_pem = data_bag_item('certs', 'rsa_pem')
+rescue
+  rsa_pem = nil
+end
+
+unless rsa_pem.empty?
+  template '/root/.ssh/rsa' do
+    source 'rsa_cert.pem.erb'
+    owner 'root'
+    group 'root'
+    mode '0600'
+    retries 2
+    variables(private_rsa: rsa_pem['private_rsa'])
   end
 end
 
