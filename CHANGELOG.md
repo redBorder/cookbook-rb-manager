@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.4.0
+
+  - Miguel Negrón
+    - [e2b38fc] Fix configure cdomain for s3cfg_initial file
+
 ## 5.3.2
 
   - Pablo Pérez
