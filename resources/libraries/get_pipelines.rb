@@ -9,6 +9,8 @@ module RbManager
       flow_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('flow')
       monitor_config = get_monitor_configuration()
       has_device_sensors = !sensors['device-sensor'].nil? && !sensors['device-sensor'].empty?
+      ips_sensors = get_all_ips_sensors_info
+      has_ips_sensors = ips_sensors.any? { |_type, nodes| !nodes.empty? }
 
       logstash_pipelines.push('rbwindow-pipeline') if main_logstash == node.name
       logstash_pipelines.push('apstate-pipeline')
@@ -19,7 +21,7 @@ module RbManager
       logstash_pipelines.push('sflow-pipeline') unless sensors['flow-sensor'].empty? && flow_sensor_in_proxy_nodes.empty?
       logstash_pipelines.push('meraki-pipeline') unless sensors['meraki-sensor'].empty?
       logstash_pipelines.push('monitor-pipeline') unless namespaces.empty?
-      logstash_pipelines.push('intrusion-pipeline') unless sensors['ips-sensor'].empty? && sensors['ipsv2-sensor'].empty? && sensors['ipscp-sensor'].empty? && sensors['ipsg-sensor'].empty?
+      logstash_pipelines.push('intrusion-pipeline') if has_ips_sensors
 
       if (sensors['ale-sensor'] && !sensors['ale-sensor'].empty?) ||
          (sensors['mse-sensor'] && !sensors['mse-sensor'].empty?) ||

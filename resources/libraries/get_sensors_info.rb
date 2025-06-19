@@ -4,10 +4,9 @@ module RbManager
       sensors_info = {}
       sensor_types = %w(vault-sensor flow-sensor mse-sensor scanner-sensor meraki-sensor ale-sensor device-sensor
                         cisco-cloudproxy proxy-sensor arubacentral-sensor
-                        ips-sensor ipsv2-sensor ipscp-sensor ipsg-sensor)
+                        ips-sensor intrusion-sensor intrusioncp-sensor ipsv2-sensor ipscp-sensor ipsg-sensor)
       locations = node['redborder']['locations']
       sensor_types.each do |s_type|
-        # get all s_type's sensor
         sensors = search(:node, "role:#{s_type}").sort
         sensors_info[s_type] = {}
         sensors.each do |s|

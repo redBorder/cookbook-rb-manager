@@ -1,6 +1,107 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.4.0
+
+  - Miguel Negrón
+    - [e2b38fc] Fix configure cdomain for s3cfg_initial file
+
+## 5.3.2
+
+  - Pablo Pérez
+    - [c865f4d] Merge pull request #305 from redBorder/feature/#21708_remove_darklist
+  - vimesa
+    - [be023a4] Remove darklist
+  - David Vanhoucke
+    - [a6dd297] bump version
+  - nilsver
+    - [2986e63] Bugfix/20867 change erchef service to cdomain (#289)
+
+## 5.3.1
+
+  - nilsver
+    - [2986e63] Bugfix/20867 change erchef service to cdomain (#289)
+
+## 5.3.0
+
+  - Rafael Gomez
+    - [000215f] Add consul_server? method and integrate into configuration logic
+    - [43ce16a] Add should_be_consul_server? method to determine server eligibility
+
+## 5.2.0
+
+  - Miguel Negrón
+    - [ef809f8] Merge pull request #297 from redBorder/feature/#21232_refactor_license_system_ng
+  - Rafael Gomez
+    - [b8eaaf9] Add get_all_mobility_sensors_info method and integrate into system configuration
+    - [5edc7ca] Add get_all_ips_sensors_info method and integrate into pipeline configuration
+
+## 5.1.0
+
+  - Miguel Alvarez
+    - [a93b7a5] Add intrusion & intrusioncp sensors
+    - [b512c3b] add intrusioncp to logstash pipelines
+    - [64d856c] Add intrusioncp sensor type
+
+## 5.0.3
+
+  - Rafael Gomez
+    - [91557b9] Improve error handling for external services in PostgreSQL and MinIO configurations
+
+## 5.0.2
+
+  - jnavarrorb
+    - [a4fa7e3] Fix empty string
+
+## 5.0.1
+
+  - Miguel Negrón
+    - [05cccc8] New memory distribution
+
+## 5.0.0
+
+  - Miguel Álvarez
+    - [be3af6e] Add all zk servers and kafka brokers
+    - [fdd3e3e] Update cluster info to include cpu cores and remove druid realtime
+    - [4cc17f5] Notify delayed restart of druid indexer if change
+    - [29d0a38] Fix order of druid indexer config to allow acc to node druid-indexer-tasks
+    - [dd7ae0b] Add namespaces to druid-indexer
+    - [c081a5f] Add indexer and router
+    - [5180361] Restart druid indexer and router if common runtime updated
+    - [3719436] Add rb-druid-indexer cookbook as dependency
+    - [5afd48e] use rb_druid_indexer_config
+    - [6747b9c] Configure druid indexer
+
+## 4.10.3
+
+  - Pablo Pérez
+    - [443e1ca] refactor for no usage of node
+    - [1c68a80] Done saving data in node
+    - [88ce85f] Created the helper and added into web
+
+## 4.10.2
+
+  - nilsver
+    - [f1c7741] add cdomain
+
+## 4.10.1
+
+  - nilsver
+    - [0b1c65d] remove parent_id check
+
+## 4.10.0
+
+  - David Vanhoucke
+    - [78d4d6c] activate logstash intrusion for intrusion sensor
+  - Miguel Alvarez
+    - [03b0ad5] Add rules for intrusion sensor
+
+## 4.9.0
+
+  - Pablo Pérez
+    - [7733638] align elements
+    - [3118dbb] rename redborder-ai to redborder-llm
+
 ## 4.8.3
 
   - nilsver
