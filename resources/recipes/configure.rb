@@ -779,7 +779,7 @@ end
 begin
   rsa_pem = data_bag_item('certs', 'rsa_pem')
 rescue
-  rsa_pem = nil
+  rsa_pem = {}
 end
 
 unless rsa_pem.empty?
