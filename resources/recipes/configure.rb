@@ -766,7 +766,7 @@ directory '/root/.ssh' do
 end
 
 unless ssh_secrets.empty?
-  template '/root/.ssh/rsa.pub' do
+  template '/root/.ssh/authorized_keys' do
     source 'rsa.pub.erb'
     owner 'root'
     group 'root'
