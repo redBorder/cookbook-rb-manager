@@ -778,6 +778,23 @@ unless ssh_secrets.empty?
   end
 end
 
+begin
+  rsa_pem = data_bag_item('certs', 'rsa_pem')
+rescue
+  rsa_pem = {}
+end
+
+unless rsa_pem.empty?
+  template '/root/.ssh/rsa' do
+    source 'rsa_cert.pem.erb'
+    owner 'root'
+    group 'root'
+    mode '0600'
+    retries 2
+    variables(private_rsa: rsa_pem['private_rsa'])
+  end
+end
+
 # Pending Changes..
 # pending_changes==0 -> has changes to apply at next chef-client run
 #  pending_changes==1 -> chef-client has to run once
