@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.4.1
+
+  - Rafael Gomez
+    - [405cef5] Add RSA key templates for SSH configuration
+
 ## 5.4.0
 
   - Miguel Negrón
