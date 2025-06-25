@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.4.2
+
+  - Pablo Pérez
+    - [96fe794] add vault sensors into firewall configuration
+
 ## 5.4.1
 
   - Rafael Gomez
