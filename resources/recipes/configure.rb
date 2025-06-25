@@ -13,6 +13,7 @@ manager_services = node.run_state['manager_services']
 node.default['redborder']['manager']['services']['current'] = node.run_state['manager_services']
 virtual_ips = node.run_state['virtual_ips']
 virtual_ips_per_ip = node.run_state['virtual_ips_per_ip']
+vault_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('vault')
 user_sensor_map_data = get_user_sensor_map
 is_consul_server = consul_server?
 
@@ -48,6 +49,8 @@ template '/etc/sudoers.d/redborder-manager' do
 end
 
 rb_firewall_config 'Configure Firewall' do
+  vault_sensors node.run_state['sensors_info_all']['vault-sensor']
+  vault_sensor_in_proxy_nodes vault_sensor_in_proxy_nodes
   sync_ip node['ipaddress_sync']
   ip_addr node['ipaddress']
   if manager_services['firewall']
