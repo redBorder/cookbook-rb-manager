@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.4.3
+
+  - Juan Soto
+    - [90ddf28] Send flow sensor to firewall cookbook
+
 ## 5.4.2
 
   - Pablo Pérez
