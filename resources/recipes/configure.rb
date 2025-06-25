@@ -271,6 +271,7 @@ end
 druid_router 'Configure Druid Router' do
   if manager_services['druid-router']
     name node['hostname']
+    cdomain node['redborder']['cdomain']
     memory_kb node['redborder']['memory_services']['druid-router']['memory']
     cpu_num node['cpu']['total'].to_i
     ipaddress node['ipaddress_sync']
@@ -355,6 +356,7 @@ end
 nginx_config 'Configure Nginx Chef' do
   if manager_services['nginx'] && node['redborder']['erchef']['hosts'] && !node['redborder']['erchef']['hosts'].empty?
     erchef_hosts node['redborder']['erchef']['hosts']
+    cdomain node['redborder']['cdomain']
     service_name 'erchef'
     action [:configure_certs, :add_erchef]
   else
@@ -425,6 +427,7 @@ nginx_config 'Configure Nginx Http2k' do
   if manager_services['nginx'] && node['redborder']['http2k']['hosts'] && !node['redborder']['http2k']['hosts'].empty?
     http2k_hosts node['redborder']['http2k']['hosts']
     http2k_port node['redborder']['http2k']['port']
+    cdomain node['redborder']['cdomain']
     service_name 'http2k'
     action [:configure_certs, :add_http2k]
   elsif manager_services['nginx']
@@ -677,13 +680,15 @@ template '/root/.s3cfg_initial' do
   variables(
     s3_user: s3_secrets['s3_access_key_id'],
     s3_password: s3_secrets['s3_secret_key_id'],
-    s3_endpoint: s3_secrets['s3_host']
+    s3_endpoint: s3_secrets['s3_host'],
+    cdomain: node['redborder']['cdomain']
   )
   action :create
   only_if do
     s3_secrets['s3_access_key_id'] && !s3_secrets['s3_access_key_id'].empty? &&
       s3_secrets['s3_secret_key_id'] && !s3_secrets['s3_secret_key_id'].empty? &&
-      s3_secrets['s3_host'] && !s3_secrets['s3_host'].empty?
+      s3_secrets['s3_host'] && !s3_secrets['s3_host'].empty? &&
+      node['redborder']['cdomain'] && !node['redborder']['cdomain'].empty?
   end
 end
 
@@ -709,8 +714,8 @@ secor_config 'Configure Secor Service' do
     kafka_hosts node['redborder']['managers_per_services']['kafka']
     zk_hosts node['redborder']['zookeeper']['zk_hosts']
     manager_services manager_services
-    s3_server 's3.service'
-    s3_hostname 's3.service'
+    s3_server s3_secrets['s3_host']
+    s3_hostname s3_secrets['s3_host']
     s3_user s3_secrets['s3_access_key_id']
     s3_pass s3_secrets['s3_secret_key_id']
     s3_bucket 'bucket'
