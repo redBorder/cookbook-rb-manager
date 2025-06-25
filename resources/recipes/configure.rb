@@ -677,13 +677,15 @@ template '/root/.s3cfg_initial' do
   variables(
     s3_user: s3_secrets['s3_access_key_id'],
     s3_password: s3_secrets['s3_secret_key_id'],
-    s3_endpoint: s3_secrets['s3_host']
+    s3_endpoint: s3_secrets['s3_host'],
+    cdomain: node['redborder']['cdomain']
   )
   action :create
   only_if do
     s3_secrets['s3_access_key_id'] && !s3_secrets['s3_access_key_id'].empty? &&
       s3_secrets['s3_secret_key_id'] && !s3_secrets['s3_secret_key_id'].empty? &&
-      s3_secrets['s3_host'] && !s3_secrets['s3_host'].empty?
+      s3_secrets['s3_host'] && !s3_secrets['s3_host'].empty? &&
+      node['redborder']['cdomain'] && !node['redborder']['cdomain'].empty?
   end
 end
 
@@ -773,6 +775,23 @@ unless ssh_secrets.empty?
     mode '0600'
     retries 2
     variables(public_rsa: ssh_secrets['public_rsa'])
+  end
+end
+
+begin
+  rsa_pem = data_bag_item('certs', 'rsa_pem')
+rescue
+  rsa_pem = {}
+end
+
+unless rsa_pem.empty?
+  template '/root/.ssh/rsa' do
+    source 'rsa_cert.pem.erb'
+    owner 'root'
+    group 'root'
+    mode '0600'
+    retries 2
+    variables(private_rsa: rsa_pem['private_rsa'])
   end
 end
 
