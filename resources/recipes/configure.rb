@@ -14,6 +14,7 @@ node.default['redborder']['manager']['services']['current'] = node.run_state['ma
 virtual_ips = node.run_state['virtual_ips']
 virtual_ips_per_ip = node.run_state['virtual_ips_per_ip']
 flow_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('flow')
+vault_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('vault')
 user_sensor_map_data = get_user_sensor_map
 is_consul_server = consul_server?
 
@@ -51,6 +52,8 @@ end
 rb_firewall_config 'Configure Firewall' do
   flow_sensors node.run_state['sensors_info_all']['flow-sensor']
   flow_sensor_in_proxy_nodes flow_sensor_in_proxy_nodes
+  vault_sensors node.run_state['sensors_info_all']['vault-sensor']
+  vault_sensor_in_proxy_nodes vault_sensor_in_proxy_nodes
   sync_ip node['ipaddress_sync']
   ip_addr node['ipaddress']
   if manager_services['firewall']
@@ -271,6 +274,7 @@ end
 druid_router 'Configure Druid Router' do
   if manager_services['druid-router']
     name node['hostname']
+    cdomain node['redborder']['cdomain']
     memory_kb node['redborder']['memory_services']['druid-router']['memory']
     cpu_num node['cpu']['total'].to_i
     ipaddress node['ipaddress_sync']
@@ -355,6 +359,7 @@ end
 nginx_config 'Configure Nginx Chef' do
   if manager_services['nginx'] && node['redborder']['erchef']['hosts'] && !node['redborder']['erchef']['hosts'].empty?
     erchef_hosts node['redborder']['erchef']['hosts']
+    cdomain node['redborder']['cdomain']
     service_name 'erchef'
     action [:configure_certs, :add_erchef]
   else
@@ -425,6 +430,7 @@ nginx_config 'Configure Nginx Http2k' do
   if manager_services['nginx'] && node['redborder']['http2k']['hosts'] && !node['redborder']['http2k']['hosts'].empty?
     http2k_hosts node['redborder']['http2k']['hosts']
     http2k_port node['redborder']['http2k']['port']
+    cdomain node['redborder']['cdomain']
     service_name 'http2k'
     action [:configure_certs, :add_http2k]
   elsif manager_services['nginx']
@@ -677,13 +683,15 @@ template '/root/.s3cfg_initial' do
   variables(
     s3_user: s3_secrets['s3_access_key_id'],
     s3_password: s3_secrets['s3_secret_key_id'],
-    s3_endpoint: s3_secrets['s3_host']
+    s3_endpoint: s3_secrets['s3_host'],
+    cdomain: node['redborder']['cdomain']
   )
   action :create
   only_if do
     s3_secrets['s3_access_key_id'] && !s3_secrets['s3_access_key_id'].empty? &&
       s3_secrets['s3_secret_key_id'] && !s3_secrets['s3_secret_key_id'].empty? &&
-      s3_secrets['s3_host'] && !s3_secrets['s3_host'].empty?
+      s3_secrets['s3_host'] && !s3_secrets['s3_host'].empty? &&
+      node['redborder']['cdomain'] && !node['redborder']['cdomain'].empty?
   end
 end
 
@@ -709,8 +717,8 @@ secor_config 'Configure Secor Service' do
     kafka_hosts node['redborder']['managers_per_services']['kafka']
     zk_hosts node['redborder']['zookeeper']['zk_hosts']
     manager_services manager_services
-    s3_server 's3.service'
-    s3_hostname 's3.service'
+    s3_server s3_secrets['s3_host']
+    s3_hostname s3_secrets['s3_host']
     s3_user s3_secrets['s3_access_key_id']
     s3_pass s3_secrets['s3_secret_key_id']
     s3_bucket 'bucket'
@@ -773,6 +781,23 @@ unless ssh_secrets.empty?
     mode '0600'
     retries 2
     variables(public_rsa: ssh_secrets['public_rsa'])
+  end
+end
+
+begin
+  rsa_pem = data_bag_item('certs', 'rsa_pem')
+rescue
+  rsa_pem = {}
+end
+
+unless rsa_pem.empty?
+  template '/root/.ssh/rsa' do
+    source 'rsa_cert.pem.erb'
+    owner 'root'
+    group 'root'
+    mode '0600'
+    retries 2
+    variables(private_rsa: rsa_pem['private_rsa'])
   end
 end
 
