@@ -7,7 +7,7 @@ extend RbManager::Helpers
 
 # clean metadata to get packages upgrades, every 24h
 execute 'Clean dnf metadata' do
-  command 'dnf clean metadata'
+  command 'dnf clean metadata && touch /var/cache/dnf/last_makecache'
   only_if '[ -f /var/cache/dnf/last_makecache ] && [ "$(find /var/cache/dnf/last_makecache -mmin +1440)" ]'
 end
 
