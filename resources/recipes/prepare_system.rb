@@ -5,12 +5,6 @@
 
 extend RbManager::Helpers
 
-# clean metadata to get packages upgrades, every 24h
-execute 'Clean dnf metadata' do
-  command 'dnf clean metadata && touch /var/cache/dnf/last_makecache'
-  only_if '[ -f /var/cache/dnf/last_makecache ] && [ "$(find /var/cache/dnf/last_makecache -mmin +1440)" ]'
-end
-
 # Set services_group related with the node mode (core, full, ...)
 node['redborder']['services_group'][node['redborder']['mode']].each { |s| node.default['redborder']['services'][s] = true }
 
@@ -35,7 +29,6 @@ node.default['mac_sync'] = mac_sync
 
 # Configure and enable chef-client
 dnf_package 'redborder-chef-client' do
-  flush_cache [:before]
   action :upgrade
 end
 
