@@ -1,6 +1,22 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.4.4
+
+  - nilsver
+    - [eb36dc5] reset last_makecache
+    - [62fbf11] Add check for 24h
+
+## 5.4.3
+
+  - Juan Soto
+    - [90ddf28] Send flow sensor to firewall cookbook
+
+## 5.4.2
+
+  - Pablo Pérez
+    - [96fe794] add vault sensors into firewall configuration
+
 ## 5.4.1
 
   - Rafael Gomez
