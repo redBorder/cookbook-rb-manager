@@ -1,6 +1,12 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.4.4
+
+  - nilsver
+    - [eb36dc5] reset last_makecache
+    - [62fbf11] Add check for 24h
+
 ## 5.4.3
 
   - Juan Soto
