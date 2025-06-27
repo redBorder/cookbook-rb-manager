@@ -735,8 +735,8 @@ rbcgroup_config 'Configure cgroups' do
 end
 
 # First configure the cert for the service before configuring nginx
-nginx_config 'Configure S3 certs' do
-  if manager_services['s3']
+nginx_config 'Configure Nginx S3 certs' do
+  if manager_services['nginx'] && node['redborder']['s3']['s3_hosts'] && !node['redborder']['s3']['s3_hosts'].empty?
     service_name 's3'
     cdomain node['redborder']['cdomain']
     action :configure_certs
@@ -746,7 +746,7 @@ nginx_config 'Configure S3 certs' do
 end
 
 # Configure Nginx s3 onpremise nodes for now..
-minio_config 'Configure Nginx S3 (minio)' do
+minio_config 'Configure S3 (minio)' do
   if manager_services['s3'] && external_services&.dig('s3') == 'onpremise'
     s3_hosts node['redborder']['s3']['s3_hosts']
     action [:add_s3_conf_nginx]
