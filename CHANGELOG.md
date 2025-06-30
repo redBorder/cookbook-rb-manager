@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.4.5
+
+  - Rafael Gomez
+    - [2addeb0] Update Nginx and Minio configuration for S3 services
+
 ## 5.4.4
 
   - nilsver
