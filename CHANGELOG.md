@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.4.6
+
+  - Rafael Gomez
+    - [1865b5a] Remove logrotate configuration for Logstash
+
 ## 5.4.5
 
   - Rafael Gomez
