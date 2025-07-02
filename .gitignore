@@ -1,3 +1,6 @@
 # RPM 
 pkgs
 SOURCES
+
+# Ruby packaging
+Gemfile.lock
