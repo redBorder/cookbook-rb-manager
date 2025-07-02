@@ -19,5 +19,4 @@ jobs:
     - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
     - name: Run cookstyle
       working-directory: ./resources
-      run: bundle exec cookstyle \
-        --except Style/TrailingCommaInHashLiteral,Style/TrailingCommaInArrayLiteral
+      run: bundle exec cookstyle -c .github/workflows/rubocop.yml
