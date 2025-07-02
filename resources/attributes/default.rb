@@ -231,7 +231,7 @@ default['redborder']['manager']['balanced'] = [
 # Virtual Ips
 default['redborder']['manager']['virtual_ips'] = {
   external: [
-    { service: 'webui', deps: ['nginx'] },
+    # { service: 'webui', deps: ['nginx'] },
     { service: 'nginx' },
     { service: 'f2k' },
     { service: 'sfacctd' },
