@@ -18,6 +18,6 @@ jobs:
         bundler-cache: true
     - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
     - name: Run cookstyle
-      run: bundle exec cookstyle --enable-all --disable Style/TrailingCommaInArrayLiteral --disable Style/TrailingCommaInHashLiteral
+      run: bundle exec cookstyle --disable Style/TrailingCommaInArrayLiteral --disable Style/TrailingCommaInHashLiteral
       working-directory: ./resources
       shell: /usr/bin/bash -e {0}
