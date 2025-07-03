@@ -5,11 +5,6 @@
 
 extend RbManager::Helpers
 
-# clean metadata to get packages upgrades
-execute 'Clean yum metadata' do
-  command 'yum clean metadata'
-end
-
 # Set services_group related with the node mode (core, full, ...)
 node['redborder']['services_group'][node['redborder']['mode']].each { |s| node.default['redborder']['services'][s] = true }
 
@@ -34,7 +29,6 @@ node.default['mac_sync'] = mac_sync
 
 # Configure and enable chef-client
 dnf_package 'redborder-chef-client' do
-  flush_cache [:before]
   action :upgrade
 end
 
@@ -44,14 +38,6 @@ template '/etc/sysconfig/chef-client' do
   variables(interval: node['chef-client']['interval'],
             splay: node['chef-client']['splay'],
             options: node['chef-client']['options'])
-end
-
-template '/etc/logrotate.d/logstash' do
-  source 'logstash_log-rotate.erb'
-  owner 'root'
-  group 'root'
-  mode '644'
-  retries 2
 end
 
 service 'chef-client' do

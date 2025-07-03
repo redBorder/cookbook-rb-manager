@@ -1,6 +1,37 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.4.6
+
+  - Rafael Gomez
+    - [1865b5a] Remove logrotate configuration for Logstash
+
+## 5.4.5
+
+  - Rafael Gomez
+    - [2addeb0] Update Nginx and Minio configuration for S3 services
+
+## 5.4.4
+
+  - nilsver
+    - [eb36dc5] reset last_makecache
+    - [62fbf11] Add check for 24h
+
+## 5.4.3
+
+  - Juan Soto
+    - [90ddf28] Send flow sensor to firewall cookbook
+
+## 5.4.2
+
+  - Pablo Pérez
+    - [96fe794] add vault sensors into firewall configuration
+
+## 5.4.1
+
+  - Rafael Gomez
+    - [405cef5] Add RSA key templates for SSH configuration
+
 ## 5.4.0
 
   - Miguel Negrón

@@ -13,6 +13,8 @@ manager_services = node.run_state['manager_services']
 node.default['redborder']['manager']['services']['current'] = node.run_state['manager_services']
 virtual_ips = node.run_state['virtual_ips']
 virtual_ips_per_ip = node.run_state['virtual_ips_per_ip']
+flow_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('flow')
+vault_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('vault')
 user_sensor_map_data = get_user_sensor_map
 is_consul_server = consul_server?
 
@@ -48,6 +50,10 @@ template '/etc/sudoers.d/redborder-manager' do
 end
 
 rb_firewall_config 'Configure Firewall' do
+  flow_sensors node.run_state['sensors_info_all']['flow-sensor']
+  flow_sensor_in_proxy_nodes flow_sensor_in_proxy_nodes
+  vault_sensors node.run_state['sensors_info_all']['vault-sensor']
+  vault_sensor_in_proxy_nodes vault_sensor_in_proxy_nodes
   sync_ip node['ipaddress_sync']
   ip_addr node['ipaddress']
   if manager_services['firewall']
@@ -729,8 +735,8 @@ rbcgroup_config 'Configure cgroups' do
 end
 
 # First configure the cert for the service before configuring nginx
-nginx_config 'Configure S3 certs' do
-  if manager_services['s3']
+nginx_config 'Configure Nginx S3 certs' do
+  if manager_services['nginx'] && node['redborder']['s3']['s3_hosts'] && !node['redborder']['s3']['s3_hosts'].empty?
     service_name 's3'
     cdomain node['redborder']['cdomain']
     action :configure_certs
@@ -740,7 +746,7 @@ nginx_config 'Configure S3 certs' do
 end
 
 # Configure Nginx s3 onpremise nodes for now..
-minio_config 'Configure Nginx S3 (minio)' do
+minio_config 'Configure S3 (minio)' do
   if manager_services['s3'] && external_services&.dig('s3') == 'onpremise'
     s3_hosts node['redborder']['s3']['s3_hosts']
     action [:add_s3_conf_nginx]
@@ -775,6 +781,23 @@ unless ssh_secrets.empty?
     mode '0600'
     retries 2
     variables(public_rsa: ssh_secrets['public_rsa'])
+  end
+end
+
+begin
+  rsa_pem = data_bag_item('certs', 'rsa_pem')
+rescue
+  rsa_pem = {}
+end
+
+unless rsa_pem.empty?
+  template '/root/.ssh/rsa' do
+    source 'rsa_cert.pem.erb'
+    owner 'root'
+    group 'root'
+    mode '0600'
+    retries 2
+    variables(private_rsa: rsa_pem['private_rsa'])
   end
 end
 
