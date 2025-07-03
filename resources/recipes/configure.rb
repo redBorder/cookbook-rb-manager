@@ -387,15 +387,17 @@ webui_config 'Configure WebUI' do
 end
 
 webui_config 'Configure Nginx WebUI' do
-  if manager_services['nginx'] && node['redborder']['webui']['hosts'] && !node['redborder']['webui']['hosts'].empty?
-    nginx_segment_file_size node['redborder']['nginx_segment_file_size']
-    nginx_segment_max_timeout node['redborder']['nginx_segment_max_timeout']
+  if manager_services['nginx'] &&
+     node['redborder']['webui']['hosts'] &&
+     !node['redborder']['webui']['hosts'].empty?
+     
+    nginx_segment_file_size node['redborder']['nginx_segment_file_size'] unless node['redborder']['nginx_segment_file_size'].nil?
+    nginx_segment_max_timeout node['redborder']['nginx_segment_max_timeout'] unless node['redborder']['nginx_segment_max_timeout'].nil?
     hosts node['redborder']['webui']['hosts']
-wwebui_config 'Configure Nginx WebUI' do
-  if manager_services['nginx'] && node['redborder']['webui']['hosts'] && !node['redborder']['webui']['hosts'].empty?    nginx_segment_file_size node['redborder']['nginx_segment_file_size'] unless node['redborder']['nginx_segment_file_size'].nil?
-    nginx_segment_max_timeout node['redborder']['nginx_segment_max_timeout'] unless node['redborder']['nginx_segment_max_timeout'].nil?    hosts node['redborder']['webui']['hosts']
     cdomain node['redborder']['cdomain']
-    port node['redborder']['webui']['port']    action [:configure_certs, :add_webui_conf_nginx]
+    port node['redborder']['webui']['port']
+
+    action [:configure_certs, :add_webui_conf_nginx]
   else
     action :nothing
   end
