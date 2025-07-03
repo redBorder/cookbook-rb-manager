@@ -205,5 +205,8 @@ systemd_services.each do |service_name, systemd_name|
   service_enablement[systemd_name.first] = services[service_name]
 end
 
+# Calculate druid indexer tasks
+node.default['redborder']['druid-indexer-tasks'] = get_indexer_tasks
+
 Chef::Log.info('Saving services enablement into /etc/redborder/services.json')
 File.write('/etc/redborder/services.json', JSON.pretty_generate(service_enablement))
