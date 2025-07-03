@@ -9,14 +9,14 @@ module RbManager
         { task_name: 'rb_vault', feed: 'rb_vault_post' },
         { task_name: 'rb_scanner', feed: 'rb_scanner_post' },
         { task_name: 'rb_location', feed: 'rb_loc_post' },
-        { task_name: 'rb_wireless', feed: 'rb_wireless' }
+        { task_name: 'rb_wireless', feed: 'rb_wireless' },
       ]
 
       kafka_brokers = node['redborder']['managers_per_services']['kafka']
       kafka_brokers = kafka_brokers.map { |broker| "#{broker}.node:9092" }
       namespaces = node.run_state['namespaces']
 
-      tasks = base_tasks.flat_map do |task|
+      base_tasks.flat_map do |task|
         default_task = { spec: task[:task_name], task_name: task[:task_name], namespace: '', feed: task[:feed], kafka_brokers: kafka_brokers }
         default_task[:custom_dimensions] = dimensions.keys if task[:task_name] == 'rb_vault'
 
@@ -30,8 +30,6 @@ module RbManager
 
         [default_task] + namespace_tasks
       end
-
-      tasks
     end
   end
 end
