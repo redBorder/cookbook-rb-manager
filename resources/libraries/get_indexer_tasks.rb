@@ -12,6 +12,15 @@ module RbManager
         { task_name: 'rb_wireless', feed: 'rb_wireless' },
       ]
 
+      dimensions = {}
+      Dir.glob('/var/rb-extensions/*/dimensions.yml') do |item|
+        begin
+          dimensions.merge!(YAML.load_file(item))
+        rescue
+          dimensions
+        end
+      end
+
       kafka_brokers = node['redborder']['managers_per_services']['kafka']
       kafka_brokers = kafka_brokers.map { |broker| "#{broker}.node:9092" }
       namespaces = node.run_state['namespaces']
