@@ -21,10 +21,10 @@ module RbManager
 
         time_units.each do |name, unit_seconds|
           value = seconds / unit_seconds
-            if value > 0
-              uptime_string = "#{value} #{name}#{'s' if value != 1}"
-              break
-            end
+          if value > 0
+            uptime_string = "#{value} #{name}#{'s' if value != 1}"
+            break
+          end
         end
 
         uptime_string
