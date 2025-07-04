@@ -18,16 +18,16 @@ module RbManager
             'hour'   => 60 * 60,
             'minute' => 60,
           }
-          
+
           uptime_string = '< 1 minute'
 
-        time_units.each do |name, unit_seconds|
-          value = seconds / unit_seconds
-          if value > 0
-            uptime_string = "#{value} #{name}#{'s' if value != 1}"
-            break
+          time_units.each do |name, unit_seconds|
+            value = seconds / unit_seconds
+            if value > 0
+              uptime_string = "#{value} #{name}#{'s' if value != 1}"
+              break
+            end
           end
-        end
 
         uptime_string
       rescue => e
