@@ -11,15 +11,15 @@ module RbManager
         seconds = (now - boot_time).to_i
 
         time_units = {
-          'year'   => 365 * 24 * 60 * 60,
-          'month'  => 30 * 24 * 60 * 60,
-          'week'   => 7 * 24 * 60 * 60,
-          'day'    => 24 * 60 * 60,
-          'hour'   => 60 * 60,
-          'minute' => 60
-        }
-
-        uptime_string = "< 1 minute"
+            'year'   => 365 * 24 * 60 * 60,
+            'month'  => 30 * 24 * 60 * 60,
+            'week'   => 7 * 24 * 60 * 60,
+            'day'    => 24 * 60 * 60,
+            'hour'   => 60 * 60,
+            'minute' => 60,
+          }
+          
+          uptime_string = '< 1 minute'
 
         time_units.each do |name, unit_seconds|
           value = seconds / unit_seconds
