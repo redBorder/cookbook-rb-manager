@@ -12,28 +12,17 @@ module RbManager
         { task_name: 'rb_wireless', feed: 'rb_wireless' },
       ]
 
-      dimensions = {}
-      Dir.glob('/var/rb-extensions/*/dimensions.yml') do |item|
-        begin
-          dimensions.merge!(YAML.load_file(item))
-        rescue
-          dimensions
-        end
-      end
-
       kafka_brokers = node['redborder']['managers_per_services']['kafka']
       kafka_brokers = kafka_brokers.map { |broker| "#{broker}.node:9092" }
       namespaces = node.run_state['namespaces']
 
       base_tasks.flat_map do |task|
         default_task = { spec: task[:task_name], task_name: task[:task_name], namespace: '', feed: task[:feed], kafka_brokers: kafka_brokers }
-        default_task[:custom_dimensions] = dimensions.keys if task[:task_name] == 'rb_vault'
 
         namespace_tasks = namespaces.map do |namespace|
           taskHash = { spec: task[:task_name], task_name: task[:task_name] + '_' + namespace, namespace: namespace, kafka_brokers: kafka_brokers }
           taskHash[:feed] = task[:feed] + '_' + namespace
           taskHash[:feed] = 'rb_monitor_post_' + namespace if task[:task_name] == 'rb_monitor'
-          taskHash[:custom_dimensions] = dimensions.keys if task[:task_name] == 'rb_vault'
           taskHash
         end
 
