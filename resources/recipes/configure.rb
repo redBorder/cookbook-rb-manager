@@ -253,8 +253,7 @@ end
 rb_druid_indexer_config 'Configure Rb Druid Indexer' do
   if manager_services['rb-druid-indexer']
     zk_hosts node['redborder']['managers_per_services']['zookeeper']
-    kafka_brokers node['redborder']['managers_per_services']['kafka']
-    namespaces node.run_state['namespaces']
+    tasks node['redborder']['druid-indexer-tasks']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -268,6 +267,7 @@ druid_indexer 'Configure Druid Indexer' do
     ipaddress node['ipaddress_sync']
     memory_kb node['redborder']['memory_services']['druid-indexer']['memory']
     cpu_num node['cpu']['total'].to_i
+    tasks node['redborder']['druid-indexer-tasks']
     s3_secrets s3_secrets
     action [:add, :register]
   else

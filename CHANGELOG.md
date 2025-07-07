@@ -1,6 +1,15 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.4.7
+
+  - Rafael Gomez
+    - [0f67bf0] Add dimensions loading from YAML files in get_indexer_tasks method
+    - [9b6f654] Refactor get_indexer_tasks method to remove unnecessary variable assignment
+    - [cf81291] Add kafka brokers and namespaces initialization to get_indexer_tasks method
+    - [505212a] Add druid indexer tasks calculation to prepare_system recipe
+    - [6430ac6] Add get_indexer_tasks method to RbManager::Helpers module
+
 ## 5.4.6
 
   - Rafael Gomez
