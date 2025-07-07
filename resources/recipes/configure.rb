@@ -268,6 +268,7 @@ druid_indexer 'Configure Druid Indexer' do
     ipaddress node['ipaddress_sync']
     memory_kb node['redborder']['memory_services']['druid-indexer']['memory']
     cpu_num node['cpu']['total'].to_i
+    s3_secrets s3_secrets
     action [:add, :register]
   else
     action [:remove, :deregister]
