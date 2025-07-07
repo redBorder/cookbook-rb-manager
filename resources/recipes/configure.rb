@@ -81,7 +81,7 @@ end
 s3_secrets = {}
 
 begin
-  s3_secrets = data_bag_item('passwords', 's3')
+  s3_secrets = data_bag_item('passwords', 's3').to_hash
 rescue
   s3_secrets = {}
 end
