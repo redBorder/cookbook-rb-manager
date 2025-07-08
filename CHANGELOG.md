@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.4.8
+
+  - Rafael Gomez
+    - [4810e5c] Refactor S3 secrets handling to convert data bag item to hash
+
 ## 5.4.7
 
   - Rafael Gomez
