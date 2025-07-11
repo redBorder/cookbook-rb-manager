@@ -22,6 +22,7 @@ module RbManager
       logstash_pipelines.push('meraki-pipeline') unless sensors['meraki-sensor'].empty?
       logstash_pipelines.push('monitor-pipeline') unless namespaces.empty?
       logstash_pipelines.push('intrusion-pipeline') if has_ips_sensors
+      logstash_pipelines.push('druid-metrics-pipeline')
 
       if (sensors['ale-sensor'] && !sensors['ale-sensor'].empty?) ||
          (sensors['mse-sensor'] && !sensors['mse-sensor'].empty?) ||
