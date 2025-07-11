@@ -78,6 +78,14 @@ consul_config 'Configure Consul Server' do
   end
 end
 
+s3_secrets = {}
+
+begin
+  s3_secrets = data_bag_item('passwords', 's3').to_hash
+rescue
+  s3_secrets = {}
+end
+
 chef_server_config 'Configure chef services' do
   if manager_services['chef-server']
     memory node['redborder']['memory_services']['chef-server']['memory']
@@ -85,6 +93,7 @@ chef_server_config 'Configure chef services' do
     postgresql_memory node['redborder']['memory_services']['postgresql']['memory']
     chef_active manager_services['chef-server']
     ipaddress node['ipaddress_sync']
+    s3_secrets s3_secrets
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -167,14 +176,6 @@ kafka_config 'Configure Kafka' do
   end
 end
 
-s3_secrets = {}
-
-begin
-  s3_secrets = data_bag_item('passwords', 's3')
-rescue
-  s3_secrets = {}
-end
-
 if manager_services['druid-coordinator'] || manager_services['druid-overlord'] || manager_services['druid-broker'] || manager_services['druid-middlemanager'] || manager_services['druid-historical'] || manager_services['druid-indexer']
   %w(druid-broker druid-coordinator druid-historical
   druid-middlemanager druid-overlord druid-router druid-indexer).each do |druid_service|
@@ -190,6 +191,7 @@ if manager_services['druid-coordinator'] || manager_services['druid-overlord'] |
     memcached_hosts node['redborder']['memcached']['hosts']
     s3_service s3_secrets['s3_host']
     s3_port node['minio']['port']
+    s3_secrets s3_secrets
     action :add
     notifies :restart, 'service[druid-broker]', :delayed if manager_services['druid-broker']
     notifies :restart, 'service[druid-coordinator]', :delayed if manager_services['druid-coordinator']
@@ -248,6 +250,7 @@ druid_middlemanager 'Configure Druid MiddleManager' do
     cdomain node['redborder']['cdomain']
     ipaddress node['ipaddress_sync']
     memory_kb node['redborder']['memory_services']['druid-middlemanager']['memory']
+    s3_secrets s3_secrets
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -271,8 +274,7 @@ end
 rb_druid_indexer_config 'Configure Rb Druid Indexer' do
   if manager_services['rb-druid-indexer']
     zk_hosts node['redborder']['managers_per_services']['zookeeper']
-    kafka_brokers node['redborder']['managers_per_services']['kafka']
-    namespaces node.run_state['namespaces']
+    tasks node['redborder']['druid-indexer-tasks']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -286,6 +288,8 @@ druid_indexer 'Configure Druid Indexer' do
     ipaddress node['ipaddress_sync']
     memory_kb node['redborder']['memory_services']['druid-indexer']['memory']
     cpu_num node['cpu']['total'].to_i
+    tasks node['redborder']['druid-indexer-tasks']
+    s3_secrets s3_secrets
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -410,6 +414,7 @@ webui_config 'Configure WebUI' do
     webui_version node['redborder']['webui']['version']
     redborder_version node['redborder']['repo']['version']
     user_sensor_map user_sensor_map_data
+    s3_secrets s3_secrets
     action [:add, :register, :configure_rsa]
   else
     action [:remove, :deregister]
@@ -617,6 +622,7 @@ end
 
 rbaioutliers_config 'Configure rb-aioutliers' do
   if manager_services['rb-aioutliers']
+    s3_secrets s3_secrets
     action [:add, :register]
   else
     action [:remove, :deregister]
