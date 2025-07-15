@@ -297,21 +297,6 @@ memcached_config 'Configure Memcached' do
   end
 end
 
-enable_mongodb = false
-if manager_services['mongodb']
-  is_mongo_configured_consul = shell_out("curl -s http://localhost:8500/v1/health/service/mongodb | jq -r '.[].Checks[0].Status' | grep -q 'passing'")
-  get_consul_registered_ip = shell_out("curl -s http://localhost:8500/v1/health/service/mongodb | jq -r '.[].Service.Address' | head -n 1")
-  enable_mongodb = (is_mongo_configured_consul.exitstatus != 0) ? true : (node['ipaddress_sync'] == get_consul_registered_ip.stdout.strip)
-end
-
-mongodb_config 'Configure Mongodb' do
-  if enable_mongodb
-    action [:add, :register]
-  else
-    action [:remove, :deregister]
-  end
-end
-
 geoip_config 'Configure GeoIP' do
   user_id node['redborder']['geoip_user']
   license_key node['redborder']['geoip_key']
