@@ -474,6 +474,24 @@ pmacct_config 'Configure pmacct (sfacctd)' do
   end
 end
 
+redis_secrets = {}
+
+begin
+  redis_secrets = data_bag_item('passwords', 'redis').to_hash
+rescue
+  redis_secrets = {}
+end
+
+redis_config 'Configure redis' do
+  if manager_services['redis']
+    redis_hosts node['redborder']['managers_per_services']['redis']
+    redis_secrets redis_secrets
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 # Configure logstash
 split_traffic = false
 
@@ -509,6 +527,7 @@ logstash_config 'Configure logstash' do
     logstash_pipelines node.run_state['pipelines']
     split_traffic_logstash split_traffic
     split_intrusion_logstash split_intrusion
+    redis_secrets redis_secrets
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -622,7 +641,8 @@ end
 mem2incident_config 'Configure redborder-mem2incident' do
   if manager_services['redborder-mem2incident']
     cdomain node['redborder']['cdomain']
-    memcached_servers node['redborder']['managers_per_services']['memcached'].map { |s| "#{s}:#{node['redborder']['memcached']['port']}" }
+    redis_servers node['redborder']['managers_per_services']['redis'].map { |s| "#{s}:#{default['redis']['port']}" }
+    redis_secrets redis_secrets
     auth_token node.run_state['auth_token']
     action [:add, :register]
   else
