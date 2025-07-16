@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.4.9
+
+  - Pablo Torres
+    - [c54fdf4] Feature #21767: add druid metrics to pipeline
+
 ## 5.4.8
 
   - Rafael Gomez
