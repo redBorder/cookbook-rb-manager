@@ -47,6 +47,7 @@ default['redborder']['redborder-llm']['cpus'] = '0'
 
 # redis
 default['redis']['port'] = 26379
+default['redis']['sentinel_port'] = 26380
 
 # hard disk
 default['redborder']['manager']['data_dev'] = {}
