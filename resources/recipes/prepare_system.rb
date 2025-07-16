@@ -202,7 +202,7 @@ rescue
   postgresql_vip = {}
 end
 # set internal virtual ip's in /etc/hosts
-result = set_internal_vip(postgresql_vip['ip'], 'master.postgresql.service', 'postgresql=ready')
+result = set_internal_vip(postgresql_vip['ip'], 'master.postgresql.service')
 if result
   execute 'restart_webui' do
     command 'systemctl restart webui'
