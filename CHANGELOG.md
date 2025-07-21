@@ -1,6 +1,72 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.5.0
+
+  - Luis Blanco
+    - [0a198c4] Merge pull request #209 from redBorder/feature/#18850_add_internal_virtual_ips
+  - Rafael Gomez
+    - [f184c0b] Passing postgresql_hosts to postgresql cookbook
+    - [d7362f8] Merge branch 'development' into feature/#18850_add_internal_virtual_ips
+    - [39490f1] Master node will be the first on the list if vip is not set
+    - [62dba57] Merge branch 'master' into feature/#18850_add_internal_virtual_ips
+    - [a4c50b7] Refactor configure.rb: Replace default attributes with dynamic service configurations
+    - [acb7328] Update memory service configurations and adjust virtual IP settings
+    - [f2c6957] Remove deprecated services from configuration and clean up service groups
+    - [293e8e0] Merge branch 'master' into feature/#18850_add_internal_virtual_ips
+    - [a03570f] Refactor webui service restart logic to use execute resource with conditions
+    - [099d768] Add check for cluster installation before restarting webui service
+    - [b87fba8] Fix linter
+    - [a806d16] Merge branch 'master' into feature/#18850_add_internal_virtual_ips
+    - [0b8e36d] Fix formatting in prepare_system.rb for linter
+    - [ae1c739] Remove 'redborder-postgresql' from core services group configuration
+    - [eae9f8e] Merge branch 'master' into feature/#18850_add_internal_virtual_ips
+    - [936b631] Merge branch 'master' into feature/#18850_add_internal_virtual_ips
+    - [e1ae784] Merge branch 'master' into feature/#18850_add_internal_virtual_ips
+    - [42f58f0] Merge branch 'master' into feature/#18850_add_internal_virtual_ips
+    - [5bc008e] Merge branch 'master' into feature/#18850_add_internal_virtual_ips
+    - [c5bd32f] Merge branch 'master' into feature/#18850_add_internal_virtual_ips
+    - [564e6fc] Changing order of postgresql cookbook
+    - [9ba71f7] Merge branch 'master' into feature/#18850_add_internal_virtual_ips
+    - [0945466] Merge remote-tracking branch 'origin/master' into feature/#18850_add_internal_virtual_ips
+    - [2518bb3] Merge branch 'master' into feature/#18850_add_internal_virtual_ips
+    - [8fbd6e6] Merge branch 'master' into feature/#18850_add_internal_virtual_ips
+    - [08918e8] Merge branch 'master' into feature/#18850_add_internal_virtual_ips
+    - [56ea39f] Fixing services
+    - [e332fce] Adding consul again
+    - [e1b4fe8] Removing redborder-postgresql
+    - [cbebd92] Removing consul in postgresql custom mode
+    - [12089b6] Fix conflicts
+    - [54f3135] Fix conflicts
+    - [af15fab] Merge branch 'master' into feature/#18850_add_internal_virtual_ips
+    - [a344962] Removing redborder-postgresql service
+    - [b1a8ffc] Passing virtual_ips variable to postgresql
+    - [9c6520a] Fix conflict
+    - [d37e20d] Fix conflicts
+    - [489524d] Merge branch 'master' into feature/#18850_add_internal_virtual_ips
+    - [c4c492d] fix linter
+    - [3b2d727] There is no need to pass iface sync to keepalived
+    - [179120a] Fixing hardcoing of iface in databags depending if service is internal or external
+    - [78e9904] Merge branch 'master' into feature/#18850_add_internal_virtual_ips
+    - [6e8191f] Passing sync_interface to keepalived
+    - [18c42c1] Adding internal virtual IPs
+  - ljblancoredborder
+    - [0a198c4] Merge pull request #209 from redBorder/feature/#18850_add_internal_virtual_ips
+    - [46d477f] Merge remote-tracking branch 'origin/master' into feature/#18850_add_internal_virtual_ips
+    - [796fea4] Merge branch 'master' into feature/#18850_add_internal_virtual_ips
+  - Daniel Castro
+    - [2798891] Release 5.4.9
+    - [1baa451] Merge pull request #327 from redBorder/feature/#21767_druid_metrics_in_monitor
+  - Pablo Torres
+    - [c54fdf4] Feature #21767: add druid metrics to pipeline
+  - David Vanhoucke
+    - [9c55ba7] change way to update etc(hosts
+  - Rafa Gómez
+    - [3b5494d] Update prepare_system.rb
+    - [7a6ae57] Update metadata.rb
+    - [837ce9c] Delete resources/libraries/open_kafka_port.rb
+    - [abecbdc] Update CHANGELOG.md
+
 ## 5.4.9
 
   - Pablo Torres
