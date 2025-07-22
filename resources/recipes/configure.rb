@@ -100,6 +100,28 @@ chef_server_config 'Configure chef services' do
   end
 end
 
+# Determine external
+begin
+  external_services = data_bag_item('rBglobal', 'external_services')
+rescue => e
+  Chef::Log.warn("Failed to load external_services data bag: #{e.message}")
+  external_services = nil
+end
+
+postgresql_config 'Configure postgresql' do
+  if manager_services['postgresql'] && external_services&.dig('postgresql') == 'onpremise'
+    cdomain node['redborder']['cdomain']
+    ipaddress node['ipaddress_sync']
+    postgresql_hosts node['redborder']['managers_per_services']['postgresql']
+    action [:add, :register]
+  elsif !external_services.nil?
+    action [:remove, :deregister]
+  else
+    Chef::Log.warn('Skipped PostgreSQL removal/deregistration due to missing external_services data')
+    action :nothing
+  end
+end
+
 vrrp_secrets = {}
 
 if manager_services['keepalived']
@@ -682,27 +704,6 @@ rb_chrony_config 'Configure Chrony' do
     action :add
   else
     action :remove
-  end
-end
-
-# Determine external
-begin
-  external_services = data_bag_item('rBglobal', 'external_services')
-rescue => e
-  Chef::Log.warn("Failed to load external_services data bag: #{e.message}")
-  external_services = nil
-end
-
-postgresql_config 'Configure postgresql' do
-  if manager_services['postgresql'] && external_services&.dig('postgresql') == 'onpremise'
-    cdomain node['redborder']['cdomain']
-    ipaddress node['ipaddress_sync']
-    action [:add, :register]
-  elsif !external_services.nil?
-    action [:remove, :deregister]
-  else
-    Chef::Log.warn('Skipped PostgreSQL removal/deregistration due to missing external_services data')
-    action :nothing
   end
 end
 

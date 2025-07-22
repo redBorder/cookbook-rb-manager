@@ -196,6 +196,22 @@ hosts_entries.each do |line|
   end
 end
 
+begin
+  postgresql_vip = data_bag_item('rBglobal', 'ipvirtual-internal-postgresql')
+rescue
+  postgresql_vip = {}
+end
+# set internal virtual ip's in /etc/hosts
+result = set_internal_vip(postgresql_vip['ip'], 'master.postgresql.service')
+if result
+  execute 'restart_webui' do
+    command 'systemctl restart webui'
+    only_if 'systemctl list-units --type=service --all | grep -q webui.service'
+    only_if 'systemctl is-enabled webui'
+    only_if 'systemctl is-active webui'
+  end
+end
+
 # Build service list for rbcli
 services = node['redborder']['services'] || []
 systemd_services = node['redborder']['systemdservices'] || []

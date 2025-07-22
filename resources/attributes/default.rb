@@ -105,12 +105,12 @@ default['redborder']['memory_assigned'] = {}
 # geoip has been removed because is not a service
 default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
                                                     druid-broker druid-historical druid-coordinator druid-router druid-indexer druid-overlord
-                                                    postgresql redborder-postgresql nginx webui rb-workers f2k rb-druid-indexer
+                                                    postgresql nginx webui rb-workers f2k rb-druid-indexer
                                                     redborder-monitor sfacctd redborder-dswatcher mongodb redis
                                                     redborder-events-counter http2k redborder-mem2incident rb-logstatter)
 
 default['redborder']['services_group']['custom'] = %w(consul)
-default['redborder']['services_group']['core'] = %w(consul chef-server s3 postgresql redborder-postgresql nginx)
+default['redborder']['services_group']['core'] = %w(consul chef-server s3 postgresql nginx)
 default['redborder']['services_group']['chef'] = %w(consul chef-server)
 default['redborder']['services_group']['kafka'] = %w(consul kafka)
 default['redborder']['services_group']['historical'] = %w(consul druid-historical)
@@ -120,7 +120,7 @@ default['redborder']['services_group']['http2k'] = %w(consul http2k)
 default['redborder']['services_group']['webui'] = %w(consul nginx webui rb-workers)
 default['redborder']['services_group']['f2k'] = %w(consul f2k)
 default['redborder']['services_group']['s3'] = %w(consul nginx s3)
-default['redborder']['services_group']['postgresql'] = %w(consul postgresql redborder-postgresql)
+default['redborder']['services_group']['postgresql'] = %w(consul postgresql)
 
 default['redborder']['services'] = {}
 default['redborder']['services']['chef-client']               = true
@@ -160,7 +160,6 @@ default['redborder']['services']['redborder-events-counter']  = false
 default['redborder']['services']['redborder-mem2incident']    = false
 default['redborder']['services']['redborder-monitor']         = true
 default['redborder']['services']['redborder-nmsp']            = false
-default['redborder']['services']['redborder-postgresql']      = false
 default['redborder']['services']['redborder-scanner']         = false
 default['redborder']['services']['rsyslog']                   = true
 default['redborder']['services']['s3']                        = false
@@ -209,7 +208,6 @@ default['redborder']['systemdservices']['redborder-events-counter'] = ['redborde
 default['redborder']['systemdservices']['redborder-mem2incident']   = ['redborder-mem2incident']
 default['redborder']['systemdservices']['redborder-monitor']        = ['redborder-monitor']
 default['redborder']['systemdservices']['redborder-nmsp']           = ['redborder-nmsp']
-default['redborder']['systemdservices']['redborder-postgresql']     = ['redborder-postgresql']
 default['redborder']['systemdservices']['redborder-scanner']        = ['redborder-scanner']
 default['redborder']['systemdservices']['rsyslog']                  = ['rsyslog']
 default['redborder']['systemdservices']['s3']                       = ['minio']
@@ -228,7 +226,7 @@ default['redborder']['druid']['historical']['tier'] = 'default'
 default['redborder']['druid']['historical']['maxsize'] = -1
 
 # Virtual Ips
-default['redborder']['manager']['virtual_ips'] = { external: [ { service: 'webui', deps: ['nginx'] }, { service: 'f2k' }, { service: 'sfacctd' }, { service: 'kafka' } ] }
+default['redborder']['manager']['virtual_ips'] = { internal: [{ service: 'postgresql' }], external: [{ service: 'webui', deps: ['nginx'] }, { service: 'f2k' }, { service: 'sfacctd' }, { service: 'kafka' }] }
 
 default['redborder']['pending_changes'] = 0
 
