@@ -1,6 +1,26 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.5.0
+
+  - Rafael Gomez
+    - [f184c0b] Passing postgresql_hosts to postgresql cookbook
+    - [acb7328] Update memory service configurations and adjust virtual IP settings
+    - [099d768] Add check for cluster installation before restarting webui service
+    - [ae1c739] Remove 'redborder-postgresql' from core services group configuration
+    - [564e6fc] Changing order of postgresql cookbook
+    - [b1a8ffc] Passing virtual_ips variable to postgresql
+    - [18c42c1] Adding internal virtual IPs
+    - [837ce9c] Delete resources/libraries/open_kafka_port.rb
+
+  - David Vanhoucke
+    - [9c55ba7] change way to update etc hosts
+
+## 5.4.9
+
+  - Pablo Torres
+    - [c54fdf4] Feature #21767: add druid metrics to pipeline
+
 ## 5.4.8
 
   - Rafael Gomez
