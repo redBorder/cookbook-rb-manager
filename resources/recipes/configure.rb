@@ -508,6 +508,7 @@ redis_config 'Configure redis' do
   if manager_services['redis']
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_secrets redis_secrets
+    cdomain node['redborder']['cdomain']
     action [:add, :register]
   else
     action [:remove, :deregister]
