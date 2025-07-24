@@ -71,7 +71,6 @@ default['redborder']['memory_services']['druid-router'] = { 'count': 20, 'memory
 default['redborder']['memory_services']['f2k'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['http2k'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['kafka'] = { 'count': 120, 'memory': 0, 'max_limit': 524288 }
-default['redborder']['memory_services']['mongodb'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['n2klocd'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['postgresql'] = { 'count': 25, 'memory': 0 }
 default['redborder']['memory_services']['rb-aioutliers'] = { 'count': 10, 'memory': 0 }
@@ -100,7 +99,7 @@ default['redborder']['memory_assigned'] = {}
 default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
                                                     druid-broker druid-historical druid-coordinator druid-router druid-indexer druid-overlord
                                                     postgresql nginx webui rb-workers f2k rb-druid-indexer
-                                                    redborder-monitor sfacctd redborder-dswatcher mongodb
+                                                    redborder-monitor sfacctd redborder-dswatcher
                                                     redborder-events-counter http2k redborder-mem2incident rb-logstatter)
 
 default['redborder']['services_group']['custom'] = %w(consul)
@@ -135,7 +134,6 @@ default['redborder']['services']['kafka']                     = false
 default['redborder']['services']['keepalived']                = false
 default['redborder']['services']['logstash']                  = false
 default['redborder']['services']['memcached']                 = true
-default['redborder']['services']['mongodb']                   = false
 default['redborder']['services']['n2klocd']                   = false
 default['redborder']['services']['nginx']                     = false
 default['redborder']['services']['sfacct']                    = false
@@ -182,7 +180,6 @@ default['redborder']['systemdservices']['kafka']                    = ['kafka']
 default['redborder']['systemdservices']['keepalived']               = ['keepalived']
 default['redborder']['systemdservices']['logstash']                 = ['logstash']
 default['redborder']['systemdservices']['memcached']                = ['memcached']
-default['redborder']['systemdservices']['mongodb']                  = ['mongod']
 default['redborder']['systemdservices']['n2klocd']                  = ['n2klocd']
 default['redborder']['systemdservices']['nginx']                    = ['nginx']
 default['redborder']['systemdservices']['sfacctd']                  = ['sfacctd']

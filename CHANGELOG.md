@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.7.0
+
+  - nilsver
+    - [ddebd77] replace mongodb
+
 ## 5.6.1
 
   - nilsver
