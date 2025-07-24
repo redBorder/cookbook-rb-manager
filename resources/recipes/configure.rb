@@ -275,7 +275,7 @@ end
 rb_druid_indexer_config 'Configure Rb Druid Indexer' do
   if manager_services['rb-druid-indexer']
     zk_hosts node['redborder']['managers_per_services']['zookeeper']
-    tasks node['redborder']['druid-indexer-tasks']
+    tasks node.default['redborder']['druid-indexer-tasks']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -289,7 +289,7 @@ druid_indexer 'Configure Druid Indexer' do
     ipaddress node['ipaddress_sync']
     memory_kb node['redborder']['memory_services']['druid-indexer']['memory']
     cpu_num node['cpu']['total'].to_i
-    tasks node['redborder']['druid-indexer-tasks']
+    tasks node.default['redborder']['druid-indexer-tasks']
     s3_secrets s3_secrets
     action [:add, :register]
   else
@@ -366,7 +366,7 @@ end
 
 rbscanner_config 'Configure redborder-scanner' do
   if manager_services['redborder-scanner']
-    scanner_nodes node.run_state['sensors_info_all']['scanner-sensor']
+    scanner_nodes node.run_state['cluster_sensors_info']['scanner-sensor']
     action [:add, :register]
   else
     action [:remove, :deregister]

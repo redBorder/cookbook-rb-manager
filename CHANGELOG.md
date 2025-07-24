@@ -1,6 +1,16 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.6.1
+
+  - nilsver
+    - [f6783ad] only query scanner sensors from managers
+
+## 5.6.0
+
+  - Pablo Torres
+    - [e6961e6] Improvement #21846: remove custom dimensions
+
 ## 5.5.0
 
   - Rafael Gomez
