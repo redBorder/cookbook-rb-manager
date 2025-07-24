@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.6.1
+
+  - nilsver
+    - [f6783ad] only query scanner sensors from managers
+
 ## 5.6.0
 
   - Pablo Torres
