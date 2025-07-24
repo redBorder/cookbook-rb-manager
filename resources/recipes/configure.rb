@@ -366,7 +366,7 @@ end
 
 rbscanner_config 'Configure redborder-scanner' do
   if manager_services['redborder-scanner']
-    scanner_nodes node.run_state['sensors_info_all']['scanner-sensor']
+    scanner_nodes node.run_state['cluster_sensors_info']['scanner-sensor']
     action [:add, :register]
   else
     action [:remove, :deregister]
