@@ -96,6 +96,9 @@ node.run_state['sensors_info'] = get_sensors_info
 # get sensors info full info of all sensors
 node.run_state['sensors_info_all'] = get_sensors_all_info
 
+# get sensors info excluding proxy sensors info
+node.run_state['cluster_sensors_info'] = get_cluster_sensors_info
+
 # get namespaces
 node.run_state['namespaces'] = get_namespaces
 
