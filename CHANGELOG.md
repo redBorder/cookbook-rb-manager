@@ -1,6 +1,12 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.7.1
+
+  - jnavarrorb
+    - [bab7ffb] Remove cookbook-cron from redborder_s cookbooks
+    - [949388a] Remove executable permissions on non-executable files
+
 ## 5.7.0
 
   - nilsver
