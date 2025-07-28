@@ -47,6 +47,11 @@ default['redborder']['memcached']['port'] = 11_211
 
 # redborder-llm
 default['redborder']['llm_selected_model'] = nil
+default['redborder']['redborder-llm']['cpus'] = '0'
+
+# redis
+default['redis']['port'] = 26379
+default['redis']['sentinel_port'] = 26380
 
 # hard disk
 default['redborder']['manager']['data_dev'] = {}
@@ -86,6 +91,7 @@ default['redborder']['memory_services']['webui'] = { 'count': 100, 'memory': 0 }
 default['redborder']['memory_services']['zookeeper'] = { 'count': 40, 'memory': 0 }
 default['redborder']['memory_services']['secor'] = { 'count': 30, 'memory': 0 }
 default['redborder']['memory_services']['secor-vault'] = { 'count': 30, 'memory': 0 }
+default['redborder']['memory_services']['redis'] = { 'count': 10, 'memory': 0 }
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default['redborder']['cluster_info'] = {}
@@ -100,11 +106,13 @@ default['redborder']['zookeeper_hosts'] = []
 default['redborder']['memory_assigned'] = {}
 
 # geoip has been removed because is not a service
-default['redborder']['services_group']['full'] = %w[consul chef-server zookeeper memcached rsyslog kafka logstash s3
-                                                    druid-broker druid-historical druid-coordinator druid-router druid-indexer druid-overlord
-                                                    postgresql nginx webui rb-workers f2k rb-druid-indexer
-                                                    redborder-monitor sfacctd redborder-dswatcher
-                                                    redborder-events-counter http2k redborder-mem2incident rb-logstatter]
+default['redborder']['services_group']['full'] = %w[
+  consul chef-server zookeeper memcached rsyslog kafka logstash s3
+  druid-broker druid-historical druid-coordinator druid-router
+  druid-indexer druid-overlord postgresql nginx webui rb-workers f2k
+  rb-druid-indexer redborder-monitor sfacctd redborder-dswatcher redis
+  redborder-events-counter http2k redborder-mem2incident rb-logstatter
+]
 
 default['redborder']['services_group']['custom'] = %w[consul]
 default['redborder']['services_group']['core'] = %w[consul chef-server s3 postgresql nginx]
@@ -165,6 +173,7 @@ default['redborder']['services']['zookeeper']                 = false
 default['redborder']['services']['firewall']                  = true
 default['redborder']['services']['secor']                     = false
 default['redborder']['services']['secor-vault']               = false
+default['redborder']['services']['redis']                     = false
 
 default['redborder']['systemdservices']['chef-client']              = ['chef-client']
 default['redborder']['systemdservices']['chef-server']              = ['opscode-erchef']
@@ -211,6 +220,7 @@ default['redborder']['systemdservices']['zookeeper']                = ['zookeepe
 default['redborder']['systemdservices']['firewall']                 = ['firewalld']
 default['redborder']['systemdservices']['secor']                    = ['rb-secor']
 default['redborder']['systemdservices']['secor-vault']              = ['rb-secor-vault']
+default['redborder']['systemdservices']['redis']                    = ['redis']
 
 # Tier
 default['redborder']['druid']['historical']['tier'] = 'default'
@@ -242,9 +252,6 @@ default['redborder']['manager']['virtual_ips'] = {
 }
 
 default['redborder']['pending_changes'] = 0
-
-# redborder-llm
-default['redborder']['redborder-llm']['cpus'] = '0'
 
 # Priority Filter
 default['redborder']['intrusion_incidents_priority_filter'] = 'high'
