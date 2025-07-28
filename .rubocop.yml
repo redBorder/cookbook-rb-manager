@@ -5,3 +5,6 @@ AllCops:
 
 Style/PercentLiteralDelimiters:
   Enabled: false
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
