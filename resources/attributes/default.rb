@@ -50,8 +50,8 @@ default['redborder']['llm_selected_model'] = nil
 default['redborder']['redborder-llm']['cpus'] = '0'
 
 # redis
-default['redis']['port'] = 26379
-default['redis']['sentinel_port'] = 26380
+default['redis']['port'] = 26_379
+default['redis']['sentinel_port'] = 26_380
 
 # hard disk
 default['redborder']['manager']['data_dev'] = {}
