@@ -9,6 +9,9 @@ cookbook-rb-manager CHANGELOG
     - [b127e48] Comment redis var in mem2 and logstash
     - [3dcea26] Adding default redis sentinel port
     - [2c1f667] Adding redis coookbook and passing variables
+  - jnavarrorb
+    - [bab7ffb] Remove cookbook-cron from redborder_s cookbooks
+    - [949388a] Remove executable permissions on non-executable file
 
 ## 5.7.1
 
