@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.8.1
+
+  - Miguel
+    - [00d575f] Remove mongodb (again)
+
 ## 5.8.0
 
   - Rafael Gomez
