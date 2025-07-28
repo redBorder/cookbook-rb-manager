@@ -1,5 +1,7 @@
-Style/TrailingCommaInArrayLiteral:
-  Enabled: false
+# .rubocop.yml
 
-Style/TrailingCommaInHashLiteral:
+AllCops:
+  TargetRubyVersion: 2.7
+
+Style/PercentLiteralDelimiters:
   Enabled: false
