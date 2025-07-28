@@ -96,6 +96,9 @@ node.run_state['sensors_info'] = get_sensors_info
 # get sensors info full info of all sensors
 node.run_state['sensors_info_all'] = get_sensors_all_info
 
+# get sensors info excluding proxy sensors info
+node.run_state['cluster_sensors_info'] = get_cluster_sensors_info
+
 # get namespaces
 node.run_state['namespaces'] = get_namespaces
 
@@ -193,6 +196,22 @@ hosts_entries.each do |line|
   execute "Add #{line} to /etc/hosts" do
     command "echo '#{line}' >> /etc/hosts"
     not_if "grep -q '^#{line}' /etc/hosts"
+  end
+end
+
+begin
+  postgresql_vip = data_bag_item('rBglobal', 'ipvirtual-internal-postgresql')
+rescue
+  postgresql_vip = {}
+end
+# set internal virtual ip's in /etc/hosts
+result = set_internal_vip(postgresql_vip['ip'], 'master.postgresql.service')
+if result
+  execute 'restart_webui' do
+    command 'systemctl restart webui'
+    only_if 'systemctl list-units --type=service --all | grep -q webui.service'
+    only_if 'systemctl is-enabled webui'
+    only_if 'systemctl is-active webui'
   end
 end
 

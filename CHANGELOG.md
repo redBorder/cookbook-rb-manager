@@ -1,6 +1,54 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.8.0
+
+  - Rafael Gomez
+    - [33799e4] Passing cdomain to redis cookbook
+    - [2f8fef9] Passing redis config to logstash and mem2incident
+    - [b127e48] Comment redis var in mem2 and logstash
+    - [3dcea26] Adding default redis sentinel port
+    - [2c1f667] Adding redis coookbook and passing variables
+  - jnavarrorb
+    - [bab7ffb] Remove cookbook-cron from redborder_s cookbooks
+    - [949388a] Remove executable permissions on non-executable file
+
+
+## 5.7.0
+
+  - nilsver
+    - [ddebd77] replace mongodb
+
+## 5.6.1
+
+  - nilsver
+    - [f6783ad] only query scanner sensors from managers
+
+## 5.6.0
+
+  - Pablo Torres
+    - [e6961e6] Improvement #21846: remove custom dimensions
+
+## 5.5.0
+
+  - Rafael Gomez
+    - [f184c0b] Passing postgresql_hosts to postgresql cookbook
+    - [acb7328] Update memory service configurations and adjust virtual IP settings
+    - [099d768] Add check for cluster installation before restarting webui service
+    - [ae1c739] Remove 'redborder-postgresql' from core services group configuration
+    - [564e6fc] Changing order of postgresql cookbook
+    - [b1a8ffc] Passing virtual_ips variable to postgresql
+    - [18c42c1] Adding internal virtual IPs
+    - [837ce9c] Delete resources/libraries/open_kafka_port.rb
+
+  - David Vanhoucke
+    - [9c55ba7] change way to update etc hosts
+
+## 5.4.9
+
+  - Pablo Torres
+    - [c54fdf4] Feature #21767: add druid metrics to pipeline
+
 ## 5.4.8
 
   - Rafael Gomez
