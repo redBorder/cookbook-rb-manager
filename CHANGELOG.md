@@ -1,6 +1,15 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.8.0
+
+  - Rafael Gomez
+    - [33799e4] Passing cdomain to redis cookbook
+    - [2f8fef9] Passing redis config to logstash and mem2incident
+    - [b127e48] Comment redis var in mem2 and logstash
+    - [3dcea26] Adding default redis sentinel port
+    - [2c1f667] Adding redis coookbook and passing variables
+
 ## 5.7.1
 
   - jnavarrorb
