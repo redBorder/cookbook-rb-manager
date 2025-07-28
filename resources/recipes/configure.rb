@@ -100,6 +100,28 @@ chef_server_config 'Configure chef services' do
   end
 end
 
+# Determine external
+begin
+  external_services = data_bag_item('rBglobal', 'external_services')
+rescue => e
+  Chef::Log.warn("Failed to load external_services data bag: #{e.message}")
+  external_services = nil
+end
+
+postgresql_config 'Configure postgresql' do
+  if manager_services['postgresql'] && external_services&.dig('postgresql') == 'onpremise'
+    cdomain node['redborder']['cdomain']
+    ipaddress node['ipaddress_sync']
+    postgresql_hosts node['redborder']['managers_per_services']['postgresql']
+    action [:add, :register]
+  elsif !external_services.nil?
+    action [:remove, :deregister]
+  else
+    Chef::Log.warn('Skipped PostgreSQL removal/deregistration due to missing external_services data')
+    action :nothing
+  end
+end
+
 vrrp_secrets = {}
 # Put nginx in from of webui (Temporal until stop tracking webui)
 node.normal['redborder']['manager']['balanced'] = [
@@ -260,7 +282,7 @@ end
 rb_druid_indexer_config 'Configure Rb Druid Indexer' do
   if manager_services['rb-druid-indexer']
     zk_hosts node['redborder']['managers_per_services']['zookeeper']
-    tasks node['redborder']['druid-indexer-tasks']
+    tasks node.default['redborder']['druid-indexer-tasks']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -274,7 +296,7 @@ druid_indexer 'Configure Druid Indexer' do
     ipaddress node['ipaddress_sync']
     memory_kb node['redborder']['memory_services']['druid-indexer']['memory']
     cpu_num node['cpu']['total'].to_i
-    tasks node['redborder']['druid-indexer-tasks']
+    tasks node.default['redborder']['druid-indexer-tasks']
     s3_secrets s3_secrets
     action [:add, :register]
   else
@@ -298,21 +320,6 @@ end
 memcached_config 'Configure Memcached' do
   if manager_services['memcached']
     ipaddress node['ipaddress_sync']
-    action [:add, :register]
-  else
-    action [:remove, :deregister]
-  end
-end
-
-enable_mongodb = false
-if manager_services['mongodb']
-  is_mongo_configured_consul = shell_out("curl -s http://localhost:8500/v1/health/service/mongodb | jq -r '.[].Checks[0].Status' | grep -q 'passing'")
-  get_consul_registered_ip = shell_out("curl -s http://localhost:8500/v1/health/service/mongodb | jq -r '.[].Service.Address' | head -n 1")
-  enable_mongodb = (is_mongo_configured_consul.exitstatus != 0) ? true : (node['ipaddress_sync'] == get_consul_registered_ip.stdout.strip)
-end
-
-mongodb_config 'Configure Mongodb' do
-  if enable_mongodb
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -351,7 +358,7 @@ end
 
 rbscanner_config 'Configure redborder-scanner' do
   if manager_services['redborder-scanner']
-    scanner_nodes node.run_state['sensors_info_all']['scanner-sensor']
+    scanner_nodes node.run_state['cluster_sensors_info']['scanner-sensor']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -666,27 +673,6 @@ rb_chrony_config 'Configure Chrony' do
     action :add
   else
     action :remove
-  end
-end
-
-# Determine external
-begin
-  external_services = data_bag_item('rBglobal', 'external_services')
-rescue => e
-  Chef::Log.warn("Failed to load external_services data bag: #{e.message}")
-  external_services = nil
-end
-
-postgresql_config 'Configure postgresql' do
-  if manager_services['postgresql'] && external_services&.dig('postgresql') == 'onpremise'
-    cdomain node['redborder']['cdomain']
-    ipaddress node['ipaddress_sync']
-    action [:add, :register]
-  elsif !external_services.nil?
-    action [:remove, :deregister]
-  else
-    Chef::Log.warn('Skipped PostgreSQL removal/deregistration due to missing external_services data')
-    action :nothing
   end
 end
 
