@@ -1,8 +1,12 @@
+# frozen_string_literal: true
+
 # general
 default['redborder']['cdomain'] = 'redborder.cluster'
 default['redborder']['organization_uuid'] = nil
 default['redborder']['organizations'] = []
-default['redborder']['locations'] = %w(namespace namespace_uuid organization organization_uuid service_provider service_provider_uuid deployment deployment_uuid market market_uuid campus campus_uuid building building_uuid floor floor_uuid)
+default['redborder']['locations'] =
+  %w[namespace namespace_uuid organization organization_uuid service_provider service_provider_uuid deployment
+     deployment_uuid market market_uuid campus campus_uuid building building_uuid floor floor_uuid]
 default['redborder']['sso_enabled'] = '0'
 default['redborder']['repo'] = {}
 default['redborder']['repo']['version'] = nil
@@ -37,7 +41,7 @@ default['redborder']['webui']['version'] = nil
 default['redborder']['memcached']['elasticache'] = false
 default['redborder']['memcached']['server_list'] = []
 default['redborder']['memcached']['options'] = ''
-default['redborder']['memcached']['port'] = 11211
+default['redborder']['memcached']['port'] = 11_211
 
 # riak
 
@@ -50,11 +54,11 @@ default['redborder']['manager']['data_dev']['root'] = '/dev/mapper/VolGroup-lv_r
 default['redborder']['manager']['data_dev']['raw'] = '/dev/mapper/vg_rbdata-lv_raw'
 default['redborder']['manager']['data_dev']['aggregate'] = '/dev/mapper/vg_rbdata-lv_aggregated'
 default['redborder']['manager']['hd_services'] = [
-                                                   { 'name': 'kafka', 'count': 5, 'prefered': 'aggregate' },
-                                                   { 'name': 'zookeeper', 'count': 1, 'prefered': 'aggregate' },
-                                                   { 'name': 's3', 'count': 50, 'prefered': 'raw' },
-                                                   { 'name': 'druid-historical', 'count': 50, 'prefered': 'raw' },
-                                                 ]
+  { 'name': 'kafka', 'count': 5, 'prefered': 'aggregate' },
+  { 'name': 'zookeeper', 'count': 1, 'prefered': 'aggregate' },
+  { 'name': 's3', 'count': 50, 'prefered': 'raw' },
+  { 'name': 'druid-historical', 'count': 50, 'prefered': 'raw' },
+]
 
 default['redborder']['manager']['hd_services_current'] = {}
 
@@ -70,7 +74,7 @@ default['redborder']['memory_services']['druid-indexer'] = { 'count': 130, 'memo
 default['redborder']['memory_services']['druid-router'] = { 'count': 20, 'memory': 0 }
 default['redborder']['memory_services']['f2k'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['http2k'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['kafka'] = { 'count': 120, 'memory': 0, 'max_limit': 524288 }
+default['redborder']['memory_services']['kafka'] = { 'count': 120, 'memory': 0, 'max_limit': 524_288 }
 default['redborder']['memory_services']['n2klocd'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['postgresql'] = { 'count': 25, 'memory': 0 }
 default['redborder']['memory_services']['rb-aioutliers'] = { 'count': 10, 'memory': 0 }
@@ -96,24 +100,24 @@ default['redborder']['zookeeper_hosts'] = []
 default['redborder']['memory_assigned'] = {}
 
 # geoip has been removed because is not a service
-default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
+default['redborder']['services_group']['full'] = %w[consul chef-server zookeeper memcached rsyslog kafka logstash s3
                                                     druid-broker druid-historical druid-coordinator druid-router druid-indexer druid-overlord
                                                     postgresql nginx webui rb-workers f2k rb-druid-indexer
                                                     redborder-monitor sfacctd redborder-dswatcher
-                                                    redborder-events-counter http2k redborder-mem2incident rb-logstatter)
+                                                    redborder-events-counter http2k redborder-mem2incident rb-logstatter]
 
-default['redborder']['services_group']['custom'] = %w(consul)
-default['redborder']['services_group']['core'] = %w(consul chef-server s3 postgresql nginx)
-default['redborder']['services_group']['chef'] = %w(consul chef-server)
-default['redborder']['services_group']['kafka'] = %w(consul kafka)
-default['redborder']['services_group']['historical'] = %w(consul druid-historical)
-default['redborder']['services_group']['middlemanager'] = %w(consul druid-middlemanager)
-default['redborder']['services_group']['broker'] = %w(consul druid-broker)
-default['redborder']['services_group']['http2k'] = %w(consul http2k)
-default['redborder']['services_group']['webui'] = %w(consul nginx webui rb-workers)
-default['redborder']['services_group']['f2k'] = %w(consul f2k)
-default['redborder']['services_group']['s3'] = %w(consul nginx s3)
-default['redborder']['services_group']['postgresql'] = %w(consul postgresql)
+default['redborder']['services_group']['custom'] = %w[consul]
+default['redborder']['services_group']['core'] = %w[consul chef-server s3 postgresql nginx]
+default['redborder']['services_group']['chef'] = %w[consul chef-server]
+default['redborder']['services_group']['kafka'] = %w[consul kafka]
+default['redborder']['services_group']['historical'] = %w[consul druid-historical]
+default['redborder']['services_group']['middlemanager'] = %w[consul druid-middlemanager]
+default['redborder']['services_group']['broker'] = %w[consul druid-broker]
+default['redborder']['services_group']['http2k'] = %w[consul http2k]
+default['redborder']['services_group']['webui'] = %w[consul nginx webui rb-workers]
+default['redborder']['services_group']['f2k'] = %w[consul f2k]
+default['redborder']['services_group']['s3'] = %w[consul nginx s3]
+default['redborder']['services_group']['postgresql'] = %w[consul postgresql]
 
 default['redborder']['services'] = {}
 default['redborder']['services']['chef-client']               = true
@@ -214,11 +218,15 @@ default['redborder']['druid']['historical']['maxsize'] = -1
 
 # Balanced services
 default['redborder']['manager']['balanced'] = [
-  { service: 'nginx',   name: 'nginx',                      port: 443,  protocol: 'tcp', redirected_service: 'nginx',   persistence_timeout: 9600 },
-# { service: 'webui',   name: 'redborder webui',            port: 443,  protocol: 'tcp', redirected_service: 'nginx',   persistence_timeout: 9600 },
-  { service: 'f2k',     name: 'netflow,ipfix/sflow daemon', port: 2055, protocol: 'udp', redirected_service: 'f2k',     persistence_timeout: 30 },
-  { service: 'sfacctd', name: 'sflow daemon',               port: 6343, protocol: 'udp', redirected_service: 'sfacctd', persistence_timeout: 30 },
-  { service: 'kafka',   name: 'kafka',                      port: 9092, protocol: 'tcp', redirected_service: 'kafka',   persistence_timeout: 30 }
+  { service: 'nginx',   name: 'nginx',                      port: 443,  protocol: 'tcp', redirected_service: 'nginx',
+    persistence_timeout: 9600 },
+  # { service: 'webui',   name: 'redborder webui',            port: 443,  protocol: 'tcp', redirected_service: 'nginx',   persistence_timeout: 9600 },
+  { service: 'f2k',     name: 'netflow,ipfix/sflow daemon', port: 2055, protocol: 'udp', redirected_service: 'f2k',
+    persistence_timeout: 30 },
+  { service: 'sfacctd', name: 'sflow daemon',               port: 6343, protocol: 'udp', redirected_service: 'sfacctd',
+    persistence_timeout: 30 },
+  { service: 'kafka',   name: 'kafka',                      port: 9092, protocol: 'tcp', redirected_service: 'kafka',
+    persistence_timeout: 30 }
 ]
 
 # Virtual Ips
