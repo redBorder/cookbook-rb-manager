@@ -681,8 +681,7 @@ end
 
 rb_agents_config 'Configure redborder-agents' do
   if manager_services['redborder-agents']
-    llm_service redborder_agents_secrets['llm_service']
-    model_name redborder_agents_secrets['model_name']
+    model redborder_agents_secrets['model']
     anthropic_api_key redborder_agents_secrets['anthropic_api_key']
     google_gemini_api_key redborder_agents_secrets['google_gemini_api_key']
     ollama_base_url redborder_agents_secrets['ollama_base_url']
