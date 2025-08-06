@@ -681,6 +681,7 @@ end
 
 rb_agents_config 'Configure redborder-agents' do
   if manager_services['redborder-agents']
+    ipaddress node['ipaddress_sync']
     model redborder_agents_secrets['model']
     anthropic_api_key redborder_agents_secrets['anthropic_api_key']
     gemini_api_key redborder_agents_secrets['gemini_api_key']
