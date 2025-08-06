@@ -683,7 +683,7 @@ rb_agents_config 'Configure redborder-agents' do
   if manager_services['redborder-agents']
     model redborder_agents_secrets['model']
     anthropic_api_key redborder_agents_secrets['anthropic_api_key']
-    google_gemini_api_key redborder_agents_secrets['google_gemini_api_key']
+    gemini_api_key redborder_agents_secrets['gemini_api_key']
     ollama_base_url redborder_agents_secrets['ollama_base_url']
     openai_api_key redborder_agents_secrets['openai_api_key']
     action [:add, :register]
