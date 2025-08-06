@@ -1,6 +1,25 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.8.2
+
+  - manegron
+    - [fed0825] Merge pull request #340 from redBorder/feature/#20809_mcp
+    - [2cc4c6f] Add ipaddress sync to rb-agents
+    - [45acf6b] Rename google_gemini to gemini
+    - [d2f6e41] Remove llm_service and model_name to model
+    - [c45354e] Add redborder-agents service
+    - [e8af8b0] Bump version
+    - [00d575f] Remove mongodb (again)
+    - [fed0825] Merge pull request #340 from redBorder/feature/#20809_mcp
+    - [e8af8b0] Bump version
+    - [00d575f] Remove mongodb (again)
+
+## 5.8.1
+
+  - Miguel
+    - [00d575f] Remove mongodb (again)
+
 ## 5.8.0
 
   - Rafael Gomez
