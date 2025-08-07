@@ -232,7 +232,7 @@ default['redborder']['manager']['virtual_ips'] = { internal: [{ service: 'postgr
 default['redborder']['pending_changes'] = 0
 
 # aerospike
-default["redBorder"]["manager"]["aerospike"]["multicast"] = "239.1.99.222"
+default['redBorder']['manager']['aerospike']['multicast'] = '239.1.99.222'
 
 # Priority Filter
 default['redborder']['intrusion_incidents_priority_filter'] = 'high'
