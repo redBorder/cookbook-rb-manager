@@ -33,6 +33,7 @@ module RbManager
       end
 
       logstash_pipelines.push('vault-pipeline')
+      logstash_pipelines.push('malware-pipeline')
 
       if (has_device_sensors && monitor_config.include?('thermal')) || !monitor_sensor_in_proxy_nodes.empty?
         logstash_pipelines.push('redfish-pipeline')
