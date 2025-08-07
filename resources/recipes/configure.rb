@@ -82,6 +82,7 @@ s3_secrets = {}
 
 begin
   s3_secrets = data_bag_item('passwords', 's3').to_hash
+  Chef::Log.warn("\n\n\n\n\n\n\nSECRETS: #{s3_secrets}\n\n\n\n\n\n\n")
 rescue
   s3_secrets = {}
 end
@@ -737,6 +738,8 @@ minio_config 'Configure S3 (minio)' do
   managers_with_minio node['redborder']['managers_per_services']['s3']
   access_key_id s3_secrets['s3_access_key_id']
   secret_key_id s3_secrets['s3_secret_key_id']
+  malware_access_key_id s3_secrets['s3_malware_access_key_id']
+  malware_secret_key_id s3_secrets['s3_malware_secret_key_id']
   if manager_services['s3'] && external_services&.dig('s3') == 'onpremise'
     ipaddress node['ipaddress_sync']
     action [:add_mcli, :add, :register]
