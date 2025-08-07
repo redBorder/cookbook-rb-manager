@@ -500,6 +500,14 @@ redis_config 'Configure redis' do
   end
 end
 
+aerospike_config 'Configure aerospike' do
+  if manager_services['aerospike']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 # Configure logstash
 split_traffic = false
 

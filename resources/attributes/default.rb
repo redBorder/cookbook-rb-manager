@@ -76,6 +76,7 @@ default['redborder']['memory_services']['http2k'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['kafka'] = { 'count': 120, 'memory': 0, 'max_limit': 524288 }
 default['redborder']['memory_services']['n2klocd'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['postgresql'] = { 'count': 25, 'memory': 0 }
+default['redborder']['memory_services']['aerospike'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['rb-aioutliers'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['redborder-llm'] = { 'count': 5, 'memory': 0 }
 default['redborder']['memory_services']['redborder-agents'] = { 'count': 5, 'memory': 0 }
@@ -121,6 +122,7 @@ default['redborder']['services_group']['s3'] = %w(consul nginx s3)
 default['redborder']['services_group']['postgresql'] = %w(consul postgresql)
 
 default['redborder']['services'] = {}
+default['redborder']['services']['aerospike']                 = true
 default['redborder']['services']['chef-client']               = true
 default['redborder']['services']['chef-server']               = false
 default['redborder']['services']['chrony']                    = true
@@ -169,6 +171,7 @@ default['redborder']['services']['secor']                     = false
 default['redborder']['services']['secor-vault']               = false
 default['redborder']['services']['redis']                     = false
 
+default['redborder']['systemdservices']['aerospike']                = ['aerospike']
 default['redborder']['systemdservices']['chef-client']              = ['chef-client']
 default['redborder']['systemdservices']['chef-server']              = ['opscode-erchef']
 default['redborder']['systemdservices']['chrony']                   = ['chronyd']
@@ -227,6 +230,9 @@ default['redborder']['druid']['historical']['maxsize'] = -1
 default['redborder']['manager']['virtual_ips'] = { internal: [{ service: 'postgresql' }], external: [{ service: 'webui', deps: ['nginx'] }, { service: 'f2k' }, { service: 'sfacctd' }, { service: 'kafka' }] }
 
 default['redborder']['pending_changes'] = 0
+
+# aerospike
+default["redBorder"]["manager"]["aerospike"]["multicast"] = "239.1.99.222"
 
 # Priority Filter
 default['redborder']['intrusion_incidents_priority_filter'] = 'high'
