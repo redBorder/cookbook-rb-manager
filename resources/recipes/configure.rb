@@ -82,7 +82,6 @@ s3_secrets = {}
 
 begin
   s3_secrets = data_bag_item('passwords', 's3').to_hash
-  Chef::Log.warn("\n\n\n\n\n\n\nSECRETS: #{s3_secrets}\n\n\n\n\n\n\n")
 rescue
   s3_secrets = {}
 end
