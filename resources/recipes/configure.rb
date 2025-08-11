@@ -79,11 +79,18 @@ consul_config 'Configure Consul Server' do
 end
 
 s3_secrets = {}
+s3_malware_secrets = {}
 
 begin
   s3_secrets = data_bag_item('passwords', 's3').to_hash
 rescue
   s3_secrets = {}
+end
+
+begin
+  s3_malware_secrets = data_bag_item('passwords', 's3_malware').to_hash
+rescue
+  s3_malware_secrets = {}
 end
 
 chef_server_config 'Configure chef services' do
@@ -737,8 +744,8 @@ minio_config 'Configure S3 (minio)' do
   managers_with_minio node['redborder']['managers_per_services']['s3']
   access_key_id s3_secrets['s3_access_key_id']
   secret_key_id s3_secrets['s3_secret_key_id']
-  malware_access_key_id s3_secrets['s3_malware_access_key_id']
-  malware_secret_key_id s3_secrets['s3_malware_secret_key_id']
+  malware_access_key_id s3_malware_secrets['s3_access_key_id']
+  malware_secret_key_id s3_malware_secrets['s3_secret_key_id']
   if manager_services['s3'] && external_services&.dig('s3') == 'onpremise'
     ipaddress node['ipaddress_sync']
     action [:add_mcli, :add, :register]
