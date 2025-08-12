@@ -738,7 +738,7 @@ minio_config 'Configure S3 (minio)' do
   access_key_id s3_secrets['s3_access_key_id']
   secret_key_id s3_secrets['s3_secret_key_id']
   malware_access_key_id s3_secrets['s3_malware_access_key_id']
-  malware_secret_key_id s3_malware_secrets['s3_malware_secret_key_id']
+  malware_secret_key_id s3_secrets['s3_malware_secret_key_id']
   if manager_services['s3'] && external_services&.dig('s3') == 'onpremise'
     ipaddress node['ipaddress_sync']
     action [:add_mcli, :add, :register]
