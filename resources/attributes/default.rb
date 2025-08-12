@@ -47,6 +47,10 @@ default['redborder']['redborder-llm']['cpus'] = '0'
 default['redis']['port'] = 26379
 default['redis']['sentinel_port'] = 26380
 
+# aerospike
+default['aerospike']['port'] = 5000
+default['aerospike']['multicast'] = '239.1.99.222'
+
 # hard disk
 default['redborder']['manager']['data_dev'] = {}
 default['redborder']['manager']['data_dev']['root'] = '/dev/mapper/VolGroup-lv_root'
@@ -230,9 +234,6 @@ default['redborder']['druid']['historical']['maxsize'] = -1
 default['redborder']['manager']['virtual_ips'] = { internal: [{ service: 'postgresql' }], external: [{ service: 'webui', deps: ['nginx'] }, { service: 'f2k' }, { service: 'sfacctd' }, { service: 'kafka' }] }
 
 default['redborder']['pending_changes'] = 0
-
-# aerospike
-default['redBorder']['manager']['aerospike']['multicast'] = '239.1.99.222'
 
 # Priority Filter
 default['redborder']['intrusion_incidents_priority_filter'] = 'high'

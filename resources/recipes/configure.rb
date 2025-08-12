@@ -503,7 +503,6 @@ end
 aerospike_config 'Configure aerospike' do
   if manager_services['aerospike']
     managers_per_service node['redborder']['managers_per_services']
-    cdomain node['redborder']['cdomain']
     action [:add, :register]
   else
     action [:remove, :deregister]
