@@ -676,6 +676,27 @@ rb_llm_config 'Configure redborder-llm' do
   end
 end
 
+redborder_agents_secrets = {}
+begin
+  redborder_agents_secrets = data_bag_item('passwords', 'redborder_agents').to_hash
+rescue
+  redborder_agents_secrets = {}
+end
+
+rb_agents_config 'Configure redborder-agents' do
+  if manager_services['redborder-agents']
+    ipaddress node['ipaddress_sync']
+    model redborder_agents_secrets['model']
+    anthropic_api_key redborder_agents_secrets['anthropic_api_key']
+    gemini_api_key redborder_agents_secrets['gemini_api_key']
+    ollama_base_url redborder_agents_secrets['ollama_base_url']
+    openai_api_key redborder_agents_secrets['openai_api_key']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 rb_postfix_config 'Configure postfix' do
   if manager_services['postfix']
     action :add
