@@ -500,6 +500,10 @@ redis_config 'Configure redis' do
   end
 end
 
+yara_config 'yara' do
+  action [:add]
+end
+
 # Configure logstash
 split_traffic = false
 
