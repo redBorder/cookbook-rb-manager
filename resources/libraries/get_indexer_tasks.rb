@@ -10,6 +10,7 @@ module RbManager
         { task_name: 'rb_scanner', feed: 'rb_scanner_post' },
         { task_name: 'rb_location', feed: 'rb_loc_post' },
         { task_name: 'rb_wireless', feed: 'rb_wireless' },
+        { task_name: 'rb_malware', feed: 'rb_malware' },
       ]
 
       kafka_brokers = node['redborder']['managers_per_services']['kafka']
