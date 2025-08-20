@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.8.3
+
+  - ptorresred
+    - [6918c60] Feature #22517: Add yara cookbook (#345)
+
 ## 5.8.2
 
   - manegron
