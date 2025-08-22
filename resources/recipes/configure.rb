@@ -744,6 +744,9 @@ minio_config 'Configure S3 (minio)' do
     action [:add_mcli, :add, :add_malware, :register]
   elsif !external_services.nil?
     action [:add_mcli, :remove, :deregister]
+  elsif !is_malware_enabled
+    create_malware_credentials true
+    action [:add_malware]
   else
     Chef::Log.warn('Skipped MinIO removal/deregistration due to missing external_services data')
     action :nothing
