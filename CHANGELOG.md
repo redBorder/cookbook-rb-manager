@@ -5,17 +5,8 @@ cookbook-rb-manager CHANGELOG
 
   - ljblancoredborder
     - [dd2784b] ignore gemfile.lock
-    - [0bc009f] Merge pull request #348 from redBorder/feature/#22210_scanner_module_to_enrich_and_create_assets
-  - Luis Blanco
-    - [0bc009f] Merge pull request #348 from redBorder/feature/#22210_scanner_module_to_enrich_and_create_assets
-  - Juan Soto
-    - [cfc4905] Merge branch 'development' of github.com:redBorder/cookbook-rb-manager into feature/#22210_scanner_module_to_enrich_and_create_assets
-    - [5260a47] Fix typo in rb_host_discovery
+  - Juan Soto #22210_scanner_module_to_enrich_and_create_assets
     - [594919b] Add missing rb_host_discovery task to indexer tasks
-  - Daniel Castro
-    - [e0a5d35] Release 5.8.3
-  - ptorresred
-    - [6918c60] Feature #22517: Add yara cookbook (#345)
 
 ## 5.8.3
 
