@@ -1,6 +1,13 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.9.0
+
+  - ljblancoredborder
+    - [dd2784b] ignore gemfile.lock
+  - Juan Soto #22210_scanner_module_to_enrich_and_create_assets
+    - [594919b] Add missing rb_host_discovery task to indexer tasks
+
 ## 5.8.3
 
   - ptorresred
