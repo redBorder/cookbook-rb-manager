@@ -510,6 +510,10 @@ aerospike_config 'Configure aerospike' do
   end
 end
 
+yara_config 'yara' do
+  action [:add]
+end
+
 # Configure logstash
 split_traffic = false
 
