@@ -1,7 +1,7 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
-## 5.8.4
+## 5.9.0
 
   - ljblancoredborder
     - [dd2784b] ignore gemfile.lock
