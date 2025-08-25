@@ -500,6 +500,16 @@ redis_config 'Configure redis' do
   end
 end
 
+aerospike_config 'Configure aerospike' do
+  if manager_services['aerospike']
+    ipaddress_sync node['ipaddress_sync']
+    managers_per_service node['redborder']['managers_per_services']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 yara_config 'yara' do
   action [:add]
 end
