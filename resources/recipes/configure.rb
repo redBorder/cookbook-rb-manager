@@ -732,7 +732,6 @@ template '/root/.s3cfg_initial' do
   end
 end
 
-malware_enabled = is_malware_enabled
 # Allow only s3 onpremise nodes for now..
 minio_config 'Configure S3 (minio)' do
   managers_with_minio node['redborder']['managers_per_services']['s3']
@@ -742,7 +741,6 @@ minio_config 'Configure S3 (minio)' do
   malware_secret_key_id s3_secrets['s3_malware_secret_key_id'] unless s3_secrets['s3_malware_secret_key_id'].nil?
   if manager_services['s3'] && external_services&.dig('s3') == 'onpremise'
     ipaddress node['ipaddress_sync']
-    create_malware_credentials true unless malware_enabled
     action [:add_mcli, :add, :add_malware, :register]
   elsif !external_services.nil?
     action [:add_mcli, :remove, :deregister]
