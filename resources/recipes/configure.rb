@@ -503,7 +503,9 @@ end
 aerospike_config 'Configure aerospike' do
   if manager_services['aerospike']
     ipaddress_sync node['ipaddress_sync']
-    managers_per_service node['redborder']['managers_per_services']
+    managers_per_service(
+      node.dig('redborder', 'managers_per_services', 'aerospike') || []
+    )
     action [:add, :register]
   else
     action [:remove, :deregister]
