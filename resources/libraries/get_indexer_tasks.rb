@@ -27,7 +27,11 @@ module RbManager
           taskHash
         end
 
-        [default_task] + namespace_tasks
+        if task[:task_name] == 'rb_monitor' && !namespaces.empty?
+          namespace_tasks
+        else
+          [default_task] + namespace_tasks
+        end
       end
     end
   end
