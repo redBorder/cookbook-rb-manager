@@ -390,6 +390,17 @@ nginx_config 'Configure Nginx aioutliers' do
   end
 end
 
+aerospike_config 'Configure aerospike' do
+  if manager_services['aerospike']
+    ipaddress_sync node['ipaddress_sync']
+    ipaddress node['ipaddress']
+    aerospike_managers node['redborder']['managers_per_services']['aerospike']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 webui_config 'Configure WebUI' do
   if manager_services['webui']
     hostname node['hostname']
@@ -494,18 +505,6 @@ redis_config 'Configure redis' do
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_secrets redis_secrets
     cdomain node['redborder']['cdomain']
-    action [:add, :register]
-  else
-    action [:remove, :deregister]
-  end
-end
-
-aerospike_config 'Configure aerospike' do
-  if manager_services['aerospike']
-    ipaddress_sync node['ipaddress_sync']
-    managers_per_service(
-      node.dig('redborder', 'managers_per_services', 'aerospike') || []
-    )
     action [:add, :register]
   else
     action [:remove, :deregister]
