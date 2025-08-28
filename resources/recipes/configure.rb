@@ -680,6 +680,7 @@ rb_agents_config 'Configure redborder-agents' do
     gemini_api_key redborder_agents_secrets['gemini_api_key']
     ollama_base_url redborder_agents_secrets['ollama_base_url']
     openai_api_key redborder_agents_secrets['openai_api_key']
+    auth_token node.run_state['auth_token']
     action [:add, :register]
   else
     action [:remove, :deregister]
