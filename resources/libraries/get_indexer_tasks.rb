@@ -16,7 +16,7 @@ module RbManager
         { task_name: 'rb_host_discovery', feed: 'rb_host_discovery' },
       ]
 
-      # This is an optimization: if there are no namespaces, rb_monitor is not active in Logstash.
+      # This is an optimization: if there are no namespaces, monitor pipeline is not active in Logstash.
       # In that case, we should read from the topic rb_monitor instead of rb_monitor_post.
       rb_monitor_feed = namespaces.empty? ? 'rb_monitor' : 'rb_monitor_post'
       base_tasks.push({ task_name: 'rb_monitor', feed: rb_monitor_feed })
