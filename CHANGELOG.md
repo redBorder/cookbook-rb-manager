@@ -1,6 +1,15 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.9.1
+
+  - manegron
+    - [396915c] Refactor code
+  - nilsver
+    - [913d0e5] clean up code
+    - [20c9a5c] different handling for monitor
+    - [3059041] split data indexed per namespace for rb_monitor
+
 ## 5.9.0
 
   - ljblancoredborder
