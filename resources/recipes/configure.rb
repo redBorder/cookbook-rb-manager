@@ -709,11 +709,38 @@ rb_clamav_config 'Configure ClamAV' do
   action :add
 end
 
-rb_chrony_config 'Configure Chrony' do
-  if manager_services['chrony']
-    ntp_servers node['redborder']['ntp']['servers']
+# Configure Chrony
+servers = []
+
+if manager_services['chrony']
+  servers = node['redborder']['ntp']['servers'] || []
+
+  begin
+    sensor_role = Chef::Role.load('sensor')
+    sensor_role.override_attributes['redborder'] ||= {}
+    sensor_role.override_attributes['redborder']['ntp'] ||= {}
+    sensor_role.override_attributes['redborder']['ntp']['servers'] = servers
+    sensor_role.save
+    Chef::Log.info("Configure Chrony: Propagated NTP servers to sensor's role: #{servers}")
+  rescue => e
+    Chef::Log.error("Configure Chrony: Failed to update role 'sensor': #{e.message}")
+  end
+
+  rb_chrony_config 'Configure Chrony' do
+    ntp_servers servers
     action :add
-  else
+  end
+
+else
+  sensor_role = search(:role, 'name:sensor').first rescue nil
+  servers = sensor_role&.override_attributes&.dig('redborder','ntp','servers') || []
+
+  if servers.empty?
+    servers = node['chrony']['ntp_servers'] || []
+    Chef::Log.warn("Configure Chrony: No NTP servers found in node or sensor role, using defaults: #{servers}")
+  end
+  
+  rb_chrony_config 'Configure Chrony' do
     action :remove
   end
 end
