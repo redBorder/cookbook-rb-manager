@@ -1,6 +1,16 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.10.0
+
+  - Daniel Castro
+    - [cf9c60b] aerospike seed fix
+    - [e967a33] pass only aerospike and add safety dig
+    - [9502585] add sync ip to cookbook parameters
+    - [d5c8c0d] add cdomain and managers_per_service
+    - [b3b93da] add aerospike to full services_group
+    - [6370c83] include aerospike service
+
 ## 5.9.1
 
   - manegron
