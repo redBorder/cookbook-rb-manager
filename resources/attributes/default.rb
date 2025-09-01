@@ -47,6 +47,10 @@ default['redborder']['redborder-llm']['cpus'] = '0'
 default['redis']['port'] = 26379
 default['redis']['sentinel_port'] = 26380
 
+# aerospike
+default['aerospike']['port'] = 5000
+default['aerospike']['multicast'] = '239.1.99.222'
+
 # hard disk
 default['redborder']['manager']['data_dev'] = {}
 default['redborder']['manager']['data_dev']['root'] = '/dev/mapper/VolGroup-lv_root'
@@ -76,6 +80,7 @@ default['redborder']['memory_services']['http2k'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['kafka'] = { 'count': 120, 'memory': 0, 'max_limit': 524288 }
 default['redborder']['memory_services']['n2klocd'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['postgresql'] = { 'count': 25, 'memory': 0 }
+default['redborder']['memory_services']['aerospike'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['rb-aioutliers'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['redborder-llm'] = { 'count': 5, 'memory': 0 }
 default['redborder']['memory_services']['redborder-agents'] = { 'count': 5, 'memory': 0 }
@@ -103,7 +108,7 @@ default['redborder']['memory_assigned'] = {}
 # geoip has been removed because is not a service
 default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
                                                     druid-broker druid-historical druid-coordinator druid-router druid-indexer druid-overlord
-                                                    postgresql nginx webui rb-workers f2k rb-druid-indexer
+                                                    postgresql aerospike nginx webui rb-workers f2k rb-druid-indexer
                                                     redborder-monitor sfacctd redborder-dswatcher redis
                                                     redborder-events-counter http2k redborder-mem2incident rb-logstatter)
 
@@ -121,6 +126,7 @@ default['redborder']['services_group']['s3'] = %w(consul nginx s3)
 default['redborder']['services_group']['postgresql'] = %w(consul postgresql)
 
 default['redborder']['services'] = {}
+default['redborder']['services']['aerospike']                 = true
 default['redborder']['services']['chef-client']               = true
 default['redborder']['services']['chef-server']               = false
 default['redborder']['services']['chrony']                    = true
@@ -169,6 +175,7 @@ default['redborder']['services']['secor']                     = false
 default['redborder']['services']['secor-vault']               = false
 default['redborder']['services']['redis']                     = false
 
+default['redborder']['systemdservices']['aerospike']                = ['aerospike']
 default['redborder']['systemdservices']['chef-client']              = ['chef-client']
 default['redborder']['systemdservices']['chef-server']              = ['opscode-erchef']
 default['redborder']['systemdservices']['chrony']                   = ['chronyd']
