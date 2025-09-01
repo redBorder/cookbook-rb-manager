@@ -1,6 +1,14 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.11.0
+
+  - Rafael Gomez
+    - [3178d63] Remove auth token
+    - [f853baa] Passing auth token to redborder agents cookbook
+    - [ac49456] Merge branch 'master' into feature/#22472_replace_title_description_generation_with_redborder_agents
+    - [e0a89c0] Remove redborder-llm configuration and dependencies
+
 ## 5.10.0
 
   - Daniel Castro

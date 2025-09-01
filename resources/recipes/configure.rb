@@ -676,17 +676,6 @@ mem2incident_config 'Configure redborder-mem2incident' do
   end
 end
 
-rb_llm_config 'Configure redborder-llm' do
-  if manager_services['redborder-llm']
-    llm_selected_model node['redborder']['llm_selected_model']
-    cpus node['redborder']['redborder-llm']['cpus']
-    ipaddress node['ipaddress_sync']
-    action [:add, :register]
-  else
-    action [:remove, :deregister]
-  end
-end
-
 redborder_agents_secrets = {}
 begin
   redborder_agents_secrets = data_bag_item('passwords', 'redborder_agents').to_hash
