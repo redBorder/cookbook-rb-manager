@@ -390,6 +390,17 @@ nginx_config 'Configure Nginx aioutliers' do
   end
 end
 
+aerospike_config 'Configure aerospike' do
+  if manager_services['aerospike']
+    ipaddress_sync node['ipaddress_sync']
+    ipaddress node['ipaddress']
+    aerospike_managers node['redborder']['managers_per_services']['aerospike']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 webui_config 'Configure WebUI' do
   if manager_services['webui']
     hostname node['hostname']
