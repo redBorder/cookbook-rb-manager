@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.11.1
+
+  - Pablo Pérez
+    - [7c051b3] Feature/#22453 create s3 malware bucket (#343)
+
 ## 5.11.0
 
   - Rafael Gomez
