@@ -39,13 +39,13 @@ default['redborder']['memcached']['server_list'] = []
 default['redborder']['memcached']['options'] = ''
 default['redborder']['memcached']['port'] = 11211
 
-# redborder-llm
-default['redborder']['llm_selected_model'] = nil
-default['redborder']['redborder-llm']['cpus'] = '0'
-
 # redis
 default['redis']['port'] = 26379
 default['redis']['sentinel_port'] = 26380
+
+# aerospike
+default['aerospike']['port'] = 5000
+default['aerospike']['multicast'] = '239.1.99.222'
 
 # hard disk
 default['redborder']['manager']['data_dev'] = {}
@@ -76,8 +76,8 @@ default['redborder']['memory_services']['http2k'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['kafka'] = { 'count': 120, 'memory': 0, 'max_limit': 524288 }
 default['redborder']['memory_services']['n2klocd'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['postgresql'] = { 'count': 25, 'memory': 0 }
+default['redborder']['memory_services']['aerospike'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['rb-aioutliers'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['redborder-llm'] = { 'count': 5, 'memory': 0 }
 default['redborder']['memory_services']['redborder-agents'] = { 'count': 5, 'memory': 0 }
 default['redborder']['memory_services']['redborder-cep'] = { 'count': 80, 'memory': 0 }
 default['redborder']['memory_services']['redborder-mem2incident'] = { 'count': 5, 'memory': 0 }
@@ -103,7 +103,7 @@ default['redborder']['memory_assigned'] = {}
 # geoip has been removed because is not a service
 default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
                                                     druid-broker druid-historical druid-coordinator druid-router druid-indexer druid-overlord
-                                                    postgresql nginx webui rb-workers f2k rb-druid-indexer
+                                                    postgresql aerospike nginx webui rb-workers f2k rb-druid-indexer
                                                     redborder-monitor sfacctd redborder-dswatcher redis
                                                     redborder-events-counter http2k redborder-mem2incident rb-logstatter)
 
@@ -121,6 +121,7 @@ default['redborder']['services_group']['s3'] = %w(consul nginx s3)
 default['redborder']['services_group']['postgresql'] = %w(consul postgresql)
 
 default['redborder']['services'] = {}
+default['redborder']['services']['aerospike']                 = true
 default['redborder']['services']['chef-client']               = true
 default['redborder']['services']['chef-server']               = false
 default['redborder']['services']['chrony']                    = true
@@ -149,7 +150,6 @@ default['redborder']['services']['rb-aioutliers']             = false
 default['redborder']['services']['rb-arubacentral']           = false
 default['redborder']['services']['rb-logstatter']             = false
 default['redborder']['services']['rb-workers']                = false
-default['redborder']['services']['redborder-llm']             = false
 default['redborder']['services']['redborder-agents']          = false
 default['redborder']['services']['redborder-ale']             = false
 default['redborder']['services']['redborder-cep']             = false
@@ -169,6 +169,7 @@ default['redborder']['services']['secor']                     = false
 default['redborder']['services']['secor-vault']               = false
 default['redborder']['services']['redis']                     = false
 
+default['redborder']['systemdservices']['aerospike']                = ['aerospike']
 default['redborder']['systemdservices']['chef-client']              = ['chef-client']
 default['redborder']['systemdservices']['chef-server']              = ['opscode-erchef']
 default['redborder']['systemdservices']['chrony']                   = ['chronyd']
@@ -197,7 +198,6 @@ default['redborder']['systemdservices']['rb-aioutliers']            = ['rb-aiout
 default['redborder']['systemdservices']['rb-arubacentral']          = ['rb-arubacentral']
 default['redborder']['systemdservices']['rb-logstatter']            = ['rb-logstatter']
 default['redborder']['systemdservices']['rb-workers']               = ['rb-workers']
-default['redborder']['systemdservices']['redborder-llm']            = ['redborder-llm']
 default['redborder']['systemdservices']['redborder-agents']         = ['redborder-agents']
 default['redborder']['systemdservices']['redborder-ale']            = ['redborder-ale']
 default['redborder']['systemdservices']['redborder-cep']            = ['redborder-cep']

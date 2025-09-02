@@ -390,6 +390,17 @@ nginx_config 'Configure Nginx aioutliers' do
   end
 end
 
+aerospike_config 'Configure aerospike' do
+  if manager_services['aerospike']
+    ipaddress_sync node['ipaddress_sync']
+    ipaddress node['ipaddress']
+    aerospike_managers node['redborder']['managers_per_services']['aerospike']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 webui_config 'Configure WebUI' do
   if manager_services['webui']
     hostname node['hostname']
@@ -498,6 +509,10 @@ redis_config 'Configure redis' do
   else
     action [:remove, :deregister]
   end
+end
+
+yara_config 'yara' do
+  action [:add]
 end
 
 # Configure logstash
@@ -655,17 +670,6 @@ mem2incident_config 'Configure redborder-mem2incident' do
     redis_port node['redis']['port']
     redis_secrets redis_secrets
     auth_token node.run_state['auth_token']
-    action [:add, :register]
-  else
-    action [:remove, :deregister]
-  end
-end
-
-rb_llm_config 'Configure redborder-llm' do
-  if manager_services['redborder-llm']
-    llm_selected_model node['redborder']['llm_selected_model']
-    cpus node['redborder']['redborder-llm']['cpus']
-    ipaddress node['ipaddress_sync']
     action [:add, :register]
   else
     action [:remove, :deregister]
