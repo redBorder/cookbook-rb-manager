@@ -147,6 +147,7 @@ keepalived_config 'Configure keepalived' do
     managers_per_service node['redborder']['managers_per_services']
     action :add
   else
+    virtual_ips virtual_ips
     action :remove
   end
 end
