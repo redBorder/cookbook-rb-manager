@@ -390,6 +390,17 @@ nginx_config 'Configure Nginx aioutliers' do
   end
 end
 
+aerospike_config 'Configure aerospike' do
+  if manager_services['aerospike']
+    ipaddress_sync node['ipaddress_sync']
+    ipaddress node['ipaddress']
+    aerospike_managers node['redborder']['managers_per_services']['aerospike']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 webui_config 'Configure WebUI' do
   if manager_services['webui']
     hostname node['hostname']
@@ -669,17 +680,6 @@ mem2incident_config 'Configure redborder-mem2incident' do
   end
 end
 
-rb_llm_config 'Configure redborder-llm' do
-  if manager_services['redborder-llm']
-    llm_selected_model node['redborder']['llm_selected_model']
-    cpus node['redborder']['redborder-llm']['cpus']
-    ipaddress node['ipaddress_sync']
-    action [:add, :register]
-  else
-    action [:remove, :deregister]
-  end
-end
-
 redborder_agents_secrets = {}
 begin
   redborder_agents_secrets = data_bag_item('passwords', 'redborder_agents').to_hash
@@ -745,9 +745,11 @@ minio_config 'Configure S3 (minio)' do
   managers_with_minio node['redborder']['managers_per_services']['s3']
   access_key_id s3_secrets['s3_access_key_id']
   secret_key_id s3_secrets['s3_secret_key_id']
+  malware_access_key_id s3_secrets['s3_malware_access_key_id'] unless s3_secrets['s3_malware_access_key_id'].nil?
+  malware_secret_key_id s3_secrets['s3_malware_secret_key_id'] unless s3_secrets['s3_malware_secret_key_id'].nil?
   if manager_services['s3'] && external_services&.dig('s3') == 'onpremise'
     ipaddress node['ipaddress_sync']
-    action [:add_mcli, :add, :register]
+    action [:add_mcli, :add, :add_malware, :register]
   elsif !external_services.nil?
     action [:add_mcli, :remove, :deregister]
   else
