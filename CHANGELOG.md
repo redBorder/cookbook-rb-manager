@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.12.0
+
+  - Pablo Torres
+    - [5036140] Feature #22342: Add malware datasource
+
 ## 5.11.1
 
   - Pablo Pérez

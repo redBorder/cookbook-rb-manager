@@ -13,6 +13,7 @@ module RbManager
         { task_name: 'rb_scanner', feed: 'rb_scanner_post' },
         { task_name: 'rb_location', feed: 'rb_loc_post' },
         { task_name: 'rb_wireless', feed: 'rb_wireless' },
+        { task_name: 'rb_malware', feed: 'rb_malware_post' },
         { task_name: 'rb_host_discovery', feed: 'rb_host_discovery' },
       ]
 
