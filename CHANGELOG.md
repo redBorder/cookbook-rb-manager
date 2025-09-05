@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.13.1
+
+  - Pablo Pérez
+    - [b271dae] Update default.rb
+
 ## 5.13.0
 
   - Pablo Pérez
