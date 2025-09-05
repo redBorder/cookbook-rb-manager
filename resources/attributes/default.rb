@@ -44,7 +44,7 @@ default['redis']['port'] = 26379
 default['redis']['sentinel_port'] = 26380
 
 # aerospike
-default['aerospike']['port'] = 5000
+default['aerospike']['port'] = 3000
 default['aerospike']['multicast'] = '239.1.99.222'
 
 # hard disk
