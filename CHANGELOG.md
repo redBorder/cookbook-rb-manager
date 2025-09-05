@@ -1,6 +1,49 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.13.0
+
+  - Pablo Pérez
+    - [2c3f65f] Pass s3_secrets to logstash cookbook
+    - [762e5f2] Bring back malware pipeline
+
+## 5.12.0
+
+  - Pablo Torres
+    - [5036140] Feature #22342: Add malware datasource
+
+## 5.11.1
+
+  - Pablo Pérez
+    - [7c051b3] Feature/#22453 create s3 malware bucket (#343)
+
+## 5.11.0
+
+  - Rafael Gomez
+    - [3178d63] Remove auth token
+    - [f853baa] Passing auth token to redborder agents cookbook
+    - [ac49456] Merge branch 'master' into feature/#22472_replace_title_description_generation_with_redborder_agents
+    - [e0a89c0] Remove redborder-llm configuration and dependencies
+
+## 5.10.0
+
+  - Daniel Castro
+    - [cf9c60b] aerospike seed fix
+    - [e967a33] pass only aerospike and add safety dig
+    - [9502585] add sync ip to cookbook parameters
+    - [d5c8c0d] add cdomain and managers_per_service
+    - [b3b93da] add aerospike to full services_group
+    - [6370c83] include aerospike service
+
+## 5.9.1
+
+  - manegron
+    - [396915c] Refactor code
+  - nilsver
+    - [913d0e5] clean up code
+    - [20c9a5c] different handling for monitor
+    - [3059041] split data indexed per namespace for rb_monitor
+
 ## 5.9.0
 
   - ljblancoredborder
