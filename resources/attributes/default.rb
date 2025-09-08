@@ -4,9 +4,7 @@
 default['redborder']['cdomain'] = 'redborder.cluster'
 default['redborder']['organization_uuid'] = nil
 default['redborder']['organizations'] = []
-default['redborder']['locations'] =
-  %w[namespace namespace_uuid organization organization_uuid service_provider service_provider_uuid deployment
-     deployment_uuid market market_uuid campus campus_uuid building building_uuid floor floor_uuid]
+default['redborder']['locations'] = %w(namespace namespace_uuid organization organization_uuid service_provider service_provider_uuid deployment deployment_uuid market market_uuid campus campus_uuid building building_uuid floor floor_uuid)
 default['redborder']['sso_enabled'] = '0'
 default['redborder']['repo'] = {}
 default['redborder']['repo']['version'] = nil
@@ -111,18 +109,18 @@ default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper
                                                     redborder-monitor sfacctd redborder-dswatcher redis
                                                     redborder-events-counter http2k redborder-mem2incident rb-logstatter)
 
-default['redborder']['services_group']['custom'] = %w[consul]
-default['redborder']['services_group']['core'] = %w[consul chef-server s3 postgresql nginx]
-default['redborder']['services_group']['chef'] = %w[consul chef-server]
-default['redborder']['services_group']['kafka'] = %w[consul kafka]
-default['redborder']['services_group']['historical'] = %w[consul druid-historical]
-default['redborder']['services_group']['middlemanager'] = %w[consul druid-middlemanager]
-default['redborder']['services_group']['broker'] = %w[consul druid-broker]
-default['redborder']['services_group']['http2k'] = %w[consul http2k]
-default['redborder']['services_group']['webui'] = %w[consul nginx webui rb-workers]
-default['redborder']['services_group']['f2k'] = %w[consul f2k]
-default['redborder']['services_group']['s3'] = %w[consul nginx s3]
-default['redborder']['services_group']['postgresql'] = %w[consul postgresql]
+default['redborder']['services_group']['custom'] = %w(consul)
+default['redborder']['services_group']['core'] = %w(consul chef-server s3 postgresql nginx)
+default['redborder']['services_group']['chef'] = %w(consul chef-server)
+default['redborder']['services_group']['kafka'] = %w(consul kafka)
+default['redborder']['services_group']['historical'] = %w(consul druid-historical)
+default['redborder']['services_group']['middlemanager'] = %w(consul druid-middlemanager)
+default['redborder']['services_group']['broker'] = %w(consul druid-broker)
+default['redborder']['services_group']['http2k'] = %w(consul http2k)
+default['redborder']['services_group']['webui'] = %w(consul nginx webui rb-workers)
+default['redborder']['services_group']['f2k'] = %w(consul f2k)
+default['redborder']['services_group']['s3'] = %w(consul nginx s3)
+default['redborder']['services_group']['postgresql'] = %w(consul postgresql)
 
 default['redborder']['services'] = {}
 default['redborder']['services']['aerospike']                 = true
