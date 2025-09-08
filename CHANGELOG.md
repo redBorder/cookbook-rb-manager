@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.14.0
+
+  - Rafael Gomez
+    - [6b9720e] Disable aerospike by default
+
 ## 5.13.1
 
   - Pablo Pérez
