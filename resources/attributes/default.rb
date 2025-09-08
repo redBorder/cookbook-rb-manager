@@ -264,4 +264,3 @@ default['redborder']['manager']['policy_enforced']['development']['actions']['de
 default['redborder']['manager']['policy_enforced']['development']['actions']['list_computers'] = {}
 default['redborder']['manager']['policy_enforced']['development']['actions']['list_computers']['url'] = '/wm/acl/rules/json'
 default['redborder']['manager']['policy_enforced']['development']['actions']['list_computers']['verb'] = 'Get'
-
