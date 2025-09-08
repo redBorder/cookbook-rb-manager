@@ -427,7 +427,6 @@ webui_config 'Configure WebUI' do
     s3_secrets s3_secrets
     action [:add, :register, :configure_rsa]
   else
-    virtual_ips virtual_ips
     action [:remove, :deregister]
   end
 end
