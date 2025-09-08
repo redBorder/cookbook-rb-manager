@@ -147,7 +147,6 @@ keepalived_config 'Configure keepalived' do
     managers_per_service node['redborder']['managers_per_services']
     action :add
   else
-    virtual_ips virtual_ips
     action :remove
   end
 end
@@ -415,7 +414,8 @@ webui_config 'Configure WebUI' do
     s3_secrets s3_secrets
     action [:add, :register, :configure_rsa]
   else
-    action [:remove, :deregister]
+    virtual_ips virtual_ips
+    action [:remove, :deregister, :remove_iptables_rules]
   end
 end
 
