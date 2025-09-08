@@ -234,3 +234,34 @@ default['redborder']['vault_incidents_priority_filter'] = 'error'
 
 # Save Secor S3 raw path
 default['redborder']['manager']['s3rawpath'] = 'rbraw'
+
+# Policy Enforced
+default['redborder']['manager']['policy_enforced'] = {}
+default['redborder']['manager']['policy_enforced']['production'] = {}
+default['redborder']['manager']['policy_enforced']['production']['host'] = ''
+default['redborder']['manager']['policy_enforced']['production']['port'] = '8080'
+default['redborder']['manager']['policy_enforced']['production']['actions'] = {}
+default['redborder']['manager']['policy_enforced']['production']['actions']['delete_computer'] = {}
+default['redborder']['manager']['policy_enforced']['production']['actions']['delete_computer']['url'] = '/wm/acl/rules/json'
+default['redborder']['manager']['policy_enforced']['production']['actions']['delete_computer']['verb'] = 'Delete'
+default['redborder']['manager']['policy_enforced']['production']['actions']['delete_all'] = {}
+default['redborder']['manager']['policy_enforced']['production']['actions']['delete_all']['url'] = '/wm/acl/clear/json'
+default['redborder']['manager']['policy_enforced']['production']['actions']['delete_all']['verb'] = 'Get'
+default['redborder']['manager']['policy_enforced']['production']['actions']['list_computers'] = {}
+default['redborder']['manager']['policy_enforced']['production']['actions']['list_computers']['url'] = '/wm/acl/rules/json'
+default['redborder']['manager']['policy_enforced']['production']['actions']['list_computers']['verb'] = 'Get'
+
+default['redborder']['manager']['policy_enforced']['development'] = {}
+default['redborder']['manager']['policy_enforced']['development']['host'] = ''
+default['redborder']['manager']['policy_enforced']['development']['port'] = '8080'
+default['redborder']['manager']['policy_enforced']['development']['actions'] = {}
+default['redborder']['manager']['policy_enforced']['development']['actions']['delete_computer'] = {}
+default['redborder']['manager']['policy_enforced']['development']['actions']['delete_computer']['url'] = '/wm/acl/rules/json'
+default['redborder']['manager']['policy_enforced']['development']['actions']['delete_computer']['verb'] = 'Delete'
+default['redborder']['manager']['policy_enforced']['development']['actions']['delete_all'] = {}
+default['redborder']['manager']['policy_enforced']['development']['actions']['delete_all']['url'] = '/wm/acl/clear/json'
+default['redborder']['manager']['policy_enforced']['development']['actions']['delete_all']['verb'] = 'Get'
+default['redborder']['manager']['policy_enforced']['development']['actions']['list_computers'] = {}
+default['redborder']['manager']['policy_enforced']['development']['actions']['list_computers']['url'] = '/wm/acl/rules/json'
+default['redborder']['manager']['policy_enforced']['development']['actions']['list_computers']['verb'] = 'Get'
+
