@@ -19,7 +19,8 @@ user_sensor_map_data = get_user_sensor_map
 is_consul_server = consul_server?
 
 # Save previous webui VIP for this run
-previous_webui_vip = node.normal['redborder']['previous_webui_vip']
+previous_webui_vip = node.normal.dig('redborder', 'previous_webui_vip')
+previous_webui_vip = nil if previous_webui_vip.is_a?(Hash) && previous_webui_vip.empty?
 
 # bash 'upload_cookbooks' do
 #   code 'bash /usr/lib/redborder/bin/rb_upload_cookbooks.sh'
@@ -868,7 +869,8 @@ execute 'force_chef_client_wakeup' do
 end
 
 # Save current webui VIP for next run
-node.normal['redborder']['previous_webui_vip'] = virtual_ips.dig('external', 'webui', 'ip')
+val = virtual_ips.dig('external', 'webui', 'ip')
+node.normal['redborder']['previous_webui_vip'] = val.is_a?(Hash) && val.empty? ? nil : val
 
 # MOTD
 cluster_uuid_db = {}
