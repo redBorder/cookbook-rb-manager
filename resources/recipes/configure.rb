@@ -18,18 +18,8 @@ vault_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('vault')
 user_sensor_map_data = get_user_sensor_map
 is_consul_server = consul_server?
 
-# Clean up old iptables rules for webui VIP
-last_webui_vip = node.normal['rb-manager']['last_webui_vip']
-current_webui_vip = virtual_ips['external']['webui']['ip']
-
-# Only attempt to remove rule if last_webui_vip exists, and if ip has changed or webui service is disabled
-if last_webui_vip && (last_webui_vip != current_webui_vip || !manager_services['webui'])
-  execute 'remove_old_webui_iptables_rule' do
-    command "iptables -t nat -D PREROUTING -d #{last_webui_vip} -j REDIRECT"
-    only_if "iptables -t nat -L PREROUTING -n | grep #{last_webui_vip}"
-    ignore_failure true
-  end
-end
+# Save previous webui VIP for this run
+previous_webui_vip = node.normal['redborder']['previous_webui_vip']
 
 # bash 'upload_cookbooks' do
 #   code 'bash /usr/lib/redborder/bin/rb_upload_cookbooks.sh'
@@ -69,10 +59,13 @@ rb_firewall_config 'Configure Firewall' do
   vault_sensor_in_proxy_nodes vault_sensor_in_proxy_nodes
   sync_ip node['ipaddress_sync']
   ip_addr node['ipaddress']
+  previous_webui_vip previous_webui_vip
+  current_webui_vip virtual_ips.dig('external', 'webui', 'ip')
+  manager_services manager_services
   if manager_services['firewall']
-    action :add
+    action [:add, :cleanup_virtual_ip_rules]
   else
-    action :remove
+    action [:remove, :cleanup_virtual_ip_rules]
   end
 end
 
@@ -875,7 +868,7 @@ execute 'force_chef_client_wakeup' do
 end
 
 # Save current webui VIP for next run
-node.normal['rb-manager']['last_webui_vip'] = virtual_ips['external']['webui']['ip']
+node.normal['redborder']['previous_webui_vip'] = virtual_ips.dig('external', 'webui', 'ip')
 
 # MOTD
 cluster_uuid_db = {}
