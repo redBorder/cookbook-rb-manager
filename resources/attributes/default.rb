@@ -39,11 +39,11 @@ default['redborder']['webui']['version'] = nil
 default['redborder']['memcached']['elasticache'] = false
 default['redborder']['memcached']['server_list'] = []
 default['redborder']['memcached']['options'] = ''
-default['redborder']['memcached']['port'] = 11_211
+default['redborder']['memcached']['port'] = 11211
 
 # redis
-default['redis']['port'] = 26_379
-default['redis']['sentinel_port'] = 26_380
+default['redis']['port'] = 26379
+default['redis']['sentinel_port'] = 26380
 
 # aerospike
 default['aerospike']['port'] = 3000
@@ -55,11 +55,11 @@ default['redborder']['manager']['data_dev']['root'] = '/dev/mapper/VolGroup-lv_r
 default['redborder']['manager']['data_dev']['raw'] = '/dev/mapper/vg_rbdata-lv_raw'
 default['redborder']['manager']['data_dev']['aggregate'] = '/dev/mapper/vg_rbdata-lv_aggregated'
 default['redborder']['manager']['hd_services'] = [
-  { 'name': 'kafka', 'count': 5, 'prefered': 'aggregate' },
-  { 'name': 'zookeeper', 'count': 1, 'prefered': 'aggregate' },
-  { 'name': 's3', 'count': 50, 'prefered': 'raw' },
-  { 'name': 'druid-historical', 'count': 50, 'prefered': 'raw' },
-]
+                                                   { 'name': 'kafka', 'count': 5, 'prefered': 'aggregate' },
+                                                   { 'name': 'zookeeper', 'count': 1, 'prefered': 'aggregate' },
+                                                   { 'name': 's3', 'count': 50, 'prefered': 'raw' },
+                                                   { 'name': 'druid-historical', 'count': 50, 'prefered': 'raw' },
+                                                 ]
 
 default['redborder']['manager']['hd_services_current'] = {}
 
@@ -75,7 +75,7 @@ default['redborder']['memory_services']['druid-indexer'] = { 'count': 130, 'memo
 default['redborder']['memory_services']['druid-router'] = { 'count': 20, 'memory': 0 }
 default['redborder']['memory_services']['f2k'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['http2k'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['kafka'] = { 'count': 120, 'memory': 0, 'max_limit': 524_288 }
+default['redborder']['memory_services']['kafka'] = { 'count': 120, 'memory': 0, 'max_limit': 524288 }
 default['redborder']['memory_services']['n2klocd'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['postgresql'] = { 'count': 25, 'memory': 0 }
 default['redborder']['memory_services']['aerospike'] = { 'count': 10, 'memory': 0 }
@@ -219,22 +219,12 @@ default['redborder']['systemdservices']['secor']                    = ['rb-secor
 default['redborder']['systemdservices']['secor-vault']              = ['rb-secor-vault']
 default['redborder']['systemdservices']['redis']                    = ['redis']
 
+# Balanced services
+default['redborder']['manager']['balanced'] = [ { port: 443, protocol: 'tcp', name: 'redborder nginx', service: 'nginx', redirected_service: 'nginx', persistence_timeout: 9600 }, { port: 2055, protocol: 'udp', name: 'netflow,ipfix/sflow daemon', service: 'f2k', redirected_service: 'f2k', persistence_timeout: 30 }, { port: 6343, protocol: 'udp', name: 'sflow daemon', service: 'sfacctd', redirected_service: 'sfacctd', persistence_timeout: 30 }, { port: 9092, protocol: 'tcp', name: 'kafka', service: 'kafka', redirected_service: 'kafka', persistence_timeout: 30 } ]
+
 # Tier
 default['redborder']['druid']['historical']['tier'] = 'default'
 default['redborder']['druid']['historical']['maxsize'] = -1
-
-# Balanced services
-default['redborder']['manager']['balanced'] = [
-  { service: 'nginx',   name: 'nginx',                      port: 443,  protocol: 'tcp', redirected_service: 'nginx',
-    persistence_timeout: 9600 },
-  # { service: 'webui',   name: 'redborder webui',            port: 443,  protocol: 'tcp', redirected_service: 'nginx',   persistence_timeout: 9600 },
-  { service: 'f2k',     name: 'netflow,ipfix/sflow daemon', port: 2055, protocol: 'udp', redirected_service: 'f2k',
-    persistence_timeout: 30 },
-  { service: 'sfacctd', name: 'sflow daemon',               port: 6343, protocol: 'udp', redirected_service: 'sfacctd',
-    persistence_timeout: 30 },
-  { service: 'kafka',   name: 'kafka',                      port: 9092, protocol: 'tcp', redirected_service: 'kafka',
-    persistence_timeout: 30 }
-]
 
 # Virtual Ips
 default['redborder']['manager']['virtual_ips'] = {
