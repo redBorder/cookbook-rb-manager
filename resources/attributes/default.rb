@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # general
 default['redborder']['cdomain'] = 'redborder.cluster'
 default['redborder']['organization_uuid'] = nil
