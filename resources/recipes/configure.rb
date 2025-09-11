@@ -129,7 +129,7 @@ node.normal['redborder']['manager']['balanced'] = [
   { service: 'webui',   name: 'redborder webui',            port: 443,  protocol: 'tcp', redirected_service: 'nginx',   persistence_timeout: 9600 },
   { service: 'f2k',     name: 'netflow,ipfix/sflow daemon', port: 2055, protocol: 'udp', redirected_service: 'f2k',     persistence_timeout: 30 },
   { service: 'sfacctd', name: 'sflow daemon',               port: 6343, protocol: 'udp', redirected_service: 'sfacctd', persistence_timeout: 30 },
-  { service: 'kafka',   name: 'kafka',                      port: 9092, protocol: 'tcp', redirected_service: 'kafka',   persistence_timeout: 30 }
+  { service: 'kafka',   name: 'kafka',                      port: 9092, protocol: 'tcp', redirected_service: 'kafka',   persistence_timeout: 30 },
 ]
 if manager_services['keepalived']
   begin

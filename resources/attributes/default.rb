@@ -232,8 +232,8 @@ default['redborder']['manager']['virtual_ips'] = {
     { service: 'nginx' },
     { service: 'f2k' },
     { service: 'sfacctd' },
-    { service: 'kafka' }
-  ]
+    { service: 'kafka' },
+  ],
 }
 
 default['redborder']['pending_changes'] = 0
