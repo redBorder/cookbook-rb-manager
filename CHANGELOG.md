@@ -1,6 +1,32 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.14.0
+
+  - Rafael Gomez
+    - [6b9720e] Disable aerospike by default
+
+## 5.13.1
+
+  - Pablo Pérez
+    - [b271dae] Update default.rb
+
+## 5.13.0
+
+  - Pablo Pérez
+    - [2c3f65f] Pass s3_secrets to logstash cookbook
+    - [762e5f2] Bring back malware pipeline
+
+## 5.12.0
+
+  - Pablo Torres
+    - [5036140] Feature #22342: Add malware datasource
+
+## 5.11.1
+
+  - Pablo Pérez
+    - [7c051b3] Feature/#22453 create s3 malware bucket (#343)
+
 ## 5.11.0
 
   - Rafael Gomez
