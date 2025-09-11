@@ -515,6 +515,17 @@ yara_config 'yara' do
   action [:add]
 end
 
+# Configure Airflow
+airflow_config 'Configure airflow' do
+  if manager_services['airflow']
+    airflow_hosts node['redborder']['managers_per_services']['airflow']
+    cdomain node['redborder']['cdomain']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 # Configure logstash
 split_traffic = false
 

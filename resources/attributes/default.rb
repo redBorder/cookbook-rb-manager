@@ -43,6 +43,9 @@ default['redborder']['memcached']['port'] = 11211
 default['redis']['port'] = 26379
 default['redis']['sentinel_port'] = 26380
 
+# airflow
+default['airflow']['port'] = 9090
+
 # aerospike
 default['aerospike']['port'] = 3000
 default['aerospike']['multicast'] = '239.1.99.222'
@@ -87,6 +90,7 @@ default['redborder']['memory_services']['zookeeper'] = { 'count': 40, 'memory': 
 default['redborder']['memory_services']['secor'] = { 'count': 30, 'memory': 0 }
 default['redborder']['memory_services']['secor-vault'] = { 'count': 30, 'memory': 0 }
 default['redborder']['memory_services']['redis'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['airflow'] = { 'count': 10, 'memory': 0 }
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default['redborder']['cluster_info'] = {}
@@ -168,6 +172,7 @@ default['redborder']['services']['firewall']                  = true
 default['redborder']['services']['secor']                     = false
 default['redborder']['services']['secor-vault']               = false
 default['redborder']['services']['redis']                     = false
+default['redborder']['services']['airflow']                     = false
 
 default['redborder']['systemdservices']['aerospike']                = ['aerospike']
 default['redborder']['systemdservices']['chef-client']              = ['chef-client']
@@ -216,6 +221,7 @@ default['redborder']['systemdservices']['firewall']                 = ['firewall
 default['redborder']['systemdservices']['secor']                    = ['rb-secor']
 default['redborder']['systemdservices']['secor-vault']              = ['rb-secor-vault']
 default['redborder']['systemdservices']['redis']                    = ['redis']
+default['redborder']['systemdservices']['airflow']                    = ['airflow']
 
 default['redborder']['manager']['balanced'] = [ { port: 443, protocol: 'tcp', name: 'redborder webui', service: 'webui', redirected_service: 'nginx', persistence_timeout: 9600 }, { port: 2055, protocol: 'udp', name: 'netflow,ipfix/sflow daemon', service: 'f2k', redirected_service: 'f2k', persistence_timeout: 30 }, { port: 6343, protocol: 'udp', name: 'sflow daemon', service: 'sfacctd', redirected_service: 'sfacctd', persistence_timeout: 30 }, { port: 9092, protocol: 'tcp', name: 'kafka', service: 'kafka', redirected_service: 'kafka', persistence_timeout: 30 } ]
 
