@@ -515,6 +515,10 @@ yara_config 'yara' do
   action [:add]
 end
 
+cape_config 'cape' do
+  action [:add]
+end
+
 # Configure logstash
 split_traffic = false
 
