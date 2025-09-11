@@ -30,10 +30,6 @@ Cookbook to configure a redborder manager
 5. Run the tests, ensuring they all pass
 6. Submit a Pull Request using Github
 
-## Cookstyle
-
-This cookbook uses [Cookstyle](https://github.com/chef/cookstyle) to ensure that the code is following Chef's style guidelines.
-
 ## License
 
 GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 19 November 2007
