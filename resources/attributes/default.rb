@@ -228,7 +228,6 @@ default['redborder']['druid']['historical']['maxsize'] = -1
 default['redborder']['manager']['virtual_ips'] = {
   internal: [{ service: 'postgresql' }],
   external: [
-    { service: 'webui', deps: ['nginx'] },
     { service: 'nginx' },
     { service: 'f2k' },
     { service: 'sfacctd' },
