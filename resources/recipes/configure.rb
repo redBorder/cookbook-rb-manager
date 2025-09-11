@@ -123,7 +123,9 @@ postgresql_config 'Configure postgresql' do
 end
 
 vrrp_secrets = {}
-# Put nginx in from of webui (Temporal until stop tracking webui)
+
+# Patch: redirect webui trough nginx on update until all existing managers gets new release.
+# Then code in default would be enough
 node.normal['redborder']['manager']['balanced'] = [
   { service: 'nginx',   name: 'nginx',                      port: 443,  protocol: 'tcp', redirected_service: 'nginx',   persistence_timeout: 9600 },
   { service: 'webui',   name: 'redborder webui',            port: 443,  protocol: 'tcp', redirected_service: 'nginx',   persistence_timeout: 9600 },
