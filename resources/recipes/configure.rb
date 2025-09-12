@@ -515,10 +515,19 @@ yara_config 'yara' do
   action [:add]
 end
 
+airflow_secrets = {}
+
+begin
+  airflow_secrets = data_bag_item('passwords', 'airflow').to_hash
+rescue
+  airflow_secrets = {}
+end
+
 # Configure Airflow
 airflow_config 'Configure airflow' do
   if manager_services['airflow']
     airflow_hosts node['redborder']['managers_per_services']['airflow']
+    airflow_secrets airflow_secrets
     cdomain node['redborder']['cdomain']
     action [:add, :register]
   else
