@@ -1,6 +1,16 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.15.0
+
+  - nilsver
+    - [9fc4722] catch empty hash value
+    - [8ab67bf] move to firewall cookbook
+    - [6b11037] remove resource passing to webui
+    - [94b1322] fix logic
+    - [1b930ec] pass action to webui
+    - [4b8e1b4] pass virtual ip to remove action
+
 ## 5.14.0
 
   - Rafael Gomez
