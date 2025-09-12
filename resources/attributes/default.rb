@@ -104,7 +104,7 @@ default['redborder']['memory_services']['redborder-scanner'] = { 'count': 5, 'me
 default['redborder']['memory_services']['rb-arubacentral'] = { 'count': 5, 'memory': 0 }
 default['redborder']['memory_services']['sfacctd'] = { 'count': 5, 'memory': 0 }
 default['redborder']['memory_services']['snmpd'] = { 'count': 5, 'memory': 0 }
-default['redborder']['memory_services']['postfix'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['postfix'] = { 'count': 5, 'memory': 0 }
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default['redborder']['cluster_info'] = {}
