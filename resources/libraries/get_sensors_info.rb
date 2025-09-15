@@ -62,9 +62,10 @@ module RbManager
       sensors_info
     end
 
-    def get_independent_flow_sensors_info
+    # If you need to get sensors from the cluster but not from proxies and ips
+    def get_cluster_sensors_info
       sensors_info = {}
-      sensor_types = ['flow-sensor']
+      sensor_types = %w(flow-sensor scanner-sensor)
 
       sensor_types.each do |s_type|
         sensors = search(:node, "role:#{s_type}").sort
