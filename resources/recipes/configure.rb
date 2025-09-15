@@ -13,7 +13,14 @@ manager_services = node.run_state['manager_services']
 node.default['redborder']['manager']['services']['current'] = node.run_state['manager_services']
 virtual_ips = node.run_state['virtual_ips']
 virtual_ips_per_ip = node.run_state['virtual_ips_per_ip']
+flow_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('flow')
+vault_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('vault')
 user_sensor_map_data = get_user_sensor_map
+is_consul_server = consul_server?
+
+# Save previous webui VIP for this run
+previous_webui_vip = node.normal.dig('redborder', 'previous_webui_vip')
+previous_webui_vip = nil if previous_webui_vip.is_a?(Hash) && previous_webui_vip.empty?
 
 # bash 'upload_cookbooks' do
 #   code 'bash /usr/lib/redborder/bin/rb_upload_cookbooks.sh'
@@ -47,12 +54,19 @@ template '/etc/sudoers.d/redborder-manager' do
 end
 
 rb_firewall_config 'Configure Firewall' do
+  flow_sensors node.run_state['sensors_info_all']['flow-sensor']
+  flow_sensor_in_proxy_nodes flow_sensor_in_proxy_nodes
+  vault_sensors node.run_state['sensors_info_all']['vault-sensor']
+  vault_sensor_in_proxy_nodes vault_sensor_in_proxy_nodes
   sync_ip node['ipaddress_sync']
   ip_addr node['ipaddress']
+  previous_webui_vip previous_webui_vip
+  current_webui_vip virtual_ips.dig('external', 'webui', 'ip')
+  manager_services manager_services
   if manager_services['firewall']
-    action :add
+    action [:add, :cleanup_virtual_ip_rules]
   else
-    action :remove
+    action [:remove, :cleanup_virtual_ip_rules]
   end
 end
 
@@ -64,11 +78,19 @@ consul_config 'Configure Consul Server' do
     confdir node['consul']['confdir']
     datadir node['consul']['datadir']
     ipaddress node['ipaddress_sync']
-    (manager_services['consul'] ? (is_server true) : (is_server false))
+    is_server is_consul_server
     action :add
   else
     action :remove
   end
+end
+
+s3_secrets = {}
+
+begin
+  s3_secrets = data_bag_item('passwords', 's3').to_hash
+rescue
+  s3_secrets = {}
 end
 
 chef_server_config 'Configure chef services' do
@@ -78,9 +100,32 @@ chef_server_config 'Configure chef services' do
     postgresql_memory node['redborder']['memory_services']['postgresql']['memory']
     chef_active manager_services['chef-server']
     ipaddress node['ipaddress_sync']
+    s3_secrets s3_secrets
     action [:add, :register]
   else
     action [:remove, :deregister]
+  end
+end
+
+# Determine external
+begin
+  external_services = data_bag_item('rBglobal', 'external_services')
+rescue => e
+  Chef::Log.warn("Failed to load external_services data bag: #{e.message}")
+  external_services = nil
+end
+
+postgresql_config 'Configure postgresql' do
+  if manager_services['postgresql'] && external_services&.dig('postgresql') == 'onpremise'
+    cdomain node['redborder']['cdomain']
+    ipaddress node['ipaddress_sync']
+    postgresql_hosts node['redborder']['managers_per_services']['postgresql']
+    action [:add, :register]
+  elsif !external_services.nil?
+    action [:remove, :deregister]
+  else
+    Chef::Log.warn('Skipped PostgreSQL removal/deregistration due to missing external_services data')
+    action :nothing
   end
 end
 
@@ -139,17 +184,9 @@ kafka_config 'Configure Kafka' do
   end
 end
 
-s3_secrets = {}
-
-begin
-  s3_secrets = data_bag_item('passwords', 's3')
-rescue
-  s3_secrets = {}
-end
-
-if manager_services['druid-coordinator'] || manager_services['druid-overlord'] || manager_services['druid-broker'] || manager_services['druid-middlemanager'] || manager_services['druid-historical'] || manager_services['druid-realtime']
+if manager_services['druid-coordinator'] || manager_services['druid-overlord'] || manager_services['druid-broker'] || manager_services['druid-middlemanager'] || manager_services['druid-historical'] || manager_services['druid-indexer']
   %w(druid-broker druid-coordinator druid-historical
-  druid-middlemanager druid-overlord).each do |druid_service|
+  druid-middlemanager druid-overlord druid-router druid-indexer).each do |druid_service|
     service druid_service do
       supports status: true, start: true, restart: true, reload: true
       action :nothing
@@ -162,12 +199,15 @@ if manager_services['druid-coordinator'] || manager_services['druid-overlord'] |
     memcached_hosts node['redborder']['memcached']['hosts']
     s3_service s3_secrets['s3_host']
     s3_port node['minio']['port']
+    s3_secrets s3_secrets
     action :add
     notifies :restart, 'service[druid-broker]', :delayed if manager_services['druid-broker']
     notifies :restart, 'service[druid-coordinator]', :delayed if manager_services['druid-coordinator']
     notifies :restart, 'service[druid-historical]', :delayed if manager_services['druid-historical']
     notifies :restart, 'service[druid-middlemanager]', :delayed if manager_services['druid-middlemanager']
     notifies :restart, 'service[druid-overlord]', :delayed if manager_services['druid-overlord']
+    notifies :restart, 'service[druid-indexer]', :delayed if manager_services['druid-indexer']
+    notifies :restart, 'service[druid-router]', :delayed if manager_services['druid-router']
   end
 else
   druid_common 'Delete druid common resources' do
@@ -218,6 +258,7 @@ druid_middlemanager 'Configure Druid MiddleManager' do
     cdomain node['redborder']['cdomain']
     ipaddress node['ipaddress_sync']
     memory_kb node['redborder']['memory_services']['druid-middlemanager']['memory']
+    s3_secrets s3_secrets
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -238,15 +279,38 @@ druid_historical 'Configure Druid Historical' do
   end
 end
 
-druid_realtime 'Configure Druid Realtime' do
-  if manager_services['druid-realtime']
+rb_druid_indexer_config 'Configure Rb Druid Indexer' do
+  if manager_services['rb-druid-indexer']
+    zk_hosts node['redborder']['managers_per_services']['zookeeper']
+    tasks node.default['redborder']['druid-indexer-tasks']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+druid_indexer 'Configure Druid Indexer' do
+  if manager_services['druid-indexer']
     name node['hostname']
     cdomain node['redborder']['cdomain']
     ipaddress node['ipaddress_sync']
-    zookeeper_hosts node['redborder']['zookeeper']['zk_hosts']
-    partition_num node['redborder']['druid']['realtime']['partition_num']
-    memory_kb node['redborder']['memory_services']['druid-realtime']['memory']
+    memory_kb node['redborder']['memory_services']['druid-indexer']['memory']
     cpu_num node['cpu']['total'].to_i
+    tasks node.default['redborder']['druid-indexer-tasks']
+    s3_secrets s3_secrets
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+druid_router 'Configure Druid Router' do
+  if manager_services['druid-router']
+    name node['hostname']
+    cdomain node['redborder']['cdomain']
+    memory_kb node['redborder']['memory_services']['druid-router']['memory']
+    cpu_num node['cpu']['total'].to_i
+    ipaddress node['ipaddress_sync']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -255,23 +319,7 @@ end
 
 memcached_config 'Configure Memcached' do
   if manager_services['memcached']
-    memory node['redborder']['memory_services']['memcached']['memory']
     ipaddress node['ipaddress_sync']
-    action [:add, :register]
-  else
-    action [:remove, :deregister]
-  end
-end
-
-enable_mongodb = false
-if manager_services['mongodb']
-  is_mongo_configured_consul = shell_out("curl -s http://localhost:8500/v1/health/service/mongodb | jq -r '.[].Checks[0].Status' | grep -q 'passing'")
-  get_consul_registered_ip = shell_out("curl -s http://localhost:8500/v1/health/service/mongodb | jq -r '.[].Service.Address' | head -n 1")
-  enable_mongodb = (is_mongo_configured_consul.exitstatus != 0) ? true : (node['ipaddress_sync'] == get_consul_registered_ip.stdout.strip)
-end
-
-mongodb_config 'Configure Mongodb' do
-  if enable_mongodb
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -310,7 +358,7 @@ end
 
 rbscanner_config 'Configure redborder-scanner' do
   if manager_services['redborder-scanner']
-    scanner_nodes node.run_state['sensors_info_all']['scanner-sensor']
+    scanner_nodes node.run_state['cluster_sensors_info']['scanner-sensor']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -329,6 +377,7 @@ end
 nginx_config 'Configure Nginx Chef' do
   if manager_services['nginx'] && node['redborder']['erchef']['hosts'] && !node['redborder']['erchef']['hosts'].empty?
     erchef_hosts node['redborder']['erchef']['hosts']
+    cdomain node['redborder']['cdomain']
     service_name 'erchef'
     action [:configure_certs, :add_erchef]
   else
@@ -348,6 +397,17 @@ nginx_config 'Configure Nginx aioutliers' do
   end
 end
 
+aerospike_config 'Configure aerospike' do
+  if manager_services['aerospike']
+    ipaddress_sync node['ipaddress_sync']
+    ipaddress node['ipaddress']
+    aerospike_managers node['redborder']['managers_per_services']['aerospike']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 webui_config 'Configure WebUI' do
   if manager_services['webui']
     hostname node['hostname']
@@ -358,6 +418,7 @@ webui_config 'Configure WebUI' do
     webui_version node['redborder']['webui']['version']
     redborder_version node['redborder']['repo']['version']
     user_sensor_map user_sensor_map_data
+    s3_secrets s3_secrets
     action [:add, :register, :configure_rsa]
   else
     action [:remove, :deregister]
@@ -385,6 +446,8 @@ http2k_config 'Configure Http2k' do
     ips_nodes node.run_state['sensors_info']['ips-sensor']
     ipsg_nodes node.run_state['sensors_info']['ipsg-sensor']
     ipscp_nodes node.run_state['sensors_info']['ipscp-sensor']
+    intrusion_nodes node.run_state['sensors_info']['intrusion-sensor']
+    intrusioncp_nodes node.run_state['sensors_info']['intrusioncp-sensor']
     organizations node.run_state['organizations']
     locations_list node['redborder']['locations']
     action [:add, :register]
@@ -397,6 +460,7 @@ nginx_config 'Configure Nginx Http2k' do
   if manager_services['nginx'] && node['redborder']['http2k']['hosts'] && !node['redborder']['http2k']['hosts'].empty?
     http2k_hosts node['redborder']['http2k']['hosts']
     http2k_port node['redborder']['http2k']['port']
+    cdomain node['redborder']['cdomain']
     service_name 'http2k'
     action [:configure_certs, :add_http2k]
   elsif manager_services['nginx']
@@ -435,6 +499,29 @@ pmacct_config 'Configure pmacct (sfacctd)' do
   end
 end
 
+redis_secrets = {}
+
+begin
+  redis_secrets = data_bag_item('passwords', 'redis').to_hash
+rescue
+  redis_secrets = {}
+end
+
+redis_config 'Configure redis' do
+  if manager_services['redis']
+    redis_hosts node['redborder']['managers_per_services']['redis']
+    redis_secrets redis_secrets
+    cdomain node['redborder']['cdomain']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+yara_config 'yara' do
+  action [:add]
+end
+
 # Configure logstash
 split_traffic = false
 
@@ -463,6 +550,8 @@ logstash_config 'Configure logstash' do
     proxy_nodes node.run_state['sensors_info_all']['proxy-sensor']
     scanner_nodes node.run_state['sensors_info_all']['scanner-sensor']
     device_nodes node.run_state['sensors_info_all']['device-sensor']
+    ips_nodes node.run_state['ips_sensors_info']
+    mobility_nodes node.run_state['mobility_sensors_info']
     intrusion_incidents_priority_filter node['redborder']['intrusion_incidents_priority_filter']
     vault_incidents_priority_filter node['redborder']['vault_incidents_priority_filter']
     logstash_pipelines node.run_state['pipelines']
@@ -470,6 +559,10 @@ logstash_config 'Configure logstash' do
     split_intrusion_logstash split_intrusion
     flow_nodes_without_proxy node.run_state['sensors_info_independent_flow']['flow-sensor']
     flow_nodes_with_proxy node.run_state['sensors_info_childs_proxy']['flow-sensor']
+    redis_hosts node['redborder']['managers_per_services']['redis']
+    redis_port node['redis']['port']
+    redis_secrets redis_secrets
+    s3_secrets s3_secrets
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -562,6 +655,7 @@ end
 
 rbaioutliers_config 'Configure rb-aioutliers' do
   if manager_services['rb-aioutliers']
+    s3_secrets s3_secrets
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -582,7 +676,9 @@ end
 mem2incident_config 'Configure redborder-mem2incident' do
   if manager_services['redborder-mem2incident']
     cdomain node['redborder']['cdomain']
-    memcached_servers node['redborder']['managers_per_services']['memcached'].map { |s| "#{s}:#{node['redborder']['memcached']['port']}" }
+    redis_hosts node['redborder']['managers_per_services']['redis']
+    redis_port node['redis']['port']
+    redis_secrets redis_secrets
     auth_token node.run_state['auth_token']
     action [:add, :register]
   else
@@ -590,11 +686,21 @@ mem2incident_config 'Configure redborder-mem2incident' do
   end
 end
 
-rb_llm_config 'Configure redborder-llm' do
-  if manager_services['redborder-llm']
-    llm_selected_model node['redborder']['llm_selected_model']
-    cpus node['redborder']['redborder-llm']['cpus']
+redborder_agents_secrets = {}
+begin
+  redborder_agents_secrets = data_bag_item('passwords', 'redborder_agents').to_hash
+rescue
+  redborder_agents_secrets = {}
+end
+
+rb_agents_config 'Configure redborder-agents' do
+  if manager_services['redborder-agents']
     ipaddress node['ipaddress_sync']
+    model redborder_agents_secrets['model']
+    anthropic_api_key redborder_agents_secrets['anthropic_api_key']
+    gemini_api_key redborder_agents_secrets['gemini_api_key']
+    ollama_base_url redborder_agents_secrets['ollama_base_url']
+    openai_api_key redborder_agents_secrets['openai_api_key']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -622,36 +728,21 @@ rb_chrony_config 'Configure Chrony' do
   end
 end
 
-# Determine external
-begin
-  external_services = data_bag_item('rBglobal', 'external_services')
-rescue
-  external_services = {}
-end
-
-postgresql_config 'Configure postgresql' do
-  if manager_services['postgresql'] && external_services['postgresql'] == 'onpremise'
-    cdomain node['redborder']['cdomain']
-    ipaddress node['ipaddress_sync']
-    action [:add, :register]
-  else
-    action [:remove, :deregister]
-  end
-end
-
 template '/root/.s3cfg_initial' do
   source 's3cfg_initial.erb'
   cookbook 'minio'
   variables(
     s3_user: s3_secrets['s3_access_key_id'],
     s3_password: s3_secrets['s3_secret_key_id'],
-    s3_endpoint: s3_secrets['s3_host']
+    s3_endpoint: s3_secrets['s3_host'],
+    cdomain: node['redborder']['cdomain']
   )
   action :create
   only_if do
     s3_secrets['s3_access_key_id'] && !s3_secrets['s3_access_key_id'].empty? &&
       s3_secrets['s3_secret_key_id'] && !s3_secrets['s3_secret_key_id'].empty? &&
-      s3_secrets['s3_host'] && !s3_secrets['s3_host'].empty?
+      s3_secrets['s3_host'] && !s3_secrets['s3_host'].empty? &&
+      node['redborder']['cdomain'] && !node['redborder']['cdomain'].empty?
   end
 end
 
@@ -660,11 +751,16 @@ minio_config 'Configure S3 (minio)' do
   managers_with_minio node['redborder']['managers_per_services']['s3']
   access_key_id s3_secrets['s3_access_key_id']
   secret_key_id s3_secrets['s3_secret_key_id']
-  if manager_services['s3'] && (external_services['s3'] == 'onpremise')
+  malware_access_key_id s3_secrets['s3_malware_access_key_id'] unless s3_secrets['s3_malware_access_key_id'].nil?
+  malware_secret_key_id s3_secrets['s3_malware_secret_key_id'] unless s3_secrets['s3_malware_secret_key_id'].nil?
+  if manager_services['s3'] && external_services&.dig('s3') == 'onpremise'
     ipaddress node['ipaddress_sync']
-    action [:add_mcli, :add, :register]
-  else
+    action [:add_mcli, :add, :add_malware, :register]
+  elsif !external_services.nil?
     action [:add_mcli, :remove, :deregister]
+  else
+    Chef::Log.warn('Skipped MinIO removal/deregistration due to missing external_services data')
+    action :nothing
   end
 end
 
@@ -674,8 +770,8 @@ secor_config 'Configure Secor Service' do
     kafka_hosts node['redborder']['managers_per_services']['kafka']
     zk_hosts node['redborder']['zookeeper']['zk_hosts']
     manager_services manager_services
-    s3_server 's3.service'
-    s3_hostname 's3.service'
+    s3_server s3_secrets['s3_host']
+    s3_hostname s3_secrets['s3_host']
     s3_user s3_secrets['s3_access_key_id']
     s3_pass s3_secrets['s3_secret_key_id']
     s3_bucket 'bucket'
@@ -692,8 +788,8 @@ rbcgroup_config 'Configure cgroups' do
 end
 
 # First configure the cert for the service before configuring nginx
-nginx_config 'Configure S3 certs' do
-  if manager_services['s3']
+nginx_config 'Configure Nginx S3 certs' do
+  if manager_services['nginx'] && node['redborder']['s3']['s3_hosts'] && !node['redborder']['s3']['s3_hosts'].empty?
     service_name 's3'
     cdomain node['redborder']['cdomain']
     action :configure_certs
@@ -703,8 +799,8 @@ nginx_config 'Configure S3 certs' do
 end
 
 # Configure Nginx s3 onpremise nodes for now..
-minio_config 'Configure Nginx S3 (minio)' do
-  if manager_services['s3'] && (external_services['s3'] == 'onpremise')
+minio_config 'Configure S3 (minio)' do
+  if manager_services['s3'] && external_services&.dig('s3') == 'onpremise'
     s3_hosts node['redborder']['s3']['s3_hosts']
     action [:add_s3_conf_nginx]
   elsif !manager_services['s3'] && manager_services['nginx']
@@ -741,6 +837,23 @@ unless ssh_secrets.empty?
   end
 end
 
+begin
+  rsa_pem = data_bag_item('certs', 'rsa_pem')
+rescue
+  rsa_pem = {}
+end
+
+unless rsa_pem.empty?
+  template '/root/.ssh/rsa' do
+    source 'rsa_cert.pem.erb'
+    owner 'root'
+    group 'root'
+    mode '0600'
+    retries 2
+    variables(private_rsa: rsa_pem['private_rsa'])
+  end
+end
+
 # Pending Changes..
 # pending_changes==0 -> has changes to apply at next chef-client run
 #  pending_changes==1 -> chef-client has to run once
@@ -759,6 +872,10 @@ execute 'force_chef_client_wakeup' do
     action :run
   end
 end
+
+# Save current webui VIP for next run
+val = virtual_ips.dig('external', 'webui', 'ip')
+node.normal['redborder']['previous_webui_vip'] = val.is_a?(Hash) && val.empty? ? nil : val
 
 # MOTD
 cluster_uuid_db = {}

@@ -5,11 +5,6 @@
 
 extend RbManager::Helpers
 
-# clean metadata to get packages upgrades
-execute 'Clean yum metadata' do
-  command 'yum clean metadata'
-end
-
 # Set services_group related with the node mode (core, full, ...)
 node['redborder']['services_group'][node['redborder']['mode']].each { |s| node.default['redborder']['services'][s] = true }
 
@@ -34,7 +29,6 @@ node.default['mac_sync'] = mac_sync
 
 # Configure and enable chef-client
 dnf_package 'redborder-chef-client' do
-  flush_cache [:before]
   action :upgrade
 end
 
@@ -44,14 +38,6 @@ template '/etc/sysconfig/chef-client' do
   variables(interval: node['chef-client']['interval'],
             splay: node['chef-client']['splay'],
             options: node['chef-client']['options'])
-end
-
-template '/etc/logrotate.d/logstash' do
-  source 'logstash_log-rotate.erb'
-  owner 'root'
-  group 'root'
-  mode 0644
-  retries 2
 end
 
 service 'chef-client' do
@@ -80,6 +66,8 @@ node.run_state['organizations'] = get_orgs if node['redborder']['services']['htt
 if node['redborder']['services']['logstash']
   node.run_state['pipelines'] = get_pipelines
   node.run_state['flow_sensors_info'] = get_all_flow_sensors_info['flow-sensor']
+  node.run_state['ips_sensors_info'] = get_all_ips_sensors_info
+  node.run_state['mobility_sensors_info'] = get_all_mobility_sensors_info
 end
 
 # get elasticache nodes
@@ -110,6 +98,9 @@ node.run_state['sensors_info_independent_flow'] = get_independent_flow_sensors_i
 
 # get sensors info full info of all sensors
 node.run_state['sensors_info_all'] = get_sensors_all_info
+
+# get sensors info excluding proxy sensors info
+node.run_state['cluster_sensors_info'] = get_cluster_sensors_info
 
 # get namespaces
 node.run_state['namespaces'] = get_namespaces
@@ -168,11 +159,6 @@ end
 s3_hosts = node['redborder']['managers_per_services']['s3'].map { |z| "#{z}.#{node['redborder']['cdomain']}:9000" if node['redborder']['cdomain'] }
 node.default['redborder']['s3']['s3_hosts'] = s3_hosts
 
-# set druid realtime partition id (its needed in cluster mode for druid brokers)
-if node['redborder']['managers_per_services']['druid-realtime'].include?(node.name)
-  node.default['redborder']['druid']['realtime']['partition_num'] = node['redborder']['managers_per_services']['druid-realtime'].index(node.name)
-end
-
 # get an array of managers
 managers_list = []
 node['redborder']['cluster_info'].each_key { |mgr| managers_list << mgr }
@@ -216,6 +202,22 @@ hosts_entries.each do |line|
   end
 end
 
+begin
+  postgresql_vip = data_bag_item('rBglobal', 'ipvirtual-internal-postgresql')
+rescue
+  postgresql_vip = {}
+end
+# set internal virtual ip's in /etc/hosts
+result = set_internal_vip(postgresql_vip['ip'], 'master.postgresql.service')
+if result
+  execute 'restart_webui' do
+    command 'systemctl restart webui'
+    only_if 'systemctl list-units --type=service --all | grep -q webui.service'
+    only_if 'systemctl is-enabled webui'
+    only_if 'systemctl is-active webui'
+  end
+end
+
 # Build service list for rbcli
 services = node['redborder']['services'] || []
 systemd_services = node['redborder']['systemdservices'] || []
@@ -224,6 +226,9 @@ service_enablement = {}
 systemd_services.each do |service_name, systemd_name|
   service_enablement[systemd_name.first] = services[service_name]
 end
+
+# Calculate druid indexer tasks
+node.default['redborder']['druid-indexer-tasks'] = get_indexer_tasks
 
 Chef::Log.info('Saving services enablement into /etc/redborder/services.json')
 File.write('/etc/redborder/services.json', JSON.pretty_generate(service_enablement))

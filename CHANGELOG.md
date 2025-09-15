@@ -1,6 +1,264 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.15.0
+
+  - nilsver
+    - [9fc4722] catch empty hash value
+    - [8ab67bf] move to firewall cookbook
+    - [6b11037] remove resource passing to webui
+    - [94b1322] fix logic
+    - [1b930ec] pass action to webui
+    - [4b8e1b4] pass virtual ip to remove action
+
+## 5.14.0
+
+  - Rafael Gomez
+    - [6b9720e] Disable aerospike by default
+
+## 5.13.1
+
+  - Pablo Pérez
+    - [b271dae] Update default.rb
+
+## 5.13.0
+
+  - Pablo Pérez
+    - [2c3f65f] Pass s3_secrets to logstash cookbook
+    - [762e5f2] Bring back malware pipeline
+
+## 5.12.0
+
+  - Pablo Torres
+    - [5036140] Feature #22342: Add malware datasource
+
+## 5.11.1
+
+  - Pablo Pérez
+    - [7c051b3] Feature/#22453 create s3 malware bucket (#343)
+
+## 5.11.0
+
+  - Rafael Gomez
+    - [3178d63] Remove auth token
+    - [f853baa] Passing auth token to redborder agents cookbook
+    - [ac49456] Merge branch 'master' into feature/#22472_replace_title_description_generation_with_redborder_agents
+    - [e0a89c0] Remove redborder-llm configuration and dependencies
+
+## 5.10.0
+
+  - Daniel Castro
+    - [cf9c60b] aerospike seed fix
+    - [e967a33] pass only aerospike and add safety dig
+    - [9502585] add sync ip to cookbook parameters
+    - [d5c8c0d] add cdomain and managers_per_service
+    - [b3b93da] add aerospike to full services_group
+    - [6370c83] include aerospike service
+
+## 5.9.1
+
+  - manegron
+    - [396915c] Refactor code
+  - nilsver
+    - [913d0e5] clean up code
+    - [20c9a5c] different handling for monitor
+    - [3059041] split data indexed per namespace for rb_monitor
+
+## 5.9.0
+
+  - ljblancoredborder
+    - [dd2784b] ignore gemfile.lock
+  - Juan Soto #22210_scanner_module_to_enrich_and_create_assets
+    - [594919b] Add missing rb_host_discovery task to indexer tasks
+
+## 5.8.3
+
+  - ptorresred
+    - [6918c60] Feature #22517: Add yara cookbook (#345)
+
+## 5.8.2
+
+  - manegron
+    - [fed0825] Merge pull request #340 from redBorder/feature/#20809_mcp
+    - [2cc4c6f] Add ipaddress sync to rb-agents
+    - [45acf6b] Rename google_gemini to gemini
+    - [d2f6e41] Remove llm_service and model_name to model
+    - [c45354e] Add redborder-agents service
+    - [e8af8b0] Bump version
+    - [00d575f] Remove mongodb (again)
+    - [fed0825] Merge pull request #340 from redBorder/feature/#20809_mcp
+    - [e8af8b0] Bump version
+    - [00d575f] Remove mongodb (again)
+
+## 5.8.1
+
+  - Miguel
+    - [00d575f] Remove mongodb (again)
+
+## 5.8.0
+
+  - Rafael Gomez
+    - [33799e4] Passing cdomain to redis cookbook
+    - [2f8fef9] Passing redis config to logstash and mem2incident
+    - [b127e48] Comment redis var in mem2 and logstash
+    - [3dcea26] Adding default redis sentinel port
+    - [2c1f667] Adding redis coookbook and passing variables
+  - jnavarrorb
+    - [bab7ffb] Remove cookbook-cron from redborder_s cookbooks
+    - [949388a] Remove executable permissions on non-executable file
+
+
+## 5.7.0
+
+  - nilsver
+    - [ddebd77] replace mongodb
+
+## 5.6.1
+
+  - nilsver
+    - [f6783ad] only query scanner sensors from managers
+
+## 5.6.0
+
+  - Pablo Torres
+    - [e6961e6] Improvement #21846: remove custom dimensions
+
+## 5.5.0
+
+  - Rafael Gomez
+    - [f184c0b] Passing postgresql_hosts to postgresql cookbook
+    - [acb7328] Update memory service configurations and adjust virtual IP settings
+    - [099d768] Add check for cluster installation before restarting webui service
+    - [ae1c739] Remove 'redborder-postgresql' from core services group configuration
+    - [564e6fc] Changing order of postgresql cookbook
+    - [b1a8ffc] Passing virtual_ips variable to postgresql
+    - [18c42c1] Adding internal virtual IPs
+    - [837ce9c] Delete resources/libraries/open_kafka_port.rb
+
+  - David Vanhoucke
+    - [9c55ba7] change way to update etc hosts
+
+## 5.4.9
+
+  - Pablo Torres
+    - [c54fdf4] Feature #21767: add druid metrics to pipeline
+
+## 5.4.8
+
+  - Rafael Gomez
+    - [4810e5c] Refactor S3 secrets handling to convert data bag item to hash
+
+## 5.4.7
+
+  - Rafael Gomez
+    - [0f67bf0] Add dimensions loading from YAML files in get_indexer_tasks method
+    - [9b6f654] Refactor get_indexer_tasks method to remove unnecessary variable assignment
+    - [cf81291] Add kafka brokers and namespaces initialization to get_indexer_tasks method
+    - [505212a] Add druid indexer tasks calculation to prepare_system recipe
+    - [6430ac6] Add get_indexer_tasks method to RbManager::Helpers module
+
+## 5.4.6
+
+  - Rafael Gomez
+    - [1865b5a] Remove logrotate configuration for Logstash
+
+## 5.4.5
+
+  - Rafael Gomez
+    - [2addeb0] Update Nginx and Minio configuration for S3 services
+
+## 5.4.4
+
+  - nilsver
+    - [eb36dc5] reset last_makecache
+    - [62fbf11] Add check for 24h
+
+## 5.4.3
+
+  - Juan Soto
+    - [90ddf28] Send flow sensor to firewall cookbook
+
+## 5.4.2
+
+  - Pablo Pérez
+    - [96fe794] add vault sensors into firewall configuration
+
+## 5.4.1
+
+  - Rafael Gomez
+    - [405cef5] Add RSA key templates for SSH configuration
+
+## 5.4.0
+
+  - Miguel Negrón
+    - [e2b38fc] Fix configure cdomain for s3cfg_initial file
+
+## 5.3.2
+
+  - Pablo Pérez
+    - [c865f4d] Merge pull request #305 from redBorder/feature/#21708_remove_darklist
+  - vimesa
+    - [be023a4] Remove darklist
+  - David Vanhoucke
+    - [a6dd297] bump version
+  - nilsver
+    - [2986e63] Bugfix/20867 change erchef service to cdomain (#289)
+
+## 5.3.1
+
+  - nilsver
+    - [2986e63] Bugfix/20867 change erchef service to cdomain (#289)
+
+## 5.3.0
+
+  - Rafael Gomez
+    - [000215f] Add consul_server? method and integrate into configuration logic
+    - [43ce16a] Add should_be_consul_server? method to determine server eligibility
+
+## 5.2.0
+
+  - Miguel Negrón
+    - [ef809f8] Merge pull request #297 from redBorder/feature/#21232_refactor_license_system_ng
+  - Rafael Gomez
+    - [b8eaaf9] Add get_all_mobility_sensors_info method and integrate into system configuration
+    - [5edc7ca] Add get_all_ips_sensors_info method and integrate into pipeline configuration
+
+## 5.1.0
+
+  - Miguel Alvarez
+    - [a93b7a5] Add intrusion & intrusioncp sensors
+    - [b512c3b] add intrusioncp to logstash pipelines
+    - [64d856c] Add intrusioncp sensor type
+
+## 5.0.3
+
+  - Rafael Gomez
+    - [91557b9] Improve error handling for external services in PostgreSQL and MinIO configurations
+
+## 5.0.2
+
+  - jnavarrorb
+    - [a4fa7e3] Fix empty string
+
+## 5.0.1
+
+  - Miguel Negrón
+    - [05cccc8] New memory distribution
+
+## 5.0.0
+
+  - Miguel Álvarez
+    - [be3af6e] Add all zk servers and kafka brokers
+    - [fdd3e3e] Update cluster info to include cpu cores and remove druid realtime
+    - [4cc17f5] Notify delayed restart of druid indexer if change
+    - [29d0a38] Fix order of druid indexer config to allow acc to node druid-indexer-tasks
+    - [dd7ae0b] Add namespaces to druid-indexer
+    - [c081a5f] Add indexer and router
+    - [5180361] Restart druid indexer and router if common runtime updated
+    - [3719436] Add rb-druid-indexer cookbook as dependency
+    - [5afd48e] use rb_druid_indexer_config
+    - [6747b9c] Configure druid indexer
+
 ## 4.10.3
 
   - Pablo Pérez
