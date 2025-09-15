@@ -526,8 +526,9 @@ end
 # Configure Airflow
 airflow_config 'Configure airflow' do
   if manager_services['airflow']
-    airflow_hosts node['redborder']['managers_per_services']['airflow']
+    airflow_web_hosts node['redborder']['managers_per_services']['airflow-webserver']
     airflow_secrets airflow_secrets
+    port node['airflow']['port']
     cdomain node['redborder']['cdomain']
     action [:add, :register]
   else
