@@ -94,7 +94,7 @@ end
 node.run_state['sensors_info'] = get_sensors_info
 
 node.run_state['sensors_info_childs_proxy'] = get_child_flow_sensors_info
-node.run_state['sensors_info_independent_flow'] = get_independent_flow_sensors_info
+node.run_state['sensors_info_cluster'] = get_cluster_sensors_info
 
 # get sensors info full info of all sensors
 node.run_state['sensors_info_all'] = get_sensors_all_info

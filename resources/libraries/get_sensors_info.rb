@@ -39,6 +39,7 @@ module RbManager
       sensors_info
     end
 
+    # Gets child sensor of proxy sensors
     def get_child_flow_sensors_info
       sensors_info = {}
       sensor_types = ['flow-sensor']
@@ -62,7 +63,7 @@ module RbManager
       sensors_info
     end
 
-    # If you need to get sensors from the cluster but not from proxies and ips
+    # If you need to get sensors from the cluster but not from proxies
     def get_cluster_sensors_info
       sensors_info = {}
       sensor_types = %w(flow-sensor scanner-sensor)
