@@ -18,6 +18,10 @@ vault_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('vault')
 user_sensor_map_data = get_user_sensor_map
 is_consul_server = consul_server?
 
+# Save previous webui VIP for this run
+previous_webui_vip = node.normal.dig('redborder', 'previous_webui_vip')
+previous_webui_vip = nil if previous_webui_vip.is_a?(Hash) && previous_webui_vip.empty?
+
 # bash 'upload_cookbooks' do
 #   code 'bash /usr/lib/redborder/bin/rb_upload_cookbooks.sh'
 #   only_if { ::File.exist?('/root/.upload-cookbooks') }
@@ -56,10 +60,13 @@ rb_firewall_config 'Configure Firewall' do
   vault_sensor_in_proxy_nodes vault_sensor_in_proxy_nodes
   sync_ip node['ipaddress_sync']
   ip_addr node['ipaddress']
+  previous_webui_vip previous_webui_vip
+  current_webui_vip virtual_ips.dig('external', 'webui', 'ip')
+  manager_services manager_services
   if manager_services['firewall']
-    action :add
+    action [:add, :cleanup_virtual_ip_rules]
   else
-    action :remove
+    action [:remove, :cleanup_virtual_ip_rules]
   end
 end
 
@@ -557,6 +564,7 @@ logstash_config 'Configure logstash' do
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
     redis_secrets redis_secrets
+    s3_secrets s3_secrets
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -866,6 +874,10 @@ execute 'force_chef_client_wakeup' do
     action :run
   end
 end
+
+# Save current webui VIP for next run
+val = virtual_ips.dig('external', 'webui', 'ip')
+node.normal['redborder']['previous_webui_vip'] = val.is_a?(Hash) && val.empty? ? nil : val
 
 # MOTD
 cluster_uuid_db = {}

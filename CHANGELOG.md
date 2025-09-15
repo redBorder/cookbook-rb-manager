@@ -1,6 +1,37 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.15.0
+
+  - nilsver
+    - [9fc4722] catch empty hash value
+    - [8ab67bf] move to firewall cookbook
+    - [6b11037] remove resource passing to webui
+    - [94b1322] fix logic
+    - [1b930ec] pass action to webui
+    - [4b8e1b4] pass virtual ip to remove action
+
+## 5.14.0
+
+  - Rafael Gomez
+    - [6b9720e] Disable aerospike by default
+
+## 5.13.1
+
+  - Pablo Pérez
+    - [b271dae] Update default.rb
+
+## 5.13.0
+
+  - Pablo Pérez
+    - [2c3f65f] Pass s3_secrets to logstash cookbook
+    - [762e5f2] Bring back malware pipeline
+
+## 5.12.0
+
+  - Pablo Torres
+    - [5036140] Feature #22342: Add malware datasource
+
 ## 5.11.1
 
   - Pablo Pérez

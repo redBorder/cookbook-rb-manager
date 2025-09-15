@@ -44,8 +44,13 @@ default['redis']['port'] = 26379
 default['redis']['sentinel_port'] = 26380
 
 # aerospike
+<<<<<<< HEAD
 default['/usr/sbin/tcpdump']['port'] = 5000
 default['']['multicast'] = '239.1.99.222'
+=======
+default['aerospike']['port'] = 3000
+default['aerospike']['multicast'] = '239.1.99.222'
+>>>>>>> master
 
 # hard disk
 default['redborder']['manager']['data_dev'] = {}
@@ -103,7 +108,7 @@ default['redborder']['memory_assigned'] = {}
 # geoip has been removed because is not a service
 default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
                                                     druid-broker druid-historical druid-coordinator druid-router druid-indexer druid-overlord
-                                                    postgresql aerospike cape-rooter cape-processor cape cape-web nginx webui rb-workers f2k rb-druid-indexer
+                                                    postgresql nginx webui rb-workers f2k rb-druid-indexer
                                                     redborder-monitor sfacctd redborder-dswatcher redis
                                                     redborder-events-counter http2k redborder-mem2incident rb-logstatter)
 
@@ -121,7 +126,7 @@ default['redborder']['services_group']['s3'] = %w(consul nginx s3)
 default['redborder']['services_group']['postgresql'] = %w(consul postgresql)
 
 default['redborder']['services'] = {}
-default['redborder']['services']['aerospike']                 = true
+default['redborder']['services']['aerospike']                 = false
 default['redborder']['services']['cape-rooter']               = false
 default['redborder']['services']['cape-processor']            = false
 default['redborder']['services']['cape']                      = false
