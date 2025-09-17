@@ -518,17 +518,18 @@ end
 airflow_secrets = {}
 
 begin
-  airflow_secrets = data_bag_item('passwords', 'airflow').to_hash
+  airflow_secrets = data_bag_item('passwords', 'db_airflow').to_hash
 rescue
   airflow_secrets = {}
 end
 
 # Configure Airflow
-airflow_config 'Configure airflow' do
-  if manager_services['airflow']
+airflow_config 'Configure airflow (scheduler and webserver)' do
+  if manager_services['airflow-scheduler'] || manager_services['airflow-webserver']
     airflow_web_hosts node['redborder']['managers_per_services']['airflow-webserver']
     airflow_secrets airflow_secrets
-    port node['airflow']['port']
+    ipaddress_sync node['ipaddress_sync']
+    airflow_port node['airflow']['web_port']
     cdomain node['redborder']['cdomain']
     action [:add, :register]
   else

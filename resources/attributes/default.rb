@@ -44,7 +44,8 @@ default['redis']['port'] = 26379
 default['redis']['sentinel_port'] = 26380
 
 # airflow
-default['airflow']['port'] = 9090
+default['airflow']['web_port'] = 9191
+default['airflow']['scheduler_port'] = 8793
 
 # aerospike
 default['aerospike']['port'] = 3000
