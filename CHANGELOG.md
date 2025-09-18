@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.15.3
+
+  - nilsver
+    - [b8e643d] Bugfix/20613 sflow locations show double if same ip (#287)
+
 ## 5.15.2
 
   - Rafael Gomez
