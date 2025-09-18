@@ -1,6 +1,13 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.15.1
+
+  - nilsver
+    - [3184297] fix from other task iptables
+  - ljblancoredborder
+    - [6281f9d] adding nginx as a vip and as balanced service for clustering
+
 ## 5.15.0
 
   - nilsver
