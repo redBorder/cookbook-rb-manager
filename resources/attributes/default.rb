@@ -43,6 +43,10 @@ default['redborder']['memcached']['port'] = 11211
 default['redis']['port'] = 26379
 default['redis']['sentinel_port'] = 26380
 
+# airflow
+default['airflow']['web_port'] = 9191
+default['airflow']['scheduler_port'] = 8793
+
 # aerospike
 default['aerospike']['port'] = 3000
 default['aerospike']['multicast'] = '239.1.99.222'
@@ -87,6 +91,8 @@ default['redborder']['memory_services']['zookeeper'] = { 'count': 40, 'memory': 
 default['redborder']['memory_services']['secor'] = { 'count': 30, 'memory': 0 }
 default['redborder']['memory_services']['secor-vault'] = { 'count': 30, 'memory': 0 }
 default['redborder']['memory_services']['redis'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['airflow-scheduler'] = { 'count': 30, 'memory': 0 }
+default['redborder']['memory_services']['airflow-webserver'] = { 'count': 30, 'memory': 0 }
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default['redborder']['cluster_info'] = {}
@@ -168,6 +174,8 @@ default['redborder']['services']['firewall']                  = true
 default['redborder']['services']['secor']                     = false
 default['redborder']['services']['secor-vault']               = false
 default['redborder']['services']['redis']                     = false
+default['redborder']['services']['airflow-scheduler']         = false
+default['redborder']['services']['airflow-webserver']         = false
 
 default['redborder']['systemdservices']['aerospike']                = ['aerospike']
 default['redborder']['systemdservices']['chef-client']              = ['chef-client']
@@ -216,6 +224,8 @@ default['redborder']['systemdservices']['firewall']                 = ['firewall
 default['redborder']['systemdservices']['secor']                    = ['rb-secor']
 default['redborder']['systemdservices']['secor-vault']              = ['rb-secor-vault']
 default['redborder']['systemdservices']['redis']                    = ['redis']
+default['redborder']['systemdservices']['airflow-scheduler']        = ['airflow-scheduler']
+default['redborder']['systemdservices']['airflow-webserver']        = ['airflow-webserver']
 
 # Balanced services
 default['redborder']['manager']['balanced'] = [

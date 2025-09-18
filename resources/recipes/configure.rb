@@ -521,6 +521,27 @@ yara_config 'yara' do
   action [:add]
 end
 
+airflow_secrets = {}
+
+begin
+  airflow_secrets = data_bag_item('passwords', 'db_airflow').to_hash
+rescue
+  airflow_secrets = {}
+end
+
+# Configure Airflow
+airflow_config 'Configure airflow (scheduler and webserver)' do
+  if manager_services['airflow-scheduler'] || manager_services['airflow-webserver']
+    airflow_secrets airflow_secrets
+    ipaddress_sync node['ipaddress_sync']
+    airflow_port node['airflow']['web_port']
+    cdomain node['redborder']['cdomain']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 # Configure logstash
 split_traffic = false
 
