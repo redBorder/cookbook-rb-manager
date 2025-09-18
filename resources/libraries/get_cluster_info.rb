@@ -24,6 +24,7 @@ module RbManager
         cluster_info[name] = {}
         cluster_info[name]['name'] = name
         cluster_info[name]['ip'] = mnode['ipaddress']
+        cluster_info[name]['ipaddress_sync'] = mnode['ipaddress_sync']
         cluster_info[name]['rb_time'] = rb_time
         cluster_info[name]['services'] = services
         cluster_info[name]['cpu_cores'] = mnode['cpu']['total']
