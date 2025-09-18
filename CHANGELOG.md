@@ -1,6 +1,13 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.15.2
+
+  - Rafael Gomez
+    - [34163b6] Change ipaddress variable to ipaddress_sync
+  - manegron
+    - [f462847] Fix aerospike
+
 ## 5.15.1
 
   - nilsver

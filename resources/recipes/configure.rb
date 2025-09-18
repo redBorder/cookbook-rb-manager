@@ -399,9 +399,8 @@ end
 
 aerospike_config 'Configure aerospike' do
   if manager_services['aerospike']
-    ipaddress_sync node['ipaddress_sync']
-    ipaddress node['ipaddress']
-    aerospike_managers node['redborder']['managers_per_services']['aerospike']
+    ipaddress node['ipaddress_sync']
+    aerospike_ips node['redborder']['aerospike']['ips']
     action [:add, :register]
   else
     action [:remove, :deregister]
