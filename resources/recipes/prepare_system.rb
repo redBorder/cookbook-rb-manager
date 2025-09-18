@@ -147,6 +147,9 @@ node.default['redborder']['http2k']['hosts'] = http2k_hosts
 rb_aioutliers_hosts = node['redborder']['managers_per_services']['rb-aioutliers'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
 node.default['redborder']['rb-aioutliers']['hosts'] = rb_aioutliers_hosts
 
+aerospike_ips = node['redborder']['cluster_info'].select { |m| node['redborder']['managers_per_services']['aerospike'].include? m }.map { |_, v| v['ipaddress_sync'] }
+node.default['redborder']['aerospike']['ips'] = aerospike_ips
+
 # set kafka host index if kafka is enabled in this host
 if node['redborder']['managers_per_services']['kafka'].include?(node.name)
   node.default['redborder']['kafka']['host_index'] = node['redborder']['managers_per_services']['kafka'].index(node.name)
