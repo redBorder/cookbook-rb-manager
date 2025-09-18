@@ -627,6 +627,16 @@ rbale_config 'Configure redborder-ale' do
   end
 end
 
+rb_reputation_config 'Configure rb-reputation' do
+  if manager_services['rb-reputation']
+    memory node['redborder']['memory_services']['rb-reputation']['memory']
+    aerospike_ips node['redborder']['aerospike']['ips']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 rblogstatter_config 'Configure redborder-logstatter' do
   if manager_services['rb-logstatter'] && manager_services['logstash'] && node.run_state['pipelines'] && !node.run_state['pipelines'].empty?
     action :add
