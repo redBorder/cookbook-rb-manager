@@ -93,6 +93,14 @@ rescue
   s3_secrets = {}
 end
 
+s3_malware_secrets = {}
+
+begin
+  s3_malware_secrets = data_bag_item('rBglobal', 'malware-bucket').to_hash
+rescue
+  s3_malware_secrets = {}
+end
+
 chef_server_config 'Configure chef services' do
   if manager_services['chef-server']
     memory node['redborder']['memory_services']['chef-server']['memory']
@@ -750,8 +758,8 @@ minio_config 'Configure S3 (minio)' do
   managers_with_minio node['redborder']['managers_per_services']['s3']
   access_key_id s3_secrets['s3_access_key_id']
   secret_key_id s3_secrets['s3_secret_key_id']
-  malware_access_key_id s3_secrets['s3_malware_access_key_id'] unless s3_secrets['s3_malware_access_key_id'].nil?
-  malware_secret_key_id s3_secrets['s3_malware_secret_key_id'] unless s3_secrets['s3_malware_secret_key_id'].nil?
+  malware_access_key_id s3_malware_secrets['s3_malware_access_key_id'] unless s3_malware_secrets['s3_malware_access_key_id'].nil?
+  malware_secret_key_id s3_malware_secrets['s3_malware_secret_key_id'] unless s3_malware_secrets['s3_malware_secret_key_id'].nil?
   if manager_services['s3'] && external_services&.dig('s3') == 'onpremise'
     ipaddress node['ipaddress_sync']
     action [:add_mcli, :add, :add_malware, :register]
