@@ -526,7 +526,6 @@ end
 # Configure Airflow
 airflow_config 'Configure airflow (scheduler and webserver)' do
   if manager_services['airflow-scheduler'] || manager_services['airflow-webserver']
-    airflow_web_hosts node['redborder']['managers_per_services']['airflow-webserver']
     airflow_secrets airflow_secrets
     ipaddress_sync node['ipaddress_sync']
     airflow_port node['airflow']['web_port']
