@@ -89,3 +89,18 @@ cron_d 'check_licences_weekly' do
   ignore_failure true
   command '/usr/lib/redborder/bin/rb_check_licenses_weekly.sh'
 end
+
+# Create aerospike secondary indexes
+cron_d 'create_aerospike_secondary_indexes_daily' do
+  if manager_services['aerospike']
+    action :create
+  else
+    action :delete
+  end
+  minute '00'
+  hour   '01'
+  weekday '*'
+  retries 2
+  ignore_failure true
+  command '/usr/lib/redborder/bin/rb_create_aerospike_indexes.sh'
+end

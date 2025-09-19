@@ -18,6 +18,10 @@ vault_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('vault')
 user_sensor_map_data = get_user_sensor_map
 is_consul_server = consul_server?
 
+# Save previous webui VIP for this run
+previous_nginx_vip = node.normal.dig('redborder', 'previous_nginx_vip')
+previous_nginx_vip = nil if previous_nginx_vip.is_a?(Hash) && previous_nginx_vip.empty?
+
 # bash 'upload_cookbooks' do
 #   code 'bash /usr/lib/redborder/bin/rb_upload_cookbooks.sh'
 #   only_if { ::File.exist?('/root/.upload-cookbooks') }
@@ -56,10 +60,13 @@ rb_firewall_config 'Configure Firewall' do
   vault_sensor_in_proxy_nodes vault_sensor_in_proxy_nodes
   sync_ip node['ipaddress_sync']
   ip_addr node['ipaddress']
+  previous_nginx_vip previous_nginx_vip
+  current_nginx_vip virtual_ips.dig('external', 'nginx', 'ip')
+  manager_services manager_services
   if manager_services['firewall']
-    action :add
+    action [:add, :cleanup_virtual_ip_rules]
   else
-    action :remove
+    action [:remove, :cleanup_virtual_ip_rules]
   end
 end
 
@@ -392,9 +399,8 @@ end
 
 aerospike_config 'Configure aerospike' do
   if manager_services['aerospike']
-    ipaddress_sync node['ipaddress_sync']
-    ipaddress node['ipaddress']
-    aerospike_managers node['redborder']['managers_per_services']['aerospike']
+    ipaddress node['ipaddress_sync']
+    aerospike_ips node['redborder']['aerospike']['ips']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -554,9 +560,12 @@ logstash_config 'Configure logstash' do
     logstash_pipelines node.run_state['pipelines']
     split_traffic_logstash split_traffic
     split_intrusion_logstash split_intrusion
+    flow_nodes_without_proxy node.run_state['sensors_info_cluster']['flow-sensor']
+    flow_nodes_with_proxy node.run_state['sensors_info_childs_proxy']['flow-sensor']
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
     redis_secrets redis_secrets
+    s3_secrets s3_secrets
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -866,6 +875,10 @@ execute 'force_chef_client_wakeup' do
     action :run
   end
 end
+
+# Save current webui VIP for next run
+val = virtual_ips.dig('external', 'nginx', 'ip')
+node.normal['redborder']['previous_nginx_vip'] = val.is_a?(Hash) && val.empty? ? nil : val
 
 # MOTD
 cluster_uuid_db = {}

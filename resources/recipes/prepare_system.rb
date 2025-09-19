@@ -93,6 +93,9 @@ end
 # get sensors info (skipping childs of proxy sensors)
 node.run_state['sensors_info'] = get_sensors_info
 
+node.run_state['sensors_info_childs_proxy'] = get_child_flow_sensors_info
+node.run_state['sensors_info_cluster'] = get_cluster_sensors_info
+
 # get sensors info full info of all sensors
 node.run_state['sensors_info_all'] = get_sensors_all_info
 
@@ -146,6 +149,9 @@ node.default['redborder']['http2k']['hosts'] = http2k_hosts
 
 rb_aioutliers_hosts = node['redborder']['managers_per_services']['rb-aioutliers'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
 node.default['redborder']['rb-aioutliers']['hosts'] = rb_aioutliers_hosts
+
+aerospike_ips = node['redborder']['cluster_info'].select { |m| node['redborder']['managers_per_services']['aerospike'].include? m }.map { |_, v| v['ipaddress_sync'] }
+node.default['redborder']['aerospike']['ips'] = aerospike_ips
 
 # set kafka host index if kafka is enabled in this host
 if node['redborder']['managers_per_services']['kafka'].include?(node.name)
