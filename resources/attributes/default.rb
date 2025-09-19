@@ -44,13 +44,17 @@ default['redis']['port'] = 26379
 default['redis']['sentinel_port'] = 26380
 
 # aerospike
-<<<<<<< HEAD
-default['/usr/sbin/tcpdump']['port'] = 5000
-default['']['multicast'] = '239.1.99.222'
-=======
 default['aerospike']['port'] = 3000
 default['aerospike']['multicast'] = '239.1.99.222'
->>>>>>> master
+
+# cape
+default['cape']['interface_ip'] = '192.168.122.1'
+default['cape']['interface'] = 'virbr0'
+default['cape']['web_ip'] = '0.0.0.0'
+default['cape']['web_port'] = 8099
+default['cape']['result_server_ip'] = '192.168.122.1'
+default['cape']['result_server_port'] = 2042
+default['cape']['min_freespace'] = 15000
 
 # hard disk
 default['redborder']['manager']['data_dev'] = {}
@@ -179,6 +183,10 @@ default['redborder']['services']['secor-vault']               = false
 default['redborder']['services']['redis']                     = false
 
 default['redborder']['systemdservices']['aerospike']                = ['aerospike']
+default['redborder']['systemdservices']['cape-rooter']              = ['cape-rooter']
+default['redborder']['systemdservices']['cape-processor']           = ['cape-processor']
+default['redborder']['systemdservices']['cape']                     = ['cape']
+default['redborder']['systemdservices']['cape-web']                 = ['cape-web']
 default['redborder']['systemdservices']['chef-client']              = ['chef-client']
 default['redborder']['systemdservices']['chef-server']              = ['opscode-erchef']
 default['redborder']['systemdservices']['chrony']                   = ['chronyd']
