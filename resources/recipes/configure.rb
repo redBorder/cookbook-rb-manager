@@ -426,6 +426,7 @@ webui_config 'Configure WebUI' do
     redborder_version node['redborder']['repo']['version']
     user_sensor_map user_sensor_map_data
     s3_secrets s3_secrets
+    s3_malware_secrets s3_malware_secrets
     action [:add, :register, :configure_rsa]
   else
     action [:remove, :deregister]
