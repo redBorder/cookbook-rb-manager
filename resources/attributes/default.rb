@@ -235,14 +235,28 @@ default['redborder']['systemdservices']['secor']                    = ['rb-secor
 default['redborder']['systemdservices']['secor-vault']              = ['rb-secor-vault']
 default['redborder']['systemdservices']['redis']                    = ['redis']
 
-default['redborder']['manager']['balanced'] = [ { port: 443, protocol: 'tcp', name: 'redborder webui', service: 'webui', redirected_service: 'nginx', persistence_timeout: 9600 }, { port: 2055, protocol: 'udp', name: 'netflow,ipfix/sflow daemon', service: 'f2k', redirected_service: 'f2k', persistence_timeout: 30 }, { port: 6343, protocol: 'udp', name: 'sflow daemon', service: 'sfacctd', redirected_service: 'sfacctd', persistence_timeout: 30 }, { port: 9092, protocol: 'tcp', name: 'kafka', service: 'kafka', redirected_service: 'kafka', persistence_timeout: 30 } ]
+# Balanced services
+default['redborder']['manager']['balanced'] = [
+  { port: 443, protocol: 'tcp', name: 'redborder nginx', service: 'nginx', redirected_service: 'nginx', persistence_timeout: 9600 },
+  { port: 2055, protocol: 'udp', name: 'netflow,ipfix/sflow daemon', service: 'f2k', redirected_service: 'f2k', persistence_timeout: 30 },
+  { port: 6343, protocol: 'udp', name: 'sflow daemon', service: 'sfacctd', redirected_service: 'sfacctd', persistence_timeout: 30 },
+  { port: 9092, protocol: 'tcp', name: 'kafka', service: 'kafka', redirected_service: 'kafka', persistence_timeout: 30 },
+]
 
 # Tier
 default['redborder']['druid']['historical']['tier'] = 'default'
 default['redborder']['druid']['historical']['maxsize'] = -1
 
 # Virtual Ips
-default['redborder']['manager']['virtual_ips'] = { internal: [{ service: 'postgresql' }], external: [{ service: 'webui', deps: ['nginx'] }, { service: 'f2k' }, { service: 'sfacctd' }, { service: 'kafka' }] }
+default['redborder']['manager']['virtual_ips'] = {
+  internal: [{ service: 'postgresql' }],
+  external: [
+    { service: 'nginx' },
+    { service: 'f2k' },
+    { service: 'sfacctd' },
+    { service: 'kafka' },
+  ],
+}
 
 default['redborder']['pending_changes'] = 0
 
