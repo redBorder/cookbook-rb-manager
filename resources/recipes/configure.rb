@@ -419,6 +419,7 @@ webui_config 'Configure WebUI' do
     user_sensor_map user_sensor_map_data
     s3_secrets s3_secrets
     aerospike_ips node['redborder']['aerospike']['ips']
+    aerospike_port node['aerospike']['port']
     action [:add, :register, :configure_rsa]
   else
     action [:remove, :deregister]
