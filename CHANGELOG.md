@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.16.1
+
+  - Rafa Gómez
+    - [ca25dd7] Bugfix/#22761 Aerospike should point to sync ip in webui (#374)
+
 ## 5.16.0
 
   - Pablo Pérez
