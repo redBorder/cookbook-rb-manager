@@ -220,7 +220,6 @@ default['redborder']['systemdservices']['secor-vault']              = ['rb-secor
 default['redborder']['systemdservices']['redis']                    = ['redis']
 default['redborder']['systemdservices']['rb-reputation']            = ['rb-reputation']
 
-
 # Balanced services
 default['redborder']['manager']['balanced'] = [
   { port: 443, protocol: 'tcp', name: 'redborder nginx', service: 'nginx', redirected_service: 'nginx', persistence_timeout: 9600 },
