@@ -1,6 +1,24 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.16.1
+
+  - Rafa Gómez
+    - [ca25dd7] Bugfix/#22761 Aerospike should point to sync ip in webui (#374)
+
+## 5.16.0
+
+  - Pablo Pérez
+    - [3e29e14] Increment aerospike memory
+    - [565751c] add defatult malware loaders
+    - [20dbb9d] Added cron task create_aerospike_secondary_indexes_daily
+    - [7b93c26] Add policy enforced data into node
+
+## 5.15.3
+
+  - nilsver
+    - [b8e643d] Bugfix/20613 sflow locations show double if same ip (#287)
+
 ## 5.15.2
 
   - Rafael Gomez

@@ -418,6 +418,8 @@ webui_config 'Configure WebUI' do
     redborder_version node['redborder']['repo']['version']
     user_sensor_map user_sensor_map_data
     s3_secrets s3_secrets
+    aerospike_ips node['redborder']['aerospike']['ips']
+    aerospike_port node['aerospike']['port']
     action [:add, :register, :configure_rsa]
   else
     action [:remove, :deregister]
@@ -556,6 +558,8 @@ logstash_config 'Configure logstash' do
     logstash_pipelines node.run_state['pipelines']
     split_traffic_logstash split_traffic
     split_intrusion_logstash split_intrusion
+    flow_nodes_without_proxy node.run_state['sensors_info_cluster']['flow-sensor']
+    flow_nodes_with_proxy node.run_state['sensors_info_childs_proxy']['flow-sensor']
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
     redis_secrets redis_secrets

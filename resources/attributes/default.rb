@@ -76,7 +76,7 @@ default['redborder']['memory_services']['http2k'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['kafka'] = { 'count': 120, 'memory': 0, 'max_limit': 524288 }
 default['redborder']['memory_services']['n2klocd'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['postgresql'] = { 'count': 25, 'memory': 0 }
-default['redborder']['memory_services']['aerospike'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['aerospike'] = { 'count': 50, 'memory': 0 }
 default['redborder']['memory_services']['rb-aioutliers'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['redborder-agents'] = { 'count': 5, 'memory': 0 }
 default['redborder']['memory_services']['redborder-cep'] = { 'count': 80, 'memory': 0 }
@@ -254,6 +254,77 @@ default['redborder']['vault_incidents_priority_filter'] = 'error'
 default['redborder']['manager']['s3rawpath'] = 'rbraw'
 
 # rb-reputation settings
-default["redborder"]["manager"]["rb-reputation"] = {}
-default["redborder"]["manager"]["rb-reputation"]["workers"] = 300
+default['redborder']['manager']['rb-reputation'] = {}
+default['redborder']['manager']['rb-reputation']['workers'] = 300
 
+# Policy Enforced
+default['redborder']['manager']['policy_enforced'] = {}
+default['redborder']['manager']['policy_enforced']['production'] = {}
+default['redborder']['manager']['policy_enforced']['production']['host'] = ''
+default['redborder']['manager']['policy_enforced']['production']['port'] = '8080'
+default['redborder']['manager']['policy_enforced']['production']['actions'] = {}
+default['redborder']['manager']['policy_enforced']['production']['actions']['delete_computer'] = {}
+default['redborder']['manager']['policy_enforced']['production']['actions']['delete_computer']['url'] = '/wm/acl/rules/json'
+default['redborder']['manager']['policy_enforced']['production']['actions']['delete_computer']['verb'] = 'Delete'
+default['redborder']['manager']['policy_enforced']['production']['actions']['delete_all'] = {}
+default['redborder']['manager']['policy_enforced']['production']['actions']['delete_all']['url'] = '/wm/acl/clear/json'
+default['redborder']['manager']['policy_enforced']['production']['actions']['delete_all']['verb'] = 'Get'
+default['redborder']['manager']['policy_enforced']['production']['actions']['list_computers'] = {}
+default['redborder']['manager']['policy_enforced']['production']['actions']['list_computers']['url'] = '/wm/acl/rules/json'
+default['redborder']['manager']['policy_enforced']['production']['actions']['list_computers']['verb'] = 'Get'
+
+default['redborder']['manager']['policy_enforced']['development'] = {}
+default['redborder']['manager']['policy_enforced']['development']['host'] = ''
+default['redborder']['manager']['policy_enforced']['development']['port'] = '8080'
+default['redborder']['manager']['policy_enforced']['development']['actions'] = {}
+default['redborder']['manager']['policy_enforced']['development']['actions']['delete_computer'] = {}
+default['redborder']['manager']['policy_enforced']['development']['actions']['delete_computer']['url'] = '/wm/acl/rules/json'
+default['redborder']['manager']['policy_enforced']['development']['actions']['delete_computer']['verb'] = 'Delete'
+default['redborder']['manager']['policy_enforced']['development']['actions']['delete_all'] = {}
+default['redborder']['manager']['policy_enforced']['development']['actions']['delete_all']['url'] = '/wm/acl/clear/json'
+default['redborder']['manager']['policy_enforced']['development']['actions']['delete_all']['verb'] = 'Get'
+default['redborder']['manager']['policy_enforced']['development']['actions']['list_computers'] = {}
+default['redborder']['manager']['policy_enforced']['development']['actions']['list_computers']['url'] = '/wm/acl/rules/json'
+default['redborder']['manager']['policy_enforced']['development']['actions']['list_computers']['verb'] = 'Get'
+
+# Default malware loaders and scores
+default['redborder']['manager']['loaders']                                    = {}
+default['redborder']['manager']['loaders']['fuzzy']                           = {}
+default['redborder']['manager']['loaders']['fuzzy']['ssdeep_oldhashes_limit']     = 1000
+default['redborder']['manager']['loaders']['fuzzy']['ssdeep_malwarehashes_limit'] = 1000
+
+default['redborder']['manager']['malware'] = {}
+default['redborder']['manager']['malware']['threshold'] = 50
+
+default['redborder']['manager']['loaders']['scores']                          = {}
+default['redborder']['manager']['loaders']['scores']['hash']                  = {}
+default['redborder']['manager']['loaders']['scores']['hash']['g_rt_score']    = 1
+default['redborder']['manager']['loaders']['scores']['hash']['g_fb_score']    = 0
+default['redborder']['manager']['loaders']['scores']['hash']['g_sb_score']    = 0
+default['redborder']['manager']['loaders']['scores']['hash']['rt_virustotal'] = 0.5
+default['redborder']['manager']['loaders']['scores']['hash']['rt_metascan']   = 0.5
+# default['redborder']['manager']['loaders']['scores']['hash']['rt_brightcloud'] = 0
+default['redborder']['manager']['loaders']['scores']['hash']['fb_virustotal'] = 0.4
+default['redborder']['manager']['loaders']['scores']['hash']['fb_metascan']   = 0.25
+default['redborder']['manager']['loaders']['scores']['hash']['fb_clamscan']   = 0.25
+# default['redborder']['manager']['loaders']['scores']['hash']['fb_decompress'] = 0
+default['redborder']['manager']['loaders']['scores']['hash']['fb_yara']       = 0.1
+# default['redborder']['manager']['loaders']['scores']['hash']['fb_kaspersky']  = 0
+default['redborder']['manager']['loaders']['scores']['hash']['sb_fuzzy']      = 0.5
+default['redborder']['manager']['loaders']['scores']['hash']['sb_cuckoo']     = 0.5
+
+default['redborder']['manager']['loaders']['scores']['ip'] = {}
+default['redborder']['manager']['loaders']['scores']['ip']['g_rt_score']    = 1
+default['redborder']['manager']['loaders']['scores']['ip']['g_fb_score']    = 0
+default['redborder']['manager']['loaders']['scores']['ip']['g_sb_score']    = 0
+default['redborder']['manager']['loaders']['scores']['ip']['rt_otx']        = 0.5
+default['redborder']['manager']['loaders']['scores']['ip']['rt_metascan']   = 0.5
+# default['redborder']['manager']['loaders']['scores']['ip']['rt_brightcloud'] = 0
+
+default['redborder']['manager']['loaders']['scores']['url'] = {}
+default['redborder']['manager']['loaders']['scores']['url']['g_rt_score']      = 1
+default['redborder']['manager']['loaders']['scores']['url']['g_fb_score']      = 0
+default['redborder']['manager']['loaders']['scores']['url']['g_sb_score']      = 0
+# default['redborder']['manager']['loaders']['scores']['url']['rt_brightcloud']  = 0
+default['redborder']['manager']['loaders']['scores']['url']['rt_metascan']     = 0.5
+default['redborder']['manager']['loaders']['scores']['url']['rt_virustotal']   = 0.5

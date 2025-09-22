@@ -39,7 +39,31 @@ module RbManager
       sensors_info
     end
 
-    # If you need to get sensors from the cluster but not from proxies and ips
+    # Gets child sensor of proxy sensors
+    def get_child_flow_sensors_info
+      sensors_info = {}
+      sensor_types = ['flow-sensor']
+
+      sensor_types.each do |s_type|
+        sensors = search(:node, "role:#{s_type}").sort
+        sensors_info[s_type] = []
+
+        sensors.each do |s|
+          next unless s['redborder'] && s['redborder']['parent_id']
+
+          parent_sensor = search(:node, "sensor_id:#{s['redborder']['parent_id']}").first
+          next unless parent_sensor && parent_sensor.to_s.include?('proxy') # Only if parent is a proxy
+          parent_sensor_uuid = parent_sensor['redborder']['sensor_uuid']
+          s.normal['redborder']['parent_proxy_uuid'] = parent_sensor_uuid
+
+          sensors_info[s_type] << s
+        end
+      end
+
+      sensors_info
+    end
+
+    # If you need to get sensors from the cluster but not from proxies
     def get_cluster_sensors_info
       sensors_info = {}
       sensor_types = %w(flow-sensor scanner-sensor)
