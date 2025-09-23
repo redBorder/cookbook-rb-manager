@@ -87,6 +87,7 @@ default['redborder']['memory_services']['zookeeper'] = { 'count': 40, 'memory': 
 default['redborder']['memory_services']['secor'] = { 'count': 30, 'memory': 0 }
 default['redborder']['memory_services']['secor-vault'] = { 'count': 30, 'memory': 0 }
 default['redborder']['memory_services']['redis'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['rb-reputation'] = { 'count': 30, 'memory': 0 }
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default['redborder']['cluster_info'] = {}
@@ -168,6 +169,7 @@ default['redborder']['services']['firewall']                  = true
 default['redborder']['services']['secor']                     = false
 default['redborder']['services']['secor-vault']               = false
 default['redborder']['services']['redis']                     = false
+default['redborder']['services']['rb-reputation']             = false
 
 default['redborder']['systemdservices']['aerospike']                = ['aerospike']
 default['redborder']['systemdservices']['chef-client']              = ['chef-client']
@@ -216,6 +218,7 @@ default['redborder']['systemdservices']['firewall']                 = ['firewall
 default['redborder']['systemdservices']['secor']                    = ['rb-secor']
 default['redborder']['systemdservices']['secor-vault']              = ['rb-secor-vault']
 default['redborder']['systemdservices']['redis']                    = ['redis']
+default['redborder']['systemdservices']['rb-reputation']            = ['rb-reputation']
 
 # Balanced services
 default['redborder']['manager']['balanced'] = [
@@ -248,6 +251,10 @@ default['redborder']['vault_incidents_priority_filter'] = 'error'
 
 # Save Secor S3 raw path
 default['redborder']['manager']['s3rawpath'] = 'rbraw'
+
+# rb-reputation settings
+default['redborder']['manager']['rb-reputation'] = {}
+default['redborder']['manager']['rb-reputation']['workers'] = 300
 
 # Policy Enforced
 default['redborder']['manager']['policy_enforced'] = {}
