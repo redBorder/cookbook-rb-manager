@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.16.2
+
+  - manegron
+    - [d0020d0] Adapt s3_malware_secrets
+
 ## 5.16.1
 
   - Rafa Gómez
