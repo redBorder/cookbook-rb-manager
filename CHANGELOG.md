@@ -4,7 +4,6 @@ cookbook-rb-manager CHANGELOG
 ## 5.17.0
 
   - manegron
-    - [d0020d0] Adapt s3_malware_secrets
     - [aba533b] Add rb-reputation
 
 ## 5.16.2
