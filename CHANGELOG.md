@@ -1,6 +1,21 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.17.0
+
+  - manegron
+    - [aba533b] Add rb-reputation
+
+## 5.16.2
+
+  - manegron
+    - [d0020d0] Adapt s3_malware_secrets
+
+## 5.16.1
+
+  - Rafa Gómez
+    - [ca25dd7] Bugfix/#22761 Aerospike should point to sync ip in webui (#374)
+
 ## 5.16.0
 
   - Pablo Pérez
