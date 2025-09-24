@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.17.0
+
+  - manegron
+    - [aba533b] Add rb-reputation
+
 ## 5.16.2
 
   - manegron
