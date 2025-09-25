@@ -18,6 +18,10 @@ vault_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('vault')
 user_sensor_map_data = get_user_sensor_map
 is_consul_server = consul_server?
 
+# Save previous webui VIP for this run
+previous_nginx_vip = node.normal.dig('redborder', 'previous_nginx_vip')
+previous_nginx_vip = nil if previous_nginx_vip.is_a?(Hash) && previous_nginx_vip.empty?
+
 # bash 'upload_cookbooks' do
 #   code 'bash /usr/lib/redborder/bin/rb_upload_cookbooks.sh'
 #   only_if { ::File.exist?('/root/.upload-cookbooks') }
@@ -56,10 +60,13 @@ rb_firewall_config 'Configure Firewall' do
   vault_sensor_in_proxy_nodes vault_sensor_in_proxy_nodes
   sync_ip node['ipaddress_sync']
   ip_addr node['ipaddress']
+  previous_nginx_vip previous_nginx_vip
+  current_nginx_vip virtual_ips.dig('external', 'nginx', 'ip')
+  manager_services manager_services
   if manager_services['firewall']
-    action :add
+    action [:add, :cleanup_virtual_ip_rules]
   else
-    action :remove
+    action [:remove, :cleanup_virtual_ip_rules]
   end
 end
 
@@ -84,6 +91,14 @@ begin
   s3_secrets = data_bag_item('passwords', 's3').to_hash
 rescue
   s3_secrets = {}
+end
+
+s3_malware_secrets = {}
+
+begin
+  s3_malware_secrets = data_bag_item('rBglobal', 'malware-bucket').to_hash
+rescue
+  s3_malware_secrets = {}
 end
 
 chef_server_config 'Configure chef services' do
@@ -392,9 +407,8 @@ end
 
 aerospike_config 'Configure aerospike' do
   if manager_services['aerospike']
-    ipaddress_sync node['ipaddress_sync']
-    ipaddress node['ipaddress']
-    aerospike_managers node['redborder']['managers_per_services']['aerospike']
+    ipaddress node['ipaddress_sync']
+    aerospike_ips node['redborder']['aerospike']['ips']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -412,6 +426,9 @@ webui_config 'Configure WebUI' do
     redborder_version node['redborder']['repo']['version']
     user_sensor_map user_sensor_map_data
     s3_secrets s3_secrets
+    s3_malware_secrets s3_malware_secrets
+    aerospike_ips node['redborder']['aerospike']['ips']
+    aerospike_port node['aerospike']['port']
     action [:add, :register, :configure_rsa]
   else
     action [:remove, :deregister]
@@ -571,10 +588,12 @@ logstash_config 'Configure logstash' do
     logstash_pipelines node.run_state['pipelines']
     split_traffic_logstash split_traffic
     split_intrusion_logstash split_intrusion
+    flow_nodes_without_proxy node.run_state['sensors_info_cluster']['flow-sensor']
+    flow_nodes_with_proxy node.run_state['sensors_info_childs_proxy']['flow-sensor']
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
     redis_secrets redis_secrets
-    s3_secrets s3_secrets
+    s3_malware_secrets s3_malware_secrets
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -636,6 +655,16 @@ end
 rbale_config 'Configure redborder-ale' do
   if manager_services['redborder-ale']
     ale_nodes node.run_state['sensors_info_all']['ale-sensor']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+rb_reputation_config 'Configure rb-reputation' do
+  if manager_services['rb-reputation']
+    memory node['redborder']['memory_services']['rb-reputation']['memory']
+    aerospike_ips node['redborder']['aerospike']['ips']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -763,8 +792,8 @@ minio_config 'Configure S3 (minio)' do
   managers_with_minio node['redborder']['managers_per_services']['s3']
   access_key_id s3_secrets['s3_access_key_id']
   secret_key_id s3_secrets['s3_secret_key_id']
-  malware_access_key_id s3_secrets['s3_malware_access_key_id'] unless s3_secrets['s3_malware_access_key_id'].nil?
-  malware_secret_key_id s3_secrets['s3_malware_secret_key_id'] unless s3_secrets['s3_malware_secret_key_id'].nil?
+  malware_access_key_id s3_malware_secrets['s3_malware_access_key_id'] unless s3_malware_secrets['s3_malware_access_key_id'].nil?
+  malware_secret_key_id s3_malware_secrets['s3_malware_secret_key_id'] unless s3_malware_secrets['s3_malware_secret_key_id'].nil?
   if manager_services['s3'] && external_services&.dig('s3') == 'onpremise'
     ipaddress node['ipaddress_sync']
     action [:add_mcli, :add, :add_malware, :register]
@@ -884,6 +913,10 @@ execute 'force_chef_client_wakeup' do
     action :run
   end
 end
+
+# Save current webui VIP for next run
+val = virtual_ips.dig('external', 'nginx', 'ip')
+node.normal['redborder']['previous_nginx_vip'] = val.is_a?(Hash) && val.empty? ? nil : val
 
 # MOTD
 cluster_uuid_db = {}

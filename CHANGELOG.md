@@ -1,6 +1,63 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.17.1
+
+  - manegron
+    - [6957b42] Update configure.rb
+
+## 5.17.0
+
+  - manegron
+    - [aba533b] Add rb-reputation
+
+## 5.16.2
+
+  - manegron
+    - [d0020d0] Adapt s3_malware_secrets
+
+## 5.16.1
+
+  - Rafa Gómez
+    - [ca25dd7] Bugfix/#22761 Aerospike should point to sync ip in webui (#374)
+
+## 5.16.0
+
+  - Pablo Pérez
+    - [3e29e14] Increment aerospike memory
+    - [565751c] add defatult malware loaders
+    - [20dbb9d] Added cron task create_aerospike_secondary_indexes_daily
+    - [7b93c26] Add policy enforced data into node
+
+## 5.15.3
+
+  - nilsver
+    - [b8e643d] Bugfix/20613 sflow locations show double if same ip (#287)
+
+## 5.15.2
+
+  - Rafael Gomez
+    - [34163b6] Change ipaddress variable to ipaddress_sync
+  - manegron
+    - [f462847] Fix aerospike
+
+## 5.15.1
+
+  - nilsver
+    - [3184297] fix from other task iptables
+  - ljblancoredborder
+    - [6281f9d] adding nginx as a vip and as balanced service for clustering
+
+## 5.15.0
+
+  - nilsver
+    - [9fc4722] catch empty hash value
+    - [8ab67bf] move to firewall cookbook
+    - [6b11037] remove resource passing to webui
+    - [94b1322] fix logic
+    - [1b930ec] pass action to webui
+    - [4b8e1b4] pass virtual ip to remove action
+
 ## 5.14.0
 
   - Rafael Gomez
