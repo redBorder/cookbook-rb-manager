@@ -288,6 +288,7 @@ default['redborder']['manager']['policy_enforced']['development']['actions']['li
 
 # Default malware loaders and scores
 default['redborder']['manager']['loaders']                                    = {}
+default['redborder']['manager']['loaders']['virustotal_api_key']              = ''
 default['redborder']['manager']['loaders']['fuzzy']                           = {}
 default['redborder']['manager']['loaders']['fuzzy']['ssdeep_oldhashes_limit']     = 1000
 default['redborder']['manager']['loaders']['fuzzy']['ssdeep_malwarehashes_limit'] = 1000
