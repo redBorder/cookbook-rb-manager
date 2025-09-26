@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.17.2
+
+  - Pablo Pérez
+    - [929693e] Add virustotal api key default value
+
 ## 5.17.1
 
   - manegron
