@@ -1,10 +1,7 @@
 module RbManager
   module Helpers
     def find_ip_of_master_node
-      postgres_ips = node['redborder']['cluster_info']
-        .select { |m, _| node['redborder']['managers_per_services']['postgresql'].include?(m) }
-        .map    { |_, v| v['ipaddress_sync'] }
-
+      postgres_ips = node['redborder']['cluster_info'].select { |m, _| node['redborder']['managers_per_services']['postgresql'].include?(m) }.map { |_, v| v['ipaddress_sync'] }
       postgres_ips.first
     end
 
