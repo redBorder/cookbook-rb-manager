@@ -541,7 +541,7 @@ end
 # end
 
 cape_config 'Configure cape' do
-  if manager_services['cape-rooter'] and manager_services['cape-processor'] and manager_services['cape'] and manager_services['cape-web']
+  if manager_services['cape-rooter'] && manager_services['cape-processor'] && manager_services['cape'] && manager_services['cape-web']
     ipaddress_sync node['ipaddress_sync']
     cape_interface_ip node['cape']['interface_ip']
     cape_interface node['cape']['interface']
