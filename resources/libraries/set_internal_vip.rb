@@ -1,20 +1,11 @@
 module RbManager
   module Helpers
-    def find_vip_from_serf
-      postgresql_master_node = node['redborder']['managers_per_services']['postgresql'].first
-      serf_output = `serf members`
+    def find_ip_of_master_node
+      postgres_ips = node['redborder']['cluster_info']
+        .select { |m, _| node['redborder']['managers_per_services']['postgresql'].include?(m) }
+        .map    { |_, v| v['ipaddress_sync'] }
 
-      master_ip = serf_output.lines.find do |line|
-        next unless line.include?('alive')
-
-        node_name = line.split[0]
-        node_name == postgresql_master_node
-      end
-
-      return unless master_ip
-
-      ip_part = master_ip.split[1]
-      ip_part&.split(':')&.first
+      postgres_ips.first
     end
 
     def update_hosts_file(hosts_file, master_vip, service, vip)
@@ -39,7 +30,7 @@ module RbManager
 
     def set_internal_vip(vip, service)
       etc_hosts_updated = false
-      master_vip = vip || find_vip_from_serf
+      master_vip = vip || find_ip_of_master_node
       etc_hosts_updated = update_hosts_file('/etc/hosts', master_vip, service, vip) if master_vip
       etc_hosts_updated
     end
