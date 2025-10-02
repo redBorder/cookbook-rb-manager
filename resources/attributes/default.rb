@@ -47,6 +47,15 @@ default['redis']['sentinel_port'] = 26380
 default['aerospike']['port'] = 3000
 default['aerospike']['multicast'] = '239.1.99.222'
 
+# cape
+default['cape']['interface_ip'] = '192.168.122.1'
+default['cape']['interface'] = 'virbr0'
+default['cape']['web_ip'] = '0.0.0.0'
+default['cape']['web_port'] = 8099
+default['cape']['result_server_ip'] = '192.168.122.1'
+default['cape']['result_server_port'] = 2042
+default['cape']['min_freespace'] = 15000
+
 # hard disk
 default['redborder']['manager']['data_dev'] = {}
 default['redborder']['manager']['data_dev']['root'] = '/dev/mapper/VolGroup-lv_root'
@@ -123,6 +132,10 @@ default['redborder']['services_group']['postgresql'] = %w(consul postgresql)
 
 default['redborder']['services'] = {}
 default['redborder']['services']['aerospike']                 = false
+default['redborder']['services']['cape-rooter']               = false
+default['redborder']['services']['cape-processor']            = false
+default['redborder']['services']['cape']                      = false
+default['redborder']['services']['cape-web']                  = false
 default['redborder']['services']['chef-client']               = true
 default['redborder']['services']['chef-server']               = false
 default['redborder']['services']['chrony']                    = true
@@ -172,6 +185,10 @@ default['redborder']['services']['redis']                     = false
 default['redborder']['services']['rb-reputation']             = false
 
 default['redborder']['systemdservices']['aerospike']                = ['aerospike']
+default['redborder']['systemdservices']['cape-rooter']              = ['cape-rooter']
+default['redborder']['systemdservices']['cape-processor']           = ['cape-processor']
+default['redborder']['systemdservices']['cape']                     = ['cape']
+default['redborder']['systemdservices']['cape-web']                 = ['cape-web']
 default['redborder']['systemdservices']['chef-client']              = ['chef-client']
 default['redborder']['systemdservices']['chef-server']              = ['opscode-erchef']
 default['redborder']['systemdservices']['chrony']                   = ['chronyd']
