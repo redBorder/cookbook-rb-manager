@@ -104,3 +104,14 @@ cron_d 'create_aerospike_secondary_indexes_daily' do
   ignore_failure true
   command '/usr/lib/redborder/bin/rb_create_aerospike_indexes.sh'
 end
+
+# Manage password_readers group
+cron_d 'manage_password_readers_group' do
+  action :create
+  minute '*/30'
+  hour   '*'
+  weekday '*'
+  retries 2
+  ignore_failure true
+  command "/usr/bin/chef-client -o 'recipe[cookbook-rb-manager::manage_password_readers]'"
+end
