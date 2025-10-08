@@ -5,18 +5,17 @@
 # Copyright:: 2025, The Authors, All Rights Reserved.
 
 begin
-  # Search for all nodes and filter in Ruby.
+  # Get all nodes except ips and intrusion
   all_nodes = search(:node, '*_*')
   excluded_patterns = ['^rbips-', '^rbintrusion-', '^rbipsv2-']
   allowed_nodes = all_nodes.reject do |node|
     excluded_patterns.any? { |pattern| node.name.match?(pattern) }
   end.map(&:name).uniq.sort
 
-  Chef::Log.info("Found nodes for password_readers group: #{allowed_nodes.inspect}")
-
   rest = Chef::ServerAPI.new()
   group_exists = true
 
+  # Get group or create if not exists
   begin
     password_group = rest.get("groups/password_readers")
   rescue Net::HTTPServerException => e
@@ -25,7 +24,7 @@ begin
       password_group = {
         "name" => "password_readers",
         "groupname" => "password_readers",
-        "orgname" => "default",
+        "orgname" => "redborder",
       }
     else
       raise e
@@ -43,13 +42,26 @@ begin
     Chef::Log.info("Successfully created password_readers group.")
   end
 
-  execute 'ensure_clients_group_cannot_read_passwords_databag' do
-    command 'knife acl remove group clients data passwords read'
-    ignore_failure true
-  end
+  # Enforce the ACLs for the passwords data bag directly via the API
+  acl_path = "data/passwords/_acl"
+  begin
+    acl = rest.get(acl_path)
+    read_ace = acl['read']
 
-  execute 'ensure_password_readers_group_can_read_passwords_databag' do
-    command 'knife acl add group password_readers data passwords read'
+    # Remove 'clients' group from the read ACE, otherwise all nodes will have read access
+    read_ace['groups'].delete('clients')
+
+    # Add 'password_readers' group to the read ACE
+    unless read_ace['groups'].include?('password_readers')
+      read_ace['groups'] << 'password_readers'
+    end
+
+    # PUT the updated 'read' ACE back to the server at the specific 'read' endpoint
+    rest.put("#{acl_path}/read", { "read" => read_ace })
+    Chef::Log.info("Successfully enforced ACLs for passwords data bag via API.")
+
+  rescue Net::HTTPServerException => e
+    Chef::Log.warn("Could not manage ACLs for passwords data bag via API: #{e.message}")
   end
 
 rescue StandardError => e

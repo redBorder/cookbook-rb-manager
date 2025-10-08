@@ -113,5 +113,5 @@ cron_d 'manage_password_readers_group' do
   weekday '*'
   retries 2
   ignore_failure true
-  command "/usr/bin/chef-client -o 'recipe[cookbook-rb-manager::manage_password_readers]'"
+  command "/usr/bin/chef-client -o 'recipe[rb-manager::manage_password_readers]'"
 end
