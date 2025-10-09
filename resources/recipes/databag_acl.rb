@@ -18,7 +18,7 @@ begin
   begin
     password_group = rest.get('groups/password_readers')
   rescue Net::HTTPServerException => e
-    if e.response.code == '04'
+    if e.response.code == '404'
       group_exists = false
       password_group = {
         'name' => 'password_readers',
@@ -60,9 +60,8 @@ begin
     Chef::Log.info('Successfully enforced ACLs for passwords data bag via API.')
 
   rescue Net::HTTPServerException => e
-    Chef::Log.warn('Could not manage ACLs for passwords data bag via API: #{e.message}')
+    Chef::Log.warn("Could not manage ACLs for passwords data bag via API: #{e.message}")
   end
-
 rescue StandardError => e
   Chef::Log.warn("Failed to manage password_readers group: #{e.message}")
   Chef::Log.warn(e.backtrace.join('\n'))
