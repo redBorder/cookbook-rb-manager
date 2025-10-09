@@ -58,7 +58,6 @@ begin
     # PUT the updated 'read' ACE back to the server at the specific 'read' endpoint
     rest.put("#{acl_path}/read", { 'read' => read_ace })
     Chef::Log.info('Successfully enforced ACLs for passwords data bag via API.')
-
   rescue Net::HTTPServerException => e
     Chef::Log.warn("Could not manage ACLs for passwords data bag via API: #{e.message}")
   end
