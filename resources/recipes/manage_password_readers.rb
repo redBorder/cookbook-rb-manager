@@ -7,7 +7,7 @@
 begin
   # Get all nodes except ips and intrusion
   all_nodes = search(:node, '*')
-  excluded_patterns = ['^rbips-', '^rbintrusion-', '^rbipsv2-']
+  excluded_patterns = ['^rbips-', '^rbipscp-', '^rbipsv2-', '^rbintrusion-']
   allowed_nodes = all_nodes.reject do |node|
     excluded_patterns.any? { |pattern| node.name.match?(pattern) }
   end.map(&:name).uniq.sort
