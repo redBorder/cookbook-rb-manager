@@ -1,8 +1,7 @@
-#
-# Cookbook:: cookbook-rb-manager
-# Recipe:: manage_password_readers
-#
-# Copyright:: 2025, The Authors, All Rights Reserved.
+# Cookbook:: manager
+# Recipe:: databag_acl
+# Copyright:: 2025, redborder
+# License:: Affero General Public License, Version 3
 
 begin
   # Get all nodes except ips and intrusion
