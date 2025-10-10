@@ -544,6 +544,7 @@ end
 airflow_config 'Configure airflow (scheduler and webserver)' do
   if manager_services['airflow-scheduler'] || manager_services['airflow-webserver']
     airflow_secrets airflow_secrets
+    ipaddress_mgt node['ipaddress']
     ipaddress_sync node['ipaddress_sync']
     airflow_port node['airflow']['web_port']
     cdomain node['redborder']['cdomain']
