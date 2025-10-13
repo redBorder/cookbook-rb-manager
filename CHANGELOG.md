@@ -1,6 +1,39 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.17.2
+
+  - Pablo Pérez
+    - [929693e] Add virustotal api key default value
+
+## 5.17.1
+
+  - manegron
+    - [6957b42] Update configure.rb
+
+## 5.17.0
+
+  - manegron
+    - [aba533b] Add rb-reputation
+
+## 5.16.2
+
+  - manegron
+    - [d0020d0] Adapt s3_malware_secrets
+
+## 5.16.1
+
+  - Rafa Gómez
+    - [ca25dd7] Bugfix/#22761 Aerospike should point to sync ip in webui (#374)
+
+## 5.16.0
+
+  - Pablo Pérez
+    - [3e29e14] Increment aerospike memory
+    - [565751c] add defatult malware loaders
+    - [20dbb9d] Added cron task create_aerospike_secondary_indexes_daily
+    - [7b93c26] Add policy enforced data into node
+
 ## 5.15.3
 
   - nilsver

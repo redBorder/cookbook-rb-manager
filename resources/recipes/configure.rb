@@ -93,6 +93,14 @@ rescue
   s3_secrets = {}
 end
 
+s3_malware_secrets = {}
+
+begin
+  s3_malware_secrets = data_bag_item('rBglobal', 'malware-bucket').to_hash
+rescue
+  s3_malware_secrets = {}
+end
+
 chef_server_config 'Configure chef services' do
   if manager_services['chef-server']
     memory node['redborder']['memory_services']['chef-server']['memory']
@@ -418,6 +426,9 @@ webui_config 'Configure WebUI' do
     redborder_version node['redborder']['repo']['version']
     user_sensor_map user_sensor_map_data
     s3_secrets s3_secrets
+    s3_malware_secrets s3_malware_secrets
+    aerospike_ips node['redborder']['aerospike']['ips']
+    aerospike_port node['aerospike']['port']
     action [:add, :register, :configure_rsa]
   else
     action [:remove, :deregister]
@@ -561,7 +572,7 @@ logstash_config 'Configure logstash' do
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
     redis_secrets redis_secrets
-    s3_secrets s3_secrets
+    s3_malware_secrets s3_malware_secrets
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -623,6 +634,16 @@ end
 rbale_config 'Configure redborder-ale' do
   if manager_services['redborder-ale']
     ale_nodes node.run_state['sensors_info_all']['ale-sensor']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+rb_reputation_config 'Configure rb-reputation' do
+  if manager_services['rb-reputation']
+    memory node['redborder']['memory_services']['rb-reputation']['memory']
+    aerospike_ips node['redborder']['aerospike']['ips']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -750,8 +771,8 @@ minio_config 'Configure S3 (minio)' do
   managers_with_minio node['redborder']['managers_per_services']['s3']
   access_key_id s3_secrets['s3_access_key_id']
   secret_key_id s3_secrets['s3_secret_key_id']
-  malware_access_key_id s3_secrets['s3_malware_access_key_id'] unless s3_secrets['s3_malware_access_key_id'].nil?
-  malware_secret_key_id s3_secrets['s3_malware_secret_key_id'] unless s3_secrets['s3_malware_secret_key_id'].nil?
+  malware_access_key_id s3_malware_secrets['s3_malware_access_key_id'] unless s3_malware_secrets['s3_malware_access_key_id'].nil?
+  malware_secret_key_id s3_malware_secrets['s3_malware_secret_key_id'] unless s3_malware_secrets['s3_malware_secret_key_id'].nil?
   if manager_services['s3'] && external_services&.dig('s3') == 'onpremise'
     ipaddress node['ipaddress_sync']
     action [:add_mcli, :add, :add_malware, :register]
