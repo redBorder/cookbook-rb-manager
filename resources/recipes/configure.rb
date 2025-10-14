@@ -415,6 +415,15 @@ aerospike_config 'Configure aerospike' do
   end
 end
 
+drill_config 'Configure drill' do
+  ipaddress node['ipaddress']
+  if manager_services['drill']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 webui_config 'Configure WebUI' do
   if manager_services['webui']
     hostname node['hostname']
