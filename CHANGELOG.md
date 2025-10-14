@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.17.3
+
+  - nilsver
+    - [1e5a1ab] remove dependency on serf
+
 ## 5.17.2
 
   - Pablo Pérez
