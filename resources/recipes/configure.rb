@@ -540,10 +540,24 @@ rescue
   airflow_secrets = {}
 end
 
-# Configure Airflow
-airflow_config 'Configure airflow (scheduler and webserver)' do
-  if manager_services['airflow-scheduler'] || manager_services['airflow-webserver']
-    airflow_secrets airflow_secrets
+# Configure Airflow Webserver
+airflow_webserver_config 'Configure airflow webserver' do
+  if manager_services['airflow-webserver']
+    airflow_secrets node['airflow_secrets']
+    ipaddress_mgt node['ipaddress']
+    ipaddress_sync node['ipaddress_sync']
+    airflow_port node['airflow']['web_port']
+    cdomain node['redborder']['cdomain']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+# Configure Airflow Scheduler
+airflow_scheduler_config 'Configure airflow scheduler' do
+  if manager_services['airflow-scheduler']
+    airflow_secrets node['airflow_secrets']
     ipaddress_mgt node['ipaddress']
     ipaddress_sync node['ipaddress_sync']
     airflow_port node['airflow']['web_port']
