@@ -1,6 +1,18 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.18.0
+
+  - Rafael Gomez
+    - [8e46267] Fix linter and unify airflow cookbook configuration
+    - [caab11d] Passing the management ip to airflow cookbook
+  - vimesa
+    - [4ef54ab] Modify memory of airflow
+    - [1accb3c] Add airflow ports, modify airflow config
+    - [4ce7cb1] Modify configuration of airflow
+    - [fae866b] Add airflow secrets
+    - [7fff9e9] Add airflow
+
 ## 5.17.3
 
   - nilsver
