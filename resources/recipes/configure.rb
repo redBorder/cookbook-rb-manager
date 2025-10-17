@@ -127,7 +127,6 @@ postgresql_config 'Configure postgresql' do
   if manager_services['postgresql'] && external_services&.dig('postgresql') == 'onpremise'
     cdomain node['redborder']['cdomain']
     ipaddress node['ipaddress_sync']
-    postgresql_hosts node['redborder']['managers_per_services']['postgresql']
     action [:add, :register]
   elsif !external_services.nil?
     action [:remove, :deregister]
