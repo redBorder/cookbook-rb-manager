@@ -127,7 +127,6 @@ postgresql_config 'Configure postgresql' do
   if manager_services['postgresql'] && external_services&.dig('postgresql') == 'onpremise'
     cdomain node['redborder']['cdomain']
     ipaddress node['ipaddress_sync']
-    postgresql_hosts node['redborder']['managers_per_services']['postgresql']
     action [:add, :register]
   elsif !external_services.nil?
     action [:remove, :deregister]
@@ -530,6 +529,28 @@ end
 
 yara_config 'yara' do
   action [:add]
+end
+
+airflow_secrets = {}
+
+begin
+  airflow_secrets = data_bag_item('passwords', 'db_airflow').to_hash
+rescue
+  airflow_secrets = {}
+end
+
+# Configure Airflow
+airflow_config 'Configure airflow' do
+  if manager_services['airflow-scheduler'] || manager_services['airflow-webserver']
+    airflow_secrets airflow_secrets
+    ipaddress_mgt node['ipaddress']
+    ipaddress_sync node['ipaddress_sync']
+    airflow_port node['airflow']['web_port']
+    cdomain node['redborder']['cdomain']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
 end
 
 # Configure logstash
