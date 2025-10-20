@@ -556,6 +556,8 @@ if manager_services['airflow-scheduler'] || manager_services['airflow-webserver'
     airflow_webserver_hosts node['redborder']['managers_per_services']['airflow-webserver']
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
+    cpu_cores node['cpu']['total'].to_i
+    ram_memory_kb node['memory']['total'].to_i
     action :add
     notifies :restart, 'service[airflow-scheduler]', :delayed if manager_services['airflow-scheduler']
     notifies :restart, 'service[airflow-webserver]', :delayed if manager_services['airflow-webserver']
