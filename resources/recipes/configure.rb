@@ -539,14 +539,43 @@ rescue
   airflow_secrets = {}
 end
 
-# Configure Airflow
-airflow_config 'Configure airflow' do
-  if manager_services['airflow-scheduler'] || manager_services['airflow-webserver']
+if manager_services['airflow-scheduler'] || manager_services['airflow-webserver']
+  %w(airflow-scheduler airflow-webserver).each do |airflow_service|
+    service airflow_service do
+      supports status: true, start: true, restart: true, reload: true
+      action :nothing
+    end
+  end
+
+  airflow_common 'Configure Airflow Common resources' do
     airflow_secrets airflow_secrets
     ipaddress_mgt node['ipaddress']
-    ipaddress_sync node['ipaddress_sync']
     airflow_port node['airflow']['web_port']
     cdomain node['redborder']['cdomain']
+    action :add
+    notifies :restart, 'service[airflow-scheduler]', :delayed if manager_services['airflow-scheduler']
+    notifies :restart, 'service[airflow-webserver]', :delayed if manager_services['airflow-webserver']
+  end
+else
+  airflow_common 'Delete Airflow Common resources' do
+    action :remove
+  end
+end
+
+airflow_scheduler_config 'Configure Airflow Scheduler' do
+  if manager_services['airflow-scheduler']
+    ipaddress_sync node['ipaddress_sync']
+    scheduler_port node['airflow']['scheduler_port']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+airflow_webserver_config 'Configure Airflow Webserver' do
+  if manager_services['airflow-webserver']
+    ipaddress_mgt node['ipaddress']
+    web_port node['airflow']['web_port']
     action [:add, :register]
   else
     action [:remove, :deregister]
