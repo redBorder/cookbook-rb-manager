@@ -1,11 +1,6 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
-## 5.18.1
-
-  - nilsver
-    - [3cfb7ac] Bugfix/22915 limit access databag passwords (#383)
-
 ## 5.18.0
 
   - Rafael Gomez
