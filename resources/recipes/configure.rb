@@ -562,7 +562,7 @@ else
   end
 end
 
-airflow_scheduler_config 'Configure Airflow Scheduler' do
+airflow_scheduler 'Configure Airflow Scheduler' do
   if manager_services['airflow-scheduler']
     ipaddress_sync node['ipaddress_sync']
     scheduler_port node['airflow']['scheduler_port']
@@ -572,7 +572,7 @@ airflow_scheduler_config 'Configure Airflow Scheduler' do
   end
 end
 
-airflow_webserver_config 'Configure Airflow Webserver' do
+airflow_webserver 'Configure Airflow Webserver' do
   if manager_services['airflow-webserver']
     ipaddress_mgt node['ipaddress']
     web_port node['airflow']['web_port']
