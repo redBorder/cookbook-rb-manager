@@ -17,6 +17,7 @@ flow_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('flow')
 vault_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('vault')
 user_sensor_map_data = get_user_sensor_map
 is_consul_server = consul_server?
+enables_celery_worker = enables_celery_worker?
 
 # Save previous webui VIP for this run
 previous_nginx_vip = node.normal.dig('redborder', 'previous_nginx_vip')
@@ -540,7 +541,7 @@ rescue
 end
 
 if manager_services['airflow-scheduler'] || manager_services['airflow-webserver']
-  %w(airflow-scheduler airflow-webserver).each do |airflow_service|
+  %w(airflow-celery-worker airflow-scheduler airflow-webserver).each do |airflow_service|
     service airflow_service do
       supports status: true, start: true, restart: true, reload: true
       action :nothing
@@ -560,6 +561,7 @@ if manager_services['airflow-scheduler'] || manager_services['airflow-webserver'
     cpu_cores node['cpu']['total'].to_i
     ram_memory_kb node['memory']['total'].to_i
     action :add
+    notifies :restart, 'service[airflow-celery-worker]', :delayed if enables_celery_worker
     notifies :restart, 'service[airflow-scheduler]', :delayed if manager_services['airflow-scheduler']
     notifies :restart, 'service[airflow-webserver]', :delayed if manager_services['airflow-webserver']
   end
