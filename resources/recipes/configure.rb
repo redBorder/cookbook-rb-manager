@@ -632,7 +632,6 @@ logstash_config 'Configure logstash' do
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
     redis_secrets redis_secrets
-    s3_malware_secrets s3_malware_secrets
     action [:add, :register]
   else
     action [:remove, :deregister]
