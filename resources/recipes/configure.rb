@@ -565,10 +565,6 @@ if manager_services['airflow-scheduler'] || manager_services['airflow-webserver'
     notifies :restart, 'service[airflow-scheduler]', :delayed if manager_services['airflow-scheduler']
     notifies :restart, 'service[airflow-webserver]', :delayed if manager_services['airflow-webserver']
   end
-else
-  airflow_common 'Delete Airflow Common resources' do
-    action :remove
-  end
 end
 
 airflow_scheduler 'Configure Airflow Scheduler' do
@@ -588,6 +584,12 @@ airflow_webserver 'Configure Airflow Webserver' do
     action [:add, :register]
   else
     action [:remove, :deregister]
+  end
+end
+
+if !manager_services['airflow-scheduler'] && !manager_services['airflow-webserver']
+  airflow_common 'Delete Airflow Common resources' do
+    action :remove
   end
 end
 
