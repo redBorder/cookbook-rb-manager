@@ -560,7 +560,6 @@ if manager_services['airflow-scheduler'] || manager_services['airflow-webserver'
     redis_secrets redis_secrets
     cpu_cores node['cpu']['total'].to_i
     ram_memory_kb node['memory']['total'].to_i
-    s3_malware_secrets s3_malware_secrets
     action :add
     notifies :restart, 'service[airflow-celery-worker]', :delayed if enables_celery_worker
     notifies :restart, 'service[airflow-scheduler]', :delayed if manager_services['airflow-scheduler']
@@ -632,6 +631,7 @@ logstash_config 'Configure logstash' do
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
     redis_secrets redis_secrets
+    s3_malware_secrets s3_malware_secrets
     action [:add, :register]
   else
     action [:remove, :deregister]
