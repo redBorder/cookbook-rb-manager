@@ -559,6 +559,8 @@ if manager_services['airflow-scheduler'] || manager_services['airflow-webserver'
     cpu_cores node['cpu']['total'].to_i
     ram_memory_kb node['memory']['total'].to_i
     enables_celery_worker enables_celery_worker
+    malware_access_key s3_malware_secrets['s3_malware_access_key_id'] unless s3_malware_secrets['s3_malware_access_key_id'].nil?
+    malware_secret_key s3_malware_secrets['s3_malware_secret_key_id'] unless s3_malware_secrets['s3_malware_secret_key_id'].nil?
     action :add
     notifies :restart, 'service[airflow-celery-worker]', :delayed if enables_celery_worker
     notifies :restart, 'service[airflow-scheduler]', :delayed if manager_services['airflow-scheduler']
