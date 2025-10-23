@@ -553,8 +553,6 @@ if manager_services['airflow-scheduler'] || manager_services['airflow-webserver'
     ipaddress_mgt node['ipaddress']
     airflow_port node['airflow']['web_port']
     cdomain node['redborder']['cdomain']
-    airflow_scheduler_hosts node['redborder']['managers_per_services']['airflow-scheduler']
-    airflow_webserver_hosts node['redborder']['managers_per_services']['airflow-webserver']
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
     redis_secrets redis_secrets
