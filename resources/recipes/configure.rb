@@ -560,6 +560,7 @@ if manager_services['airflow-scheduler'] || manager_services['airflow-webserver'
     redis_secrets redis_secrets
     cpu_cores node['cpu']['total'].to_i
     ram_memory_kb node['memory']['total'].to_i
+    enables_celery_worker enables_celery_worker
     action :add
     notifies :restart, 'service[airflow-celery-worker]', :delayed if enables_celery_worker
     notifies :restart, 'service[airflow-scheduler]', :delayed if manager_services['airflow-scheduler']
