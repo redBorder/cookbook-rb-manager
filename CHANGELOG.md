@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.19.0
+
+  - Rafa Gómez
+    - [70e009d] Feature/#23083 Make airflow compatible with a cluster-node environment (#387)
+
 ## 5.18.0
 
   - Rafael Gomez
