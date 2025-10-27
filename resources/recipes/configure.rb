@@ -124,16 +124,11 @@ rescue => e
   external_services = nil
 end
 
-postgresql_config 'Configure postgresql' do
-  if manager_services['postgresql'] && external_services&.dig('postgresql') == 'onpremise'
+if manager_services['postgresql'] && external_services&.dig('postgresql') == 'onpremise'
+  postgresql_config 'Configure postgresql' do
     cdomain node['redborder']['cdomain']
     ipaddress node['ipaddress_sync']
     action [:add, :register]
-  elsif !external_services.nil?
-    action [:remove, :deregister]
-  else
-    Chef::Log.warn('Skipped PostgreSQL removal/deregistration due to missing external_services data')
-    action :nothing
   end
 end
 
@@ -977,4 +972,11 @@ template '/etc/motd' do
             uuid: cluster_uuid_db['uuid'],
             manager_services: manager_services,
             cluster_finished: node.run_state['cluster_installed'])
+end
+
+if !external_services.nil? && !manager_services['postgresql']
+  postgresql_config 'Configure postgresql removal' do
+    virtual_ips virtual_ips
+    action [:remove, :deregister]
+  end
 end
