@@ -572,6 +572,42 @@ if manager_services.values_at(*airflow_managed_services).compact.any?
   end
 end
 
+airflow_dag_processor 'Configure Airflow Dag Processor' do
+  if manager_services['airflow-dag-processor']
+    ipaddress_sync node['ipaddress_sync']
+    dag_processor_port node['airflow']['dag_processor_port']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+airflow_triggerer 'Configure Airflow Triggerer' do
+  if manager_services['airflow-triggerer']
+    ipaddress_sync node['ipaddress_sync']
+    triggerer_port node['airflow']['triggerer_port']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+airflow_webserver 'Configure Airflow Webserver' do
+  if manager_services['airflow-webserver']
+    ipaddress_mgt node['ipaddress']
+    web_port node['airflow']['web_port']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+unless manager_services.values_at(*airflow_managed_services).compact.any?
+  airflow_common 'Delete Airflow Common resources' do
+    action :remove
+  end
+end
+
 # Configure logstash
 split_traffic = false
 
