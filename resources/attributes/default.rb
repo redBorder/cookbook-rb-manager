@@ -95,8 +95,8 @@ default['redborder']['memory_services']['secor-vault'] = { 'count': 30, 'memory'
 default['redborder']['memory_services']['redis'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['airflow-scheduler'] = { 'count': 30, 'memory': 0 }
 default['redborder']['memory_services']['airflow-webserver'] = { 'count': 30, 'memory': 0 }
-default['redborder']['memory_services']['airflow-triggerer'] = { 'count': 30, 'memory': 0 }
-default['redborder']['memory_services']['airflow-dag-processor'] = { 'count': 30, 'memory': 0 }
+default['redborder']['memory_services']['airflow-triggerer'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['airflow-dag-processor'] = { 'count': 20, 'memory': 0 }
 default['redborder']['memory_services']['rb-reputation'] = { 'count': 30, 'memory': 0 }
 
 # default attributes for managers_info, it would be rewriten with the cluster config
