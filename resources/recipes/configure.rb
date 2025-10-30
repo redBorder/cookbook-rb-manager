@@ -566,9 +566,24 @@ if manager_services.values_at(*airflow_managed_services).compact.any?
     ipaddress_mgt node['ipaddress']
     airflow_port node['airflow']['web_port']
     cdomain node['redborder']['cdomain']
-    action [:add, :register]
-  else
-    action [:remove, :deregister]
+    redis_hosts node['redborder']['managers_per_services']['redis']
+    redis_port node['redis']['port']
+    redis_secrets redis_secrets
+    cpu_cores node['cpu']['total'].to_i
+    ram_memory_kb node['memory']['total'].to_i
+    enables_celery_worker enables_celery_worker
+    action :add
+
+    %w(
+      airflow-celery-worker
+      airflow-scheduler
+      airflow-webserver
+      airflow-dag-processor
+      airflow-triggerer
+    ).each do |svc|
+      should_notify = (svc == 'airflow-celery-worker' ? enables_celery_worker : manager_services[svc])
+      notifies :restart, "service[#{svc}]", :delayed if should_notify
+    end
   end
 end
 
