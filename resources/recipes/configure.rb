@@ -587,6 +587,16 @@ if manager_services.values_at(*airflow_managed_services).compact.any?
   end
 end
 
+airflow_scheduler 'Configure Airflow Scheduler' do
+  if manager_services['airflow-scheduler']
+    ipaddress_sync node['ipaddress_sync']
+    scheduler_port node['airflow']['scheduler_port']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 airflow_dag_processor 'Configure Airflow Dag Processor' do
   if manager_services['airflow-dag-processor']
     ipaddress_sync node['ipaddress_sync']
