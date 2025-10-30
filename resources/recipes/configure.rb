@@ -540,21 +540,21 @@ rescue
   airflow_secrets = {}
 end
 
-airflow_managed_services = %w[
+airflow_managed_services = %w(
   airflow-scheduler
   airflow-webserver
   airflow-dag-processor
   airflow-triggerer
-]
+)
 
 if manager_services.values_at(*airflow_managed_services).compact.any?
-  %w[
+  %w(
     airflow-celery-worker
     airflow-scheduler
     airflow-webserver
     airflow-dag-processor
     airflow-triggerer
-  ].each do |svc|
+  ).each do |svc|
     service svc do
       supports status: true, start: true, restart: true, reload: true
       action :nothing
@@ -574,13 +574,13 @@ if manager_services.values_at(*airflow_managed_services).compact.any?
     enables_celery_worker enables_celery_worker
     action :add
 
-    %w[
+    %w(
       airflow-celery-worker
       airflow-scheduler
       airflow-webserver
       airflow-dag-processor
       airflow-triggerer
-    ].each do |svc|
+    ).each do |svc|
       should_notify = (svc == 'airflow-celery-worker' ? enables_celery_worker : manager_services[svc])
       notifies :restart, "service[#{svc}]", :delayed if should_notify
     end
