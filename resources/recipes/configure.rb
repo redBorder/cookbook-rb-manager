@@ -540,9 +540,22 @@ rescue
   airflow_secrets = {}
 end
 
-if manager_services['airflow-scheduler'] || manager_services['airflow-webserver']
-  %w(airflow-celery-worker airflow-scheduler airflow-webserver).each do |airflow_service|
-    service airflow_service do
+airflow_managed_services = %w(
+  airflow-scheduler
+  airflow-webserver
+  airflow-dag-processor
+  airflow-triggerer
+)
+
+if manager_services.values_at(*airflow_managed_services).compact.any?
+  %w(
+    airflow-celery-worker
+    airflow-scheduler
+    airflow-webserver
+    airflow-dag-processor
+    airflow-triggerer
+  ).each do |svc|
+    service svc do
       supports status: true, start: true, restart: true, reload: true
       action :nothing
     end
@@ -560,9 +573,17 @@ if manager_services['airflow-scheduler'] || manager_services['airflow-webserver'
     ram_memory_kb node['memory']['total'].to_i
     enables_celery_worker enables_celery_worker
     action :add
-    notifies :restart, 'service[airflow-celery-worker]', :delayed if enables_celery_worker
-    notifies :restart, 'service[airflow-scheduler]', :delayed if manager_services['airflow-scheduler']
-    notifies :restart, 'service[airflow-webserver]', :delayed if manager_services['airflow-webserver']
+
+    %w(
+      airflow-celery-worker
+      airflow-scheduler
+      airflow-webserver
+      airflow-dag-processor
+      airflow-triggerer
+    ).each do |svc|
+      should_notify = (svc == 'airflow-celery-worker' ? enables_celery_worker : manager_services[svc])
+      notifies :restart, "service[#{svc}]", :delayed if should_notify
+    end
   end
 end
 
@@ -570,6 +591,26 @@ airflow_scheduler 'Configure Airflow Scheduler' do
   if manager_services['airflow-scheduler']
     ipaddress_sync node['ipaddress_sync']
     scheduler_port node['airflow']['scheduler_port']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+airflow_dag_processor 'Configure Airflow Dag Processor' do
+  if manager_services['airflow-dag-processor']
+    ipaddress_sync node['ipaddress_sync']
+    dag_processor_port node['airflow']['dag_processor_port']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+airflow_triggerer 'Configure Airflow Triggerer' do
+  if manager_services['airflow-triggerer']
+    ipaddress_sync node['ipaddress_sync']
+    triggerer_port node['airflow']['triggerer_port']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -586,7 +627,7 @@ airflow_webserver 'Configure Airflow Webserver' do
   end
 end
 
-if !manager_services['airflow-scheduler'] && !manager_services['airflow-webserver']
+unless manager_services.values_at(*airflow_managed_services).compact.any?
   airflow_common 'Delete Airflow Common resources' do
     action :remove
   end
