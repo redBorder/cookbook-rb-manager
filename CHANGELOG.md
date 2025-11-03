@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.20.0
+
+  - Rafa Gómez
+    - [28ccf77] Feature/#23213 Make dag processor and airflow triggerer cluster compatible (#391)
+
 ## 5.19.0
 
   - Rafa Gómez
