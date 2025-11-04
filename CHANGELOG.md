@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.21.0
+
+  - Rafa Gómez
+    - [6959f74] Improvement/#23269 create malware recipe (#394)
+
 ## 5.20.0
 
   - Rafa Gómez
