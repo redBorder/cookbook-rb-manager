@@ -8,11 +8,6 @@ cookbook-rb-manager CHANGELOG
   - nilsver
     - [02bda35] move data bag ssh to rBglobal
     - [aaeb601] add ips in proxy mode
-    - [a7023d3] change pattern
-    - [e6f90bb] add recipe
-    - [b1fc184] manage acl directly
-    - [231a0b2] working version
-    - [8acc316] first version
 
 ## 5.21.0
 
