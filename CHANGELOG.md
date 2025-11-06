@@ -1,6 +1,14 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.21.1
+
+  - Rafael Gomez
+    - [88655d8] Include intrusion proxy mode to excluded_patterns
+  - nilsver
+    - [02bda35] move data bag ssh to rBglobal
+    - [aaeb601] add ips in proxy mode
+
 ## 5.21.0
 
   - Rafa Gómez
