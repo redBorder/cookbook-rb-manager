@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.21.2
+
+  - vimesa
+    - [fe888e9] Pass the new ipsync variable to logstash
+
 ## 5.21.1
 
   - Rafael Gomez
