@@ -656,6 +656,7 @@ logstash_config 'Configure logstash' do
   if manager_services['logstash'] && node.run_state['pipelines'] && !node.run_state['pipelines'].empty?
     cdomain node['redborder']['cdomain']
     flow_nodes node.run_state['flow_sensors_info']
+    ipaddress_sync node['ipaddress_sync']
     namespaces node.run_state['namespaces']
     vault_nodes node.run_state['sensors_info_all']['vault-sensor']
     proxy_nodes node.run_state['sensors_info_all']['proxy-sensor']
@@ -936,7 +937,7 @@ end
 ssh_secrets = {}
 
 begin
-  ssh_secrets = data_bag_item('passwords', 'ssh')
+  ssh_secrets = data_bag_item('rBglobal', 'ssh')
 rescue
   ssh_secrets = {}
 end
