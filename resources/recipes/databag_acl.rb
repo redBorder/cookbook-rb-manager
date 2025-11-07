@@ -4,10 +4,9 @@
 # License:: Affero General Public License, Version 3
 
 ruby_block 'manage_databag_acls' do
-  only_if { ::File.exist?('/etc/redborder/cluster-installed.txt') }
   block do
     begin
-      cdomain = node['redborder']['cdomain'] || 'redborder.cluster'
+      cdomain = node['redborder']['cdomain'] || File.read('/etc/redborder/cdomain').chomp
       chef_server_url = "https://erchef.service.#{cdomain}:4443/organizations/redborder"
 
       # Get all nodes except ips and intrusion
@@ -17,7 +16,7 @@ ruby_block 'manage_databag_acls' do
         excluded_patterns.any? { |pattern| n.name.match?(pattern) }
       end.map(&:name).uniq.sort
 
-      rest = Chef::ServerAPI.new(chef_server_url)
+      rest = Chef::ServerAPI.new(chef_server_url, client_name: 'admin', signing_key_filename: '/etc/chef/admin.pem')
       group_exists = true
 
       # Get group or create if not exists
