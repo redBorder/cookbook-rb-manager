@@ -1,6 +1,12 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.21.3
+
+  - nilsver
+    - [9e58178] add default.rb
+    - [165705c] revert changes
+
 ## 5.21.2
 
   - vimesa
