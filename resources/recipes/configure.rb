@@ -936,7 +936,7 @@ end
 ssh_secrets = {}
 
 begin
-  ssh_secrets = data_bag_item('rBglobal', 'ssh')
+  ssh_secrets = data_bag_item('passwords', 'ssh')
 rescue
   ssh_secrets = {}
 end
