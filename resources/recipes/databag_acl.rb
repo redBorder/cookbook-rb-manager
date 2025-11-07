@@ -6,8 +6,18 @@
 ruby_block 'manage_databag_acls' do
   block do
     begin
-      cdomain = node['redborder']['cdomain'] || 'redborder.cluster'
-      chef_server_url = "https://erchef.service.#{cdomain}:4443/organizations/redborder"
+      client_rb_path = '/etc/chef/client.rb'
+      chef_config = {}
+
+      File.readlines(client_rb_path).each do |line|
+        if line =~ /^\s*chef_server_url\s+"([^"]+)"/
+          chef_config[:chef_server_url] = Regexp.last_match(1)
+        elsif line =~ /^\s*client_key\s+"([^"]+)"/
+          chef_config[:client_key] = Regexp.last_match(1)
+        elsif line =~ /^\s*node_name\s+"([^"]+)"/
+          chef_config[:node_name] = Regexp.last_match(1)
+        end
+      end
 
       # Get all nodes except ips and intrusion
       all_nodes = search(:node, '*')
@@ -16,7 +26,11 @@ ruby_block 'manage_databag_acls' do
         excluded_patterns.any? { |pattern| n.name.match?(pattern) }
       end.map(&:name).uniq.sort
 
-      rest = Chef::ServerAPI.new(chef_server_url)
+      rest = Chef::ServerAPI.new(
+        chef_config[:chef_server_url],
+        client_name: chef_config[:node_name],
+        signing_key_filename: chef_config[:client_key]
+      )
       group_exists = true
 
       # Get group or create if not exists
