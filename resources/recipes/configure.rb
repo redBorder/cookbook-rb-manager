@@ -17,6 +17,7 @@ flow_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('flow')
 vault_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('vault')
 user_sensor_map_data = get_user_sensor_map
 is_consul_server = consul_server?
+enables_celery_worker = enables_celery_worker?
 
 # Save previous webui VIP for this run
 previous_nginx_vip = node.normal.dig('redborder', 'previous_nginx_vip')
@@ -539,17 +540,96 @@ rescue
   airflow_secrets = {}
 end
 
-# Configure Airflow
-airflow_config 'Configure airflow' do
-  if manager_services['airflow-scheduler'] || manager_services['airflow-webserver']
+airflow_managed_services = %w(
+  airflow-scheduler
+  airflow-webserver
+  airflow-dag-processor
+  airflow-triggerer
+)
+
+if manager_services.values_at(*airflow_managed_services).compact.any?
+  %w(
+    airflow-celery-worker
+    airflow-scheduler
+    airflow-webserver
+    airflow-dag-processor
+    airflow-triggerer
+  ).each do |svc|
+    service svc do
+      supports status: true, start: true, restart: true, reload: true
+      action :nothing
+    end
+  end
+
+  airflow_common 'Configure Airflow Common resources' do
     airflow_secrets airflow_secrets
     ipaddress_mgt node['ipaddress']
-    ipaddress_sync node['ipaddress_sync']
     airflow_port node['airflow']['web_port']
     cdomain node['redborder']['cdomain']
+    redis_hosts node['redborder']['managers_per_services']['redis']
+    redis_port node['redis']['port']
+    redis_secrets redis_secrets
+    cpu_cores node['cpu']['total'].to_i
+    ram_memory_kb node['memory']['total'].to_i
+    enables_celery_worker enables_celery_worker
+    action :add
+
+    %w(
+      airflow-celery-worker
+      airflow-scheduler
+      airflow-webserver
+      airflow-dag-processor
+      airflow-triggerer
+    ).each do |svc|
+      should_notify = (svc == 'airflow-celery-worker' ? enables_celery_worker : manager_services[svc])
+      notifies :restart, "service[#{svc}]", :delayed if should_notify
+    end
+  end
+end
+
+airflow_scheduler 'Configure Airflow Scheduler' do
+  if manager_services['airflow-scheduler']
+    ipaddress_sync node['ipaddress_sync']
+    scheduler_port node['airflow']['scheduler_port']
     action [:add, :register]
   else
     action [:remove, :deregister]
+  end
+end
+
+airflow_dag_processor 'Configure Airflow Dag Processor' do
+  if manager_services['airflow-dag-processor']
+    ipaddress_sync node['ipaddress_sync']
+    dag_processor_port node['airflow']['dag_processor_port']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+airflow_triggerer 'Configure Airflow Triggerer' do
+  if manager_services['airflow-triggerer']
+    ipaddress_sync node['ipaddress_sync']
+    triggerer_port node['airflow']['triggerer_port']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+airflow_webserver 'Configure Airflow Webserver' do
+  if manager_services['airflow-webserver']
+    ipaddress_mgt node['ipaddress']
+    web_port node['airflow']['web_port']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+unless manager_services.values_at(*airflow_managed_services).compact.any?
+  airflow_common 'Delete Airflow Common resources' do
+    action :remove
   end
 end
 
@@ -576,6 +656,7 @@ logstash_config 'Configure logstash' do
   if manager_services['logstash'] && node.run_state['pipelines'] && !node.run_state['pipelines'].empty?
     cdomain node['redborder']['cdomain']
     flow_nodes node.run_state['flow_sensors_info']
+    ipaddress_sync node['ipaddress_sync']
     namespaces node.run_state['namespaces']
     vault_nodes node.run_state['sensors_info_all']['vault-sensor']
     proxy_nodes node.run_state['sensors_info_all']['proxy-sensor']
@@ -855,7 +936,7 @@ end
 ssh_secrets = {}
 
 begin
-  ssh_secrets = data_bag_item('passwords', 'ssh')
+  ssh_secrets = data_bag_item('rBglobal', 'ssh')
 rescue
   ssh_secrets = {}
 end

@@ -1,6 +1,40 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.21.3
+
+  - nilsver
+    - [9e58178] add default.rb
+    - [165705c] revert changes
+
+## 5.21.2
+
+  - vimesa
+    - [fe888e9] Pass the new ipsync variable to logstash
+
+## 5.21.1
+
+  - Rafael Gomez
+    - [88655d8] Include intrusion proxy mode to excluded_patterns
+  - nilsver
+    - [02bda35] move data bag ssh to rBglobal
+    - [aaeb601] add ips in proxy mode
+
+## 5.21.0
+
+  - Rafa Gómez
+    - [6959f74] Improvement/#23269 create malware recipe (#394)
+
+## 5.20.0
+
+  - Rafa Gómez
+    - [28ccf77] Feature/#23213 Make dag processor and airflow triggerer cluster compatible (#391)
+
+## 5.19.0
+
+  - Rafa Gómez
+    - [70e009d] Feature/#23083 Make airflow compatible with a cluster-node environment (#387)
+
 ## 5.18.0
 
   - Rafael Gomez
