@@ -43,6 +43,12 @@ default['redborder']['memcached']['port'] = 11211
 default['redis']['port'] = 26379
 default['redis']['sentinel_port'] = 26380
 
+# airflow
+default['airflow']['web_port'] = 9191
+default['airflow']['scheduler_port'] = 8793
+default['airflow']['triggerer_port'] = 8794
+default['airflow']['dag_processor_port'] = 8795
+
 # aerospike
 default['aerospike']['port'] = 3000
 default['aerospike']['multicast'] = '239.1.99.222'
@@ -92,6 +98,10 @@ default['redborder']['memory_services']['zookeeper'] = { 'count': 40, 'memory': 
 default['redborder']['memory_services']['secor'] = { 'count': 30, 'memory': 0 }
 default['redborder']['memory_services']['secor-vault'] = { 'count': 30, 'memory': 0 }
 default['redborder']['memory_services']['redis'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['airflow-scheduler'] = { 'count': 30, 'memory': 0 }
+default['redborder']['memory_services']['airflow-webserver'] = { 'count': 50, 'memory': 0 }
+default['redborder']['memory_services']['airflow-triggerer'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['airflow-dag-processor'] = { 'count': 20, 'memory': 0 }
 default['redborder']['memory_services']['rb-reputation'] = { 'count': 30, 'memory': 0 }
 
 # default attributes for managers_info, it would be rewriten with the cluster config
@@ -127,6 +137,10 @@ default['redborder']['services_group']['s3'] = %w(consul nginx s3)
 default['redborder']['services_group']['postgresql'] = %w(consul postgresql)
 
 default['redborder']['services'] = {}
+default['redborder']['services']['airflow-scheduler']         = false
+default['redborder']['services']['airflow-webserver']         = false
+default['redborder']['services']['airflow-dag-processor']     = false
+default['redborder']['services']['airflow-triggerer']         = false
 default['redborder']['services']['aerospike']                 = false
 default['redborder']['services']['drill']                     = false
 default['redborder']['services']['chef-client']               = true
@@ -177,6 +191,10 @@ default['redborder']['services']['secor-vault']               = false
 default['redborder']['services']['redis']                     = false
 default['redborder']['services']['rb-reputation']             = false
 
+default['redborder']['systemdservices']['airflow-scheduler']        = ['airflow-scheduler']
+default['redborder']['systemdservices']['airflow-webserver']        = ['airflow-webserver']
+default['redborder']['systemdservices']['airflow-dag-processor']    = ['airflow-dag-processor']
+default['redborder']['systemdservices']['airflow-triggerer']        = ['airflow-triggerer']
 default['redborder']['systemdservices']['aerospike']                = ['aerospike']
 default['redborder']['systemdservices']['drill']                    = ['drill']
 default['redborder']['systemdservices']['chef-client']              = ['chef-client']
