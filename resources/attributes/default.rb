@@ -313,7 +313,7 @@ default['redborder']['manager']['loaders']['fuzzy']['ssdeep_malwarehashes_limit'
 
 default['redborder']['manager']['malware'] = {}
 default['redborder']['manager']['malware']['threshold'] = 50
-default['redborder']['manager']['malware']['malware_incidents_priority'] = 'critical'
+default['redborder']['manager']['malware']['incidents_priority'] = 'critical'
 
 default['redborder']['manager']['loaders']['scores']                          = {}
 default['redborder']['manager']['loaders']['scores']['hash']                  = {}
