@@ -56,7 +56,6 @@ default['aerospike']['multicast'] = '239.1.99.222'
 # drill
 default['drill']['port'] = 8047
 
-
 # hard disk
 default['redborder']['manager']['data_dev'] = {}
 default['redborder']['manager']['data_dev']['root'] = '/dev/mapper/VolGroup-lv_root'
