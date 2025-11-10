@@ -1,6 +1,15 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.22.0
+
+  - Rafael Gomez
+    - [605c042] Pass airflow_webserver_hosts to common airflow configuration
+  - vimesa
+    - [e350869] Add new variable logstash hosts
+    - [523669e] Add airflow user in sudoers
+    - [c57395d] Add variables for MinIo connection
+
 ## 5.21.4
 
   - Rafael Gomez
