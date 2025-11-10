@@ -570,6 +570,7 @@ if manager_services.values_at(*airflow_managed_services).compact.any?
     redis_port node['redis']['port']
     redis_secrets redis_secrets
     logstash_hosts node['redborder']['managers_per_services']['logstash']
+    airflow_webserver_hosts node['redborder']['managers_per_services']['airflow-webserver']
     cpu_cores node['cpu']['total'].to_i
     ram_memory_kb node['memory']['total'].to_i
     enables_celery_worker enables_celery_worker
