@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.21.4
+
+  - Rafael Gomez
+    - [ed7ab52] Change ssh data bag from rBglobal to passwords again
+
 ## 5.21.3
 
   - nilsver
