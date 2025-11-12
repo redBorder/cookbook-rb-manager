@@ -53,6 +53,9 @@ default['airflow']['dag_processor_port'] = 8795
 default['aerospike']['port'] = 3000
 default['aerospike']['multicast'] = '239.1.99.222'
 
+# drill
+default['drill']['port'] = 8047
+
 # hard disk
 default['redborder']['manager']['data_dev'] = {}
 default['redborder']['manager']['data_dev']['root'] = '/dev/mapper/VolGroup-lv_root'
@@ -83,6 +86,7 @@ default['redborder']['memory_services']['kafka'] = { 'count': 120, 'memory': 0, 
 default['redborder']['memory_services']['n2klocd'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['postgresql'] = { 'count': 25, 'memory': 0 }
 default['redborder']['memory_services']['aerospike'] = { 'count': 50, 'memory': 0 }
+default['redborder']['memory_services']['drill'] = { 'count': 20, 'memory': 0 }
 default['redborder']['memory_services']['rb-aioutliers'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['redborder-agents'] = { 'count': 5, 'memory': 0 }
 default['redborder']['memory_services']['redborder-cep'] = { 'count': 80, 'memory': 0 }
@@ -137,6 +141,7 @@ default['redborder']['services']['airflow-webserver']         = false
 default['redborder']['services']['airflow-dag-processor']     = false
 default['redborder']['services']['airflow-triggerer']         = false
 default['redborder']['services']['aerospike']                 = false
+default['redborder']['services']['drill']                     = false
 default['redborder']['services']['chef-client']               = true
 default['redborder']['services']['chef-server']               = false
 default['redborder']['services']['chrony']                    = true
@@ -190,6 +195,7 @@ default['redborder']['systemdservices']['airflow-webserver']        = ['airflow-
 default['redborder']['systemdservices']['airflow-dag-processor']    = ['airflow-dag-processor']
 default['redborder']['systemdservices']['airflow-triggerer']        = ['airflow-triggerer']
 default['redborder']['systemdservices']['aerospike']                = ['aerospike']
+default['redborder']['systemdservices']['drill']                    = ['drill']
 default['redborder']['systemdservices']['chef-client']              = ['chef-client']
 default['redborder']['systemdservices']['chef-server']              = ['opscode-erchef']
 default['redborder']['systemdservices']['chrony']                   = ['chronyd']

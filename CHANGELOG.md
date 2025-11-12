@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.23.0
+
+  - Juan Soto
+    - [8d0efae] Feature/#23005 integrate drill service (#406)
+
 ## 5.22.0
 
   - Rafael Gomez
