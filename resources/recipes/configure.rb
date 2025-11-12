@@ -415,6 +415,15 @@ aerospike_config 'Configure aerospike' do
   end
 end
 
+drill_config 'Configure drill' do
+  s3_malware_secrets s3_malware_secrets
+  if manager_services['drill']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 webui_config 'Configure WebUI' do
   if manager_services['webui']
     hostname node['hostname']
@@ -429,6 +438,7 @@ webui_config 'Configure WebUI' do
     s3_malware_secrets s3_malware_secrets
     aerospike_ips node['redborder']['aerospike']['ips']
     aerospike_port node['aerospike']['port']
+    drill_port node['drill']['port']
     action [:add, :register, :configure_rsa]
   else
     action [:remove, :deregister]
