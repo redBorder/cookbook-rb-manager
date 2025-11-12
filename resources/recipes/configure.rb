@@ -416,7 +416,6 @@ aerospike_config 'Configure aerospike' do
 end
 
 drill_config 'Configure drill' do
-  ipaddress node['ipaddress_sync']
   s3_malware_secrets s3_malware_secrets
   if manager_services['drill']
     action [:add, :register]
