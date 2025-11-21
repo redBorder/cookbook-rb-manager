@@ -356,6 +356,7 @@ rbmonitor_config 'Configure redborder-monitor' do
     device_nodes node.run_state['sensors_info_all']['device-sensor']
     flow_nodes node.run_state['sensors_info_all']['flow-sensor']
     managers node['redborder']['managers_list']
+    proxy_nodes node.run_state['sensors_info_all']['proxy-sensor']
     cluster node['redborder']['cluster_info']
     hostip node['redborder']['cluster_info'][name]['ip']
     action :add
