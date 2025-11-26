@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.23.1
+
+  - vimesa
+    - [18438e7] Add proxy_nodes to configure redborder-monitor
+
 ## 5.23.0
 
   - Juan Soto
