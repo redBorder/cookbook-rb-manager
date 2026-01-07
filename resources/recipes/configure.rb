@@ -539,10 +539,6 @@ redis_config 'Configure redis' do
   end
 end
 
-yara_config 'yara' do
-  action [:add]
-end
-
 airflow_secrets = {}
 
 begin
@@ -697,6 +693,10 @@ logstash_config 'Configure logstash' do
   else
     action [:remove, :deregister]
   end
+end
+
+yara_config 'yara' do
+  action [:add]
 end
 
 rbdswatcher_config 'Configure redborder-dswatcher' do
