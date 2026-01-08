@@ -539,10 +539,6 @@ redis_config 'Configure redis' do
   end
 end
 
-yara_config 'yara' do
-  action [:add]
-end
-
 airflow_secrets = {}
 
 begin
@@ -681,6 +677,9 @@ logstash_config 'Configure logstash' do
     mobility_nodes node.run_state['mobility_sensors_info']
     intrusion_incidents_priority_filter node['redborder']['intrusion_incidents_priority_filter']
     vault_incidents_priority_filter node['redborder']['vault_incidents_priority_filter']
+    malware_score_threshold node['redborder']['manager']['malware']['threshold'].to_i
+    malware_incidents_priority node['redborder']['manager']['malware']['incidents_priority']
+    reputation_managers node['redborder']['managers_per_services']['rb-reputation']
     logstash_pipelines node.run_state['pipelines']
     split_traffic_logstash split_traffic
     split_intrusion_logstash split_intrusion
@@ -694,6 +693,10 @@ logstash_config 'Configure logstash' do
   else
     action [:remove, :deregister]
   end
+end
+
+yara_config 'yara' do
+  action [:add]
 end
 
 rbdswatcher_config 'Configure redborder-dswatcher' do
