@@ -1,6 +1,23 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.24.0
+
+  - Rafael Gomez
+    - [be00d3c] Change execution order of yara after logstash cookbook
+  - Pablo Pérez
+    - [075331f] Add ips pipeline if ips
+    - [f1e8144] Add reputation_managers to logstash
+    - [3c8dec1] Change high to critical
+    - [eb5a22b] Add malware_incidents_priority
+    - [61e2c73] Pass malware score threshold as int
+    - [f7aa496] Add malware threshold to logstash cookbook
+
+## 5.23.1
+
+  - vimesa
+    - [18438e7] Add proxy_nodes to configure redborder-monitor
+
 ## 5.23.0
 
   - Juan Soto
