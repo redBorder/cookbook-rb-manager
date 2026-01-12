@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.24.1
+
+  - nilsver
+    - [1e5bd77] first version
+
 ## 5.24.0
 
   - Rafael Gomez
