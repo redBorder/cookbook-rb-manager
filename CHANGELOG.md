@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.24.1
+
+  - nilsver
+    - [1e5bd77] Find a correct way to limit access to password data bags from sensors
+
 ## 5.24.0
 
   - Rafael Gomez
