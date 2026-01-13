@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.24.2
+
+  - Miguel Negron
+    - [6875f0f] Add snmp, redfish and ipmi sensors (#413)
+
 ## 5.24.1
 
   - nilsver

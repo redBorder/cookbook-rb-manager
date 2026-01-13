@@ -9,6 +9,8 @@ module RbManager
       flow_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('flow')
       monitor_config = get_monitor_configuration()
       has_device_sensors = !sensors['device-sensor'].nil? && !sensors['device-sensor'].empty?
+      has_redfish_sensors = !sensors['redfish-sensor'].nil? && !sensors['redfish-sensor'].empty?
+      has_snmp_sensors = !sensors['snmp-sensor'].nil? && !sensors['snmp-sensor'].empty?
       ips_sensors = get_all_ips_sensors_info
       has_ips_sensors = ips_sensors.any? { |_type, nodes| !nodes.empty? }
 
@@ -36,10 +38,10 @@ module RbManager
       logstash_pipelines.push('malware-pipeline')
       logstash_pipelines.push('ips-pipeline') if has_ips_sensors
 
-      if (has_device_sensors && monitor_config.include?('thermal')) || !monitor_sensor_in_proxy_nodes.empty?
+      if ((has_device_sensors || has_redfish_sensors) && monitor_config.include?('thermal')) || !monitor_sensor_in_proxy_nodes.empty?
         logstash_pipelines.push('redfish-pipeline')
       end
-      if (has_device_sensors && monitor_config.include?('bulkstats_schema')) || !monitor_sensor_in_proxy_nodes.empty?
+      if ((has_device_sensors || has_snmp_sensors) && monitor_config.include?('bulkstats_schema')) || !monitor_sensor_in_proxy_nodes.empty?
         logstash_pipelines.push('bulkstats-pipeline')
       end
 
