@@ -1,6 +1,28 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.24.2
+
+  - Miguel Negron
+    - [6875f0f] Add snmp, redfish and ipmi sensors (#413)
+
+## 5.24.1
+
+  - nilsver
+    - [1e5bd77] Find a correct way to limit access to password data bags from sensors
+
+## 5.24.0
+
+  - Rafael Gomez
+    - [be00d3c] Change execution order of yara after logstash cookbook
+  - Pablo Pérez
+    - [075331f] Add ips pipeline if ips
+    - [f1e8144] Add reputation_managers to logstash
+    - [3c8dec1] Change high to critical
+    - [eb5a22b] Add malware_incidents_priority
+    - [61e2c73] Pass malware score threshold as int
+    - [f7aa496] Add malware threshold to logstash cookbook
+
 ## 5.23.1
 
   - vimesa
