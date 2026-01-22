@@ -3,7 +3,6 @@ module RbManager
     def get_pipelines
       logstash_pipelines = []
       sensors = get_sensors_info()
-      namespaces = get_namespaces()
       main_logstash = determine_main_logstash_node()
       monitor_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('device')
       flow_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('flow')
