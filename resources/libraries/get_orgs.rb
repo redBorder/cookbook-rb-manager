@@ -6,7 +6,7 @@ module RbManager
       Chef::Role.list.each_key do |m_key|
         begin
           m = Chef::Role.load m_key
-          next unless m & m.override_attributes['redborder'] && m.override_attributes['redborder']['organization_uuid'] && m.override_attributes['redborder']['sensor_uuid'] == m.override_attributes['redborder']['organization_uuid']
+          next unless m && m.override_attributes['redborder'] && m.override_attributes['redborder']['organization_uuid'] && m.override_attributes['redborder']['sensor_uuid'] == m.override_attributes['redborder']['organization_uuid']
 
           organizations << m
         rescue

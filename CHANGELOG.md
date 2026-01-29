@@ -1,6 +1,21 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.24.4
+
+  - manegron
+    - [6b61476] Hot fix get_orgs
+    - [62b6fbe] Add rescue in load role (#417)
+    - [6875f0f] Add snmp, redfish and ipmi sensors (#413)
+  - david vhk
+    - [d74fa4d] Merge branch 'master' into development
+  - David Vanhoucke
+    - [973da2c] bump version
+    - [3aed548] bump version
+  - Miguel Negrón
+    - [62b6fbe] Add rescue in load role (#417)
+    - [6875f0f] Add snmp, redfish and ipmi sensors (#413)
+
 ## 5.24.3
 
   - Miguel Negrón
