@@ -13,7 +13,7 @@ module RbManager
 
         next unless m && m.override_attributes['redborder'] && m.override_attributes['redborder']['organization_uuid'] && m.override_attributes['redborder']['sensor_uuid'] == m.override_attributes['redborder']['organization_uuid']
 
-        organizations << m        
+        organizations << m
       end
       organizations.each do |org|
         if org.override_attributes && org.override_attributes['redborder'] && org.override_attributes['redborder']['megabytes_limit'].is_a?(String) && org.override_attributes['redborder']['megabytes_limit'].strip.empty?
