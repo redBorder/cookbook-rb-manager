@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.24.5
+
+  - manegron
+    - [3586b2b] Add rescue to namespaces and org
+
 ## 5.24.4
 
   - manegron
