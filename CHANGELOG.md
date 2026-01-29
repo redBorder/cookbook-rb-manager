@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.24.3
+
+  - Miguel Negrón
+    - [62b6fbe] Add rescue in load role (#417)
+
 ## 5.24.2
 
   - Miguel Negron
