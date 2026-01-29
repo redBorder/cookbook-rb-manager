@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.24.7
+
+  - manegron
+    - [a418a9a] Edit log message
+
 ## 5.24.6
 
   - manegron
