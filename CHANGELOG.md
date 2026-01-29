@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.24.6
+
+  - manegron
+    - [b485855] fix lint
+
 ## 5.24.5
 
   - manegron
