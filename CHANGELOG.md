@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.24.9
+
+  - manegron
+    - [50e6c3d] Bump version
+
 ## 5.24.8
 
   - manegron
