@@ -1,6 +1,56 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.24.10
+
+  - manegron
+    - [a52a313] Add rescue
+
+## 5.24.9
+
+  - manegron
+    - [50e6c3d] Bump version
+
+## 5.24.8
+
+  - manegron
+    - [c7363d5] Fix typo in get namespace script
+
+## 5.24.7
+
+  - manegron
+    - [a418a9a] Edit log message
+
+## 5.24.6
+
+  - manegron
+    - [b485855] fix lint
+
+## 5.24.5
+
+  - manegron
+    - [3586b2b] Add rescue to namespaces and org
+
+## 5.24.4
+
+  - manegron
+    - [6b61476] Hot fix get_orgs
+    - [62b6fbe] Add rescue in load role (#417)
+    - [6875f0f] Add snmp, redfish and ipmi sensors (#413)
+  - david vhk
+    - [d74fa4d] Merge branch 'master' into development
+  - David Vanhoucke
+    - [973da2c] bump version
+    - [3aed548] bump version
+  - Miguel Negrón
+    - [62b6fbe] Add rescue in load role (#417)
+    - [6875f0f] Add snmp, redfish and ipmi sensors (#413)
+
+## 5.24.3
+
+  - Miguel Negrón
+    - [62b6fbe] Add rescue in load role (#417)
+
 ## 5.24.2
 
   - Miguel Negron
