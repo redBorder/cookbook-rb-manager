@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.24.10
+
+  - manegron
+    - [a52a313] Add rescue
+
 ## 5.24.9
 
   - manegron
