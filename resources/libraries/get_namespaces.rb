@@ -7,7 +7,7 @@ module RbManager
         begin
           ro = Chef::Role.load rol
         rescue
-          Chef::Log.error("[get_namespaces] Failed to load role: #{role}")
+          Chef::Log.error("[get_namespaces] Failed to load role: #{rol}")
         end
 
         next unless ro && ro.override_attributes['redborder'] && ro.override_attributes['redborder']['namespace'] && ro.override_attributes['redborder']['namespace_uuid'] && !ro.override_attributes['redborder']['namespace_uuid'].empty?
