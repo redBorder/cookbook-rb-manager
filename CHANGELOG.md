@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.24.8
+
+  - manegron
+    - [c7363d5] Fix typo in get namespace script
+
 ## 5.24.7
 
   - manegron
