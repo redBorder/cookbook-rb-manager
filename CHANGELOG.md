@@ -1,6 +1,12 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.25.11
+
+  - ljblancoredborder
+    - [c1f0c13] Keep monitor pipeline always running to read in post; to stop reading in input topic
+    - [f95e1d1] no namespace feed is always rb_monitor_post
+
 ## 5.24.10
 
   - manegron
