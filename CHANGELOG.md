@@ -1,7 +1,7 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
-## 5.25.11
+## 5.24.11
 
   - ljblancoredborder
     - [c1f0c13] Keep monitor pipeline always running to read in post; to stop reading in input topic
