@@ -3,7 +3,6 @@ module RbManager
     def get_pipelines
       logstash_pipelines = []
       sensors = get_sensors_info()
-      namespaces = get_namespaces()
       main_logstash = determine_main_logstash_node()
       monitor_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('device')
       flow_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('flow')
@@ -22,7 +21,7 @@ module RbManager
       logstash_pipelines.push('netflow-pipeline') unless sensors['flow-sensor'].empty? && flow_sensor_in_proxy_nodes.empty?
       logstash_pipelines.push('sflow-pipeline') unless sensors['flow-sensor'].empty? && flow_sensor_in_proxy_nodes.empty?
       logstash_pipelines.push('meraki-pipeline') unless sensors['meraki-sensor'].empty?
-      logstash_pipelines.push('monitor-pipeline') unless namespaces.empty?
+      logstash_pipelines.push('monitor-pipeline')
       logstash_pipelines.push('intrusion-pipeline') if has_ips_sensors
       logstash_pipelines.push('druid-metrics-pipeline')
 
