@@ -421,6 +421,7 @@ end
 
 drill_config 'Configure drill' do
   s3_malware_secrets s3_malware_secrets
+  ipaddress_sync node['ipaddress_sync']
   if manager_services['drill']
     action [:add, :register]
   else
