@@ -419,9 +419,18 @@ aerospike_config 'Configure aerospike' do
   end
 end
 
+truststore_password = nil
+
+begin
+  truststore_password = data_bag_item('passwords', 'drill').to_hash
+rescue
+  truststore_password = nil
+end
+
 drill_config 'Configure drill' do
   s3_malware_secrets s3_malware_secrets
   ipaddress_sync node['ipaddress_sync']
+  truststore_password truststore_password['truststore_password']
   if manager_services['drill']
     action [:add, :register]
   else
