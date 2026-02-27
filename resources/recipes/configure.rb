@@ -647,6 +647,36 @@ unless manager_services.values_at(*airflow_managed_services).compact.any?
   end
 end
 
+# cape_secrets = {}
+
+# begin
+#   cape_secrets = data_bag_item('passwords', 'db_airflow').to_hash
+# rescue
+#   cape_secrets = {}
+# end
+
+cape_config 'Configure cape' do
+  if manager_services['cape-rooter'] && manager_services['cape-processor'] && manager_services['cape'] && manager_services['cape-web']
+    ipaddress_sync node['ipaddress_sync']
+    cape_interface_ip node['cape']['interface_ip']
+    cape_interface node['cape']['interface']
+    cape_web_ip node['cape']['web_ip']
+    cape_web_port node['cape']['web_port']
+    cape_result_server_ip node['cape']['result_server_ip']
+    cape_result_server_port node['cape']['result_server_port']
+    cape_min_freespace node['cape']['min_freespace']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+# Add crb repo, needed for cookbook-cape
+execute 'enable_crb_repo' do
+  command 'dnf config-manager --set-enabled crb'
+  not_if 'dnf repolist enabled | grep -q crb'
+end
+
 # Configure logstash
 split_traffic = false
 

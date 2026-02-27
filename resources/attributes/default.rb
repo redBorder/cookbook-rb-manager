@@ -53,6 +53,15 @@ default['airflow']['dag_processor_port'] = 8795
 default['aerospike']['port'] = 3000
 default['aerospike']['multicast'] = '239.1.99.222'
 
+# cape
+default['cape']['interface_ip'] = '192.168.122.1'
+default['cape']['interface'] = 'virbr0'
+default['cape']['web_ip'] = '0.0.0.0'
+default['cape']['web_port'] = 8099
+default['cape']['result_server_ip'] = '192.168.122.1'
+default['cape']['result_server_port'] = 2042
+default['cape']['min_freespace'] = 15000
+
 # drill
 default['drill']['port'] = 8047
 
@@ -62,11 +71,11 @@ default['redborder']['manager']['data_dev']['root'] = '/dev/mapper/VolGroup-lv_r
 default['redborder']['manager']['data_dev']['raw'] = '/dev/mapper/vg_rbdata-lv_raw'
 default['redborder']['manager']['data_dev']['aggregate'] = '/dev/mapper/vg_rbdata-lv_aggregated'
 default['redborder']['manager']['hd_services'] = [
-                                                   { 'name': 'kafka', 'count': 5, 'prefered': 'aggregate' },
-                                                   { 'name': 'zookeeper', 'count': 1, 'prefered': 'aggregate' },
-                                                   { 'name': 's3', 'count': 50, 'prefered': 'raw' },
-                                                   { 'name': 'druid-historical', 'count': 50, 'prefered': 'raw' },
-                                                 ]
+                                                  { 'name': 'kafka', 'count': 5, 'prefered': 'aggregate' },
+                                                  { 'name': 'zookeeper', 'count': 1, 'prefered': 'aggregate' },
+                                                  { 'name': 's3', 'count': 50, 'prefered': 'raw' },
+                                                  { 'name': 'druid-historical', 'count': 50, 'prefered': 'raw' },
+                                                  ]
 
 default['redborder']['manager']['hd_services_current'] = {}
 
@@ -141,6 +150,10 @@ default['redborder']['services']['airflow-webserver']         = false
 default['redborder']['services']['airflow-dag-processor']     = false
 default['redborder']['services']['airflow-triggerer']         = false
 default['redborder']['services']['aerospike']                 = false
+default['redborder']['services']['cape-rooter']               = false
+default['redborder']['services']['cape-processor']            = false
+default['redborder']['services']['cape']                      = false
+default['redborder']['services']['cape-web']                  = false
 default['redborder']['services']['drill']                     = false
 default['redborder']['services']['chef-client']               = true
 default['redborder']['services']['chef-server']               = false
@@ -195,6 +208,10 @@ default['redborder']['systemdservices']['airflow-webserver']        = ['airflow-
 default['redborder']['systemdservices']['airflow-dag-processor']    = ['airflow-dag-processor']
 default['redborder']['systemdservices']['airflow-triggerer']        = ['airflow-triggerer']
 default['redborder']['systemdservices']['aerospike']                = ['aerospike']
+default['redborder']['systemdservices']['cape-rooter']              = ['cape-rooter']
+default['redborder']['systemdservices']['cape-processor']           = ['cape-processor']
+default['redborder']['systemdservices']['cape']                     = ['cape']
+default['redborder']['systemdservices']['cape-web']                 = ['cape-web']
 default['redborder']['systemdservices']['drill']                    = ['drill']
 default['redborder']['systemdservices']['chef-client']              = ['chef-client']
 default['redborder']['systemdservices']['chef-server']              = ['opscode-erchef']
