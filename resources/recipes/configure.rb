@@ -17,6 +17,7 @@ flow_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('flow')
 vault_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('vault')
 user_sensor_map_data = get_user_sensor_map
 is_consul_server = consul_server?
+enables_celery_worker = enables_celery_worker?
 
 # Save previous webui VIP for this run
 previous_nginx_vip = node.normal.dig('redborder', 'previous_nginx_vip')
@@ -127,7 +128,6 @@ postgresql_config 'Configure postgresql' do
   if manager_services['postgresql'] && external_services&.dig('postgresql') == 'onpremise'
     cdomain node['redborder']['cdomain']
     ipaddress node['ipaddress_sync']
-    postgresql_hosts node['redborder']['managers_per_services']['postgresql']
     action [:add, :register]
   elsif !external_services.nil?
     action [:remove, :deregister]
@@ -354,8 +354,12 @@ rbmonitor_config 'Configure redborder-monitor' do
   if manager_services['redborder-monitor']
     name node['hostname']
     device_nodes node.run_state['sensors_info_all']['device-sensor']
+    snmp_nodes node.run_state['sensors_info_all']['snmp-sensor']
+    redfish_nodes node.run_state['sensors_info_all']['redfish-sensor']
+    ipmi_nodes node.run_state['sensors_info_all']['ipmi-sensor']
     flow_nodes node.run_state['sensors_info_all']['flow-sensor']
     managers node['redborder']['managers_list']
+    proxy_nodes node.run_state['sensors_info_all']['proxy-sensor']
     cluster node['redborder']['cluster_info']
     hostip node['redborder']['cluster_info'][name]['ip']
     action :add
@@ -415,6 +419,15 @@ aerospike_config 'Configure aerospike' do
   end
 end
 
+drill_config 'Configure drill' do
+  s3_malware_secrets s3_malware_secrets
+  if manager_services['drill']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 webui_config 'Configure WebUI' do
   if manager_services['webui']
     hostname node['hostname']
@@ -429,6 +442,7 @@ webui_config 'Configure WebUI' do
     s3_malware_secrets s3_malware_secrets
     aerospike_ips node['redborder']['aerospike']['ips']
     aerospike_port node['aerospike']['port']
+    drill_port node['drill']['port']
     action [:add, :register, :configure_rsa]
   else
     action [:remove, :deregister]
@@ -528,8 +542,109 @@ redis_config 'Configure redis' do
   end
 end
 
-yara_config 'yara' do
-  action [:add]
+airflow_secrets = {}
+
+begin
+  airflow_secrets = data_bag_item('passwords', 'db_airflow').to_hash
+rescue
+  airflow_secrets = {}
+end
+
+airflow_managed_services = %w(
+  airflow-scheduler
+  airflow-webserver
+  airflow-dag-processor
+  airflow-triggerer
+)
+
+if manager_services.values_at(*airflow_managed_services).compact.any?
+  %w(
+    airflow-celery-worker
+    airflow-scheduler
+    airflow-webserver
+    airflow-dag-processor
+    airflow-triggerer
+  ).each do |svc|
+    service svc do
+      supports status: true, start: true, restart: true, reload: true
+      action :nothing
+    end
+  end
+
+  airflow_common 'Configure Airflow Common resources' do
+    airflow_secrets airflow_secrets
+    ipaddress_mgt node['ipaddress']
+    airflow_port node['airflow']['web_port']
+    cdomain node['redborder']['cdomain']
+    redis_hosts node['redborder']['managers_per_services']['redis']
+    redis_port node['redis']['port']
+    redis_secrets redis_secrets
+    logstash_hosts node['redborder']['managers_per_services']['logstash']
+    airflow_webserver_hosts node['redborder']['managers_per_services']['airflow-webserver']
+    cpu_cores node['cpu']['total'].to_i
+    ram_memory_kb node['memory']['total'].to_i
+    enables_celery_worker enables_celery_worker
+    malware_access_key s3_malware_secrets['s3_malware_access_key_id'] unless s3_malware_secrets['s3_malware_access_key_id'].nil?
+    malware_secret_key s3_malware_secrets['s3_malware_secret_key_id'] unless s3_malware_secrets['s3_malware_secret_key_id'].nil?
+    action :add
+
+    %w(
+      airflow-celery-worker
+      airflow-scheduler
+      airflow-webserver
+      airflow-dag-processor
+      airflow-triggerer
+    ).each do |svc|
+      should_notify = (svc == 'airflow-celery-worker' ? enables_celery_worker : manager_services[svc])
+      notifies :restart, "service[#{svc}]", :delayed if should_notify
+    end
+  end
+end
+
+airflow_scheduler 'Configure Airflow Scheduler' do
+  if manager_services['airflow-scheduler']
+    ipaddress_sync node['ipaddress_sync']
+    scheduler_port node['airflow']['scheduler_port']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+airflow_dag_processor 'Configure Airflow Dag Processor' do
+  if manager_services['airflow-dag-processor']
+    ipaddress_sync node['ipaddress_sync']
+    dag_processor_port node['airflow']['dag_processor_port']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+airflow_triggerer 'Configure Airflow Triggerer' do
+  if manager_services['airflow-triggerer']
+    ipaddress_sync node['ipaddress_sync']
+    triggerer_port node['airflow']['triggerer_port']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+airflow_webserver 'Configure Airflow Webserver' do
+  if manager_services['airflow-webserver']
+    ipaddress_mgt node['ipaddress']
+    web_port node['airflow']['web_port']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+unless manager_services.values_at(*airflow_managed_services).compact.any?
+  airflow_common 'Delete Airflow Common resources' do
+    action :remove
+  end
 end
 
 # cape_secrets = {}
@@ -585,15 +700,21 @@ logstash_config 'Configure logstash' do
   if manager_services['logstash'] && node.run_state['pipelines'] && !node.run_state['pipelines'].empty?
     cdomain node['redborder']['cdomain']
     flow_nodes node.run_state['flow_sensors_info']
+    ipaddress_sync node['ipaddress_sync']
     namespaces node.run_state['namespaces']
     vault_nodes node.run_state['sensors_info_all']['vault-sensor']
     proxy_nodes node.run_state['sensors_info_all']['proxy-sensor']
     scanner_nodes node.run_state['sensors_info_all']['scanner-sensor']
     device_nodes node.run_state['sensors_info_all']['device-sensor']
+    snmp_nodes node.run_state['sensors_info_all']['snmp-sensor']
+    redfish_nodes node.run_state['sensors_info_all']['redfish-sensor']
     ips_nodes node.run_state['ips_sensors_info']
     mobility_nodes node.run_state['mobility_sensors_info']
     intrusion_incidents_priority_filter node['redborder']['intrusion_incidents_priority_filter']
     vault_incidents_priority_filter node['redborder']['vault_incidents_priority_filter']
+    malware_score_threshold node['redborder']['manager']['malware']['threshold'].to_i
+    malware_incidents_priority node['redborder']['manager']['malware']['incidents_priority']
+    reputation_managers node['redborder']['managers_per_services']['rb-reputation']
     logstash_pipelines node.run_state['pipelines']
     split_traffic_logstash split_traffic
     split_intrusion_logstash split_intrusion
@@ -607,6 +728,10 @@ logstash_config 'Configure logstash' do
   else
     action [:remove, :deregister]
   end
+end
+
+yara_config 'yara' do
+  action [:add]
 end
 
 rbdswatcher_config 'Configure redborder-dswatcher' do
@@ -864,7 +989,7 @@ end
 ssh_secrets = {}
 
 begin
-  ssh_secrets = data_bag_item('passwords', 'ssh')
+  ssh_secrets = data_bag_item('rBglobal', 'ssh')
 rescue
   ssh_secrets = {}
 end

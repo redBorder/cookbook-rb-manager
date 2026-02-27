@@ -1,6 +1,159 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.24.11
+
+  - ljblancoredborder
+    - [c1f0c13] Keep monitor pipeline always running to read in post; to stop reading in input topic
+    - [f95e1d1] no namespace feed is always rb_monitor_post
+
+## 5.24.10
+
+  - manegron
+    - [a52a313] Add rescue
+
+## 5.24.9
+
+  - manegron
+    - [50e6c3d] Bump version
+
+## 5.24.8
+
+  - manegron
+    - [c7363d5] Fix typo in get namespace script
+
+## 5.24.7
+
+  - manegron
+    - [a418a9a] Edit log message
+
+## 5.24.6
+
+  - manegron
+    - [b485855] fix lint
+
+## 5.24.5
+
+  - manegron
+    - [3586b2b] Add rescue to namespaces and org
+
+## 5.24.4
+
+  - manegron
+    - [6b61476] Hot fix get_orgs
+    - [62b6fbe] Add rescue in load role (#417)
+    - [6875f0f] Add snmp, redfish and ipmi sensors (#413)
+  - david vhk
+    - [d74fa4d] Merge branch 'master' into development
+  - David Vanhoucke
+    - [973da2c] bump version
+    - [3aed548] bump version
+  - Miguel Negrón
+    - [62b6fbe] Add rescue in load role (#417)
+    - [6875f0f] Add snmp, redfish and ipmi sensors (#413)
+
+## 5.24.3
+
+  - Miguel Negrón
+    - [62b6fbe] Add rescue in load role (#417)
+
+## 5.24.2
+
+  - Miguel Negron
+    - [6875f0f] Add snmp, redfish and ipmi sensors (#413)
+
+## 5.24.1
+
+  - nilsver
+    - [1e5bd77] Find a correct way to limit access to password data bags from sensors
+
+## 5.24.0
+
+  - Rafael Gomez
+    - [be00d3c] Change execution order of yara after logstash cookbook
+  - Pablo Pérez
+    - [075331f] Add ips pipeline if ips
+    - [f1e8144] Add reputation_managers to logstash
+    - [3c8dec1] Change high to critical
+    - [eb5a22b] Add malware_incidents_priority
+    - [61e2c73] Pass malware score threshold as int
+    - [f7aa496] Add malware threshold to logstash cookbook
+
+## 5.23.1
+
+  - vimesa
+    - [18438e7] Add proxy_nodes to configure redborder-monitor
+
+## 5.23.0
+
+  - Juan Soto
+    - [8d0efae] Feature/#23005 integrate drill service (#406)
+
+## 5.22.0
+
+  - Rafael Gomez
+    - [605c042] Pass airflow_webserver_hosts to common airflow configuration
+  - vimesa
+    - [e350869] Add new variable logstash hosts
+    - [523669e] Add airflow user in sudoers
+    - [c57395d] Add variables for MinIo connection
+
+## 5.21.4
+
+  - Rafael Gomez
+    - [ed7ab52] Change ssh data bag from rBglobal to passwords again
+
+## 5.21.3
+
+  - nilsver
+    - [9e58178] add default.rb
+    - [165705c] revert changes
+
+## 5.21.2
+
+  - vimesa
+    - [fe888e9] Pass the new ipsync variable to logstash
+
+## 5.21.1
+
+  - Rafael Gomez
+    - [88655d8] Include intrusion proxy mode to excluded_patterns
+  - nilsver
+    - [02bda35] move data bag ssh to rBglobal
+    - [aaeb601] add ips in proxy mode
+
+## 5.21.0
+
+  - Rafa Gómez
+    - [6959f74] Improvement/#23269 create malware recipe (#394)
+
+## 5.20.0
+
+  - Rafa Gómez
+    - [28ccf77] Feature/#23213 Make dag processor and airflow triggerer cluster compatible (#391)
+
+## 5.19.0
+
+  - Rafa Gómez
+    - [70e009d] Feature/#23083 Make airflow compatible with a cluster-node environment (#387)
+
+## 5.18.0
+
+  - Rafael Gomez
+    - [8e46267] Fix linter and unify airflow cookbook configuration
+    - [caab11d] Passing the management ip to airflow cookbook
+  - vimesa
+    - [4ef54ab] Modify memory of airflow
+    - [1accb3c] Add airflow ports, modify airflow config
+    - [4ce7cb1] Modify configuration of airflow
+    - [fae866b] Add airflow secrets
+    - [7fff9e9] Add airflow
+
+## 5.17.3
+
+  - nilsver
+    - [1e5a1ab] remove dependency on serf
+
 ## 5.17.2
 
   - Pablo Pérez

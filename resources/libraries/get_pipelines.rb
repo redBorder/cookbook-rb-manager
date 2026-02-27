@@ -3,12 +3,13 @@ module RbManager
     def get_pipelines
       logstash_pipelines = []
       sensors = get_sensors_info()
-      namespaces = get_namespaces()
       main_logstash = determine_main_logstash_node()
       monitor_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('device')
       flow_sensor_in_proxy_nodes = find_sensor_in_proxy_nodes('flow')
       monitor_config = get_monitor_configuration()
       has_device_sensors = !sensors['device-sensor'].nil? && !sensors['device-sensor'].empty?
+      has_redfish_sensors = !sensors['redfish-sensor'].nil? && !sensors['redfish-sensor'].empty?
+      has_snmp_sensors = !sensors['snmp-sensor'].nil? && !sensors['snmp-sensor'].empty?
       ips_sensors = get_all_ips_sensors_info
       has_ips_sensors = ips_sensors.any? { |_type, nodes| !nodes.empty? }
 
@@ -20,7 +21,7 @@ module RbManager
       logstash_pipelines.push('netflow-pipeline') unless sensors['flow-sensor'].empty? && flow_sensor_in_proxy_nodes.empty?
       logstash_pipelines.push('sflow-pipeline') unless sensors['flow-sensor'].empty? && flow_sensor_in_proxy_nodes.empty?
       logstash_pipelines.push('meraki-pipeline') unless sensors['meraki-sensor'].empty?
-      logstash_pipelines.push('monitor-pipeline') unless namespaces.empty?
+      logstash_pipelines.push('monitor-pipeline')
       logstash_pipelines.push('intrusion-pipeline') if has_ips_sensors
       logstash_pipelines.push('druid-metrics-pipeline')
 
@@ -34,11 +35,12 @@ module RbManager
 
       logstash_pipelines.push('vault-pipeline')
       logstash_pipelines.push('malware-pipeline')
+      logstash_pipelines.push('ips-pipeline') if has_ips_sensors
 
-      if (has_device_sensors && monitor_config.include?('thermal')) || !monitor_sensor_in_proxy_nodes.empty?
+      if ((has_device_sensors || has_redfish_sensors) && monitor_config.include?('thermal')) || !monitor_sensor_in_proxy_nodes.empty?
         logstash_pipelines.push('redfish-pipeline')
       end
-      if (has_device_sensors && monitor_config.include?('bulkstats_schema')) || !monitor_sensor_in_proxy_nodes.empty?
+      if ((has_device_sensors || has_snmp_sensors) && monitor_config.include?('bulkstats_schema')) || !monitor_sensor_in_proxy_nodes.empty?
         logstash_pipelines.push('bulkstats-pipeline')
       end
 

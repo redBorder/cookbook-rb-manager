@@ -9,6 +9,7 @@ module RbManager
         { task_name: 'rb_state', feed: 'rb_state_post' },
         { task_name: 'rb_flow', feed: 'rb_flow_post' },
         { task_name: 'rb_event', feed: 'rb_event_post' },
+        { task_name: 'rb_monitor', feed: 'rb_monitor_post' },
         { task_name: 'rb_vault', feed: 'rb_vault_post' },
         { task_name: 'rb_scanner', feed: 'rb_scanner_post' },
         { task_name: 'rb_location', feed: 'rb_loc_post' },
@@ -17,11 +18,10 @@ module RbManager
         { task_name: 'rb_host_discovery', feed: 'rb_host_discovery' },
       ]
 
-      # This is an optimization: if there are no namespaces, monitor pipeline is not active in Logstash.
+      # This was an optimization: if there are no namespaces, monitor pipeline is not active in Logstash.
       # In that case, we should read from the topic rb_monitor instead of rb_monitor_post.
-      rb_monitor_feed = namespaces.empty? ? 'rb_monitor' : 'rb_monitor_post'
-      base_tasks.push({ task_name: 'rb_monitor', feed: rb_monitor_feed })
-
+      # But we want to keep topics consistent as in other modules and switching topics creates an error in indexer,
+      # when the feed switches from rb_monitor to rb_monitor_post.
       base_tasks.flat_map do |task|
         default_task = { spec: task[:task_name], task_name: task[:task_name], namespace: '', feed: task[:feed], kafka_brokers: kafka_brokers }
 
