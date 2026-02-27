@@ -430,6 +430,8 @@ end
 
 drill_config 'Configure drill' do
   s3_malware_secrets s3_malware_secrets
+  s3_host s3_secrets['s3_host']
+  cdomain node['redborder']['cdomain']
   ipaddress_sync node['ipaddress_sync']
   truststore_password truststore_password
   if manager_services['drill']
