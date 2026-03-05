@@ -64,12 +64,12 @@ rb_firewall_config 'Configure Firewall' do
   previous_nginx_vip previous_nginx_vip
   current_nginx_vip virtual_ips.dig('external', 'nginx', 'ip')
   manager_services manager_services
-  
-  has_virbr0 = system("ip link show virbr0 > /dev/null 2>&1")
-  libvirt_services = ['cape', 'cape-processor', 'cape-rooter']
+
+  has_virbr0 = system('ip link show virbr0 > /dev/null 2>&1')
+  libvirt_services = %w('cape', 'cape-processor', 'cape-rooter')
   needs_libvirt = libvirt_services.any? { |svc| manager_services[svc] }
   libvirt_zone_action (needs_libvirt && has_virbr0) ? :create : :delete
-  
+
   action(
     if manager_services['firewall']
       [:manage_libvirt_zone, :add, :cleanup_virtual_ip_rules]
