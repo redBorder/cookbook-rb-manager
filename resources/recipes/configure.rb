@@ -655,14 +655,6 @@ unless manager_services.values_at(*airflow_managed_services).compact.any?
   end
 end
 
-# cape_secrets = {}
-
-# begin
-#   cape_secrets = data_bag_item('passwords', 'db_airflow').to_hash
-# rescue
-#   cape_secrets = {}
-# end
-
 cape_config 'Configure cape' do
   if manager_services['cape-rooter'] && manager_services['cape-processor'] && manager_services['cape'] && manager_services['cape-web']
     ipaddress_sync node['ipaddress_sync']
