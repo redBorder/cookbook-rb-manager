@@ -69,6 +69,7 @@ rb_firewall_config 'Configure Firewall' do
   libvirt_services = %w(cape cape-processor cape-rooter)
   needs_libvirt = libvirt_services.any? { |svc| manager_services[svc] }
   libvirt_zone_action (needs_libvirt && has_virbr0) ? :create : :delete
+  needs_libvirt_zone needs_libvirt
 
   action(
     if manager_services['firewall']
