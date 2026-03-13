@@ -64,11 +64,20 @@ rb_firewall_config 'Configure Firewall' do
   previous_nginx_vip previous_nginx_vip
   current_nginx_vip virtual_ips.dig('external', 'nginx', 'ip')
   manager_services manager_services
-  if manager_services['firewall']
-    action [:add, :cleanup_virtual_ip_rules]
-  else
-    action [:remove, :cleanup_virtual_ip_rules]
-  end
+
+  has_virbr0 = system('ip link show virbr0 > /dev/null 2>&1')
+  libvirt_services = %w(cape cape-processor cape-rooter)
+  needs_libvirt = libvirt_services.any? { |svc| manager_services[svc] }
+  libvirt_zone_action (needs_libvirt && has_virbr0) ? :create : :delete
+  needs_libvirt_zone needs_libvirt
+
+  action(
+    if manager_services['firewall']
+      [:manage_libvirt_zone, :add, :cleanup_virtual_ip_rules]
+    else
+      [:manage_libvirt_zone, :remove, :cleanup_virtual_ip_rules]
+    end
+  )
 end
 
 consul_config 'Configure Consul Server' do
@@ -645,6 +654,28 @@ unless manager_services.values_at(*airflow_managed_services).compact.any?
   airflow_common 'Delete Airflow Common resources' do
     action :remove
   end
+end
+
+cape_config 'Configure cape' do
+  if manager_services['cape-rooter'] && manager_services['cape-processor'] && manager_services['cape'] && manager_services['cape-web']
+    ipaddress_sync node['ipaddress_sync']
+    cape_interface_ip node['cape']['interface_ip']
+    cape_interface node['cape']['interface']
+    cape_web_ip node['cape']['web_ip']
+    cape_web_port node['cape']['web_port']
+    cape_result_server_ip node['cape']['result_server_ip']
+    cape_result_server_port node['cape']['result_server_port']
+    cape_min_freespace node['cape']['min_freespace']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+# Add crb repo, needed for cookbook-cape
+execute 'enable_crb_repo' do
+  command 'dnf config-manager --set-enabled crb'
+  not_if 'dnf repolist enabled | grep -q crb'
 end
 
 # Configure logstash

@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.25.0
+
+  - ptorresred
+    - [bc479f1] Feature/#22343 integrate cape (#381)
+
 ## 5.24.11
 
   - ljblancoredborder
