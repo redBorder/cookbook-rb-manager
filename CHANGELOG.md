@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.26.0
+
+  - Jose Jimenez
+    - [0e5d3a7] Add snmptrapd service
+
 ## 5.25.0
 
   - ptorresred
