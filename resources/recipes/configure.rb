@@ -366,6 +366,7 @@ rbmonitor_config 'Configure redborder-monitor' do
     snmp_nodes node.run_state['sensors_info_all']['snmp-sensor']
     redfish_nodes node.run_state['sensors_info_all']['redfish-sensor']
     ipmi_nodes node.run_state['sensors_info_all']['ipmi-sensor']
+    http_agent_nodes node.run_state['sensors_info_all']['http_agent-sensor']
     flow_nodes node.run_state['sensors_info_all']['flow-sensor']
     managers node['redborder']['managers_list']
     proxy_nodes node.run_state['sensors_info_all']['proxy-sensor']
