@@ -6,8 +6,9 @@ module RbManager
       snmp_sensors = search(:node, 'redborder_monitors:[* TO *] AND name:*snmp*').sort
       ipmi_sensors = search(:node, 'redborder_monitors:[* TO *] AND name:*ipmi*').sort
       redfish_sensors = search(:node, 'redborder_monitors:[* TO *] AND name:*redfish*').sort
+      http_agent_sensors = search(:node, 'redborder_monitors:[* TO *] AND name:*http_agent*').sort
       vmware_exsi_sensors = search(:node, 'redborder_monitors:[* TO *] AND name:*exsi*').sort
-      monitor_sensors = device_sensors + snmp_sensors + ipmi_sensors + redfish_sensors + vmware_exsi_sensors
+      monitor_sensors = device_sensors + snmp_sensors + ipmi_sensors + redfish_sensors + http_agent_sensors + vmware_exsi_sensors
       monitor_sensors.each do |node|
         monitors = node.normal['redborder']['monitors']
         monitors.each do |monitor|
