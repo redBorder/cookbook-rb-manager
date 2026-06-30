@@ -1,6 +1,32 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.27.0
+
+  - Pablo Pérez
+    - [57d4521] Feature #23745 Extend monitor Capabilities to support services monitoring (#428)
+    - [eaff1ed] Release 5.26.0
+  - Jose Jimenez
+    - [5ad8e10] Merge pull request #425 from redBorder/improvement/#23621_update_net-snmp_fork_and_reinstale_kafka_trap_output
+  - José Jiménez
+    - [a33fa36] Change snmptrapd value to true
+    - [1aec22b] Merge remote-tracking branch 'origin' into improvement/#23621_update_net-snmp_fork_and_reinstale_kafka_trap_output
+    - [0e5d3a7] Add snmptrapd service
+  - vimesa
+    - [841db7a] Release 5.25.0
+  - ptorresred
+    - [bc479f1] Feature/#22343 integrate cape (#381)
+
+## 5.26.0
+
+  - Jose Jimenez
+    - [0e5d3a7] Add snmptrapd service
+
+## 5.25.0
+
+  - ptorresred
+    - [bc479f1] Feature/#22343 integrate cape (#381)
+
 ## 5.24.11
 
   - ljblancoredborder
