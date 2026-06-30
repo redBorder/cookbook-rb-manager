@@ -1,6 +1,10 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.27.1
+
+
+
 ## 5.27.0
 
   - Pablo Pérez
