@@ -1,9 +1,15 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.27.2
+
+  - Pablo Pérez
+    - [e28024d] Bugfix/#24059 download file and historical not working (#434)
+
 ## 5.27.1
 
-
+  - nilsver
+    - [18e2b18] #25559 add vm and exsi nodes (#430)
 
 ## 5.27.0
 
