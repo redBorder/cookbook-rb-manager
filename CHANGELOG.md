@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.27.3
+
+  - Vimesa
+    - [8ae5dc4] Add a new script to authorize the user redborder-monitor (#432)
+
 ## 5.27.2
 
   - Pablo Pérez
