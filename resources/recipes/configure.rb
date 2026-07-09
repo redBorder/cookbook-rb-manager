@@ -710,6 +710,7 @@ logstash_config 'Configure logstash' do
     device_nodes node.run_state['sensors_info_all']['device-sensor']
     snmp_nodes node.run_state['sensors_info_all']['snmp-sensor']
     redfish_nodes node.run_state['sensors_info_all']['redfish-sensor']
+    trap_nodes node.run_state['sensors_info_all']['trap-sensor']
     ips_nodes node.run_state['ips_sensors_info']
     mobility_nodes node.run_state['mobility_sensors_info']
     intrusion_incidents_priority_filter node['redborder']['intrusion_incidents_priority_filter']
