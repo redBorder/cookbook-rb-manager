@@ -368,6 +368,8 @@ rbmonitor_config 'Configure redborder-monitor' do
     ipmi_nodes node.run_state['sensors_info_all']['ipmi-sensor']
     http_agent_nodes node.run_state['sensors_info_all']['http_agent-sensor']
     flow_nodes node.run_state['sensors_info_all']['flow-sensor']
+    vmware_exsi_nodes node.run_state['sensors_info_all']['vmware-exsi-sensor']
+    vmware_exsi_vm_nodes node.run_state['sensors_info_all']['vmware-exsi-vm-sensor']
     managers node['redborder']['managers_list']
     proxy_nodes node.run_state['sensors_info_all']['proxy-sensor']
     cluster node['redborder']['cluster_info']
@@ -429,8 +431,20 @@ aerospike_config 'Configure aerospike' do
   end
 end
 
+drill_secrets = {}
+
+begin
+  drill_secrets = data_bag_item('passwords', 'drill').to_hash
+rescue
+  drill_secrets = {}
+end
+
 drill_config 'Configure drill' do
   s3_malware_secrets s3_malware_secrets
+  s3_host s3_secrets['s3_host']
+  cdomain node['redborder']['cdomain']
+  ipaddress_sync node['ipaddress_sync']
+  drill_secrets drill_secrets
   if manager_services['drill']
     action [:add, :register]
   else
