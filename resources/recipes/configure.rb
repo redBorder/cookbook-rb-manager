@@ -566,7 +566,7 @@ redis_config 'Configure redis' do
   end
 end
 
-rb_alarm_engine_config "Configure redBorder alarm engine" do
+rb_alarm_engine_config 'Configure redBorder alarm engine' do
   if manager_services['redborder-alarm-engine']
     redis_password redis_secrets['pass'] unless redis_secrets.empty?
   else
