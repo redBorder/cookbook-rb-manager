@@ -367,6 +367,7 @@ rbmonitor_config 'Configure redborder-monitor' do
     redfish_nodes node.run_state['sensors_info_all']['redfish-sensor']
     ipmi_nodes node.run_state['sensors_info_all']['ipmi-sensor']
     flow_nodes node.run_state['sensors_info_all']['flow-sensor']
+    veeam_backups_nodes node.run_state['sensors_info_all']['veeam-backups-sensor']
     managers node['redborder']['managers_list']
     proxy_nodes node.run_state['sensors_info_all']['proxy-sensor']
     cluster node['redborder']['cluster_info']
