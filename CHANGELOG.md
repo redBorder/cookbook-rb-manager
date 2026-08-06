@@ -1,6 +1,33 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.27.3
+
+  - Vimesa
+    - [8ae5dc4] Add a new script to authorize the user redborder-monitor (#432)
+
+## 5.27.2
+
+  - Pablo Pérez
+    - [e28024d] Bugfix/#24059 download file and historical not working (#434)
+
+## 5.27.1
+
+  - nilsver
+    - [18e2b18] #25559 add vm and exsi nodes (#430)
+
+## 5.27.0
+
+  - Pablo Pérez
+    - [57d4521] Feature #23745 Extend monitor Capabilities to support services monitoring (#428)
+  - ptorresred
+    - [bc479f1] Feature/#22343 integrate cape (#381)
+
+## 5.26.0
+
+  - Jose Jimenez
+    - [0e5d3a7] Add snmptrapd service
+
 ## 5.25.0
 
   - ptorresred
