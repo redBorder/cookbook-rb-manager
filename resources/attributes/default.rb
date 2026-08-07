@@ -65,7 +65,7 @@ default['cape']['min_freespace'] = 15000
 # drill
 default['drill']['port'] = 8047
 
-#redborder-hub
+# redborder-hub
 default['redborder']['redborder-hub']['registered'] = false
 default['redborder']['redborder-hub']['port'] = 8010
 default['redborder']['redborder-hub']['advertise_peers'] = false
@@ -77,7 +77,6 @@ default['redborder']['redborder-hub']['local']['fail_timeout'] = 5
 default['redborder']['redborder-hub']['remote']['weight'] = 4
 default['redborder']['redborder-hub']['remote']['max_fails'] = 3
 default['redborder']['redborder-hub']['remote']['fail_timeout'] = 120
-
 
 # hard disk
 default['redborder']['manager']['data_dev'] = {}
