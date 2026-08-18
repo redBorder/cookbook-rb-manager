@@ -111,6 +111,7 @@ default['redborder']['memory_services']['airflow-webserver'] = { 'count': 50, 'm
 default['redborder']['memory_services']['airflow-triggerer'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['airflow-dag-processor'] = { 'count': 20, 'memory': 0 }
 default['redborder']['memory_services']['rb-reputation'] = { 'count': 30, 'memory': 0 }
+default['redborder']['memory_services']['logstash'] = { 'count': 80, 'memory': 0 }
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default['redborder']['cluster_info'] = {}

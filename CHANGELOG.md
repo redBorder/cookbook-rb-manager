@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.28.1
+
+  - Nils
+    - [c65c263] add logstash to cgroup
+
 ## 5.28.0
 
   - David Vanhoucke
