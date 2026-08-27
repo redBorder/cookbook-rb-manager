@@ -79,7 +79,6 @@ default['redborder']['manager']['hd_services'] = [
 
 default['redborder']['manager']['hd_services_current'] = {}
 
-# memory
 default['redborder']['memory_services'] = {}
 default['redborder']['memory_services']['chef-server'] = { 'count': 25, 'memory': 0 }
 default['redborder']['memory_services']['druid-broker'] = { 'count': 100, 'memory': 0 }
@@ -112,6 +111,27 @@ default['redborder']['memory_services']['airflow-triggerer'] = { 'count': 10, 'm
 default['redborder']['memory_services']['airflow-dag-processor'] = { 'count': 20, 'memory': 0 }
 default['redborder']['memory_services']['rb-reputation'] = { 'count': 30, 'memory': 0 }
 default['redborder']['memory_services']['logstash'] = { 'count': 80, 'memory': 0 }
+default['redborder']['memory_services']['memcached'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['s3'] = { 'count': 20, 'memory': 0 }
+default['redborder']['memory_services']['nginx'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['rb-druid-indexer'] = { 'count': 20, 'memory': 0 }
+default['redborder']['memory_services']['rb-logstatter'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['rb-workers'] = { 'count': 80, 'memory': 0 }
+default['redborder']['memory_services']['redborder-dswatcher'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['redborder-events-counter'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['redborder-monitor'] = { 'count': 5, 'memory': 0 }
+default['redborder']['memory_services']['sfacctd'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['redborder-alarm-engine'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['redborder-ale'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['redborder-scanner'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['rb-arubacentral'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['radiusd'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['cape-rooter'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['cape-processor'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['cape'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['cape-web'] = { 'count': 10, 'memory': 0 }
+# Excluded services: chef-client, chrony, rsyslog, snmpd, snmptrad, postfix, firewalld, consul, 
+# keepalived
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default['redborder']['cluster_info'] = {}
