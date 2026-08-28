@@ -130,7 +130,7 @@ default['redborder']['memory_services']['cape-rooter'] = { 'count': 10, 'memory'
 default['redborder']['memory_services']['cape-processor'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['cape'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['cape-web'] = { 'count': 10, 'memory': 0 }
-# Excluded services: chef-client, chrony, rsyslog, snmpd, snmptrad, postfix, firewalld, consul, 
+# Excluded services: chef-client, chrony, rsyslog, snmpd, snmptrad, postfix, firewalld, consul,
 # keepalived
 
 # default attributes for managers_info, it would be rewriten with the cluster config
