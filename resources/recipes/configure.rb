@@ -975,7 +975,7 @@ end
 # Config-backup transfer targets for redborder-webui's BackupPolicy
 # (transfer_method: 'ftp'/'tftp') -- a network device pushes its config here.
 rb_backup_transfer_config 'Configure FTP backup transfer' do
-  ftp_password ftp_secrets['ftp_password']
+  ftp_accounts ftp_secrets['accounts'] || {}
   action(manager_services['ftp'] ? :add_ftp : :remove_ftp)
 end
 
