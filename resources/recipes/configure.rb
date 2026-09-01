@@ -111,6 +111,14 @@ rescue
   s3_malware_secrets = {}
 end
 
+ftp_secrets = {}
+
+begin
+  ftp_secrets = data_bag_item('passwords', 'ftp').to_hash
+rescue
+  ftp_secrets = {}
+end
+
 chef_server_config 'Configure chef services' do
   if manager_services['chef-server']
     memory node['redborder']['memory_services']['chef-server']['memory']
@@ -962,6 +970,17 @@ minio_config 'Configure S3 (minio)' do
     Chef::Log.warn('Skipped MinIO removal/deregistration due to missing external_services data')
     action :nothing
   end
+end
+
+# Config-backup transfer targets for redborder-webui's BackupPolicy
+# (transfer_method: 'ftp'/'tftp') -- a network device pushes its config here.
+rb_backup_transfer_config 'Configure FTP backup transfer' do
+  ftp_password ftp_secrets['ftp_password']
+  action(manager_services['ftp'] ? :add_ftp : :remove_ftp)
+end
+
+rb_backup_transfer_config 'Configure TFTP backup transfer' do
+  action(manager_services['tftp'] ? :add_tftp : :remove_tftp)
 end
 
 # Configure secor service for backup kafka data in case of data lose and for view raw vault data
