@@ -422,16 +422,10 @@ nginx_config 'Configure Nginx aioutliers' do
 end
 
 nginx_config 'Configure Nginx redborder-hub' do
-  if manager_services['nginx'] && node['redborder']['redborder-hub']['hosts'] && !node['redborder']['redborder-hub']['hosts'].empty?
-    hub_hosts node['redborder']['redborder-hub']['hosts']
-    hub_port node['redborder']['redborder-hub']['port']
-    weight_local node['redborder']['redborder-hub']['local']['weight']
-    max_fails_local node['redborder']['redborder-hub']['local']['max_fails']
-    fail_timeout_local node['redborder']['redborder-hub']['local']['fail_timeout']
-    weight node['redborder']['redborder-hub']['remote']['weight']
-    max_fails node['redborder']['redborder-hub']['remote']['max_fails']
-    fail_timeout node['redborder']['redborder-hub']['remote']['fail_timeout']
-    service_name 'redborder-hub'
+  cdomain node['redborder']['cdomain']
+  service_name 'redborder-hub'
+  hub_hosts node['redborder']['redborder-hub']['hosts']
+  if manager_services['nginx'] && manager_services['redborder-hub']
     action [:configure_certs, :add_hub]
   elsif manager_services['nginx']
     action :remove_hub
@@ -881,12 +875,9 @@ rbaioutliers_config 'Configure rb-aioutliers' do
 end
 
 rbhub_config 'Configure redborder-hub' do
+  cdomain node['redborder']['cdomain']
+  hub_hosts node['redborder']['redborder-hub']['hosts']
   if manager_services['redborder-hub']
-    hub_hosts node['redborder']['redborder-hub']['hosts']
-    hub_port node['redborder']['redborder-hub']['port']
-    auth_token node['redborder']['redborder-hub']['auth_token']
-    authorized_keys_dir node['redborder']['redborder-hub']['authorized_keys_dir']
-    advertise_peers node['redborder']['redborder-hub']['advertise_peers']
     action [:add, :register]
   else
     action [:remove, :deregister]
