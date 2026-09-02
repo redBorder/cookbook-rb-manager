@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.29.0
+
+  - vimesa
+    - [6f28867] Add redborder-hub settings
+
 ## 5.28.1
 
   - Nils
