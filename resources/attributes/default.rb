@@ -69,7 +69,6 @@ default['drill']['port'] = 8047
 default['redborder']['redborder-hub']['registered'] = false
 default['redborder']['redborder-hub']['port'] = 8010
 
-
 # hard disk
 default['redborder']['manager']['data_dev'] = {}
 default['redborder']['manager']['data_dev']['root'] = '/dev/mapper/VolGroup-lv_root'
