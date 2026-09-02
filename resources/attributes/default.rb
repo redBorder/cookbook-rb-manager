@@ -95,6 +95,10 @@ default['redborder']['grr']['paths']['server_local_yaml'] = '/opt/grr/venv/insta
 default['redborder']['grr']['paths']['fleetspeak_dir'] = '/opt/grr/venv/fleetspeak-server-bin/etc/fleetspeak-server'
 default['redborder']['grr']['paths']['config_updater_bin'] = '/opt/grr/venv/bin/grr_config_updater'
 
+# redborder-hub
+default['redborder']['redborder-hub']['registered'] = false
+default['redborder']['redborder-hub']['port'] = 8010
+
 # hard disk
 default['redborder']['manager']['data_dev'] = {}
 default['redborder']['manager']['data_dev']['root'] = '/dev/mapper/VolGroup-lv_root'
@@ -141,6 +145,7 @@ default['redborder']['memory_services']['airflow-webserver'] = { 'count': 50, 'm
 default['redborder']['memory_services']['airflow-triggerer'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['airflow-dag-processor'] = { 'count': 20, 'memory': 0 }
 default['redborder']['memory_services']['rb-reputation'] = { 'count': 30, 'memory': 0 }
+default['redborder']['memory_services']['redborder-hub'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['logstash'] = { 'count': 80, 'memory': 0 }
 default['redborder']['memory_services']['grr-fleetspeak'] = { 'count': 20, 'memory': 0 }
 default['redborder']['memory_services']['grr-adminui'] = { 'count': 20, 'memory': 0 }
@@ -238,6 +243,7 @@ default['redborder']['services']['secor']                     = false
 default['redborder']['services']['secor-vault']               = false
 default['redborder']['services']['redis']                     = false
 default['redborder']['services']['rb-reputation']             = false
+default['redborder']['services']['redborder-hub']             = true
 default['redborder']['services']['redborder-alarm-engine']    = true
 default['redborder']['services']['grr-fleetspeak']            = false
 default['redborder']['services']['grr-adminui']               = false
@@ -302,6 +308,7 @@ default['redborder']['systemdservices']['secor']                    = ['rb-secor
 default['redborder']['systemdservices']['secor-vault']              = ['rb-secor-vault']
 default['redborder']['systemdservices']['redis']                    = ['redis']
 default['redborder']['systemdservices']['rb-reputation']            = ['rb-reputation']
+default['redborder']['systemdservices']['redborder-hub']            = ['redborder-hub']
 default['redborder']['systemdservices']['redborder-alarm-engine']   = ['redborder-alarm-engine']
 default['redborder']['systemdservices']['grr-fleetspeak']           = ['grr-fleetspeak']
 default['redborder']['systemdservices']['grr-adminui']              = ['grr-adminui']
