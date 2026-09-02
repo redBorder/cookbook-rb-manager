@@ -983,6 +983,18 @@ rb_backup_transfer_config 'Configure TFTP backup transfer' do
   action(manager_services['tftp'] ? :add_tftp : :remove_tftp)
 end
 
+# Only open the FTP/TFTP firewall ports while the corresponding service is
+# actually enabled -- cookbook-rb-firewall's static port table has no
+# concept of manager_services, so add/remove the exception here instead of
+# keeping these ports open unconditionally.
+if manager_services['ftp']
+  node.default['firewall']['roles']['manager']['home']['tcp_ports'] |= [21] + (21000..21010).to_a
+end
+
+if manager_services['tftp']
+  node.default['firewall']['roles']['manager']['home']['udp_ports'] |= [69]
+end
+
 # Configure secor service for backup kafka data in case of data lose and for view raw vault data
 secor_config 'Configure Secor Service' do
   if manager_services['secor'] || manager_services['secor-vault']
