@@ -430,6 +430,19 @@ nginx_config 'Configure Nginx aioutliers' do
   end
 end
 
+nginx_config 'Configure Nginx redborder-hub' do
+  cdomain node['redborder']['cdomain']
+  service_name 'redborder-hub'
+  hub_hosts node['redborder']['redborder-hub']['hosts']
+  if manager_services['nginx'] && manager_services['redborder-hub']
+    action [:configure_certs, :add_hub]
+  elsif manager_services['nginx']
+    action :remove_hub
+  else
+    action :nothing
+  end
+end
+
 aerospike_config 'Configure aerospike' do
   if manager_services['aerospike']
     ipaddress node['ipaddress_sync']
@@ -864,6 +877,16 @@ end
 rbaioutliers_config 'Configure rb-aioutliers' do
   if manager_services['rb-aioutliers']
     s3_secrets s3_secrets
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
+rbhub_config 'Configure redborder-hub' do
+  cdomain node['redborder']['cdomain']
+  hub_hosts node['redborder']['redborder-hub']['hosts']
+  if manager_services['redborder-hub']
     action [:add, :register]
   else
     action [:remove, :deregister]

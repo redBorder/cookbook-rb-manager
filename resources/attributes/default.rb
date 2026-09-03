@@ -65,6 +65,10 @@ default['cape']['min_freespace'] = 15000
 # drill
 default['drill']['port'] = 8047
 
+# redborder-hub
+default['redborder']['redborder-hub']['registered'] = false
+default['redborder']['redborder-hub']['port'] = 8010
+
 # hard disk
 default['redborder']['manager']['data_dev'] = {}
 default['redborder']['manager']['data_dev']['root'] = '/dev/mapper/VolGroup-lv_root'
@@ -111,6 +115,7 @@ default['redborder']['memory_services']['airflow-webserver'] = { 'count': 50, 'm
 default['redborder']['memory_services']['airflow-triggerer'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['airflow-dag-processor'] = { 'count': 20, 'memory': 0 }
 default['redborder']['memory_services']['rb-reputation'] = { 'count': 30, 'memory': 0 }
+default['redborder']['memory_services']['redborder-hub'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['logstash'] = { 'count': 80, 'memory': 0 }
 
 # default attributes for managers_info, it would be rewriten with the cluster config
@@ -204,6 +209,7 @@ default['redborder']['services']['secor']                     = false
 default['redborder']['services']['secor-vault']               = false
 default['redborder']['services']['redis']                     = false
 default['redborder']['services']['rb-reputation']             = false
+default['redborder']['services']['redborder-hub']             = true
 default['redborder']['services']['redborder-alarm-engine']    = true
 default['redborder']['services']['ftp']                       = false
 
@@ -265,6 +271,7 @@ default['redborder']['systemdservices']['secor']                    = ['rb-secor
 default['redborder']['systemdservices']['secor-vault']              = ['rb-secor-vault']
 default['redborder']['systemdservices']['redis']                    = ['redis']
 default['redborder']['systemdservices']['rb-reputation']            = ['rb-reputation']
+default['redborder']['systemdservices']['redborder-hub']            = ['redborder-hub']
 default['redborder']['systemdservices']['redborder-alarm-engine']   = ['redborder-alarm-engine']
 default['redborder']['systemdservices']['ftp']                      = ['vsftpd']
 
