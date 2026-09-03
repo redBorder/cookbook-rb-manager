@@ -574,6 +574,24 @@ rb_alarm_engine_config 'Configure redBorder alarm engine' do
   end
 end
 
+cluster_uuid_db = {}
+
+begin
+  cluster_uuid_db = data_bag_item('rBglobal', 'cluster')
+rescue
+  cluster_uuid_db = {}
+end
+
+rb_license_config 'Configure redBorder License' do
+  if manager_services['redborder-license']
+    cluster_uuid cluster_uuid_db['uuid'] unless cluster_uuid_db.empty?
+    node_id node['hostname']
+    redis_password redis_secrets['pass'] unless redis_secrets.empty?
+  else
+    action :remove
+  end
+end
+
 airflow_secrets = {}
 
 begin
@@ -758,23 +776,23 @@ yara_config 'yara' do
   action [:add]
 end
 
-rbdswatcher_config 'Configure redborder-dswatcher' do
-  if manager_services['redborder-dswatcher']
-    cdomain node['redborder']['cdomain']
-    action [:add, :register]
-  else
-    action [:remove, :deregister]
-  end
-end
+# rbdswatcher_config 'Configure redborder-dswatcher' do
+#   if manager_services['redborder-dswatcher']
+#     cdomain node['redborder']['cdomain']
+#     action [:add, :register]
+#   else
+#     action [:remove, :deregister]
+#   end
+# end
 
-rbevents_counter_config 'Configure redborder-events-counter' do
-  if manager_services['redborder-events-counter']
-    cdomain node['redborder']['cdomain']
-    action [:add, :register]
-  else
-    action [:remove, :deregister]
-  end
-end
+# rbevents_counter_config 'Configure redborder-events-counter' do
+#   if manager_services['redborder-events-counter']
+#     cdomain node['redborder']['cdomain']
+#     action [:add, :register]
+#   else
+#     action [:remove, :deregister]
+#   end
+# end
 
 rsyslog_config 'Configure rsyslog' do
   if manager_services['rsyslog']
