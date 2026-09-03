@@ -376,7 +376,6 @@ rbmonitor_config 'Configure redborder-monitor' do
     ipmi_nodes node.run_state['sensors_info_all']['ipmi-sensor']
     http_agent_nodes node.run_state['sensors_info_all']['http_agent-sensor']
     flow_nodes node.run_state['sensors_info_all']['flow-sensor']
-    veeam_backups_nodes node.run_state['sensors_info_all']['veeam-backups-sensor']
     vmware_exsi_nodes node.run_state['sensors_info_all']['vmware-exsi-sensor']
     vmware_exsi_vm_nodes node.run_state['sensors_info_all']['vmware-exsi-vm-sensor']
     managers node['redborder']['managers_list']
