@@ -996,17 +996,12 @@ end
 
 # Config-backup transfer target for redborder-webui's BackupPolicy
 # (transfer_method: 'ftp') -- a network device pushes its config here.
+# The FTP firewall ports are gated on manager_services['ftp'] inside
+# cookbook-rb-firewall's own provider (it already receives manager_services
+# via rb_firewall_config above), not here.
 rb_backup_transfer_config 'Configure FTP backup transfer' do
   ftp_accounts ftp_secrets['accounts'] || {}
   action(manager_services['ftp'] ? :add_ftp : :remove_ftp)
-end
-
-# Only open the FTP firewall ports while the service is actually enabled --
-# cookbook-rb-firewall's static port table has no concept of
-# manager_services, so add/remove the exception here instead of keeping
-# these ports open unconditionally.
-if manager_services['ftp']
-  node.default['firewall']['roles']['manager']['home']['tcp_ports'] |= [21] + (21000..21010).to_a
 end
 
 # Configure secor service for backup kafka data in case of data lose and for view raw vault data
