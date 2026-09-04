@@ -211,6 +211,7 @@ default['redborder']['services']['redis']                     = false
 default['redborder']['services']['rb-reputation']             = false
 default['redborder']['services']['redborder-hub']             = true
 default['redborder']['services']['redborder-alarm-engine']    = true
+default['redborder']['services']['ftp']                       = false
 
 default['redborder']['systemdservices']['airflow-scheduler']        = ['airflow-scheduler']
 default['redborder']['systemdservices']['airflow-webserver']        = ['airflow-webserver']
@@ -272,6 +273,7 @@ default['redborder']['systemdservices']['redis']                    = ['redis']
 default['redborder']['systemdservices']['rb-reputation']            = ['rb-reputation']
 default['redborder']['systemdservices']['redborder-hub']            = ['redborder-hub']
 default['redborder']['systemdservices']['redborder-alarm-engine']   = ['redborder-alarm-engine']
+default['redborder']['systemdservices']['ftp']                      = ['vsftpd']
 
 # Balanced services
 default['redborder']['manager']['balanced'] = [
