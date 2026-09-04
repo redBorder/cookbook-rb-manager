@@ -421,6 +421,20 @@ nginx_config 'Configure Nginx aioutliers' do
   end
 end
 
+nginx_config 'Configure Nginx redborder-hub' do
+  cdomain node['redborder']['cdomain']
+  service_name 'redborder-hub'
+  hub_hosts node['redborder']['redborder-hub']['hosts']
+  hub_local_active manager_services['redborder-hub']
+  if manager_services['nginx'] && node['redborder']['redborder-hub']['hosts'] && !node['redborder']['redborder-hub']['hosts'].empty?
+    action [:configure_certs, :add_hub]
+  elsif manager_services['nginx']
+    action :remove_hub
+  else
+    action :nothing
+  end
+end
+
 aerospike_config 'Configure aerospike' do
   if manager_services['aerospike']
     ipaddress node['ipaddress_sync']
