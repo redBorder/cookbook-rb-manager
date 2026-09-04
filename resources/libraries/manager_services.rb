@@ -24,8 +24,8 @@ class Chef
       # app/models/manager.rb), not redborder.services.overwrite -- honor
       # it too, taking precedence since it's the most recent user change.
       manager_overwrite = node['redborder']['manager'] &&
-                           node['redborder']['manager']['services'] &&
-                           node['redborder']['manager']['services']['overwrite']
+                          node['redborder']['manager']['services'] &&
+                          node['redborder']['manager']['services']['overwrite']
       if manager_overwrite
         manager_overwrite.each do |k, v|
           if v == true || v == false
