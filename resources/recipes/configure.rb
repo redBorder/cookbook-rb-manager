@@ -752,6 +752,7 @@ logstash_config 'Configure logstash' do
     redfish_nodes node.run_state['sensors_info_all']['redfish-sensor']
     ips_nodes node.run_state['ips_sensors_info']
     mobility_nodes node.run_state['mobility_sensors_info']
+    monitor_nodes node.run_state['monitors_sensors_info']
     intrusion_incidents_priority_filter node['redborder']['intrusion_incidents_priority_filter']
     vault_incidents_priority_filter node['redborder']['vault_incidents_priority_filter']
     malware_score_threshold node['redborder']['manager']['malware']['threshold'].to_i
