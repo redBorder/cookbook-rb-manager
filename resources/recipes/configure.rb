@@ -1033,6 +1033,40 @@ minio_config 'Configure S3 (minio)' do
   end
 end
 
+grr_config 'Configure GRR' do
+  if manager_services['grr-fleetspeak'] && manager_services['grr-adminui'] && manager_services['grr-frontend'] && manager_services['grr-worker']
+    mysql_host                        node['redborder']['grr']['mysql']['host']
+    mysql_port                        node['redborder']['grr']['mysql']['port']
+    max_allowed_packet                node['redborder']['grr']['mysql']['max_allowed_packet']
+    log_bin_trust_function_creators   node['redborder']['grr']['mysql']['log']
+    grr_database                      node['redborder']['grr']['mysql']['grr_database']
+    grr_db_user                       node['redborder']['grr']['mysql']['grr_user']
+    grr_db_password                   node['redborder']['grr']['mysql']['grr_password']
+    fleetspeak_database               node['redborder']['grr']['mysql']['fleetspeak_database']
+    fleetspeak_db_user                node['redborder']['grr']['mysql']['fleetspeak_user']
+    fleetspeak_db_password            node['redborder']['grr']['mysql']['fleetspeak_password']
+    fleetspeak_port                   node['redborder']['grr']['fleetspeak']['port']
+    hostname                          node['redborder']['grr']['hostname']
+    adminui_port                      node['redborder']['grr']['adminui']['port']
+    adminui_url                       node['redborder']['grr']['adminui']['external_url']
+    frontend_port                     node['redborder']['grr']['frontend']['port']
+    frontend_url                      node['redborder']['grr']['frontend']['external_url']
+    fleetspeak_https_listen           node['redborder']['grr']['fleetspeak']['https_listen']
+    fleetspeak_admin_listen           node['redborder']['grr']['fleetspeak']['admin_listen']
+    fleetspeak_grr_listen             node['redborder']['grr']['fleetspeak']['grr_listen']
+    fleetspeak_cert_dir               node['redborder']['grr']['fleetspeak']['cert_dir']
+    admin_username                    node['redborder']['grr']['admin']['username']
+    admin_password                    node['redborder']['grr']['admin']['password']
+    config_dir                        node['redborder']['grr']['paths']['config_dir']
+    server_local_yaml                 node['redborder']['grr']['paths']['server_local_yaml']
+    fleetspeak_dir                    node['redborder']['grr']['paths']['fleetspeak_dir']
+    config_updater_bin                node['redborder']['grr']['paths']['config_updater_bin']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 ssh_secrets = {}
 
 begin
