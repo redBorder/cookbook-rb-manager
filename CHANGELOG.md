@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 5.30.0
+
+  - Vimesa
+    - [923b9bd] Feature/#26201 Installation and Configuration of GRR
+
 ## 5.29.0
 
   - vimesa
