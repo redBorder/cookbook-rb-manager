@@ -65,6 +65,40 @@ default['cape']['min_freespace'] = 15000
 # drill
 default['drill']['port'] = 8047
 
+# grr
+default['redborder']['grr']['mysql']['host'] = '127.0.0.1'
+default['redborder']['grr']['mysql']['port'] = 3306
+default['redborder']['grr']['mysql']['max_allowed_packet'] = '64M'
+default['redborder']['grr']['mysql']['log'] = 1
+default['redborder']['grr']['mysql']['grr_database'] = 'grr'
+default['redborder']['grr']['mysql']['grr_user'] = 'grr'
+default['redborder']['grr']['mysql']['grr_password'] = 'redborder'
+default['redborder']['grr']['mysql']['fleetspeak_database'] = 'fleetspeak'
+default['redborder']['grr']['mysql']['fleetspeak_user'] = 'fleetspeak'
+default['redborder']['grr']['mysql']['fleetspeak_db_password'] = 'redborder'
+cdomain = node['redborder']['cdomain'] || 'redborder.cluster'
+node_name = node['hostname']
+default['redborder']['grr']['hostname'] = "#{node_name}.#{cdomain}"
+default['redborder']['grr']['adminui']['port'] = 8002
+default['redborder']['grr']['adminui']['external_url'] = "http://#{node_name}.#{cdomain}:8002"
+default['redborder']['grr']['frontend']['port'] = 8084
+default['redborder']['grr']['frontend']['external_url'] = "http://#{node_name}.#{cdomain}:8084"
+default['redborder']['grr']['fleetspeak']['https_listen'] = '0.0.0.0:8443'
+default['redborder']['grr']['fleetspeak']['admin_listen'] = 'localhost:6061'
+default['redborder']['grr']['fleetspeak']['grr_listen'] = 'localhost:1138'
+default['redborder']['grr']['fleetspeak']['cert_dir'] = '/opt/grr/venv/fleetspeak-server-bin/etc/fleetspeak-server'
+default['redborder']['grr']['fleetspeak']['port'] = 8443
+default['redborder']['grr']['admin']['username'] = 'admin'
+default['redborder']['grr']['admin']['password'] = 'redborder'
+default['redborder']['grr']['paths']['config_dir'] = '/opt/grr'
+default['redborder']['grr']['paths']['server_local_yaml'] = '/opt/grr/venv/install_data/etc/server.local.yaml'
+default['redborder']['grr']['paths']['fleetspeak_dir'] = '/opt/grr/venv/fleetspeak-server-bin/etc/fleetspeak-server'
+default['redborder']['grr']['paths']['config_updater_bin'] = '/opt/grr/venv/bin/grr_config_updater'
+
+# redborder-hub
+default['redborder']['redborder-hub']['registered'] = false
+default['redborder']['redborder-hub']['port'] = 8010
+
 # hard disk
 default['redborder']['manager']['data_dev'] = {}
 default['redborder']['manager']['data_dev']['root'] = '/dev/mapper/VolGroup-lv_root'
@@ -111,7 +145,12 @@ default['redborder']['memory_services']['airflow-webserver'] = { 'count': 50, 'm
 default['redborder']['memory_services']['airflow-triggerer'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['airflow-dag-processor'] = { 'count': 20, 'memory': 0 }
 default['redborder']['memory_services']['rb-reputation'] = { 'count': 30, 'memory': 0 }
+default['redborder']['memory_services']['redborder-hub'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['logstash'] = { 'count': 80, 'memory': 0 }
+default['redborder']['memory_services']['grr-fleetspeak'] = { 'count': 20, 'memory': 0 }
+default['redborder']['memory_services']['grr-adminui'] = { 'count': 20, 'memory': 0 }
+default['redborder']['memory_services']['grr-frontend'] = { 'count': 20, 'memory': 0 }
+default['redborder']['memory_services']['grr-worker'] = { 'count': 20, 'memory': 0 }
 
 # default attributes for managers_info, it would be rewriten with the cluster config
 default['redborder']['cluster_info'] = {}
@@ -204,7 +243,12 @@ default['redborder']['services']['secor']                     = false
 default['redborder']['services']['secor-vault']               = false
 default['redborder']['services']['redis']                     = false
 default['redborder']['services']['rb-reputation']             = false
+default['redborder']['services']['redborder-hub']             = true
 default['redborder']['services']['redborder-alarm-engine']    = true
+default['redborder']['services']['grr-fleetspeak']            = false
+default['redborder']['services']['grr-adminui']               = false
+default['redborder']['services']['grr-frontend']              = false
+default['redborder']['services']['grr-worker']                = false
 
 default['redborder']['systemdservices']['airflow-scheduler']        = ['airflow-scheduler']
 default['redborder']['systemdservices']['airflow-webserver']        = ['airflow-webserver']
@@ -264,7 +308,12 @@ default['redborder']['systemdservices']['secor']                    = ['rb-secor
 default['redborder']['systemdservices']['secor-vault']              = ['rb-secor-vault']
 default['redborder']['systemdservices']['redis']                    = ['redis']
 default['redborder']['systemdservices']['rb-reputation']            = ['rb-reputation']
+default['redborder']['systemdservices']['redborder-hub']            = ['redborder-hub']
 default['redborder']['systemdservices']['redborder-alarm-engine']   = ['redborder-alarm-engine']
+default['redborder']['systemdservices']['grr-fleetspeak']           = ['grr-fleetspeak']
+default['redborder']['systemdservices']['grr-adminui']              = ['grr-adminui']
+default['redborder']['systemdservices']['grr-frontend']             = ['grr-frontend']
+default['redborder']['systemdservices']['grr-worker']               = ['grr-worker']
 
 # Balanced services
 default['redborder']['manager']['balanced'] = [
