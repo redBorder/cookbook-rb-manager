@@ -167,9 +167,8 @@ default['redborder']['memory_assigned'] = {}
 # geoip has been removed because is not a service
 default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
                                                     druid-broker druid-historical druid-coordinator druid-router druid-indexer druid-overlord
-                                                    postgresql nginx webui rb-workers f2k rb-druid-indexer
-                                                    redborder-monitor sfacctd redborder-dswatcher redis
-                                                    redborder-events-counter http2k redborder-mem2incident rb-logstatter redborder-alarm-engine)
+                                                    postgresql nginx webui rb-workers f2k rb-druid-indexer redborder-monitor sfacctd redis http2k
+                                                    redborder-mem2incident rb-logstatter redborder-alarm-engine redborder-license)
 
 default['redborder']['services_group']['custom'] = %w(consul)
 default['redborder']['services_group']['core'] = %w(consul chef-server s3 postgresql nginx)
@@ -226,8 +225,6 @@ default['redborder']['services']['rb-workers']                = false
 default['redborder']['services']['redborder-agents']          = false
 default['redborder']['services']['redborder-ale']             = false
 default['redborder']['services']['redborder-cep']             = false
-default['redborder']['services']['redborder-dswatcher']       = false
-default['redborder']['services']['redborder-events-counter']  = false
 default['redborder']['services']['redborder-mem2incident']    = false
 default['redborder']['services']['redborder-monitor']         = true
 default['redborder']['services']['redborder-nmsp']            = false
@@ -245,6 +242,7 @@ default['redborder']['services']['redis']                     = false
 default['redborder']['services']['rb-reputation']             = false
 default['redborder']['services']['redborder-hub']             = true
 default['redborder']['services']['redborder-alarm-engine']    = true
+default['redborder']['services']['redborder-license']         = true
 default['redborder']['services']['grr-fleetspeak']            = false
 default['redborder']['services']['grr-adminui']               = false
 default['redborder']['services']['grr-frontend']              = false
@@ -291,8 +289,6 @@ default['redborder']['systemdservices']['rb-workers']               = ['rb-worke
 default['redborder']['systemdservices']['redborder-agents']         = ['redborder-agents']
 default['redborder']['systemdservices']['redborder-ale']            = ['redborder-ale']
 default['redborder']['systemdservices']['redborder-cep']            = ['redborder-cep']
-default['redborder']['systemdservices']['redborder-dswatcher']      = ['redborder-dswatcher']
-default['redborder']['systemdservices']['redborder-events-counter'] = ['redborder-events-counter']
 default['redborder']['systemdservices']['redborder-mem2incident']   = ['redborder-mem2incident']
 default['redborder']['systemdservices']['redborder-monitor']        = ['redborder-monitor']
 default['redborder']['systemdservices']['redborder-nmsp']           = ['redborder-nmsp']
@@ -310,6 +306,7 @@ default['redborder']['systemdservices']['redis']                    = ['redis']
 default['redborder']['systemdservices']['rb-reputation']            = ['rb-reputation']
 default['redborder']['systemdservices']['redborder-hub']            = ['redborder-hub']
 default['redborder']['systemdservices']['redborder-alarm-engine']   = ['redborder-alarm-engine']
+default['redborder']['systemdservices']['redborder-license']        = ['redborder-license']
 default['redborder']['systemdservices']['grr-fleetspeak']           = ['grr-fleetspeak']
 default['redborder']['systemdservices']['grr-adminui']              = ['grr-adminui']
 default['redborder']['systemdservices']['grr-frontend']             = ['grr-frontend']
