@@ -790,24 +790,6 @@ yara_config 'yara' do
   action [:add]
 end
 
-# rbdswatcher_config 'Configure redborder-dswatcher' do
-#   if manager_services['redborder-dswatcher']
-#     cdomain node['redborder']['cdomain']
-#     action [:add, :register]
-#   else
-#     action [:remove, :deregister]
-#   end
-# end
-
-# rbevents_counter_config 'Configure redborder-events-counter' do
-#   if manager_services['redborder-events-counter']
-#     cdomain node['redborder']['cdomain']
-#     action [:add, :register]
-#   else
-#     action [:remove, :deregister]
-#   end
-# end
-
 rsyslog_config 'Configure rsyslog' do
   if manager_services['rsyslog']
     vault_nodes node.run_state['sensors_info_all']['vault-sensor'] + node.run_state['sensors_info_all']['cep-sensor']
