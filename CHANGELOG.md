@@ -1,6 +1,21 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 6.0.0
+
+  - Miguel Negrón
+    - [1e2620e] Merge pull request #449 from redBorder/improvement/#26241_add_redborder_license
+  - manegron
+    - [1e2620e] Merge pull request #449 from redBorder/improvement/#26241_add_redborder_license
+    - [e3b20d8] Clean comments
+  - vimesa
+    - [e8d2808] Fix test
+    - [f52d912] Merge with development
+    - [f1fdc34] Add a new method for monitor sensors
+    - [58ab0fa] Restore to original state
+    - [e0d7d1f] Add the two missing intrusion sensors
+    - [871c90e] Add redborder-license config
+
 ## 5.30.0
 
   - Vimesa
