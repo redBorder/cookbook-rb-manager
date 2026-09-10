@@ -353,6 +353,7 @@ snmp_config 'Configure snmp' do
   if manager_services['snmp']
     hostname node['hostname']
     cdomain node['redborder']['cdomain']
+    trap_sensors node.run_state['sensors_info_all']['trap-sensor']
     action :add
   else
     action :remove
