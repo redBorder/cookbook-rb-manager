@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 6.0.1
+
+  - Nils
+    - [ceaa497] fix bug if redborder-hub was down on 1 node
+
 ## 6.0.0
 
   - Miguel Negrón
