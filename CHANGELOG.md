@@ -1,6 +1,36 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 6.0.1
+
+  - Nils
+    - [ceaa497] fix bug if redborder-hub was down on 1 node
+
+## 6.0.0
+
+  - Miguel Negrón
+    - [1e2620e] Merge pull request #449 from redBorder/improvement/#26241_add_redborder_license
+  - manegron
+    - [1e2620e] Merge pull request #449 from redBorder/improvement/#26241_add_redborder_license
+    - [e3b20d8] Clean comments
+  - vimesa
+    - [e8d2808] Fix test
+    - [f52d912] Merge with development
+    - [f1fdc34] Add a new method for monitor sensors
+    - [58ab0fa] Restore to original state
+    - [e0d7d1f] Add the two missing intrusion sensors
+    - [871c90e] Add redborder-license config
+
+## 5.30.0
+
+  - Vimesa
+    - [923b9bd] Feature/#26201 Installation and Configuration of GRR
+
+## 5.29.0
+
+  - vimesa
+    - [6f28867] Add redborder-hub settings
+
 ## 5.28.1
 
   - Nils

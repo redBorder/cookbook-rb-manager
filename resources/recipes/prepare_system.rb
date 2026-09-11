@@ -68,6 +68,7 @@ if node['redborder']['services']['logstash']
   node.run_state['flow_sensors_info'] = get_all_flow_sensors_info['flow-sensor']
   node.run_state['ips_sensors_info'] = get_all_ips_sensors_info
   node.run_state['mobility_sensors_info'] = get_all_mobility_sensors_info
+  node.run_state['monitors_sensors_info'] = get_all_monitors_sensors_info
 end
 
 # get elasticache nodes
@@ -146,6 +147,9 @@ node.default['redborder']['erchef']['hosts'] = erchef_hosts
 
 http2k_hosts = node['redborder']['managers_per_services']['http2k'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
 node.default['redborder']['http2k']['hosts'] = http2k_hosts
+
+hub_hosts = node['redborder']['managers_per_services']['redborder-hub'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
+node.default['redborder']['redborder-hub']['hosts'] = hub_hosts
 
 rb_aioutliers_hosts = node['redborder']['managers_per_services']['rb-aioutliers'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
 node.default['redborder']['rb-aioutliers']['hosts'] = rb_aioutliers_hosts

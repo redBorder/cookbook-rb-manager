@@ -65,6 +65,40 @@ default['cape']['min_freespace'] = 15000
 # drill
 default['drill']['port'] = 8047
 
+# grr
+default['redborder']['grr']['mysql']['host'] = '127.0.0.1'
+default['redborder']['grr']['mysql']['port'] = 3306
+default['redborder']['grr']['mysql']['max_allowed_packet'] = '64M'
+default['redborder']['grr']['mysql']['log'] = 1
+default['redborder']['grr']['mysql']['grr_database'] = 'grr'
+default['redborder']['grr']['mysql']['grr_user'] = 'grr'
+default['redborder']['grr']['mysql']['grr_password'] = 'redborder'
+default['redborder']['grr']['mysql']['fleetspeak_database'] = 'fleetspeak'
+default['redborder']['grr']['mysql']['fleetspeak_user'] = 'fleetspeak'
+default['redborder']['grr']['mysql']['fleetspeak_db_password'] = 'redborder'
+cdomain = node['redborder']['cdomain'] || 'redborder.cluster'
+node_name = node['hostname']
+default['redborder']['grr']['hostname'] = "#{node_name}.#{cdomain}"
+default['redborder']['grr']['adminui']['port'] = 8002
+default['redborder']['grr']['adminui']['external_url'] = "http://#{node_name}.#{cdomain}:8002"
+default['redborder']['grr']['frontend']['port'] = 8084
+default['redborder']['grr']['frontend']['external_url'] = "http://#{node_name}.#{cdomain}:8084"
+default['redborder']['grr']['fleetspeak']['https_listen'] = '0.0.0.0:8443'
+default['redborder']['grr']['fleetspeak']['admin_listen'] = 'localhost:6061'
+default['redborder']['grr']['fleetspeak']['grr_listen'] = 'localhost:1138'
+default['redborder']['grr']['fleetspeak']['cert_dir'] = '/opt/grr/venv/fleetspeak-server-bin/etc/fleetspeak-server'
+default['redborder']['grr']['fleetspeak']['port'] = 8443
+default['redborder']['grr']['admin']['username'] = 'admin'
+default['redborder']['grr']['admin']['password'] = 'redborder'
+default['redborder']['grr']['paths']['config_dir'] = '/opt/grr'
+default['redborder']['grr']['paths']['server_local_yaml'] = '/opt/grr/venv/install_data/etc/server.local.yaml'
+default['redborder']['grr']['paths']['fleetspeak_dir'] = '/opt/grr/venv/fleetspeak-server-bin/etc/fleetspeak-server'
+default['redborder']['grr']['paths']['config_updater_bin'] = '/opt/grr/venv/bin/grr_config_updater'
+
+# redborder-hub
+default['redborder']['redborder-hub']['registered'] = false
+default['redborder']['redborder-hub']['port'] = 8010
+
 # hard disk
 default['redborder']['manager']['data_dev'] = {}
 default['redborder']['manager']['data_dev']['root'] = '/dev/mapper/VolGroup-lv_root'
@@ -110,6 +144,7 @@ default['redborder']['memory_services']['airflow-webserver'] = { 'count': 50, 'm
 default['redborder']['memory_services']['airflow-triggerer'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['airflow-dag-processor'] = { 'count': 20, 'memory': 0 }
 default['redborder']['memory_services']['rb-reputation'] = { 'count': 30, 'memory': 0 }
+default['redborder']['memory_services']['redborder-hub'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['logstash'] = { 'count': 80, 'memory': 0 }
 default['redborder']['memory_services']['memcached'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['s3'] = { 'count': 20, 'memory': 0 }
@@ -126,6 +161,10 @@ default['redborder']['memory_services']['redborder-ale'] = { 'count': 10, 'memor
 default['redborder']['memory_services']['redborder-scanner'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['rb-arubacentral'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['radiusd'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['grr-fleetspeak'] = { 'count': 20, 'memory': 0 }
+default['redborder']['memory_services']['grr-adminui'] = { 'count': 20, 'memory': 0 }
+default['redborder']['memory_services']['grr-frontend'] = { 'count': 20, 'memory': 0 }
+default['redborder']['memory_services']['grr-worker'] = { 'count': 20, 'memory': 0 }
 # Excluded services: chef-client, chrony, rsyslog, snmpd, snmptrad, postfix, firewalld, consul,
 # keepalived
 # TODO: add malware services (cape)
@@ -145,9 +184,8 @@ default['redborder']['memory_assigned'] = {}
 # geoip has been removed because is not a service
 default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
                                                     druid-broker druid-historical druid-coordinator druid-router druid-indexer druid-overlord
-                                                    postgresql nginx webui rb-workers f2k rb-druid-indexer
-                                                    redborder-monitor sfacctd redborder-dswatcher redis
-                                                    redborder-events-counter http2k redborder-mem2incident rb-logstatter redborder-alarm-engine)
+                                                    postgresql nginx webui rb-workers f2k rb-druid-indexer redborder-monitor sfacctd redis http2k
+                                                    redborder-mem2incident rb-logstatter redborder-alarm-engine redborder-license)
 
 default['redborder']['services_group']['custom'] = %w(consul)
 default['redborder']['services_group']['core'] = %w(consul chef-server s3 postgresql nginx)
@@ -204,8 +242,6 @@ default['redborder']['services']['rb-workers']                = false
 default['redborder']['services']['redborder-agents']          = false
 default['redborder']['services']['redborder-ale']             = false
 default['redborder']['services']['redborder-cep']             = false
-default['redborder']['services']['redborder-dswatcher']       = false
-default['redborder']['services']['redborder-events-counter']  = false
 default['redborder']['services']['redborder-mem2incident']    = false
 default['redborder']['services']['redborder-monitor']         = true
 default['redborder']['services']['redborder-nmsp']            = false
@@ -221,7 +257,13 @@ default['redborder']['services']['secor']                     = false
 default['redborder']['services']['secor-vault']               = false
 default['redborder']['services']['redis']                     = false
 default['redborder']['services']['rb-reputation']             = false
+default['redborder']['services']['redborder-hub']             = true
 default['redborder']['services']['redborder-alarm-engine']    = true
+default['redborder']['services']['redborder-license']         = true
+default['redborder']['services']['grr-fleetspeak']            = false
+default['redborder']['services']['grr-adminui']               = false
+default['redborder']['services']['grr-frontend']              = false
+default['redborder']['services']['grr-worker']                = false
 
 default['redborder']['systemdservices']['airflow-scheduler']        = ['airflow-scheduler']
 default['redborder']['systemdservices']['airflow-webserver']        = ['airflow-webserver']
@@ -264,8 +306,6 @@ default['redborder']['systemdservices']['rb-workers']               = ['rb-worke
 default['redborder']['systemdservices']['redborder-agents']         = ['redborder-agents']
 default['redborder']['systemdservices']['redborder-ale']            = ['redborder-ale']
 default['redborder']['systemdservices']['redborder-cep']            = ['redborder-cep']
-default['redborder']['systemdservices']['redborder-dswatcher']      = ['redborder-dswatcher']
-default['redborder']['systemdservices']['redborder-events-counter'] = ['redborder-events-counter']
 default['redborder']['systemdservices']['redborder-mem2incident']   = ['redborder-mem2incident']
 default['redborder']['systemdservices']['redborder-monitor']        = ['redborder-monitor']
 default['redborder']['systemdservices']['redborder-nmsp']           = ['redborder-nmsp']
@@ -281,7 +321,13 @@ default['redborder']['systemdservices']['secor']                    = ['rb-secor
 default['redborder']['systemdservices']['secor-vault']              = ['rb-secor-vault']
 default['redborder']['systemdservices']['redis']                    = ['redis']
 default['redborder']['systemdservices']['rb-reputation']            = ['rb-reputation']
+default['redborder']['systemdservices']['redborder-hub']            = ['redborder-hub']
 default['redborder']['systemdservices']['redborder-alarm-engine']   = ['redborder-alarm-engine']
+default['redborder']['systemdservices']['redborder-license']        = ['redborder-license']
+default['redborder']['systemdservices']['grr-fleetspeak']           = ['grr-fleetspeak']
+default['redborder']['systemdservices']['grr-adminui']              = ['grr-adminui']
+default['redborder']['systemdservices']['grr-frontend']             = ['grr-frontend']
+default['redborder']['systemdservices']['grr-worker']               = ['grr-worker']
 
 # Balanced services
 default['redborder']['manager']['balanced'] = [
