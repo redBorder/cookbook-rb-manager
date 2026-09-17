@@ -999,7 +999,7 @@ end
 # The FTP firewall ports are gated on manager_services['ftp'] inside
 # cookbook-rb-firewall's own provider (it already receives manager_services
 # via rb_firewall_config above), not here.
-rb_backup_transfer_config 'Configure FTP backup transfer' do
+vsftpd_config 'Configure FTP backup transfer' do
   ftp_accounts ftp_secrets['accounts'] || {}
   action(manager_services['ftp'] ? :add_ftp : :remove_ftp)
 end
