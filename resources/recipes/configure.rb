@@ -38,6 +38,7 @@ rb_common_config 'Configure common' do
 end
 
 rb_selinux_config 'Configure Selinux' do
+  ftp_enabled manager_services['ftp']
   if shell_out('getenforce').stdout.chomp == 'Disabled'
     action :remove
   else
