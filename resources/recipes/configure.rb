@@ -38,7 +38,6 @@ rb_common_config 'Configure common' do
 end
 
 rb_selinux_config 'Configure Selinux' do
-  ftp_enabled manager_services['ftp']
   if shell_out('getenforce').stdout.chomp == 'Disabled'
     action :remove
   else
@@ -1004,6 +1003,13 @@ end
 # via rb_firewall_config above), not here.
 vsftpd_config 'Configure FTP backup transfer' do
   ftp_accounts ftp_secrets['accounts'] || {}
+  action(manager_services['ftp'] ? :add_ftp : :remove_ftp)
+end
+
+# Must run after vsftpd_config above, which is what actually creates
+# ftp_upload_dir/incoming -- rb_selinux_config's restorecon needs that path
+# to already exist.
+rb_selinux_config 'Configure FTP SELinux labeling' do
   action(manager_services['ftp'] ? :add_ftp : :remove_ftp)
 end
 
