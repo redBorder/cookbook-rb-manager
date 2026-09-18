@@ -272,6 +272,7 @@ default['redborder']['systemdservices']['druid-indexer']            = ['druid-in
 default['redborder']['systemdservices']['druid-router']             = ['druid-router']
 default['redborder']['systemdservices']['rb-druid-indexer']         = ['rb-druid-indexer']
 default['redborder']['systemdservices']['f2k']                      = ['f2k']
+default['redborder']['systemdservices']['ftp']                      = ['vsftpd']
 default['redborder']['systemdservices']['http2k']                   = ['http2k']
 default['redborder']['systemdservices']['kafka']                    = ['kafka']
 default['redborder']['systemdservices']['keepalived']               = ['keepalived']
