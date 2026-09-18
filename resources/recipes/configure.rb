@@ -111,6 +111,14 @@ rescue
   s3_malware_secrets = {}
 end
 
+ftp_secrets = {}
+
+begin
+  ftp_secrets = data_bag_item('passwords', 'ftp').to_hash
+rescue
+  ftp_secrets = {}
+end
+
 chef_server_config 'Configure chef services' do
   if manager_services['chef-server']
     memory node['redborder']['memory_services']['chef-server']['memory']
@@ -986,6 +994,23 @@ minio_config 'Configure S3 (minio)' do
     Chef::Log.warn('Skipped MinIO removal/deregistration due to missing external_services data')
     action :nothing
   end
+end
+
+# Config-backup transfer target for redborder-webui's BackupPolicy
+# (transfer_method: 'ftp') -- a network device pushes its config here.
+# The FTP firewall ports are gated on manager_services['ftp'] inside
+# cookbook-rb-firewall's own provider (it already receives manager_services
+# via rb_firewall_config above), not here.
+vsftpd_config 'Configure FTP backup transfer' do
+  ftp_accounts ftp_secrets['accounts'] || {}
+  action(manager_services['ftp'] ? :add_ftp : :remove_ftp)
+end
+
+# Must run after vsftpd_config above, which is what actually creates
+# ftp_upload_dir/incoming -- rb_selinux_config's restorecon needs that path
+# to already exist.
+rb_selinux_config 'Configure FTP SELinux labeling' do
+  action(manager_services['ftp'] ? :add_ftp : :remove_ftp)
 end
 
 # Configure secor service for backup kafka data in case of data lose and for view raw vault data
