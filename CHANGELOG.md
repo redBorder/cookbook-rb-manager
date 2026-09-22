@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 7.0.0
+
+  - José Jiménez
+    - [d54ed0f] add trap task
+
 ## 6.0.1
 
   - Nils

@@ -353,6 +353,7 @@ snmp_config 'Configure snmp' do
   if manager_services['snmp']
     hostname node['hostname']
     cdomain node['redborder']['cdomain']
+    trap_sensors node.run_state['sensors_info_all']['trap-sensor']
     action :add
   else
     action :remove
@@ -764,6 +765,7 @@ logstash_config 'Configure logstash' do
     device_nodes node.run_state['sensors_info_all']['device-sensor']
     snmp_nodes node.run_state['sensors_info_all']['snmp-sensor']
     redfish_nodes node.run_state['sensors_info_all']['redfish-sensor']
+    trap_nodes node.run_state['sensors_info_all']['trap-sensor']
     ips_nodes node.run_state['ips_sensors_info']
     mobility_nodes node.run_state['mobility_sensors_info']
     monitor_nodes node.run_state['monitors_sensors_info']
