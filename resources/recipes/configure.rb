@@ -380,6 +380,9 @@ end
 rbscanner_config 'Configure redborder-scanner' do
   if manager_services['redborder-scanner']
     scanner_nodes node.run_state['cluster_sensors_info']['scanner-sensor']
+    # Empty until the cluster is installed; the agent only needs it to upload
+    # network topology snapshots.
+    auth_token node.run_state['auth_token'].to_s
     action [:add, :register]
   else
     action [:remove, :deregister]
