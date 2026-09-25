@@ -111,14 +111,6 @@ rescue
   s3_malware_secrets = {}
 end
 
-ftp_secrets = {}
-
-begin
-  ftp_secrets = data_bag_item('passwords', 'ftp').to_hash
-rescue
-  ftp_secrets = {}
-end
-
 chef_server_config 'Configure chef services' do
   if manager_services['chef-server']
     memory node['redborder']['memory_services']['chef-server']['memory']
@@ -1002,7 +994,6 @@ end
 # cookbook-rb-firewall's own provider (it already receives manager_services
 # via rb_firewall_config above), not here.
 vsftpd_config 'Configure FTP backup transfer' do
-  ftp_accounts ftp_secrets['accounts'] || {}
   action(manager_services['ftp'] ? :add_ftp : :remove_ftp)
 end
 
