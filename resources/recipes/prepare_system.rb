@@ -85,8 +85,8 @@ if !elasticache.empty? && !elasticache['cfg_address'].nil? && !elasticache['cfg_
   node.default['redborder']['memcached']['elasticache'] = true
 else
   memcached_hosts = []
-  managers_per_service['memcached'].uniq.each do |m|
-    memcached_hosts << "#{m}.node:#{node['redborder']['memcached']['port']}"
+  node['redborder']['cluster_info'].select { |m| node['redborder']['managers_per_services']['memcached'].include? m }.map { |_, v| v['ipaddress_sync'] }.uniq.each do |ip|
+    memcached_hosts << "#{ip}:#{node['redborder']['memcached']['port']}"
   end
   node.default['redborder']['memcached']['hosts'] = memcached_hosts
 end
