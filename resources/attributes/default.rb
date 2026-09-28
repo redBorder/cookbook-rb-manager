@@ -162,7 +162,7 @@ default['redborder']['memory_assigned'] = {}
 default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
                                                     druid-broker druid-historical druid-coordinator druid-router druid-indexer druid-overlord
                                                     postgresql nginx webui rb-workers f2k rb-druid-indexer redborder-monitor sfacctd redis http2k
-                                                    redborder-mem2incident rb-logstatter redborder-alarm-engine redborder-license)
+                                                    redborder-mem2incident rb-logstatter redborder-alarm-engine redborder-license ftp)
 
 default['redborder']['services_group']['custom'] = %w(consul)
 default['redborder']['services_group']['core'] = %w(consul chef-server s3 postgresql nginx)
@@ -236,6 +236,7 @@ default['redborder']['services']['redis']                     = false
 default['redborder']['services']['rb-reputation']             = false
 default['redborder']['services']['redborder-hub']             = true
 default['redborder']['services']['redborder-alarm-engine']    = true
+default['redborder']['services']['ftp']                       = false
 default['redborder']['services']['redborder-license']         = true
 default['redborder']['services']['grr-fleetspeak']            = false
 default['redborder']['services']['grr-adminui']               = false
@@ -265,6 +266,7 @@ default['redborder']['systemdservices']['druid-indexer']            = ['druid-in
 default['redborder']['systemdservices']['druid-router']             = ['druid-router']
 default['redborder']['systemdservices']['rb-druid-indexer']         = ['rb-druid-indexer']
 default['redborder']['systemdservices']['f2k']                      = ['f2k']
+default['redborder']['systemdservices']['ftp']                      = ['vsftpd']
 default['redborder']['systemdservices']['http2k']                   = ['http2k']
 default['redborder']['systemdservices']['kafka']                    = ['kafka']
 default['redborder']['systemdservices']['keepalived']               = ['keepalived']
@@ -300,6 +302,7 @@ default['redborder']['systemdservices']['redis']                    = ['redis']
 default['redborder']['systemdservices']['rb-reputation']            = ['rb-reputation']
 default['redborder']['systemdservices']['redborder-hub']            = ['redborder-hub']
 default['redborder']['systemdservices']['redborder-alarm-engine']   = ['redborder-alarm-engine']
+default['redborder']['systemdservices']['ftp']                      = ['vsftpd']
 default['redborder']['systemdservices']['redborder-license']        = ['redborder-license']
 default['redborder']['systemdservices']['grr-fleetspeak']           = ['grr-fleetspeak']
 default['redborder']['systemdservices']['grr-adminui']              = ['grr-adminui']

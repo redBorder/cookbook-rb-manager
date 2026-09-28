@@ -1,6 +1,39 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 8.0.0
+
+  - Miguel Negrón
+    - [ebe72e0] Merge pull request #446 from redBorder/feature/#26031_implement_snapshot_configuration_rollback
+  - manegron
+    - [ebe72e0] Merge pull request #446 from redBorder/feature/#26031_implement_snapshot_configuration_rollback
+    - [caf130e] add ftp to full mode
+    - [9614a09] Update with development
+  - Juan Soto
+    - [78ed913] Merge remote-tracking branch 'origin/master' into feature/#26031_implement_snapshot_configuration_rollback
+    - [8431d63] Drop the now-unused passwords/ftp data-bag read
+    - [930d5b5] Add ftp -> vsftpd to systemdservices, used by rbcli's service commands
+    - [917cb85] Call rb_selinux_config's FTP labeling after vsftpd_config creates the directory
+    - [fec0c24] Pass ftp_enabled to rb_selinux_config for vsftpd SELinux labeling
+    - [06a337b] Merge remote updates (development sync) into feature branch
+    - [4f52a4e] Update rb_backup_transfer_config call site for the cookbook-vsftpd rename
+    - [7ecc57b] Drop manual FTP firewall port gating, now handled in cookbook-rb-firewall
+    - [5d44a96] Fix cookstyle Layout/MultilineOperationIndentation offense
+    - [ebd1f9f] Revert "Add Veeam Backups sensor to monitor collection"
+    - [3358b8a] Revert "Add rb_veeam_backup_jobs to the Druid indexer task list"
+    - [7691176] Revert "Build source tarball via tar instead of git archive"
+    - [3dadc09] Merge development into feature/#26031_implement_snapshot_configuration_rollback
+    - [e7943da] Remove TFTP backup-transfer wiring, FTP only
+    - [ea5efe7] Only open FTP/TFTP firewall ports while the service is enabled
+    - [944d4a5] Pass ftp_accounts map instead of a single ftp_password
+    - [b36bdad] Honor redborder.manager.services.overwrite in manager_services()
+    - [aa1a4d0] Build source tarball via tar instead of git archive
+    - [bb6745f] Wire in cookbook-rb-backup-transfer for FTP/TFTP config backup
+    - [9ade3a6] Merge branch 'development' of github.com:redBorder/cookbook-rb-manager into feature/#26031_implement_snapshot_configuration_rollback
+    - [03da09d] Add rb_veeam_backup_jobs to the Druid indexer task list
+    - [8fc1bce] Merge branch 'master' of github.com:redBorder/cookbook-rb-manager into feature/#veeam_integration
+    - [e38e5f7] Add Veeam Backups sensor to monitor collection
+
 ## 7.0.0
 
   - José Jiménez
