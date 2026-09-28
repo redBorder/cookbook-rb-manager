@@ -990,6 +990,22 @@ minio_config 'Configure S3 (minio)' do
   end
 end
 
+# Config-backup transfer target for redborder-webui's BackupPolicy
+# (transfer_method: 'ftp') -- a network device pushes its config here.
+# The FTP firewall ports are gated on manager_services['ftp'] inside
+# cookbook-rb-firewall's own provider (it already receives manager_services
+# via rb_firewall_config above), not here.
+vsftpd_config 'Configure FTP backup transfer' do
+  action(manager_services['ftp'] ? :add_ftp : :remove_ftp)
+end
+
+# Must run after vsftpd_config above, which is what actually creates
+# ftp_upload_dir/incoming -- rb_selinux_config's restorecon needs that path
+# to already exist.
+rb_selinux_config 'Configure FTP SELinux labeling' do
+  action(manager_services['ftp'] ? :add_ftp : :remove_ftp)
+end
+
 # Configure secor service for backup kafka data in case of data lose and for view raw vault data
 secor_config 'Configure Secor Service' do
   if manager_services['secor'] || manager_services['secor-vault']
