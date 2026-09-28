@@ -1,6 +1,12 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 8.0.1
+
+
+  - manegron
+    - [066be2c] Build memcached_hosts with IP instead of host.node
+
 ## 8.0.0
 
   - Miguel Negrón
