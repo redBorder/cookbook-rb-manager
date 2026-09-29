@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 8.0.2
+
+  - manegron
+    - [31b19ca] Remove duplicated call to get_cluster_sensors_info
+
 ## 8.0.1
 
 
