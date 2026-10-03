@@ -5,7 +5,7 @@ maintainer       'Eneo Tecnología S.L.'
 maintainer_email 'git@redborder.com'
 license          'AGPL-3.0'
 description      'Installs/Configures redborder manager'
-version          '8.0.2'
+version          '8.0.3'
 
 depends 'rb-common'
 depends 'chef-server'

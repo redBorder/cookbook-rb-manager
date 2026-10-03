@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 8.0.3
+
+  - manegron
+    - [c413c91] Upload cookbook only if opscode-erchef is active
+
 ## 8.0.2
 
   - manegron
