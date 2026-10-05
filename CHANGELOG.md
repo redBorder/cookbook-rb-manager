@@ -1,6 +1,14 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 8.0.4
+
+  - Miguel Negrón
+    - [0b16c50] Merge pull request #457 from redBorder/improvement/#26794_disable_clamd_by_defaul
+  - manegron
+    - [0b16c50] Merge pull request #457 from redBorder/improvement/#26794_disable_clamd_by_defaul
+    - [bd6e258] Disable clamav by default
+
 ## 8.0.3
 
   - manegron
