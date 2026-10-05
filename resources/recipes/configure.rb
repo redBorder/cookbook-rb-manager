@@ -783,6 +783,7 @@ logstash_config 'Configure logstash' do
     redis_port node['redis']['port']
     redis_secrets redis_secrets
     s3_malware_secrets s3_malware_secrets
+    clamscan_enabled manager_services['clamav']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -942,7 +943,11 @@ rb_postfix_config 'Configure postfix' do
 end
 
 rb_clamav_config 'Configure ClamAV' do
-  action :add
+  if manager_services['clamav']
+    action :add
+  else
+    action :remove
+  end
 end
 
 rb_chrony_config 'Configure Chrony' do
