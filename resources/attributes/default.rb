@@ -308,6 +308,7 @@ default['redborder']['systemdservices']['zookeeper']                = ['zookeepe
 default['redborder']['systemdservices']['firewall']                 = ['firewalld']
 default['redborder']['systemdservices']['secor']                    = ['rb-secor']
 default['redborder']['systemdservices']['secor-vault']              = ['rb-secor-vault']
+default['redborder']['systemdservices']['serf']                     = ['serf']
 default['redborder']['systemdservices']['redis']                    = ['redis']
 default['redborder']['systemdservices']['rb-reputation']            = ['rb-reputation']
 default['redborder']['systemdservices']['redborder-hub']            = ['redborder-hub']
