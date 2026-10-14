@@ -10,7 +10,7 @@ module RbManager
       has_device_sensors = !sensors['device-sensor'].nil? && !sensors['device-sensor'].empty?
       has_redfish_sensors = !sensors['redfish-sensor'].nil? && !sensors['redfish-sensor'].empty?
       has_snmp_sensors = !sensors['snmp-sensor'].nil? && !sensors['snmp-sensor'].empty?
-      has_trap_sensors = !search(:node, 'role:trap-sensor').empty?
+      has_trap_sensors = !get_sensors_with_role('trap-sensor').empty?
       ips_sensors = get_all_ips_sensors_info
       has_ips_sensors = ips_sensors.any? { |_type, nodes| !nodes.empty? }
 
