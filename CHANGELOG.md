@@ -1,6 +1,14 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 8.1.0
+
+  - Miguel Negrón
+    - [e7c1254] Merge pull request #458 from redBorder/improvement/#26867_reduce_chef_server_queries
+  - manegron
+    - [e7c1254] Merge pull request #458 from redBorder/improvement/#26867_reduce_chef_server_queries
+    - [eb9db69] Reduce chef server queries
+
 ## 8.0.4
 
   - Miguel Negrón
