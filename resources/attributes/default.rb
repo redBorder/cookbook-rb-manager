@@ -233,6 +233,7 @@ default['redborder']['services']['redborder-nmsp']            = false
 default['redborder']['services']['redborder-scanner']         = false
 default['redborder']['services']['rsyslog']                   = true
 default['redborder']['services']['s3']                        = false
+default['redborder']['services']['serf']                      = true
 default['redborder']['services']['snmp']                      = true
 default['redborder']['services']['snmptrap']                  = true
 default['redborder']['services']['webui']                     = false
