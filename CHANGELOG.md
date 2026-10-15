@@ -1,6 +1,14 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 8.1.1
+
+  - rb-aguzman
+    - [eee66d0] Merge pull request #459 from redBorder/improvement/#26876_add_serf_into_rbcli
+  - Pablo Pérez
+    - [71d6837] add serf as service
+    - [9cf66eb] Add serf into node systemdservices
+
 ## 8.1.0
 
   - Miguel Negrón
