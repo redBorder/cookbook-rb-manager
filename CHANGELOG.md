@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 8.2.0
+
+  - Pablo Pérez
+    - [71d6837] add serf as service
+
 ## 8.1.0
 
   - Miguel Negrón
