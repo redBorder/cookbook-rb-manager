@@ -10,15 +10,18 @@ node['redborder']['services_group'][node['redborder']['mode']].each { |s| node.d
 
 node.run_state['cluster_installed'] = File.exist?('/etc/redborder/cluster-installed.txt')
 
-# Set :ipaddress_sync
+# Set :ipaddress_sync: the address of this node in the sync network
+# (serf.sync_net of rb_init_conf.yml), or the main address if it is unknown
 ipaddress_sync = node['ipaddress']
-sync_net = `cat /etc/redborder/rb_init_conf.yml  | grep sync_net | awk '{print $2'} | sed 's|/.*||'`.strip
+init_conf = YAML.safe_load(File.read('/etc/redborder/rb_init_conf.yml')) rescue nil
+init_conf = {} unless init_conf.is_a?(Hash)
+sync_net = init_conf.dig('serf', 'sync_net').to_s.sub(%r{/.*}, '')
 
-node['network']['interfaces'].each do |interface, _details|
-  next unless "x#{interface}" != 'xlo'
-
-  # ipaddress_sync = `ip route get #{sync_net} | head -n 1 | awk '{for (i=1; i<=NF; i++) if ($i == 'src') print $(i+1)}'`.strip
-  ipaddress_sync = `ip route get #{sync_net} | head -n 1 | awk '/src/ {print $5}'`.strip
+unless sync_net.empty?
+  # "<net> [via <gw>] dev <iface> src <ip> uid 0": the address follows "src"
+  route = `ip route get #{sync_net} 2>/dev/null`.lines.first.to_s.split
+  src = route.index('src')
+  ipaddress_sync = route[src + 1] if src && route[src + 1]
 end
 
 node.default[:ipaddress_sync] = ipaddress_sync
