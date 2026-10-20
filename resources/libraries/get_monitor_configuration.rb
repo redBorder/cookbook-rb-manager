@@ -2,15 +2,12 @@ module RbManager
   module Helpers
     def get_monitor_configuration
       monitor_config = []
-      device_sensors = search(:node, 'redborder_monitors:[* TO *] AND name:*device*').sort
-      snmp_sensors = search(:node, 'redborder_monitors:[* TO *] AND name:*snmp*').sort
-      ipmi_sensors = search(:node, 'redborder_monitors:[* TO *] AND name:*ipmi*').sort
-      redfish_sensors = search(:node, 'redborder_monitors:[* TO *] AND name:*redfish*').sort
-      http_agent_sensors = search(:node, 'redborder_monitors:[* TO *] AND name:*http_agent*').sort
-      vmware_exsi_sensors = search(:node, 'redborder_monitors:[* TO *] AND name:*exsi*').sort
-      monitor_sensors = device_sensors + snmp_sensors + ipmi_sensors + redfish_sensors + http_agent_sensors + vmware_exsi_sensors
-      monitor_sensors.each do |node|
-        monitors = node.normal['redborder']['monitors']
+      monitor_roles = %w(device-sensor snmp-sensor ipmi-sensor redfish-sensor http_agent-sensor vmware-exsi-sensor vmware-exsi-vm-sensor)
+      monitor_sensors = monitor_roles.flat_map { |role| get_sensors_with_role(role) }
+      monitor_sensors.each do |sensor|
+        next unless sensor['redborder'] && sensor['redborder']['monitors']
+
+        monitors = sensor.normal['redborder']['monitors'] || []
         monitors.each do |monitor|
           if monitor['name'] == 'bulkstats_schema' || monitor['name'] == 'thermal'
             monitor_config << monitor['name']

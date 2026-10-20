@@ -1,6 +1,43 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 8.2.0
+
+  - Pablo Pérez
+    - [71d6837] add serf as service
+
+## 8.1.0
+
+  - Miguel Negrón
+    - [e7c1254] Merge pull request #458 from redBorder/improvement/#26867_reduce_chef_server_queries
+  - manegron
+    - [e7c1254] Merge pull request #458 from redBorder/improvement/#26867_reduce_chef_server_queries
+    - [eb9db69] Reduce chef server queries
+
+## 8.0.4
+
+  - Miguel Negrón
+    - [0b16c50] Merge pull request #457 from redBorder/improvement/#26794_disable_clamd_by_defaul
+  - manegron
+    - [0b16c50] Merge pull request #457 from redBorder/improvement/#26794_disable_clamd_by_defaul
+    - [bd6e258] Disable clamav by default
+
+## 8.0.3
+
+  - manegron
+    - [c413c91] Upload cookbook only if opscode-erchef is active
+
+## 8.0.2
+
+  - manegron
+    - [31b19ca] Remove duplicated call to get_cluster_sensors_info
+
+## 8.0.1
+
+
+  - manegron
+    - [066be2c] Build memcached_hosts with IP instead of host.node
+
 ## 8.0.0
 
   - Miguel Negrón

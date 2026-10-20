@@ -7,14 +7,12 @@ module RbManager
                         ips-sensor intrusion-sensor intrusioncp-sensor ipsv2-sensor ipscp-sensor ipsg-sensor http_agent-sensor trap-sensor)
       locations = node['redborder']['locations']
       sensor_types.each do |s_type|
-        sensors = search(:node, "role:#{s_type}").sort
+        sensors = get_sensors_with_role(s_type)
         sensors_info[s_type] = {}
         sensors.each do |s|
           # skip childs of proxy sensors
-          if s['redborder']['parent_id']
-            parent_sensor = search(:node, "sensor_id:#{s['redborder']['parent_id']}").first
-            next if parent_sensor && parent_sensor.to_s.include?('proxy')
-          end
+          next if child_of_proxy?(s)
+
           info = {}
           info['name'] = s.name
           info['ip'] = s['ipaddress']
@@ -45,13 +43,13 @@ module RbManager
       sensor_types = ['flow-sensor']
 
       sensor_types.each do |s_type|
-        sensors = search(:node, "role:#{s_type}").sort
+        sensors = get_sensors_with_role(s_type)
         sensors_info[s_type] = []
 
         sensors.each do |s|
           next unless s['redborder'] && s['redborder']['parent_id']
 
-          parent_sensor = search(:node, "sensor_id:#{s['redborder']['parent_id']}").first
+          parent_sensor = get_parent_sensor(s)
           next unless parent_sensor && parent_sensor.to_s.include?('proxy') # Only if parent is a proxy
           parent_sensor_uuid = parent_sensor['redborder']['sensor_uuid']
           s.normal['redborder']['parent_proxy_uuid'] = parent_sensor_uuid
@@ -69,14 +67,12 @@ module RbManager
       sensor_types = %w(flow-sensor scanner-sensor)
 
       sensor_types.each do |s_type|
-        sensors = search(:node, "role:#{s_type}").sort
+        sensors = get_sensors_with_role(s_type)
         sensors_info[s_type] = []
 
         sensors.each do |s|
-          if s['redborder']['parent_id']
-            parent_sensor = search(:node, "sensor_id:#{s['redborder']['parent_id']}").first
-            next if parent_sensor && parent_sensor.to_s.include?('proxy')
-          end
+          next if child_of_proxy?(s)
+
           sensors_info[s_type] << s
         end
       end

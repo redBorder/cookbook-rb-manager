@@ -791,12 +791,13 @@ logstash_config 'Configure logstash' do
     logstash_pipelines node.run_state['pipelines']
     split_traffic_logstash split_traffic
     split_intrusion_logstash split_intrusion
-    flow_nodes_without_proxy node.run_state['sensors_info_cluster']['flow-sensor']
+    flow_nodes_without_proxy node.run_state['cluster_sensors_info']['flow-sensor']
     flow_nodes_with_proxy node.run_state['sensors_info_childs_proxy']['flow-sensor']
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
     redis_secrets redis_secrets
     s3_malware_secrets s3_malware_secrets
+    clamscan_enabled manager_services['clamav']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -956,7 +957,11 @@ rb_postfix_config 'Configure postfix' do
 end
 
 rb_clamav_config 'Configure ClamAV' do
-  action :add
+  if manager_services['clamav']
+    action :add
+  else
+    action :remove
+  end
 end
 
 rb_chrony_config 'Configure Chrony' do
