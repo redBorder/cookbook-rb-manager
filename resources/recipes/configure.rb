@@ -169,6 +169,7 @@ keepalived_config 'Configure keepalived' do
     iface_management node['redborder']['management_interface']
     ipaddress_sync node['ipaddress_sync']
     managers_per_service node['redborder']['managers_per_services']
+    unicast_config node.run_state['keepalived_unicast_config']
     action :add
   else
     action :remove

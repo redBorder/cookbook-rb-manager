@@ -133,6 +133,18 @@ else
   node.run_state['manager_services']['keepalived'] = node.run_state['has_any_virtual_ip'] and !File.exist?'/etc/lock/keepalived'
 end
 
+node.run_state['keepalived_unicast_config'] = if node.run_state['manager_services']['keepalived']
+                                                get_keepalived_unicast_config(
+                                                  node.run_state['virtual_ips_per_ip'],
+                                                  node['redborder']['cluster_info'],
+                                                  node['redborder']['managers_per_services'],
+                                                  node['ipaddress'],
+                                                  node['ipaddress_sync']
+                                                )
+                                              else
+                                                {}
+                                              end
+
 # get string with all zookeeper hosts and port separated by commas, its needed for multiples services
 node.default['redborder']['zookeeper']['zk_hosts'] = "zookeeper.service.#{node['redborder']['cdomain']}:#{node['redborder']['zookeeper']['port']}"
 
