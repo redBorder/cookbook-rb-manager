@@ -22,7 +22,7 @@ module RbManager
 
             runs_service = active_services.any? do |s|
               (!info['services'].nil? && info['services'].include?(s)) ||
-              (!managers_per_service.nil? && !managers_per_service[s].nil? && managers_per_service[s].include?(node_name))
+                (!managers_per_service.nil? && !managers_per_service[s].nil? && managers_per_service[s].include?(node_name))
             end
 
             if runs_service
