@@ -150,8 +150,11 @@ node.default['redborder']['http2k']['hosts'] = http2k_hosts
 hub_hosts = node['redborder']['managers_per_services']['redborder-hub'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
 node.default['redborder']['redborder-hub']['hosts'] = hub_hosts
 
-grr_hosts = node['redborder']['managers_per_services']['grr-adminui'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
-node.default['redborder']['grr-adminui']['hosts'] = grr_hosts
+grr_adminui_hosts = node['redborder']['managers_per_services']['grr-adminui'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
+node.default['redborder']['grr-adminui']['hosts'] = grr_adminui_hosts
+
+grr_fleetspeak_hosts = node['redborder']['managers_per_services']['grr-fleetspeak'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
+node.default['redborder']['grr-fleetspeak']['hosts'] = grr_fleetspeak_hosts
 
 rb_aioutliers_hosts = node['redborder']['managers_per_services']['rb-aioutliers'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
 node.default['redborder']['rb-aioutliers']['hosts'] = rb_aioutliers_hosts

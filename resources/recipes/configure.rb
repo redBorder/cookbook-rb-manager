@@ -439,7 +439,7 @@ end
 nginx_config 'Configure Nginx GRR' do
   cdomain node['redborder']['cdomain']
   service_name 'grr-adminui'
-  grr_hosts node['redborder']['grr-adminui']['hosts']
+  grr_adminui_hosts node['redborder']['grr-adminui']['hosts']
   grr_local_active manager_services['grr-adminui']
   if manager_services['nginx'] && node['redborder']['grr-adminui']['hosts'] && !node['redborder']['grr-adminui']['hosts'].empty?
     action [:configure_certs, :add_grr]
@@ -1117,6 +1117,8 @@ grr_config 'Configure GRR' do
     server_local_yaml                 node['redborder']['grr']['paths']['server_local_yaml']
     fleetspeak_dir                    node['redborder']['grr']['paths']['fleetspeak_dir']
     config_updater_bin                node['redborder']['grr']['paths']['config_updater_bin']
+    grr_adminui_hosts                 node['redborder']['grr-adminui']['hosts']
+    grr_fleetspeak_hosts              node['redborder']['grr-fleetspeak']['hosts']
     action [:add, :register]
   else
     action [:remove, :deregister]
