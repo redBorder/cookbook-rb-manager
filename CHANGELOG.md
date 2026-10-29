@@ -1,6 +1,13 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 8.2.1
+
+  - Juan Soto
+    - [fc1932e] Replace rescue modifier with begin/rescue and warn when rb_init_conf.yml can't be read
+  - manegron
+    - [6f16488] FIx getting ipaddress_sync by loading rb_init_conf.yml
+
 ## 8.2.0
 
   - Pablo Pérez
