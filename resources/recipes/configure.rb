@@ -1080,17 +1080,9 @@ rescue
   grr_secrets = {}
 end
 
-grr_certs_data = {}
-begin
-  grr_certs_data = data_bag_item('certs', 'grr_conf').to_hash
-rescue => e
-  grr_certs_data = {}
-end
-
 grr_config 'Configure GRR' do
   if manager_services['grr-fleetspeak'] && manager_services['grr-adminui'] && manager_services['grr-frontend'] && manager_services['grr-worker']
     grr_secrets                       grr_secrets
-    grr_certs                         grr_certs_data
     mysql_host                        node['redborder']['grr']['mysql']['host']
     mysql_port                        node['redborder']['grr']['mysql']['port']
     max_allowed_packet                node['redborder']['grr']['mysql']['max_allowed_packet']
