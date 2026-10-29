@@ -13,7 +13,11 @@ node.run_state['cluster_installed'] = File.exist?('/etc/redborder/cluster-instal
 # Set :ipaddress_sync: the address of this node in the sync network
 # (serf.sync_net of rb_init_conf.yml), or the main address if it is unknown
 ipaddress_sync = node['ipaddress']
-init_conf = YAML.safe_load(File.read('/etc/redborder/rb_init_conf.yml')) rescue nil
+begin
+  init_conf = YAML.safe_load(File.read('/etc/redborder/rb_init_conf.yml'))
+rescue StandardError => e
+  Chef::Log.warn("Cannot read /etc/redborder/rb_init_conf.yml, using #{ipaddress_sync} as ipaddress_sync: #{e.message}")
+end
 init_conf = {} unless init_conf.is_a?(Hash)
 sync_net = init_conf.dig('serf', 'sync_net').to_s.sub(%r{/.*}, '')
 
