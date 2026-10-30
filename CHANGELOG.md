@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 8.2.2
+
+  - José Jiménez
+    - [1f472c7] Add ips sensor condition to push trap pipeline
+
 ## 8.2.1
 
   - Juan Soto
