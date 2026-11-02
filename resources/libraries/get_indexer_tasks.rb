@@ -16,6 +16,7 @@ module RbManager
         { task_name: 'rb_wireless', feed: 'rb_wireless' },
         { task_name: 'rb_malware', feed: 'rb_malware_post' },
         { task_name: 'rb_host_discovery', feed: 'rb_host_discovery' },
+        { task_name: 'rb_topology_discovery', feed: 'rb_topology_discovery' },
       ]
 
       # This was an optimization: if there are no namespaces, monitor pipeline is not active in Logstash.
