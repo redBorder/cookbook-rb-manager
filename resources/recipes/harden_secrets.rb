@@ -107,3 +107,21 @@ execute 'sysctl-coredump' do
   command 'sysctl -p /etc/sysctl.d/50-redborder-coredump.conf'
   action :nothing
 end
+
+###############
+# Chef backups
+###############
+# Chef keeps a copy of every file it overwrites, so old configs with passwords; keep them in memory
+ruby_block 'Chef file backups in /run' do
+  block do
+    rb = ::File.read('/etc/chef/client.rb').gsub(/^file_backup_path.*\n/, '')
+    ::File.write('/etc/chef/client.rb', rb + %(file_backup_path "/run/chef-backup"\n))
+  end
+  only_if { ::File.exist?('/etc/chef/client.rb') }
+  not_if { ::File.read('/etc/chef/client.rb').include?('file_backup_path "/run/chef-backup"') }
+end
+
+execute 'Wipe Chef file backups on disk' do
+  command 'find /var/chef/backup -type f -exec shred -u {} + ; find /var/chef/backup -mindepth 1 -type d -empty -delete'
+  only_if 'find /var/chef/backup -type f 2>/dev/null | grep -q .'
+end
