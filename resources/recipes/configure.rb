@@ -430,6 +430,7 @@ nginx_config 'Configure Nginx Chef' do
     erchef_hosts node['redborder']['erchef']['hosts']
     cdomain node['redborder']['cdomain']
     service_name 'erchef'
+    openbao openbao_secrets
     action [:configure_certs, :add_erchef]
   else
     action :nothing
@@ -440,6 +441,7 @@ nginx_config 'Configure Nginx aioutliers' do
   if manager_services['nginx'] && node['redborder']['rb-aioutliers']['hosts'] && !node['redborder']['rb-aioutliers']['hosts'].empty?
     aioutliers_hosts node['redborder']['rb-aioutliers']['hosts']
     service_name 'rb-aioutliers'
+    openbao openbao_secrets
     action [:configure_certs, :add_aioutliers]
   elsif manager_services['nginx']
     action :remove_aioutliers
@@ -451,6 +453,7 @@ end
 nginx_config 'Configure Nginx redborder-hub' do
   cdomain node['redborder']['cdomain']
   service_name 'redborder-hub'
+  openbao openbao_secrets
   hub_hosts node['redborder']['redborder-hub']['hosts']
   hub_local_active manager_services['redborder-hub']
   if manager_services['nginx'] && node['redborder']['redborder-hub']['hosts'] && !node['redborder']['redborder-hub']['hosts'].empty?
@@ -518,6 +521,7 @@ end
 webui_config 'Configure Nginx WebUI' do
   if manager_services['nginx'] && node['redborder']['webui']['hosts'] && !node['redborder']['webui']['hosts'].empty?
     hosts node['redborder']['webui']['hosts']
+    openbao openbao_secrets
     cdomain node['redborder']['cdomain']
     port node['redborder']['webui']['port']
     action [:configure_certs, :add_webui_conf_nginx]
@@ -552,6 +556,7 @@ nginx_config 'Configure Nginx Http2k' do
     http2k_port node['redborder']['http2k']['port']
     cdomain node['redborder']['cdomain']
     service_name 'http2k'
+    openbao openbao_secrets
     action [:configure_certs, :add_http2k]
   elsif manager_services['nginx']
     action :remove_http2k
@@ -1074,6 +1079,7 @@ end
 nginx_config 'Configure Nginx S3 certs' do
   if manager_services['nginx'] && node['redborder']['s3']['s3_hosts'] && !node['redborder']['s3']['s3_hosts'].empty?
     service_name 's3'
+    openbao openbao_secrets
     cdomain node['redborder']['cdomain']
     action :configure_certs
   else
