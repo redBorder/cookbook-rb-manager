@@ -95,6 +95,14 @@ consul_config 'Configure Consul Server' do
   end
 end
 
+# rBglobal/openbao (not secret) says services read their passwords from OpenBao-agent files in /run.
+# If it can't be read, keep the data bag passwords: that is what an existing install still runs on.
+openbao_secrets = begin
+                    data_bag_item('rBglobal', 'openbao')['secrets'] == true
+                  rescue
+                    false
+                  end
+
 openbao_config 'Configure OpenBao' do
   if manager_services['openbao']
     ipaddress node['ipaddress_sync']
@@ -149,6 +157,7 @@ end
 
 postgresql_config 'Configure postgresql' do
   if manager_services['postgresql'] && external_services&.dig('postgresql') == 'onpremise'
+    openbao openbao_secrets
     cdomain node['redborder']['cdomain']
     ipaddress node['ipaddress_sync']
     action [:add, :register]
@@ -165,6 +174,7 @@ vrrp_secrets = {}
 if manager_services['keepalived']
   begin
     vrrp_secrets = data_bag_item('passwords', 'vrrp').to_hash
+    vrrp_secrets['pass'] = OpenBao.ref('vrrp', 'pass') if openbao_secrets
   rescue
     vrrp_secrets = {}
   end
@@ -172,6 +182,7 @@ end
 
 keepalived_config 'Configure keepalived' do
   if manager_services['keepalived']
+    openbao openbao_secrets
     vrrp_secrets vrrp_secrets
     virtual_ips virtual_ips
     virtual_ips_per_ip virtual_ips_per_ip
@@ -225,6 +236,7 @@ if manager_services['druid-coordinator'] || manager_services['druid-overlord'] |
   end
 
   druid_common 'Configure druid common resources' do
+    openbao openbao_secrets
     name node['hostname']
     zookeeper_hosts node['redborder']['zookeeper']['zk_hosts']
     memcached_hosts node['redborder']['memcached']['hosts']
@@ -483,6 +495,7 @@ end
 
 webui_config 'Configure WebUI' do
   if manager_services['webui']
+    openbao openbao_secrets
     hostname node['hostname']
     memcached_servers node['redborder']['managers_per_services']['memcached']
     memory_kb node['redborder']['memory_services']['webui']['memory']
@@ -575,14 +588,6 @@ pmacct_config 'Configure pmacct (sfacctd)' do
     action [:remove, :deregister]
   end
 end
-
-# rBglobal/openbao (not secret) says services read their passwords from OpenBao-agent files in /run.
-# If it can't be read, keep the data bag passwords: that is what an existing install still runs on.
-openbao_secrets = begin
-                    data_bag_item('rBglobal', 'openbao')['secrets'] == true
-                  rescue
-                    false
-                  end
 
 redis_secrets = {}
 
@@ -835,6 +840,7 @@ end
 
 rbnmsp_config 'Configure redborder-nmsp' do
   if manager_services['redborder-nmsp']
+    openbao openbao_secrets
     memory node['redborder']['memory_services']['redborder-nmsp']['memory']
     proxy_nodes node.run_state['sensors_info_all']['proxy-sensor']
     flow_nodes node.run_state['sensors_info_all']['flow-sensor']
