@@ -162,3 +162,11 @@ plain_secret_sources.each do |f|
     only_if { ::File.exist?(f) }
   end
 end
+
+# The postfix package generates a TLS key at install, but our main.cf does not use TLS (localhost only):
+# an unused private key on disk. Removed as long as main.cf does not reference it.
+execute 'Remove unused postfix TLS key' do
+  command 'shred -u /etc/pki/tls/private/postfix.key'
+  only_if { ::File.exist?('/etc/pki/tls/private/postfix.key') }
+  not_if 'grep -qE "^\s*smtpd_tls_key_file" /etc/postfix/main.cf'
+end
