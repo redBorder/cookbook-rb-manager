@@ -102,6 +102,7 @@ openbao_config 'Configure OpenBao' do
     dev node['openbao']['dev']
     dev_static_key node['openbao']['dev_static_key']
     credentials node['openbao']['credentials']
+    bootstrap ::File.exist?('/var/lock/leader-configuring.lock')
     action :add
   else
     action :remove
@@ -575,18 +576,29 @@ pmacct_config 'Configure pmacct (sfacctd)' do
   end
 end
 
+# rBglobal/openbao (not secret) says services read their passwords from OpenBao-agent files in /run.
+# If it can't be read, keep the data bag passwords: that is what an existing install still runs on.
+openbao_secrets = begin
+                    data_bag_item('rBglobal', 'openbao')['secrets'] == true
+                  rescue
+                    false
+                  end
+
 redis_secrets = {}
 
-begin
-  redis_secrets = data_bag_item('passwords', 'redis').to_hash
-rescue
-  redis_secrets = {}
+unless openbao_secrets
+  begin
+    redis_secrets = data_bag_item('passwords', 'redis').to_hash
+  rescue
+    redis_secrets = {}
+  end
 end
 
 redis_config 'Configure redis' do
   if manager_services['redis']
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_secrets redis_secrets
+    openbao openbao_secrets
     cdomain node['redborder']['cdomain']
     action [:add, :register]
   else
@@ -597,6 +609,7 @@ end
 rb_alarm_engine_config 'Configure redBorder alarm engine' do
   if manager_services['redborder-alarm-engine']
     redis_password redis_secrets['pass'] unless redis_secrets.empty?
+    openbao openbao_secrets
   else
     action :remove
   end
@@ -615,6 +628,7 @@ rb_license_config 'Configure redBorder License' do
     cluster_uuid cluster_uuid_db['uuid'] unless cluster_uuid_db.empty?
     node_id node['hostname']
     redis_password redis_secrets['pass'] unless redis_secrets.empty?
+    openbao openbao_secrets
   else
     action :remove
   end
@@ -657,6 +671,7 @@ if manager_services.values_at(*airflow_managed_services).compact.any?
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
     redis_secrets redis_secrets
+    openbao openbao_secrets
     logstash_hosts node['redborder']['managers_per_services']['logstash']
     airflow_webserver_hosts node['redborder']['managers_per_services']['airflow-webserver']
     cpu_cores node['cpu']['total'].to_i
@@ -795,6 +810,7 @@ logstash_config 'Configure logstash' do
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
     redis_secrets redis_secrets
+    openbao openbao_secrets
     s3_malware_secrets s3_malware_secrets
     clamscan_enabled manager_services['clamav']
     action [:add, :register]
@@ -919,6 +935,7 @@ mem2incident_config 'Configure redborder-mem2incident' do
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
     redis_secrets redis_secrets
+    openbao openbao_secrets
     auth_token node.run_state['auth_token']
     action [:add, :register]
   else
