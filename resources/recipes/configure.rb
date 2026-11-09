@@ -95,6 +95,19 @@ consul_config 'Configure Consul Server' do
   end
 end
 
+openbao_config 'Configure OpenBao' do
+  if manager_services['openbao']
+    ipaddress node['ipaddress_sync']
+    is_server true
+    dev node['openbao']['dev']
+    dev_static_key node['openbao']['dev_static_key']
+    credentials node['openbao']['credentials']
+    action :add
+  else
+    action :remove
+  end
+end
+
 s3_secrets = {}
 
 begin
