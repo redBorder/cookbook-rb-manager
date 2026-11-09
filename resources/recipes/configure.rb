@@ -1166,7 +1166,21 @@ rescue
   rsa_pem = {}
 end
 
-unless rsa_pem.empty?
+if openbao_secrets
+  # Key for SSH to other nodes (rb_latency, backups, ...): only in memory, rendered by the agent
+  openbao_secret_file 'root-rsa' do
+    source 'rsa.ctmpl.erb'
+    cookbook 'rb-manager'
+    destination '/run/rb-secrets/root/rsa'
+    owner 'root'
+    group 'root'
+    mode '0600'
+  end
+
+  link '/root/.ssh/rsa' do
+    to '/run/rb-secrets/root/rsa'
+  end
+elsif !rsa_pem.empty?
   template '/root/.ssh/rsa' do
     source 'rsa_cert.pem.erb'
     owner 'root'
