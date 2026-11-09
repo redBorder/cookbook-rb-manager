@@ -151,3 +151,14 @@ execute 'Wipe chef-server-ctl file backups on disk' do
   command 'find /var/opt/opscode/local-mode-cache/backup -type f -exec shred -u {} + ; find /var/opt/opscode/local-mode-cache/backup -mindepth 1 -type d -empty -delete'
   only_if 'find /var/opt/opscode/local-mode-cache/backup -type f 2>/dev/null | grep -q .'
 end
+
+# Plain data bag source files with private keys / S3 keys: once uploaded, the Chef server holds them,
+# the copy on disk is only a leftover (certs are generated during Chef runs, after the installer's cleanup)
+plain_secret_sources = Dir.glob('/var/chef/data/data_bag/certs/*.json') +
+                       %w(/var/chef/data/data_bag/passwords/s3.json /var/chef/data/data_bag/rBglobal/malware-bucket.json)
+plain_secret_sources.each do |f|
+  execute "Remove uploaded data bag source #{::File.basename(f)}" do
+    command "shred -u '#{f}'"
+    only_if { ::File.exist?(f) }
+  end
+end
