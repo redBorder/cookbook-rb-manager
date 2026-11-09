@@ -111,14 +111,20 @@ end
 ###############
 # Chef backups
 ###############
-# Chef keeps a copy of every file it overwrites, so old configs with passwords; keep them in memory
-ruby_block 'Chef file backups in /run' do
+# Chef keeps a copy of every file it overwrites (old configs with passwords): keep them in memory.
+# Chef also prints a diff of every changed file, secrets included, into logs and the journal: off.
+chef_client_settings = { 'file_backup_path' => '"/run/chef-backup"', 'diff_disabled' => 'true' }
+ruby_block 'Chef: backups in /run, no diffs in logs' do
   block do
-    rb = ::File.read('/etc/chef/client.rb').gsub(/^file_backup_path.*\n/, '')
-    ::File.write('/etc/chef/client.rb', rb + %(file_backup_path "/run/chef-backup"\n))
+    rb = ::File.read('/etc/chef/client.rb')
+    chef_client_settings.each_key { |k| rb = rb.gsub(/^#{k}\s.*\n/, '') }
+    ::File.write('/etc/chef/client.rb', rb + chef_client_settings.map { |k, v| "#{k} #{v}\n" }.join)
   end
   only_if { ::File.exist?('/etc/chef/client.rb') }
-  not_if { ::File.read('/etc/chef/client.rb').include?('file_backup_path "/run/chef-backup"') }
+  not_if do
+    rb = ::File.read('/etc/chef/client.rb')
+    chef_client_settings.all? { |k, v| rb.include?("#{k} #{v}\n") }
+  end
 end
 
 execute 'Wipe Chef file backups on disk' do
