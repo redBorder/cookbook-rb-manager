@@ -131,3 +131,23 @@ execute 'Wipe Chef file backups on disk' do
   command 'find /var/chef/backup -type f -exec shred -u {} + ; find /var/chef/backup -mindepth 1 -type d -empty -delete'
   only_if 'find /var/chef/backup -type f 2>/dev/null | grep -q .'
 end
+
+# chef-server-ctl reconfigure runs its own Chef (solo.rb from the chef-server package, restored on upgrade)
+chef_server_solo = '/opt/opscode/embedded/cookbooks/solo.rb'
+ruby_block 'chef-server-ctl: backups in /run, no diffs in logs' do
+  block do
+    rb = ::File.read(chef_server_solo)
+    chef_client_settings.each_key { |k| rb = rb.gsub(/^#{k}\s.*\n/, '') }
+    ::File.write(chef_server_solo, rb + chef_client_settings.map { |k, v| "#{k} #{v}\n" }.join)
+  end
+  only_if { ::File.exist?(chef_server_solo) }
+  not_if do
+    rb = ::File.read(chef_server_solo)
+    chef_client_settings.all? { |k, v| rb.include?("#{k} #{v}\n") }
+  end
+end
+
+execute 'Wipe chef-server-ctl file backups on disk' do
+  command 'find /var/opt/opscode/local-mode-cache/backup -type f -exec shred -u {} + ; find /var/opt/opscode/local-mode-cache/backup -mindepth 1 -type d -empty -delete'
+  only_if 'find /var/opt/opscode/local-mode-cache/backup -type f 2>/dev/null | grep -q .'
+end
