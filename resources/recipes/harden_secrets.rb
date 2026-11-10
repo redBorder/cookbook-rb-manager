@@ -170,3 +170,19 @@ execute 'Remove unused postfix TLS key' do
   only_if { ::File.exist?('/etc/pki/tls/private/postfix.key') }
   not_if 'grep -qE "^\s*smtpd_tls_key_file" /etc/postfix/main.cf'
 end
+
+################################
+# Chef keys: no longer world-readable
+################################
+# admin/validator are copies of the Chef server's own keys (the originals stay in /etc/opscode): root only.
+# client.pem and the data bag key are read by the webui (user webui) too. Symlinks (OpenBao mode) are left alone.
+{ '/etc/chef/admin.pem' => %w(root 0600), '/etc/chef/redborder-validator.pem' => %w(root 0600),
+  '/etc/opscode/admin.pem' => %w(root 0600), '/etc/opscode/redborder-validator.pem' => %w(root 0600),
+  '/etc/chef/client.pem' => %w(webui 0640), '/etc/chef/encrypted_data_bag_secret' => %w(webui 0640) }.each do |f, (grp, mode)|
+  file f do
+    owner 'root'
+    group grp
+    mode mode
+    only_if { ::File.file?(f) && !::File.symlink?(f) }
+  end
+end

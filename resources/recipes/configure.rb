@@ -117,6 +117,40 @@ openbao_config 'Configure OpenBao' do
   end
 end
 
+if openbao_secrets
+  # Chef's own keys, only in memory (/etc/chef/* are symlinks). The node key is created by the Chef
+  # registration, straight into /run: hand it to OpenBao (create-only, once) so the agent can write it
+  # back after a reboot. The data bag key was seeded by the installer. The webui reads both (user webui).
+  chef_client_key = '/run/rb-secrets/chef-client/client.pem'
+  chef_client_secret = "cert_chef_client_#{node['hostname']}"
+  ruby_block 'Hand the Chef node key to OpenBao' do
+    block do
+      OpenBao.seed_cert_key(chef_client_secret.delete_prefix('cert_'), ::File.read(chef_client_key), chef_client_key, 'webui')
+      # import-seeds wipes the seed once OpenBao has it; otherwise (not set up yet) the next run retries
+      node.normal['openbao']['chef_client_key_imported'] = true unless ::File.exist?("#{OpenBao::SEED_DIR}/#{chef_client_secret}.json")
+    end
+    only_if { ::File.file?(chef_client_key) && !node['openbao']['chef_client_key_imported'] }
+  end
+
+  { 'chef-client-key' => [chef_client_key, chef_client_secret, '/etc/chef/client.pem'],
+    'chef-data-bag-secret' => ['/run/rb-secrets/chef-databag/encrypted_data_bag_secret', 'cert_data_bag_secret',
+                               '/etc/chef/encrypted_data_bag_secret'] }.each do |name, (dest, secret, etc_path)|
+    openbao_secret_file name do
+      source 'key.ctmpl.erb'
+      cookbook 'openbao'
+      variables(name: secret)
+      destination dest
+      owner 'root'
+      group 'webui'
+      mode '0640'
+    end
+
+    link etc_path do
+      to dest
+    end
+  end
+end
+
 # Determine external
 begin
   external_services = data_bag_item('rBglobal', 'external_services')
