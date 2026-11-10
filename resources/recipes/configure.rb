@@ -117,6 +117,14 @@ openbao_config 'Configure OpenBao' do
   end
 end
 
+# Determine external
+begin
+  external_services = data_bag_item('rBglobal', 'external_services')
+rescue => e
+  Chef::Log.warn("Failed to load external_services data bag: #{e.message}")
+  external_services = nil
+end
+
 s3_secrets = {}
 
 begin
@@ -133,6 +141,20 @@ rescue
   s3_malware_secrets = {}
 end
 
+# On-prem S3 (MinIO): the keys live in OpenBao, not in the data bag. Consumers get placeholders (their
+# configs are agent templates); the Chef server config gets the real values from the root-only file in /run
+# (Chef server internals are M5). External S3 set in the webui stays in the data bag (W2).
+s3_secrets_real = s3_secrets
+if openbao_secrets && external_services&.dig('s3') == 'onpremise'
+  real = OpenBao.run_secret('s3') || {}
+  s3_secrets_real = s3_secrets.merge(real) # nil keys while OpenBao is sealed: see chef_server_config below
+  s3_secrets = s3_secrets.merge('s3_access_key_id' => OpenBao.ref('s3', 's3_access_key_id'),
+                                's3_secret_key_id' => OpenBao.ref('s3', 's3_secret_key_id'))
+  s3_malware_secrets = s3_malware_secrets.merge(
+    's3_malware_access_key_id' => OpenBao.ref('s3_malware', 's3_malware_access_key_id'),
+    's3_malware_secret_key_id' => OpenBao.ref('s3_malware', 's3_malware_secret_key_id'))
+end
+
 chef_server_config 'Configure chef services' do
   if manager_services['chef-server']
     memory node['redborder']['memory_services']['chef-server']['memory']
@@ -140,20 +162,14 @@ chef_server_config 'Configure chef services' do
     postgresql_memory node['redborder']['memory_services']['postgresql']['memory']
     chef_active manager_services['chef-server']
     ipaddress node['ipaddress_sync']
-    s3_secrets s3_secrets
+    # without the real keys (OpenBao sealed) the S3 part of the Chef server config is left as it is
+    s3_secrets(s3_secrets_real['s3_secret_key_id'] ? s3_secrets_real : {})
     action [:add, :register]
   else
     action [:remove, :deregister]
   end
 end
 
-# Determine external
-begin
-  external_services = data_bag_item('rBglobal', 'external_services')
-rescue => e
-  Chef::Log.warn("Failed to load external_services data bag: #{e.message}")
-  external_services = nil
-end
 
 postgresql_config 'Configure postgresql' do
   if manager_services['postgresql'] && external_services&.dig('postgresql') == 'onpremise'
@@ -296,6 +312,7 @@ druid_broker 'Configure Druid Broker' do
 end
 
 druid_middlemanager 'Configure Druid MiddleManager' do
+  openbao openbao_secrets
   if manager_services['druid-middlemanager']
     name node['hostname']
     cdomain node['redborder']['cdomain']
@@ -333,6 +350,7 @@ rb_druid_indexer_config 'Configure Rb Druid Indexer' do
 end
 
 druid_indexer 'Configure Druid Indexer' do
+  openbao openbao_secrets
   if manager_services['druid-indexer']
     name node['hostname']
     cdomain node['redborder']['cdomain']
@@ -484,6 +502,7 @@ rescue
 end
 
 drill_config 'Configure drill' do
+  openbao openbao_secrets
   s3_malware_secrets s3_malware_secrets
   s3_host s3_secrets['s3_host']
   cdomain node['redborder']['cdomain']
@@ -911,6 +930,7 @@ end
 # end
 
 rbaioutliers_config 'Configure rb-aioutliers' do
+  openbao openbao_secrets
   if manager_services['rb-aioutliers']
     s3_secrets s3_secrets
     action [:add, :register]
@@ -1010,6 +1030,7 @@ template '/root/.s3cfg_initial' do
     cdomain: node['redborder']['cdomain']
   )
   action :create
+  not_if { openbao_secrets && external_services&.dig('s3') == 'onpremise' } # cookbook-minio renders it from OpenBao
   only_if do
     s3_secrets['s3_access_key_id'] && !s3_secrets['s3_access_key_id'].empty? &&
       s3_secrets['s3_secret_key_id'] && !s3_secrets['s3_secret_key_id'].empty? &&
@@ -1020,6 +1041,7 @@ end
 
 # Allow only s3 onpremise nodes for now..
 minio_config 'Configure S3 (minio)' do
+  openbao openbao_secrets
   managers_with_minio node['redborder']['managers_per_services']['s3']
   access_key_id s3_secrets['s3_access_key_id']
   secret_key_id s3_secrets['s3_secret_key_id']
@@ -1054,6 +1076,7 @@ end
 
 # Configure secor service for backup kafka data in case of data lose and for view raw vault data
 secor_config 'Configure Secor Service' do
+  openbao openbao_secrets
   if manager_services['secor'] || manager_services['secor-vault']
     kafka_hosts node['redborder']['managers_per_services']['kafka']
     zk_hosts node['redborder']['zookeeper']['zk_hosts']
