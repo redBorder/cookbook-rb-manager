@@ -10,15 +10,22 @@ node['redborder']['services_group'][node['redborder']['mode']].each { |s| node.d
 
 node.run_state['cluster_installed'] = File.exist?('/etc/redborder/cluster-installed.txt')
 
-# Set :ipaddress_sync
+# Set :ipaddress_sync: the address of this node in the sync network
+# (serf.sync_net of rb_init_conf.yml), or the main address if it is unknown
 ipaddress_sync = node['ipaddress']
-sync_net = `cat /etc/redborder/rb_init_conf.yml  | grep sync_net | awk '{print $2'} | sed 's|/.*||'`.strip
+begin
+  init_conf = YAML.safe_load(File.read('/etc/redborder/rb_init_conf.yml'))
+rescue StandardError => e
+  Chef::Log.warn("Cannot read /etc/redborder/rb_init_conf.yml, using #{ipaddress_sync} as ipaddress_sync: #{e.message}")
+end
+init_conf = {} unless init_conf.is_a?(Hash)
+sync_net = init_conf.dig('serf', 'sync_net').to_s.sub(%r{/.*}, '')
 
-node['network']['interfaces'].each do |interface, _details|
-  next unless "x#{interface}" != 'xlo'
-
-  # ipaddress_sync = `ip route get #{sync_net} | head -n 1 | awk '{for (i=1; i<=NF; i++) if ($i == 'src') print $(i+1)}'`.strip
-  ipaddress_sync = `ip route get #{sync_net} | head -n 1 | awk '/src/ {print $5}'`.strip
+unless sync_net.empty?
+  # "<net> [via <gw>] dev <iface> src <ip> uid 0": the address follows "src"
+  route = `ip route get #{sync_net} 2>/dev/null`.lines.first.to_s.split
+  src = route.index('src')
+  ipaddress_sync = route[src + 1] if src && route[src + 1]
 end
 
 node.default[:ipaddress_sync] = ipaddress_sync
@@ -85,8 +92,8 @@ if !elasticache.empty? && !elasticache['cfg_address'].nil? && !elasticache['cfg_
   node.default['redborder']['memcached']['elasticache'] = true
 else
   memcached_hosts = []
-  managers_per_service['memcached'].uniq.each do |m|
-    memcached_hosts << "#{m}.node:#{node['redborder']['memcached']['port']}"
+  node['redborder']['cluster_info'].select { |m| node['redborder']['managers_per_services']['memcached'].include? m }.map { |_, v| v['ipaddress_sync'] }.uniq.each do |ip|
+    memcached_hosts << "#{ip}:#{node['redborder']['memcached']['port']}"
   end
   node.default['redborder']['memcached']['hosts'] = memcached_hosts
 end
@@ -95,7 +102,6 @@ end
 node.run_state['sensors_info'] = get_sensors_info
 
 node.run_state['sensors_info_childs_proxy'] = get_child_flow_sensors_info
-node.run_state['sensors_info_cluster'] = get_cluster_sensors_info
 
 # get sensors info full info of all sensors
 node.run_state['sensors_info_all'] = get_sensors_all_info

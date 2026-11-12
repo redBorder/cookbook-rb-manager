@@ -353,6 +353,7 @@ snmp_config 'Configure snmp' do
   if manager_services['snmp']
     hostname node['hostname']
     cdomain node['redborder']['cdomain']
+    trap_sensors node.run_state['sensors_info_all']['trap-sensor']
     action :add
   else
     action :remove
@@ -764,6 +765,7 @@ logstash_config 'Configure logstash' do
     device_nodes node.run_state['sensors_info_all']['device-sensor']
     snmp_nodes node.run_state['sensors_info_all']['snmp-sensor']
     redfish_nodes node.run_state['sensors_info_all']['redfish-sensor']
+    trap_nodes node.run_state['sensors_info_all']['trap-sensor']
     ips_nodes node.run_state['ips_sensors_info']
     mobility_nodes node.run_state['mobility_sensors_info']
     monitor_nodes node.run_state['monitors_sensors_info']
@@ -775,12 +777,13 @@ logstash_config 'Configure logstash' do
     logstash_pipelines node.run_state['pipelines']
     split_traffic_logstash split_traffic
     split_intrusion_logstash split_intrusion
-    flow_nodes_without_proxy node.run_state['sensors_info_cluster']['flow-sensor']
+    flow_nodes_without_proxy node.run_state['cluster_sensors_info']['flow-sensor']
     flow_nodes_with_proxy node.run_state['sensors_info_childs_proxy']['flow-sensor']
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
     redis_secrets redis_secrets
     s3_malware_secrets s3_malware_secrets
+    clamscan_enabled manager_services['clamav']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -940,7 +943,11 @@ rb_postfix_config 'Configure postfix' do
 end
 
 rb_clamav_config 'Configure ClamAV' do
-  action :add
+  if manager_services['clamav']
+    action :add
+  else
+    action :remove
+  end
 end
 
 rb_chrony_config 'Configure Chrony' do
@@ -986,6 +993,22 @@ minio_config 'Configure S3 (minio)' do
     Chef::Log.warn('Skipped MinIO removal/deregistration due to missing external_services data')
     action :nothing
   end
+end
+
+# Config-backup transfer target for redborder-webui's BackupPolicy
+# (transfer_method: 'ftp') -- a network device pushes its config here.
+# The FTP firewall ports are gated on manager_services['ftp'] inside
+# cookbook-rb-firewall's own provider (it already receives manager_services
+# via rb_firewall_config above), not here.
+vsftpd_config 'Configure FTP backup transfer' do
+  action(manager_services['ftp'] ? :add_ftp : :remove_ftp)
+end
+
+# Must run after vsftpd_config above, which is what actually creates
+# ftp_upload_dir/incoming -- rb_selinux_config's restorecon needs that path
+# to already exist.
+rb_selinux_config 'Configure FTP SELinux labeling' do
+  action(manager_services['ftp'] ? :add_ftp : :remove_ftp)
 end
 
 # Configure secor service for backup kafka data in case of data lose and for view raw vault data

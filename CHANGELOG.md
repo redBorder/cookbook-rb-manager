@@ -1,6 +1,93 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 8.2.2
+
+  - José Jiménez
+    - [1f472c7] Add ips sensor condition to push trap pipeline
+
+## 8.2.1
+
+  - Juan Soto
+    - [fc1932e] Replace rescue modifier with begin/rescue and warn when rb_init_conf.yml can't be read
+  - manegron
+    - [6f16488] FIx getting ipaddress_sync by loading rb_init_conf.yml
+
+## 8.2.0
+
+  - Pablo Pérez
+    - [71d6837] add serf as service
+
+## 8.1.0
+
+  - Miguel Negrón
+    - [e7c1254] Merge pull request #458 from redBorder/improvement/#26867_reduce_chef_server_queries
+  - manegron
+    - [e7c1254] Merge pull request #458 from redBorder/improvement/#26867_reduce_chef_server_queries
+    - [eb9db69] Reduce chef server queries
+
+## 8.0.4
+
+  - Miguel Negrón
+    - [0b16c50] Merge pull request #457 from redBorder/improvement/#26794_disable_clamd_by_defaul
+  - manegron
+    - [0b16c50] Merge pull request #457 from redBorder/improvement/#26794_disable_clamd_by_defaul
+    - [bd6e258] Disable clamav by default
+
+## 8.0.3
+
+  - manegron
+    - [c413c91] Upload cookbook only if opscode-erchef is active
+
+## 8.0.2
+
+  - manegron
+    - [31b19ca] Remove duplicated call to get_cluster_sensors_info
+
+## 8.0.1
+
+
+  - manegron
+    - [066be2c] Build memcached_hosts with IP instead of host.node
+
+## 8.0.0
+
+  - Miguel Negrón
+    - [ebe72e0] Merge pull request #446 from redBorder/feature/#26031_implement_snapshot_configuration_rollback
+  - manegron
+    - [ebe72e0] Merge pull request #446 from redBorder/feature/#26031_implement_snapshot_configuration_rollback
+    - [caf130e] add ftp to full mode
+    - [9614a09] Update with development
+  - Juan Soto
+    - [78ed913] Merge remote-tracking branch 'origin/master' into feature/#26031_implement_snapshot_configuration_rollback
+    - [8431d63] Drop the now-unused passwords/ftp data-bag read
+    - [930d5b5] Add ftp -> vsftpd to systemdservices, used by rbcli's service commands
+    - [917cb85] Call rb_selinux_config's FTP labeling after vsftpd_config creates the directory
+    - [fec0c24] Pass ftp_enabled to rb_selinux_config for vsftpd SELinux labeling
+    - [06a337b] Merge remote updates (development sync) into feature branch
+    - [4f52a4e] Update rb_backup_transfer_config call site for the cookbook-vsftpd rename
+    - [7ecc57b] Drop manual FTP firewall port gating, now handled in cookbook-rb-firewall
+    - [5d44a96] Fix cookstyle Layout/MultilineOperationIndentation offense
+    - [ebd1f9f] Revert "Add Veeam Backups sensor to monitor collection"
+    - [3358b8a] Revert "Add rb_veeam_backup_jobs to the Druid indexer task list"
+    - [7691176] Revert "Build source tarball via tar instead of git archive"
+    - [3dadc09] Merge development into feature/#26031_implement_snapshot_configuration_rollback
+    - [e7943da] Remove TFTP backup-transfer wiring, FTP only
+    - [ea5efe7] Only open FTP/TFTP firewall ports while the service is enabled
+    - [944d4a5] Pass ftp_accounts map instead of a single ftp_password
+    - [b36bdad] Honor redborder.manager.services.overwrite in manager_services()
+    - [aa1a4d0] Build source tarball via tar instead of git archive
+    - [bb6745f] Wire in cookbook-rb-backup-transfer for FTP/TFTP config backup
+    - [9ade3a6] Merge branch 'development' of github.com:redBorder/cookbook-rb-manager into feature/#26031_implement_snapshot_configuration_rollback
+    - [03da09d] Add rb_veeam_backup_jobs to the Druid indexer task list
+    - [8fc1bce] Merge branch 'master' of github.com:redBorder/cookbook-rb-manager into feature/#veeam_integration
+    - [e38e5f7] Add Veeam Backups sensor to monitor collection
+
+## 7.0.0
+
+  - José Jiménez
+    - [d54ed0f] add trap task
+
 ## 6.0.1
 
   - Nils
