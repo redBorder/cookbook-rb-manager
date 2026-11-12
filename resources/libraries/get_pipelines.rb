@@ -20,7 +20,6 @@ module RbManager
       logstash_pipelines.push('nmsp-pipeline') if main_logstash == node.name && !sensors['flow-sensor'].empty?
       logstash_pipelines.push('radius-pipeline') if main_logstash == node.name
       logstash_pipelines.push('netflow-pipeline') unless sensors['flow-sensor'].empty? && flow_sensor_in_proxy_nodes.empty?
-      logstash_pipelines.push('sflow-pipeline') unless sensors['flow-sensor'].empty? && flow_sensor_in_proxy_nodes.empty?
       logstash_pipelines.push('meraki-pipeline') unless sensors['meraki-sensor'].empty?
       logstash_pipelines.push('monitor-pipeline')
       logstash_pipelines.push('intrusion-pipeline') if has_ips_sensors

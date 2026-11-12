@@ -322,10 +322,11 @@ default['redborder']['systemdservices']['grr-frontend']             = ['grr-fron
 default['redborder']['systemdservices']['grr-worker']               = ['grr-worker']
 
 # Balanced services
+# health_port: HTTP port serving /health, used by keepalived to check udp services
 default['redborder']['manager']['balanced'] = [
   { port: 443, protocol: 'tcp', name: 'redborder nginx', service: 'nginx', redirected_service: 'nginx', persistence_timeout: 9600 },
-  { port: 2055, protocol: 'udp', name: 'netflow,ipfix/sflow daemon', service: 'f2k', redirected_service: 'f2k', persistence_timeout: 30 },
-  { port: 6343, protocol: 'udp', name: 'sflow daemon', service: 'sfacctd', redirected_service: 'sfacctd', persistence_timeout: 30 },
+  { port: 2055, protocol: 'udp', name: 'netflow,ipfix/sflow daemon', service: 'f2k', redirected_service: 'f2k', persistence_timeout: 30, health_port: 7983 },
+  { port: 6343, protocol: 'udp', name: 'sflow daemon', service: 'sfacctd', redirected_service: 'sfacctd', persistence_timeout: 30, health_port: 7984 },
   { port: 9092, protocol: 'tcp', name: 'kafka', service: 'kafka', redirected_service: 'kafka', persistence_timeout: 30 },
 ]
 
