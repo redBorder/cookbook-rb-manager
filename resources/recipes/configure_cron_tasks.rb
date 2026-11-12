@@ -8,7 +8,7 @@ manager_services = manager_services()
 
 # Druid
 cron_d 'clean_segments_daily' do
-  if (manager_services['druid-coordinator'] || manager_services['druid-historical']) && node.run_state['cluster_installed']
+  if manager_services.values_at('druid-coordinator', 'druid-historical', 'minio').any? && node.run_state['cluster_installed']
     action :create
   else
     action :delete
