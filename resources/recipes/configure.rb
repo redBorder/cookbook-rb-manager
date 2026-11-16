@@ -111,9 +111,9 @@ openbao_config 'Configure OpenBao' do
     dev_static_key node['openbao']['dev_static_key']
     credentials node['openbao']['credentials']
     bootstrap ::File.exist?('/var/lock/leader-configuring.lock')
-    action :add
+    action [:add, :register]
   else
-    action :remove
+    action [:remove, :deregister]
   end
 end
 
