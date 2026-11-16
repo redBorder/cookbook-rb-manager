@@ -110,6 +110,8 @@ openbao_config 'Configure OpenBao' do
     dev node['openbao']['dev']
     dev_static_key node['openbao']['dev_static_key']
     credentials node['openbao']['credentials']
+    # every manager runs OpenBao (all service groups): a new manager joins the raft cluster of the others
+    peers node['redborder']['cluster_info'].reject { |name, _| name == node.name }.map { |_, m| m['ipaddress_sync'] }.compact
     bootstrap ::File.exist?('/var/lock/leader-configuring.lock')
     action [:add, :register]
   else
