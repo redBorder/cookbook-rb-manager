@@ -75,8 +75,11 @@ module RbManager
                   hash['iface'] = node['redborder']['sync_interface']
                 end
                 run_anywhere_flag = false
-                run_anywhere_flag = m['redborder']['manager']['services']['overwrite'][service['service']] unless m['redborder']['manager']['services']['overwrite'].nil?
-                run_anywhere_flag = m['redborder']['manager']['services'][m['redborder']['manager']['mode']][service['service']] if run_anywhere_flag != true && !m['redborder']['manager']['services'][m['redborder']['manager']['mode']].nil?
+                # a manager whose first Chef run failed has no services saved yet
+                m_services = m.dig('redborder', 'manager', 'services')
+                next if m_services.nil?
+                run_anywhere_flag = m_services['overwrite'][service['service']] unless m_services['overwrite'].nil?
+                run_anywhere_flag = m_services[m['redborder']['manager']['mode']][service['service']] if run_anywhere_flag != true && !m_services[m['redborder']['manager']['mode']].nil?
                 if run_anywhere_flag && !m['redborder']['manager'][hash['iface']].nil?
                   nodeservice = m
                   break
