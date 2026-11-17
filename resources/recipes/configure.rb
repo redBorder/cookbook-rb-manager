@@ -735,16 +735,6 @@ execute 'enable_crb_repo' do
 end
 
 # Configure logstash
-split_traffic = false
-
-if manager_services['logstash']
-  begin
-    split_traffic = data_bag_item('rBglobal', 'splittraffic')['logstash']
-  rescue
-    split_traffic = false
-  end
-end
-
 if manager_services['logstash']
   begin
     split_intrusion = data_bag_item('rBglobal', 'splitintrusion')['logstash']
@@ -775,7 +765,6 @@ logstash_config 'Configure logstash' do
     malware_incidents_priority node['redborder']['manager']['malware']['incidents_priority']
     reputation_managers node['redborder']['managers_per_services']['rb-reputation']
     logstash_pipelines node.run_state['pipelines']
-    split_traffic_logstash split_traffic
     split_intrusion_logstash split_intrusion
     flow_nodes_without_proxy node.run_state['cluster_sensors_info']['flow-sensor']
     flow_nodes_with_proxy node.run_state['sensors_info_childs_proxy']['flow-sensor']
