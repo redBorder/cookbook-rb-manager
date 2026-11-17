@@ -1,6 +1,14 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 8.3.0
+
+  - nilsver
+    - [54843cc] remove require
+    - [7140611] Remove logstash split traffic setting
+    - [4609911] Require cookbook-rb-flow-agent
+    - [df81360] Depend on rb-flow-agent cookbook
+
 ## 8.2.2
 
   - José Jiménez
