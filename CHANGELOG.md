@@ -1,6 +1,11 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 8.3.1
+
+  - Vimesa
+    - [de2c326] Feature/#26699 config grr ssl (#465)
+
 ## 8.3.0
 
   - nilsver
