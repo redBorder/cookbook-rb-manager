@@ -157,6 +157,14 @@ if openbao_secrets && external_services&.dig('s3') == 'onpremise'
     's3_malware_secret_key_id' => OpenBao.ref('s3_malware', 's3_malware_secret_key_id'))
 end
 
+# IPS sensors read the malware keys from the chef-vault item malware_vault/keys, encrypted per sensor client:
+# add sensors registered since the last run. One manager does it (the one running the Chef server).
+execute 'Encrypt the malware vault for new IPS sensors' do
+  command '/usr/lib/redborder/bin/rb_malware_vault.sh refresh'
+  only_if { manager_services['chef-server'] && File.exist?('/usr/lib/redborder/bin/rb_malware_vault.sh') }
+  ignore_failure true
+end
+
 chef_server_config 'Configure chef services' do
   if manager_services['chef-server']
     memory node['redborder']['memory_services']['chef-server']['memory']
