@@ -174,6 +174,7 @@ chef_server_config 'Configure chef services' do
     ipaddress node['ipaddress_sync']
     # without the real keys (OpenBao sealed) the S3 part of the Chef server config is left as it is
     s3_secrets(s3_secrets_real['s3_secret_key_id'] ? s3_secrets_real : {})
+    openbao openbao_secrets
     action [:add, :register]
   else
     action [:remove, :deregister]
