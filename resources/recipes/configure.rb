@@ -1066,8 +1066,16 @@ rb_chrony_config 'Configure Chrony' do
   end
 end
 
-template '/root/.s3cfg_initial' do
+# OpenBao mode, external S3: Chef knows the keys (W2), so it renders straight into tmpfs and links the file back
+s3cfg_initial = openbao_secrets ? '/run/rb-secrets/root/s3cfg_initial' : '/root/.s3cfg_initial'
+directory '/run/rb-secrets/root' do
+  mode '0750'
+  only_if { openbao_secrets }
+end
+
+template s3cfg_initial do
   source 's3cfg_initial.erb'
+  mode '0600'
   cookbook 'minio'
   variables(
     s3_user: s3_secrets['s3_access_key_id'],
@@ -1083,6 +1091,11 @@ template '/root/.s3cfg_initial' do
       s3_secrets['s3_host'] && !s3_secrets['s3_host'].empty? &&
       node['redborder']['cdomain'] && !node['redborder']['cdomain'].empty?
   end
+end
+
+link '/root/.s3cfg_initial' do
+  to s3cfg_initial
+  only_if { openbao_secrets && external_services&.dig('s3') != 'onpremise' }
 end
 
 # Allow only s3 onpremise nodes for now..
