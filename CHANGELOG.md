@@ -1,6 +1,20 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 9.0.0
+
+  - Miguel Negrón
+    - [ec7f059] Merge pull request #472 from redBorder/add_netflow2kafka_sflow2kafka_and_remove_f2k_and_sfacctd
+  - manegron
+    - [ec7f059] Merge pull request #472 from redBorder/add_netflow2kafka_sflow2kafka_and_remove_f2k_and_sfacctd
+    - [3ac3b83] Adapt attributes
+    - [ee3d499] Rename sflow2kafka and netflow2kafka to redborder-sflow2kafka and redborder-netflow2kafka
+    - [f71e514] Add sflow2kafka and netflow2kafka
+  - Felix Lopez Da Silva
+    - [da87757] Release 8.3.1
+  - Vimesa
+    - [de2c326] Feature/#26699 config grr ssl (#465)
+
 ## 8.3.1
 
   - Vimesa
