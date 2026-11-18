@@ -159,7 +159,16 @@ end
 # only the manager running the Chef server adds new IPS sensors to malware_vault/keys
 execute 'Encrypt the malware vault for new IPS sensors' do
   command '/usr/lib/redborder/bin/rb_malware_vault.sh refresh'
-  only_if { manager_services['chef-server'] && File.exist?('/usr/lib/redborder/bin/rb_malware_vault.sh') }
+  only_if do
+    next false unless manager_services['chef-server'] && File.exist?('/usr/lib/redborder/bin/rb_malware_vault.sh')
+    vault_clients = begin
+                      data_bag_item('malware_vault', 'keys_keys')['clients'] || []
+                    rescue Net::HTTPClientException => e
+                      raise unless e.response.code == '404'
+                      nil
+                    end
+    vault_clients && search(:node, 'roles:ips-sensor OR roles:ipscp-sensor').map(&:name).sort != vault_clients.sort
+  end
   ignore_failure true
 end
 
