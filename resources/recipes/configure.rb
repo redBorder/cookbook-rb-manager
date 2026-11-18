@@ -547,7 +547,7 @@ nginx_config 'Configure Nginx Http2k' do
   end
 end
 
-netflow2kafka_config 'Configure redborder-netflow2kafka' do
+rb_netflow2kafka_config 'Configure redborder-netflow2kafka' do
   if manager_services['redborder-netflow2kafka']
     sensors node.run_state['sensors_info']['flow-sensor']
     memory node['redborder']['memory_services']['redborder-netflow2kafka']['memory']
@@ -560,7 +560,7 @@ end
 # With a virtual ip, redborder-sflow2kafka listens on all the addresses to receive the flows sent to it
 sflow2kafka_ip = '0.0.0.0' if node.run_state.dig('virtual_ips', 'external', 'redborder-sflow2kafka', 'ip')
 
-sflow2kafka_config 'Configure redborder-sflow2kafka' do
+rb_sflow2kafka_config 'Configure redborder-sflow2kafka' do
   if manager_services['redborder-sflow2kafka']
     sensors node.run_state['sensors_info']['flow-sensor']
     kafka_hosts node['redborder']['managers_per_services']['kafka']
