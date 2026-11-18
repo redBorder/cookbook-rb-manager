@@ -547,29 +547,25 @@ nginx_config 'Configure Nginx Http2k' do
   end
 end
 
-f2k_config 'Configure f2k' do
-  if manager_services['f2k']
+rb_netflow2kafka_config 'Configure redborder-netflow2kafka' do
+  if manager_services['redborder-netflow2kafka']
     sensors node.run_state['sensors_info']['flow-sensor']
+    memory node['redborder']['memory_services']['redborder-netflow2kafka']['memory']
     action [:add, :register]
   else
     action [:remove, :deregister]
   end
 end
 
-if manager_services['sfacctd'] &&
-   node.run_state['virtual_ips'] &&
-   node.run_state['virtual_ips']['external'] &&
-   node.run_state['virtual_ips']['external']['sfacctd'] &&
-   node.run_state['virtual_ips']['external']['sfacctd']['ip']
+# With a virtual ip, redborder-sflow2kafka listens on all the addresses to receive the flows sent to it
+sflow2kafka_ip = '0.0.0.0' if node.run_state.dig('virtual_ips', 'external', 'redborder-sflow2kafka', 'ip')
 
-  sfacctd_ip = '0.0.0.0'
-end
-
-pmacct_config 'Configure pmacct (sfacctd)' do
-  if manager_services['sfacctd']
+rb_sflow2kafka_config 'Configure redborder-sflow2kafka' do
+  if manager_services['redborder-sflow2kafka']
     sensors node.run_state['sensors_info']['flow-sensor']
     kafka_hosts node['redborder']['managers_per_services']['kafka']
-    sfacctd_ip sfacctd_ip || node['ipaddress']
+    sflow2kafka_ip sflow2kafka_ip || node['ipaddress']
+    memory node['redborder']['memory_services']['redborder-sflow2kafka']['memory']
     action [:add, :register]
   else
     action [:remove, :deregister]
