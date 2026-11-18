@@ -95,8 +95,7 @@ consul_config 'Configure Consul Server' do
   end
 end
 
-# rBglobal/openbao (not secret) says services read their passwords from OpenBao-agent files in /run.
-# If it can't be read, keep the data bag passwords: that is what an existing install still runs on.
+# unreadable: keep the data bag passwords an existing install runs on
 openbao_secrets = begin
                     data_bag_item('rBglobal', 'openbao')['secrets'] == true
                   rescue
@@ -110,7 +109,6 @@ openbao_config 'Configure OpenBao' do
     dev node['openbao']['dev']
     dev_static_key node['openbao']['dev_static_key']
     credentials node['openbao']['credentials']
-    # every manager runs OpenBao (all service groups): a new manager joins the raft cluster of the others
     peers node['redborder']['cluster_info'].reject { |name, _| name == node.name }.map { |_, m| m['ipaddress_sync'] }.compact
     bootstrap ::File.exist?('/var/lock/leader-configuring.lock')
     action [:add, :register]
@@ -143,13 +141,11 @@ rescue
   s3_malware_secrets = {}
 end
 
-# On-prem S3 (MinIO): the keys live in OpenBao, not in the data bag. Consumers get placeholders (their
-# configs are agent templates); the Chef server config gets the real values from the root-only file in /run
-# (Chef server internals are M5). External S3 set in the webui stays in the data bag (W2).
+# on-prem S3 keys live in OpenBao; external S3 (set in the webui) stays in the data bag
 s3_secrets_real = s3_secrets
 if openbao_secrets && external_services&.dig('s3') == 'onpremise'
   real = OpenBao.run_secret('s3') || {}
-  s3_secrets_real = s3_secrets.merge(real) # nil keys while OpenBao is sealed: see chef_server_config below
+  s3_secrets_real = s3_secrets.merge(real) # nil keys while OpenBao is sealed
   s3_secrets = s3_secrets.merge('s3_access_key_id' => OpenBao.ref('s3', 's3_access_key_id'),
                                 's3_secret_key_id' => OpenBao.ref('s3', 's3_secret_key_id'))
   s3_malware_secrets = s3_malware_secrets.merge(
@@ -157,8 +153,7 @@ if openbao_secrets && external_services&.dig('s3') == 'onpremise'
     's3_malware_secret_key_id' => OpenBao.ref('s3_malware', 's3_malware_secret_key_id'))
 end
 
-# IPS sensors read the malware keys from the chef-vault item malware_vault/keys, encrypted per sensor client:
-# add sensors registered since the last run. One manager does it (the one running the Chef server).
+# only the manager running the Chef server adds new IPS sensors to malware_vault/keys
 execute 'Encrypt the malware vault for new IPS sensors' do
   command '/usr/lib/redborder/bin/rb_malware_vault.sh refresh'
   only_if { manager_services['chef-server'] && File.exist?('/usr/lib/redborder/bin/rb_malware_vault.sh') }
@@ -172,7 +167,7 @@ chef_server_config 'Configure chef services' do
     postgresql_memory node['redborder']['memory_services']['postgresql']['memory']
     chef_active manager_services['chef-server']
     ipaddress node['ipaddress_sync']
-    # without the real keys (OpenBao sealed) the S3 part of the Chef server config is left as it is
+    # OpenBao sealed: leave the S3 part of the Chef server config as it is
     s3_secrets(s3_secrets_real['s3_secret_key_id'] ? s3_secrets_real : {})
     openbao openbao_secrets
     action [:add, :register]
@@ -563,17 +558,14 @@ webui_config 'Configure WebUI' do
 end
 
 if openbao_secrets
-  # Chef's own keys, only in memory (/etc/chef/* are symlinks). The node key is created by the Chef
-  # registration, straight into /run: hand it to OpenBao (create-only, once) so the agent can write it
-  # back after a reboot. The data bag key was seeded by the installer. The webui reads both (user webui).
+  # the node key is handed to OpenBao once so the agent can restore it after a reboot
   chef_client_key = '/run/rb-secrets/chef-client/client.pem'
   chef_client_secret = "cert_chef_client_#{node['hostname']}"
-  # the webui (installed above) reads both keys; a manager without webui keeps them root only
   chef_keys_group = (::Etc.getgrnam('webui') rescue nil) ? 'webui' : 'root'
   ruby_block 'Hand the Chef node key to OpenBao' do
     block do
       OpenBao.seed_cert_key(chef_client_secret.delete_prefix('cert_'), ::File.read(chef_client_key), chef_client_key, chef_keys_group)
-      # import-seeds wipes the seed once OpenBao has it; otherwise (not set up yet) the next run retries
+      # import-seeds wipes the seed once OpenBao has it
       node.normal['openbao']['chef_client_key_imported'] = true unless ::File.exist?("#{OpenBao::SEED_DIR}/#{chef_client_secret}.json")
     end
     only_if { ::File.file?(chef_client_key) && !node['openbao']['chef_client_key_imported'] }
@@ -1070,7 +1062,6 @@ rb_chrony_config 'Configure Chrony' do
   end
 end
 
-# OpenBao mode, external S3: Chef knows the keys (W2), so it renders straight into tmpfs and links the file back
 s3cfg_initial = openbao_secrets ? '/run/rb-secrets/root/s3cfg_initial' : '/root/.s3cfg_initial'
 directory '/run/rb-secrets/root' do
   mode '0750'
@@ -1088,7 +1079,7 @@ template s3cfg_initial do
     cdomain: node['redborder']['cdomain']
   )
   action :create
-  not_if { openbao_secrets && external_services&.dig('s3') == 'onpremise' } # cookbook-minio renders it from OpenBao
+  not_if { openbao_secrets && external_services&.dig('s3') == 'onpremise' } # cookbook-minio renders it
   only_if do
     s3_secrets['s3_access_key_id'] && !s3_secrets['s3_access_key_id'].empty? &&
       s3_secrets['s3_secret_key_id'] && !s3_secrets['s3_secret_key_id'].empty? &&
@@ -1249,7 +1240,6 @@ rescue
 end
 
 if openbao_secrets
-  # Key for SSH to other nodes (rb_latency, backups, ...): only in memory, rendered by the agent
   openbao_secret_file 'root-rsa' do
     source 'rsa.ctmpl.erb'
     cookbook 'rb-manager'

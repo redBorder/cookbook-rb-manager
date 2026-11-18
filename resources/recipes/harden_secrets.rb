@@ -1,14 +1,13 @@
 # Cookbook:: rb-manager
 # Recipe:: harden_secrets
 #
-# The common hardening (swap, hibernation, kdump, coredumps, Chef client backups/diffs, Chef key modes)
-# lives in rb-common; this adds the manager-only parts (chef-server, data bag sources, postfix key).
+# Manager-only parts; the common hardening is in rb-common::harden_secrets.
 
 include_recipe 'rb-common::harden_secrets'
 
 chef_client_settings = { 'file_backup_path' => '"/run/chef-backup"', 'diff_disabled' => 'true' }
 
-# chef-server-ctl reconfigure runs its own Chef (solo.rb from the chef-server package, restored on upgrade)
+# chef-server-ctl reconfigure runs its own Chef with this solo.rb (restored on upgrade)
 chef_server_solo = '/opt/opscode/embedded/cookbooks/solo.rb'
 ruby_block 'chef-server-ctl: backups in /run, no diffs in logs' do
   block do
@@ -28,8 +27,7 @@ execute 'Wipe chef-server-ctl file backups on disk' do
   only_if 'find /var/opt/opscode/local-mode-cache/backup -type f 2>/dev/null | grep -q .'
 end
 
-# Plain data bag source files with private keys / S3 keys: once uploaded, the Chef server holds them,
-# the copy on disk is only a leftover (certs are generated during Chef runs, after the installer's cleanup)
+# once uploaded the Chef server holds them; certs are generated after the installer's cleanup
 plain_secret_sources = Dir.glob('/var/chef/data/data_bag/certs/*.json') +
                        %w(/var/chef/data/data_bag/passwords/s3.json /var/chef/data/data_bag/rBglobal/malware-bucket.json)
 plain_secret_sources.each do |f|
@@ -39,8 +37,7 @@ plain_secret_sources.each do |f|
   end
 end
 
-# The postfix package generates a TLS key at install, but our main.cf does not use TLS (localhost only):
-# an unused private key on disk. Removed as long as main.cf does not reference it.
+# the postfix package's TLS key is unused (main.cf is localhost only)
 execute 'Remove unused postfix TLS key' do
   command 'shred -u /etc/pki/tls/private/postfix.key'
   only_if { ::File.exist?('/etc/pki/tls/private/postfix.key') }
