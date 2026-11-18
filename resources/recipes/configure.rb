@@ -95,10 +95,11 @@ consul_config 'Configure Consul Server' do
   end
 end
 
-# unreadable: keep the data bag passwords an existing install runs on
+# no item (not migrated yet): keep the data bag passwords an existing install runs on
 openbao_secrets = begin
                     data_bag_item('rBglobal', 'openbao')['secrets'] == true
-                  rescue
+                  rescue Net::HTTPClientException => e
+                    raise unless e.response.code == '404'
                     false
                   end
 
