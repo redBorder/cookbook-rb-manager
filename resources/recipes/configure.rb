@@ -436,6 +436,20 @@ nginx_config 'Configure Nginx redborder-hub' do
   end
 end
 
+nginx_config 'Configure Nginx GRR' do
+  cdomain node['redborder']['cdomain']
+  service_name 'grr-adminui'
+  grr_adminui_hosts node['redborder']['grr-adminui']['hosts']
+  grr_local_active manager_services['grr-adminui']
+  if manager_services['nginx'] && node['redborder']['grr-adminui']['hosts'] && !node['redborder']['grr-adminui']['hosts'].empty?
+    action [:configure_certs, :add_grr]
+  elsif manager_services['nginx']
+    action :remove_grr
+  else
+    action :nothing
+  end
+end
+
 aerospike_config 'Configure aerospike' do
   if manager_services['aerospike']
     ipaddress node['ipaddress_sync']
@@ -533,29 +547,25 @@ nginx_config 'Configure Nginx Http2k' do
   end
 end
 
-f2k_config 'Configure f2k' do
-  if manager_services['f2k']
+rb_netflow2kafka_config 'Configure redborder-netflow2kafka' do
+  if manager_services['redborder-netflow2kafka']
     sensors node.run_state['sensors_info']['flow-sensor']
+    memory node['redborder']['memory_services']['redborder-netflow2kafka']['memory']
     action [:add, :register]
   else
     action [:remove, :deregister]
   end
 end
 
-if manager_services['sfacctd'] &&
-   node.run_state['virtual_ips'] &&
-   node.run_state['virtual_ips']['external'] &&
-   node.run_state['virtual_ips']['external']['sfacctd'] &&
-   node.run_state['virtual_ips']['external']['sfacctd']['ip']
+# With a virtual ip, redborder-sflow2kafka listens on all the addresses to receive the flows sent to it
+sflow2kafka_ip = '0.0.0.0' if node.run_state.dig('virtual_ips', 'external', 'redborder-sflow2kafka', 'ip')
 
-  sfacctd_ip = '0.0.0.0'
-end
-
-pmacct_config 'Configure pmacct (sfacctd)' do
-  if manager_services['sfacctd']
+rb_sflow2kafka_config 'Configure redborder-sflow2kafka' do
+  if manager_services['redborder-sflow2kafka']
     sensors node.run_state['sensors_info']['flow-sensor']
     kafka_hosts node['redborder']['managers_per_services']['kafka']
-    sfacctd_ip sfacctd_ip || node['ipaddress']
+    sflow2kafka_ip sflow2kafka_ip || node['ipaddress']
+    memory node['redborder']['memory_services']['redborder-sflow2kafka']['memory']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -1073,11 +1083,7 @@ grr_config 'Configure GRR' do
     max_allowed_packet                node['redborder']['grr']['mysql']['max_allowed_packet']
     log_bin_trust_function_creators   node['redborder']['grr']['mysql']['log']
     grr_database                      node['redborder']['grr']['mysql']['grr_database']
-    grr_db_user                       node['redborder']['grr']['mysql']['grr_user']
-    grr_db_password                   node['redborder']['grr']['mysql']['grr_password']
     fleetspeak_database               node['redborder']['grr']['mysql']['fleetspeak_database']
-    fleetspeak_db_user                node['redborder']['grr']['mysql']['fleetspeak_user']
-    fleetspeak_db_password            node['redborder']['grr']['mysql']['fleetspeak_password']
     fleetspeak_port                   node['redborder']['grr']['fleetspeak']['port']
     hostname                          node['redborder']['grr']['hostname']
     adminui_port                      node['redborder']['grr']['adminui']['port']
@@ -1088,12 +1094,12 @@ grr_config 'Configure GRR' do
     fleetspeak_admin_listen           node['redborder']['grr']['fleetspeak']['admin_listen']
     fleetspeak_grr_listen             node['redborder']['grr']['fleetspeak']['grr_listen']
     fleetspeak_cert_dir               node['redborder']['grr']['fleetspeak']['cert_dir']
-    admin_username                    node['redborder']['grr']['admin']['username']
-    admin_password                    node['redborder']['grr']['admin']['password']
     config_dir                        node['redborder']['grr']['paths']['config_dir']
     server_local_yaml                 node['redborder']['grr']['paths']['server_local_yaml']
     fleetspeak_dir                    node['redborder']['grr']['paths']['fleetspeak_dir']
     config_updater_bin                node['redborder']['grr']['paths']['config_updater_bin']
+    grr_adminui_hosts                 node['redborder']['grr-adminui']['hosts']
+    grr_fleetspeak_hosts              node['redborder']['grr-fleetspeak']['hosts']
     action [:add, :register]
   else
     action [:remove, :deregister]
