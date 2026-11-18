@@ -95,10 +95,11 @@ consul_config 'Configure Consul Server' do
   end
 end
 
-# unreadable: keep the data bag passwords an existing install runs on
+# no item (not migrated yet): keep the data bag passwords an existing install runs on
 openbao_secrets = begin
                     data_bag_item('rBglobal', 'openbao')['secrets'] == true
-                  rescue
+                  rescue Net::HTTPClientException => e
+                    raise unless e.response.code == '404'
                     false
                   end
 
@@ -148,6 +149,8 @@ if openbao_secrets && external_services&.dig('s3') == 'onpremise'
   s3_secrets_real = s3_secrets.merge(real) # nil keys while OpenBao is sealed
   s3_secrets = s3_secrets.merge('s3_access_key_id' => OpenBao.ref('s3', 's3_access_key_id'),
                                 's3_secret_key_id' => OpenBao.ref('s3', 's3_secret_key_id'))
+end
+if openbao_secrets
   s3_malware_secrets = s3_malware_secrets.merge(
     's3_malware_access_key_id' => OpenBao.ref('s3_malware', 's3_malware_access_key_id'),
     's3_malware_secret_key_id' => OpenBao.ref('s3_malware', 's3_malware_secret_key_id'))
@@ -156,7 +159,16 @@ end
 # only the manager running the Chef server adds new IPS sensors to malware_vault/keys
 execute 'Encrypt the malware vault for new IPS sensors' do
   command '/usr/lib/redborder/bin/rb_malware_vault.sh refresh'
-  only_if { manager_services['chef-server'] && File.exist?('/usr/lib/redborder/bin/rb_malware_vault.sh') }
+  only_if do
+    next false unless manager_services['chef-server'] && File.exist?('/usr/lib/redborder/bin/rb_malware_vault.sh')
+    vault_clients = begin
+                      data_bag_item('malware_vault', 'keys_keys')['clients'] || []
+                    rescue Net::HTTPClientException => e
+                      raise unless e.response.code == '404'
+                      nil
+                    end
+    vault_clients && search(:node, 'roles:ips-sensor OR roles:ipscp-sensor').map(&:name).sort != vault_clients.sort
+  end
   ignore_failure true
 end
 
@@ -564,11 +576,20 @@ if openbao_secrets
   chef_keys_group = (::Etc.getgrnam('webui') rescue nil) ? 'webui' : 'root'
   ruby_block 'Hand the Chef node key to OpenBao' do
     block do
-      OpenBao.seed_cert_key(chef_client_secret.delete_prefix('cert_'), ::File.read(chef_client_key), chef_client_key, chef_keys_group)
+      from = ::File.file?(chef_client_key) ? chef_client_key : '/etc/chef/client.pem'
+      OpenBao.seed_cert_key(chef_client_secret.delete_prefix('cert_'), ::File.read(from), chef_client_key, chef_keys_group)
+      client_rb = ::File.read('/etc/chef/client.rb')
+      unless client_rb.include?(chef_client_key)
+        ::File.write('/etc/chef/client.rb', client_rb.sub(/^client_key .*$/, %(client_key       "#{chef_client_key}")))
+        Chef::Config[:client_key] = chef_client_key
+      end
       # import-seeds wipes the seed once OpenBao has it
       node.normal['openbao']['chef_client_key_imported'] = true unless ::File.exist?("#{OpenBao::SEED_DIR}/#{chef_client_secret}.json")
     end
-    only_if { ::File.file?(chef_client_key) && !node['openbao']['chef_client_key_imported'] }
+    only_if do
+      !node['openbao']['chef_client_key_imported'] &&
+        (::File.file?(chef_client_key) || (::File.file?('/etc/chef/client.pem') && !::File.symlink?('/etc/chef/client.pem')))
+    end
   end
 
   { 'chef-client-key' => [chef_client_key, chef_client_secret, '/etc/chef/client.pem'],
@@ -586,6 +607,7 @@ if openbao_secrets
 
     link etc_path do
       to dest
+      only_if { ::File.exist?(dest) }
     end
   end
 end
