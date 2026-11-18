@@ -1,21 +1,10 @@
 module RbManager
   module Helpers
     def get_managers_all
-      managers = []
-      managers_keys = Chef::Node.list.keys.sort
-      managers_keys.each do |m_key|
-        m = nil
-        begin
-          m = Chef::Node.load m_key
-        rescue
-          Chef::Log.error("[get_managers_all] Failed to load node: #{m_key}")
-        end
-        m = node if m.name == node.name
-        if m.role?('manager')
-          managers << m
-        end
-      end
-      managers
+      managers = search(:node, 'role:manager').map { |m| m.name == node.name ? node : m }
+      # The current node could not be indexed yet in the first execution
+      managers << node if node.role?('manager') && !managers.include?(node)
+      managers.sort
     end
   end
 end

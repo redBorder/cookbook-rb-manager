@@ -353,6 +353,7 @@ snmp_config 'Configure snmp' do
   if manager_services['snmp']
     hostname node['hostname']
     cdomain node['redborder']['cdomain']
+    trap_sensors node.run_state['sensors_info_all']['trap-sensor']
     action :add
   else
     action :remove
@@ -366,7 +367,10 @@ rbmonitor_config 'Configure redborder-monitor' do
     snmp_nodes node.run_state['sensors_info_all']['snmp-sensor']
     redfish_nodes node.run_state['sensors_info_all']['redfish-sensor']
     ipmi_nodes node.run_state['sensors_info_all']['ipmi-sensor']
+    http_agent_nodes node.run_state['sensors_info_all']['http_agent-sensor']
     flow_nodes node.run_state['sensors_info_all']['flow-sensor']
+    vmware_exsi_nodes node.run_state['sensors_info_all']['vmware-exsi-sensor']
+    vmware_exsi_vm_nodes node.run_state['sensors_info_all']['vmware-exsi-vm-sensor']
     managers node['redborder']['managers_list']
     proxy_nodes node.run_state['sensors_info_all']['proxy-sensor']
     cluster node['redborder']['cluster_info']
@@ -418,6 +422,20 @@ nginx_config 'Configure Nginx aioutliers' do
   end
 end
 
+nginx_config 'Configure Nginx redborder-hub' do
+  cdomain node['redborder']['cdomain']
+  service_name 'redborder-hub'
+  hub_hosts node['redborder']['redborder-hub']['hosts']
+  hub_local_active manager_services['redborder-hub']
+  if manager_services['nginx'] && node['redborder']['redborder-hub']['hosts'] && !node['redborder']['redborder-hub']['hosts'].empty?
+    action [:configure_certs, :add_hub]
+  elsif manager_services['nginx']
+    action :remove_hub
+  else
+    action :nothing
+  end
+end
+
 aerospike_config 'Configure aerospike' do
   if manager_services['aerospike']
     ipaddress node['ipaddress_sync']
@@ -428,8 +446,20 @@ aerospike_config 'Configure aerospike' do
   end
 end
 
+drill_secrets = {}
+
+begin
+  drill_secrets = data_bag_item('passwords', 'drill').to_hash
+rescue
+  drill_secrets = {}
+end
+
 drill_config 'Configure drill' do
   s3_malware_secrets s3_malware_secrets
+  s3_host s3_secrets['s3_host']
+  cdomain node['redborder']['cdomain']
+  ipaddress_sync node['ipaddress_sync']
+  drill_secrets drill_secrets
   if manager_services['drill']
     action [:add, :register]
   else
@@ -548,6 +578,32 @@ redis_config 'Configure redis' do
     action [:add, :register]
   else
     action [:remove, :deregister]
+  end
+end
+
+rb_alarm_engine_config 'Configure redBorder alarm engine' do
+  if manager_services['redborder-alarm-engine']
+    redis_password redis_secrets['pass'] unless redis_secrets.empty?
+  else
+    action :remove
+  end
+end
+
+cluster_uuid_db = {}
+
+begin
+  cluster_uuid_db = data_bag_item('rBglobal', 'cluster')
+rescue
+  cluster_uuid_db = {}
+end
+
+rb_license_config 'Configure redBorder License' do
+  if manager_services['redborder-license']
+    cluster_uuid cluster_uuid_db['uuid'] unless cluster_uuid_db.empty?
+    node_id node['hostname']
+    redis_password redis_secrets['pass'] unless redis_secrets.empty?
+  else
+    action :remove
   end
 end
 
@@ -679,16 +735,6 @@ execute 'enable_crb_repo' do
 end
 
 # Configure logstash
-split_traffic = false
-
-if manager_services['logstash']
-  begin
-    split_traffic = data_bag_item('rBglobal', 'splittraffic')['logstash']
-  rescue
-    split_traffic = false
-  end
-end
-
 if manager_services['logstash']
   begin
     split_intrusion = data_bag_item('rBglobal', 'splitintrusion')['logstash']
@@ -709,22 +755,24 @@ logstash_config 'Configure logstash' do
     device_nodes node.run_state['sensors_info_all']['device-sensor']
     snmp_nodes node.run_state['sensors_info_all']['snmp-sensor']
     redfish_nodes node.run_state['sensors_info_all']['redfish-sensor']
+    trap_nodes node.run_state['sensors_info_all']['trap-sensor']
     ips_nodes node.run_state['ips_sensors_info']
     mobility_nodes node.run_state['mobility_sensors_info']
+    monitor_nodes node.run_state['monitors_sensors_info']
     intrusion_incidents_priority_filter node['redborder']['intrusion_incidents_priority_filter']
     vault_incidents_priority_filter node['redborder']['vault_incidents_priority_filter']
     malware_score_threshold node['redborder']['manager']['malware']['threshold'].to_i
     malware_incidents_priority node['redborder']['manager']['malware']['incidents_priority']
     reputation_managers node['redborder']['managers_per_services']['rb-reputation']
     logstash_pipelines node.run_state['pipelines']
-    split_traffic_logstash split_traffic
     split_intrusion_logstash split_intrusion
-    flow_nodes_without_proxy node.run_state['sensors_info_cluster']['flow-sensor']
+    flow_nodes_without_proxy node.run_state['cluster_sensors_info']['flow-sensor']
     flow_nodes_with_proxy node.run_state['sensors_info_childs_proxy']['flow-sensor']
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
     redis_secrets redis_secrets
     s3_malware_secrets s3_malware_secrets
+    clamscan_enabled manager_services['clamav']
     action [:add, :register]
   else
     action [:remove, :deregister]
@@ -733,24 +781,6 @@ end
 
 yara_config 'yara' do
   action [:add]
-end
-
-rbdswatcher_config 'Configure redborder-dswatcher' do
-  if manager_services['redborder-dswatcher']
-    cdomain node['redborder']['cdomain']
-    action [:add, :register]
-  else
-    action [:remove, :deregister]
-  end
-end
-
-rbevents_counter_config 'Configure redborder-events-counter' do
-  if manager_services['redborder-events-counter']
-    cdomain node['redborder']['cdomain']
-    action [:add, :register]
-  else
-    action [:remove, :deregister]
-  end
 end
 
 rsyslog_config 'Configure rsyslog' do
@@ -838,6 +868,16 @@ rbaioutliers_config 'Configure rb-aioutliers' do
   end
 end
 
+rbhub_config 'Configure redborder-hub' do
+  cdomain node['redborder']['cdomain']
+  hub_hosts node['redborder']['redborder-hub']['hosts']
+  if manager_services['redborder-hub']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
+  end
+end
+
 rbcep_config 'Configure redborder-cep' do
   if manager_services['redborder-cep']
     flow_nodes node.run_state['sensors_info_all']['flow-sensor']
@@ -892,7 +932,11 @@ rb_postfix_config 'Configure postfix' do
 end
 
 rb_clamav_config 'Configure ClamAV' do
-  action :add
+  if manager_services['clamav']
+    action :add
+  else
+    action :remove
+  end
 end
 
 rb_chrony_config 'Configure Chrony' do
@@ -940,6 +984,22 @@ minio_config 'Configure S3 (minio)' do
   end
 end
 
+# Config-backup transfer target for redborder-webui's BackupPolicy
+# (transfer_method: 'ftp') -- a network device pushes its config here.
+# The FTP firewall ports are gated on manager_services['ftp'] inside
+# cookbook-rb-firewall's own provider (it already receives manager_services
+# via rb_firewall_config above), not here.
+vsftpd_config 'Configure FTP backup transfer' do
+  action(manager_services['ftp'] ? :add_ftp : :remove_ftp)
+end
+
+# Must run after vsftpd_config above, which is what actually creates
+# ftp_upload_dir/incoming -- rb_selinux_config's restorecon needs that path
+# to already exist.
+rb_selinux_config 'Configure FTP SELinux labeling' do
+  action(manager_services['ftp'] ? :add_ftp : :remove_ftp)
+end
+
 # Configure secor service for backup kafka data in case of data lose and for view raw vault data
 secor_config 'Configure Secor Service' do
   if manager_services['secor'] || manager_services['secor-vault']
@@ -984,6 +1044,40 @@ minio_config 'Configure S3 (minio)' do
     action [:add_s3_conf_nginx]
   else
     action :nothing
+  end
+end
+
+grr_config 'Configure GRR' do
+  if manager_services['grr-fleetspeak'] && manager_services['grr-adminui'] && manager_services['grr-frontend'] && manager_services['grr-worker']
+    mysql_host                        node['redborder']['grr']['mysql']['host']
+    mysql_port                        node['redborder']['grr']['mysql']['port']
+    max_allowed_packet                node['redborder']['grr']['mysql']['max_allowed_packet']
+    log_bin_trust_function_creators   node['redborder']['grr']['mysql']['log']
+    grr_database                      node['redborder']['grr']['mysql']['grr_database']
+    grr_db_user                       node['redborder']['grr']['mysql']['grr_user']
+    grr_db_password                   node['redborder']['grr']['mysql']['grr_password']
+    fleetspeak_database               node['redborder']['grr']['mysql']['fleetspeak_database']
+    fleetspeak_db_user                node['redborder']['grr']['mysql']['fleetspeak_user']
+    fleetspeak_db_password            node['redborder']['grr']['mysql']['fleetspeak_password']
+    fleetspeak_port                   node['redborder']['grr']['fleetspeak']['port']
+    hostname                          node['redborder']['grr']['hostname']
+    adminui_port                      node['redborder']['grr']['adminui']['port']
+    adminui_url                       node['redborder']['grr']['adminui']['external_url']
+    frontend_port                     node['redborder']['grr']['frontend']['port']
+    frontend_url                      node['redborder']['grr']['frontend']['external_url']
+    fleetspeak_https_listen           node['redborder']['grr']['fleetspeak']['https_listen']
+    fleetspeak_admin_listen           node['redborder']['grr']['fleetspeak']['admin_listen']
+    fleetspeak_grr_listen             node['redborder']['grr']['fleetspeak']['grr_listen']
+    fleetspeak_cert_dir               node['redborder']['grr']['fleetspeak']['cert_dir']
+    admin_username                    node['redborder']['grr']['admin']['username']
+    admin_password                    node['redborder']['grr']['admin']['password']
+    config_dir                        node['redborder']['grr']['paths']['config_dir']
+    server_local_yaml                 node['redborder']['grr']['paths']['server_local_yaml']
+    fleetspeak_dir                    node['redborder']['grr']['paths']['fleetspeak_dir']
+    config_updater_bin                node['redborder']['grr']['paths']['config_updater_bin']
+    action [:add, :register]
+  else
+    action [:remove, :deregister]
   end
 end
 

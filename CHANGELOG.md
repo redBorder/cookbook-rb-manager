@@ -1,6 +1,168 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 8.3.0
+
+  - nilsver
+    - [54843cc] remove require
+    - [7140611] Remove logstash split traffic setting
+    - [4609911] Require cookbook-rb-flow-agent
+    - [df81360] Depend on rb-flow-agent cookbook
+
+## 8.2.2
+
+  - José Jiménez
+    - [1f472c7] Add ips sensor condition to push trap pipeline
+
+## 8.2.1
+
+  - Juan Soto
+    - [fc1932e] Replace rescue modifier with begin/rescue and warn when rb_init_conf.yml can't be read
+  - manegron
+    - [6f16488] FIx getting ipaddress_sync by loading rb_init_conf.yml
+
+## 8.2.0
+
+  - Pablo Pérez
+    - [71d6837] add serf as service
+
+## 8.1.0
+
+  - Miguel Negrón
+    - [e7c1254] Merge pull request #458 from redBorder/improvement/#26867_reduce_chef_server_queries
+  - manegron
+    - [e7c1254] Merge pull request #458 from redBorder/improvement/#26867_reduce_chef_server_queries
+    - [eb9db69] Reduce chef server queries
+
+## 8.0.4
+
+  - Miguel Negrón
+    - [0b16c50] Merge pull request #457 from redBorder/improvement/#26794_disable_clamd_by_defaul
+  - manegron
+    - [0b16c50] Merge pull request #457 from redBorder/improvement/#26794_disable_clamd_by_defaul
+    - [bd6e258] Disable clamav by default
+
+## 8.0.3
+
+  - manegron
+    - [c413c91] Upload cookbook only if opscode-erchef is active
+
+## 8.0.2
+
+  - manegron
+    - [31b19ca] Remove duplicated call to get_cluster_sensors_info
+
+## 8.0.1
+
+
+  - manegron
+    - [066be2c] Build memcached_hosts with IP instead of host.node
+
+## 8.0.0
+
+  - Miguel Negrón
+    - [ebe72e0] Merge pull request #446 from redBorder/feature/#26031_implement_snapshot_configuration_rollback
+  - manegron
+    - [ebe72e0] Merge pull request #446 from redBorder/feature/#26031_implement_snapshot_configuration_rollback
+    - [caf130e] add ftp to full mode
+    - [9614a09] Update with development
+  - Juan Soto
+    - [78ed913] Merge remote-tracking branch 'origin/master' into feature/#26031_implement_snapshot_configuration_rollback
+    - [8431d63] Drop the now-unused passwords/ftp data-bag read
+    - [930d5b5] Add ftp -> vsftpd to systemdservices, used by rbcli's service commands
+    - [917cb85] Call rb_selinux_config's FTP labeling after vsftpd_config creates the directory
+    - [fec0c24] Pass ftp_enabled to rb_selinux_config for vsftpd SELinux labeling
+    - [06a337b] Merge remote updates (development sync) into feature branch
+    - [4f52a4e] Update rb_backup_transfer_config call site for the cookbook-vsftpd rename
+    - [7ecc57b] Drop manual FTP firewall port gating, now handled in cookbook-rb-firewall
+    - [5d44a96] Fix cookstyle Layout/MultilineOperationIndentation offense
+    - [ebd1f9f] Revert "Add Veeam Backups sensor to monitor collection"
+    - [3358b8a] Revert "Add rb_veeam_backup_jobs to the Druid indexer task list"
+    - [7691176] Revert "Build source tarball via tar instead of git archive"
+    - [3dadc09] Merge development into feature/#26031_implement_snapshot_configuration_rollback
+    - [e7943da] Remove TFTP backup-transfer wiring, FTP only
+    - [ea5efe7] Only open FTP/TFTP firewall ports while the service is enabled
+    - [944d4a5] Pass ftp_accounts map instead of a single ftp_password
+    - [b36bdad] Honor redborder.manager.services.overwrite in manager_services()
+    - [aa1a4d0] Build source tarball via tar instead of git archive
+    - [bb6745f] Wire in cookbook-rb-backup-transfer for FTP/TFTP config backup
+    - [9ade3a6] Merge branch 'development' of github.com:redBorder/cookbook-rb-manager into feature/#26031_implement_snapshot_configuration_rollback
+    - [03da09d] Add rb_veeam_backup_jobs to the Druid indexer task list
+    - [8fc1bce] Merge branch 'master' of github.com:redBorder/cookbook-rb-manager into feature/#veeam_integration
+    - [e38e5f7] Add Veeam Backups sensor to monitor collection
+
+## 7.0.0
+
+  - José Jiménez
+    - [d54ed0f] add trap task
+
+## 6.0.1
+
+  - Nils
+    - [ceaa497] fix bug if redborder-hub was down on 1 node
+
+## 6.0.0
+
+  - Miguel Negrón
+    - [1e2620e] Merge pull request #449 from redBorder/improvement/#26241_add_redborder_license
+  - manegron
+    - [1e2620e] Merge pull request #449 from redBorder/improvement/#26241_add_redborder_license
+    - [e3b20d8] Clean comments
+  - vimesa
+    - [e8d2808] Fix test
+    - [f52d912] Merge with development
+    - [f1fdc34] Add a new method for monitor sensors
+    - [58ab0fa] Restore to original state
+    - [e0d7d1f] Add the two missing intrusion sensors
+    - [871c90e] Add redborder-license config
+
+## 5.30.0
+
+  - Vimesa
+    - [923b9bd] Feature/#26201 Installation and Configuration of GRR
+
+## 5.29.0
+
+  - vimesa
+    - [6f28867] Add redborder-hub settings
+
+## 5.28.1
+
+  - Nils
+    - [c65c263] add logstash to cgroup
+
+## 5.28.0
+
+  - David Vanhoucke
+    - [8eb3050] add redborder-alarm-engine
+
+## 5.27.3
+
+  - Vimesa
+    - [8ae5dc4] Add a new script to authorize the user redborder-monitor (#432)
+
+## 5.27.2
+
+  - Pablo Pérez
+    - [e28024d] Bugfix/#24059 download file and historical not working (#434)
+
+## 5.27.1
+
+  - nilsver
+    - [18e2b18] #25559 add vm and exsi nodes (#430)
+
+## 5.27.0
+
+  - Pablo Pérez
+    - [57d4521] Feature #23745 Extend monitor Capabilities to support services monitoring (#428)
+  - ptorresred
+    - [bc479f1] Feature/#22343 integrate cape (#381)
+
+## 5.26.0
+
+  - Jose Jimenez
+    - [0e5d3a7] Add snmptrapd service
+
 ## 5.25.0
 
   - ptorresred

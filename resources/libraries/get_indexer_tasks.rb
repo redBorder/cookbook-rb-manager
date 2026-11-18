@@ -16,6 +16,7 @@ module RbManager
         { task_name: 'rb_wireless', feed: 'rb_wireless' },
         { task_name: 'rb_malware', feed: 'rb_malware_post' },
         { task_name: 'rb_host_discovery', feed: 'rb_host_discovery' },
+        { task_name: 'rb_trap', feed: 'rb_trap_post' },
         { task_name: 'rb_topology_discovery', feed: 'rb_topology_discovery' },
       ]
 
