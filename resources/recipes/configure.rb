@@ -148,6 +148,8 @@ if openbao_secrets && external_services&.dig('s3') == 'onpremise'
   s3_secrets_real = s3_secrets.merge(real) # nil keys while OpenBao is sealed
   s3_secrets = s3_secrets.merge('s3_access_key_id' => OpenBao.ref('s3', 's3_access_key_id'),
                                 's3_secret_key_id' => OpenBao.ref('s3', 's3_secret_key_id'))
+end
+if openbao_secrets
   s3_malware_secrets = s3_malware_secrets.merge(
     's3_malware_access_key_id' => OpenBao.ref('s3_malware', 's3_malware_access_key_id'),
     's3_malware_secret_key_id' => OpenBao.ref('s3_malware', 's3_malware_secret_key_id'))
