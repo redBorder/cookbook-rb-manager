@@ -71,25 +71,19 @@ default['redborder']['grr']['mysql']['port'] = 3306
 default['redborder']['grr']['mysql']['max_allowed_packet'] = '64M'
 default['redborder']['grr']['mysql']['log'] = 1
 default['redborder']['grr']['mysql']['grr_database'] = 'grr'
-default['redborder']['grr']['mysql']['grr_user'] = 'grr'
-default['redborder']['grr']['mysql']['grr_password'] = 'redborder'
 default['redborder']['grr']['mysql']['fleetspeak_database'] = 'fleetspeak'
-default['redborder']['grr']['mysql']['fleetspeak_user'] = 'fleetspeak'
-default['redborder']['grr']['mysql']['fleetspeak_db_password'] = 'redborder'
 cdomain = node['redborder']['cdomain'] || 'redborder.cluster'
 node_name = node['hostname']
 default['redborder']['grr']['hostname'] = "#{node_name}.#{cdomain}"
 default['redborder']['grr']['adminui']['port'] = 8002
-default['redborder']['grr']['adminui']['external_url'] = "http://#{node_name}.#{cdomain}:8002"
+default['redborder']['grr']['adminui']['external_url'] = "https://grr-adminui.#{cdomain}"
 default['redborder']['grr']['frontend']['port'] = 8084
-default['redborder']['grr']['frontend']['external_url'] = "http://#{node_name}.#{cdomain}:8084"
+default['redborder']['grr']['frontend']['external_url'] = "http://grr-fleetspeak.#{cdomain}:8084"
 default['redborder']['grr']['fleetspeak']['https_listen'] = '0.0.0.0:8443'
 default['redborder']['grr']['fleetspeak']['admin_listen'] = 'localhost:6061'
 default['redborder']['grr']['fleetspeak']['grr_listen'] = 'localhost:1138'
 default['redborder']['grr']['fleetspeak']['cert_dir'] = '/opt/grr/venv/fleetspeak-server-bin/etc/fleetspeak-server'
 default['redborder']['grr']['fleetspeak']['port'] = 8443
-default['redborder']['grr']['admin']['username'] = 'admin'
-default['redborder']['grr']['admin']['password'] = 'redborder'
 default['redborder']['grr']['paths']['config_dir'] = '/opt/grr'
 default['redborder']['grr']['paths']['server_local_yaml'] = '/opt/grr/venv/install_data/etc/server.local.yaml'
 default['redborder']['grr']['paths']['fleetspeak_dir'] = '/opt/grr/venv/fleetspeak-server-bin/etc/fleetspeak-server'
@@ -122,10 +116,10 @@ default['redborder']['memory_services']['druid-middlemanager'] = { 'count': 1000
 default['redborder']['memory_services']['druid-overlord'] = { 'count': 20, 'memory': 0 }
 default['redborder']['memory_services']['druid-indexer'] = { 'count': 130, 'memory': 0 }
 default['redborder']['memory_services']['druid-router'] = { 'count': 20, 'memory': 0 }
-default['redborder']['memory_services']['f2k'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['http2k'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['kafka'] = { 'count': 120, 'memory': 0, 'max_limit': 524288 }
 default['redborder']['memory_services']['n2klocd'] = { 'count': 10, 'memory': 0 }
+default['redborder']['memory_services']['redborder-netflow2kafka'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['postgresql'] = { 'count': 25, 'memory': 0 }
 default['redborder']['memory_services']['aerospike'] = { 'count': 50, 'memory': 0 }
 default['redborder']['memory_services']['drill'] = { 'count': 20, 'memory': 0 }
@@ -138,6 +132,7 @@ default['redborder']['memory_services']['webui'] = { 'count': 100, 'memory': 0 }
 default['redborder']['memory_services']['zookeeper'] = { 'count': 40, 'memory': 0 }
 default['redborder']['memory_services']['secor'] = { 'count': 30, 'memory': 0 }
 default['redborder']['memory_services']['secor-vault'] = { 'count': 30, 'memory': 0 }
+default['redborder']['memory_services']['redborder-sflow2kafka'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['redis'] = { 'count': 10, 'memory': 0 }
 default['redborder']['memory_services']['airflow-scheduler'] = { 'count': 30, 'memory': 0 }
 default['redborder']['memory_services']['airflow-webserver'] = { 'count': 50, 'memory': 0 }
@@ -184,7 +179,7 @@ default['redborder']['memory_assigned'] = {}
 # geoip has been removed because is not a service
 default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
                                                     druid-broker druid-historical druid-coordinator druid-router druid-indexer druid-overlord
-                                                    postgresql nginx webui rb-workers f2k rb-druid-indexer redborder-monitor sfacctd redis http2k
+                                                    postgresql nginx webui rb-workers redborder-netflow2kafka rb-druid-indexer redborder-monitor redborder-sflow2kafka redis http2k
                                                     redborder-mem2incident rb-logstatter redborder-alarm-engine redborder-license ftp)
 
 default['redborder']['services_group']['custom'] = %w(consul)
@@ -196,7 +191,7 @@ default['redborder']['services_group']['middlemanager'] = %w(consul druid-middle
 default['redborder']['services_group']['broker'] = %w(consul druid-broker)
 default['redborder']['services_group']['http2k'] = %w(consul http2k)
 default['redborder']['services_group']['webui'] = %w(consul nginx webui rb-workers redborder-alarm-engine)
-default['redborder']['services_group']['f2k'] = %w(consul f2k)
+default['redborder']['services_group']['redborder-netflow2kafka'] = %w(consul redborder-netflow2kafka)
 default['redborder']['services_group']['s3'] = %w(consul nginx s3)
 default['redborder']['services_group']['postgresql'] = %w(consul postgresql)
 
@@ -225,15 +220,14 @@ default['redborder']['services']['druid-overlord']            = false
 default['redborder']['services']['druid-indexer']             = false
 default['redborder']['services']['druid-router']              = false
 default['redborder']['services']['rb-druid-indexer']          = false
-default['redborder']['services']['f2k']                       = false
 default['redborder']['services']['http2k']                    = false
 default['redborder']['services']['kafka']                     = false
 default['redborder']['services']['keepalived']                = false
 default['redborder']['services']['logstash']                  = false
 default['redborder']['services']['memcached']                 = true
 default['redborder']['services']['n2klocd']                   = false
+default['redborder']['services']['redborder-netflow2kafka']   = false
 default['redborder']['services']['nginx']                     = false
-default['redborder']['services']['sfacct']                    = false
 default['redborder']['services']['postfix']                   = true
 default['redborder']['services']['postgresql']                = false
 default['redborder']['services']['radiusd']                   = false
@@ -250,6 +244,7 @@ default['redborder']['services']['redborder-nmsp']            = false
 default['redborder']['services']['redborder-scanner']         = false
 default['redborder']['services']['rsyslog']                   = true
 default['redborder']['services']['s3']                        = false
+default['redborder']['services']['redborder-sflow2kafka']     = false
 default['redborder']['services']['serf']                      = true
 default['redborder']['services']['snmp']                      = true
 default['redborder']['services']['snmptrap']                  = true
@@ -293,7 +288,6 @@ default['redborder']['systemdservices']['druid-overlord']           = ['druid-ov
 default['redborder']['systemdservices']['druid-indexer']            = ['druid-indexer']
 default['redborder']['systemdservices']['druid-router']             = ['druid-router']
 default['redborder']['systemdservices']['rb-druid-indexer']         = ['rb-druid-indexer']
-default['redborder']['systemdservices']['f2k']                      = ['f2k']
 default['redborder']['systemdservices']['ftp']                      = ['vsftpd']
 default['redborder']['systemdservices']['http2k']                   = ['http2k']
 default['redborder']['systemdservices']['kafka']                    = ['kafka']
@@ -301,8 +295,8 @@ default['redborder']['systemdservices']['keepalived']               = ['keepaliv
 default['redborder']['systemdservices']['logstash']                 = ['logstash']
 default['redborder']['systemdservices']['memcached']                = ['memcached']
 default['redborder']['systemdservices']['n2klocd']                  = ['n2klocd']
+default['redborder']['systemdservices']['redborder-netflow2kafka']  = ['redborder-netflow2kafka']
 default['redborder']['systemdservices']['nginx']                    = ['nginx']
-default['redborder']['systemdservices']['sfacctd']                  = ['sfacctd']
 default['redborder']['systemdservices']['postfix']                  = ['postfix']
 default['redborder']['systemdservices']['postgresql']               = ['postgresql']
 default['redborder']['systemdservices']['radiusd']                  = ['radiusd']
@@ -319,6 +313,7 @@ default['redborder']['systemdservices']['redborder-nmsp']           = ['redborde
 default['redborder']['systemdservices']['redborder-scanner']        = ['redborder-scanner']
 default['redborder']['systemdservices']['rsyslog']                  = ['rsyslog']
 default['redborder']['systemdservices']['s3']                       = ['minio']
+default['redborder']['systemdservices']['redborder-sflow2kafka']    = ['redborder-sflow2kafka']
 default['redborder']['systemdservices']['snmp']                     = ['snmpd']
 default['redborder']['systemdservices']['snmptrap']                 = ['snmptrapd']
 default['redborder']['systemdservices']['webui']                    = ['webui']
@@ -341,8 +336,8 @@ default['redborder']['systemdservices']['grr-worker']               = ['grr-work
 # Balanced services
 default['redborder']['manager']['balanced'] = [
   { port: 443, protocol: 'tcp', name: 'redborder nginx', service: 'nginx', redirected_service: 'nginx', persistence_timeout: 9600 },
-  { port: 2055, protocol: 'udp', name: 'netflow,ipfix/sflow daemon', service: 'f2k', redirected_service: 'f2k', persistence_timeout: 30 },
-  { port: 6343, protocol: 'udp', name: 'sflow daemon', service: 'sfacctd', redirected_service: 'sfacctd', persistence_timeout: 30 },
+  { port: 2055, protocol: 'udp', name: 'netflow/ipfix daemon', service: 'redborder-netflow2kafka', redirected_service: 'redborder-netflow2kafka', persistence_timeout: 30, health_port: 7983 },
+  { port: 6343, protocol: 'udp', name: 'sflow daemon', service: 'redborder-sflow2kafka', redirected_service: 'redborder-sflow2kafka', persistence_timeout: 30, health_port: 7984 },
   { port: 9092, protocol: 'tcp', name: 'kafka', service: 'kafka', redirected_service: 'kafka', persistence_timeout: 30 },
 ]
 
@@ -355,8 +350,8 @@ default['redborder']['manager']['virtual_ips'] = {
   internal: [{ service: 'postgresql' }],
   external: [
     { service: 'nginx' },
-    { service: 'f2k' },
-    { service: 'sfacctd' },
+    { service: 'redborder-netflow2kafka' },
+    { service: 'redborder-sflow2kafka' },
     { service: 'kafka' },
   ],
 }
