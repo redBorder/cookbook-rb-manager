@@ -1081,6 +1081,9 @@ grr_config 'Configure GRR' do
     config_updater_bin                node['redborder']['grr']['paths']['config_updater_bin']
     grr_adminui_hosts                 node['redborder']['grr-adminui']['hosts']
     grr_fleetspeak_hosts              node['redborder']['grr-fleetspeak']['hosts']
+    s3_secrets                        s3_secrets
+    s3_host                           s3_secrets['s3_host']
+    s3_bucket                         s3_secrets['s3_bucket']
     action [:add, :register]
   else
     action [:remove, :deregister]
