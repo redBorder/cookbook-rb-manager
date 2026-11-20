@@ -10,15 +10,22 @@ node['redborder']['services_group'][node['redborder']['mode']].each { |s| node.d
 
 node.run_state['cluster_installed'] = File.exist?('/etc/redborder/cluster-installed.txt')
 
-# Set :ipaddress_sync
+# Set :ipaddress_sync: the address of this node in the sync network
+# (serf.sync_net of rb_init_conf.yml), or the main address if it is unknown
 ipaddress_sync = node['ipaddress']
-sync_net = `cat /etc/redborder/rb_init_conf.yml  | grep sync_net | awk '{print $2'} | sed 's|/.*||'`.strip
+begin
+  init_conf = YAML.safe_load(File.read('/etc/redborder/rb_init_conf.yml'))
+rescue StandardError => e
+  Chef::Log.warn("Cannot read /etc/redborder/rb_init_conf.yml, using #{ipaddress_sync} as ipaddress_sync: #{e.message}")
+end
+init_conf = {} unless init_conf.is_a?(Hash)
+sync_net = init_conf.dig('serf', 'sync_net').to_s.sub(%r{/.*}, '')
 
-node['network']['interfaces'].each do |interface, _details|
-  next unless "x#{interface}" != 'xlo'
-
-  # ipaddress_sync = `ip route get #{sync_net} | head -n 1 | awk '{for (i=1; i<=NF; i++) if ($i == 'src') print $(i+1)}'`.strip
-  ipaddress_sync = `ip route get #{sync_net} | head -n 1 | awk '/src/ {print $5}'`.strip
+unless sync_net.empty?
+  # "<net> [via <gw>] dev <iface> src <ip> uid 0": the address follows "src"
+  route = `ip route get #{sync_net} 2>/dev/null`.lines.first.to_s.split
+  src = route.index('src')
+  ipaddress_sync = route[src + 1] if src && route[src + 1]
 end
 
 node.default[:ipaddress_sync] = ipaddress_sync
@@ -161,6 +168,12 @@ node.default['redborder']['http2k']['hosts'] = http2k_hosts
 
 hub_hosts = node['redborder']['managers_per_services']['redborder-hub'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
 node.default['redborder']['redborder-hub']['hosts'] = hub_hosts
+
+grr_adminui_hosts = node['redborder']['managers_per_services']['grr-adminui'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
+node.default['redborder']['grr-adminui']['hosts'] = grr_adminui_hosts
+
+grr_fleetspeak_hosts = node['redborder']['managers_per_services']['grr-fleetspeak'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
+node.default['redborder']['grr-fleetspeak']['hosts'] = grr_fleetspeak_hosts
 
 rb_aioutliers_hosts = node['redborder']['managers_per_services']['rb-aioutliers'].map { |z| "#{z}.#{node['redborder']['cdomain']}" if node['redborder']['cdomain'] }
 node.default['redborder']['rb-aioutliers']['hosts'] = rb_aioutliers_hosts

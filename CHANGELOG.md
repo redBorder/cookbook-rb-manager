@@ -1,6 +1,52 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 9.1.0
+
+  - rb-aguzman
+    - [fde7e1a] Merge pull request #474 from redBorder/improvement/#27227_add_grr_to_s3
+  - vimesa
+    - [579ca34] Send S3 variables to the GRR configuration
+
+## 9.0.0
+
+  - Miguel Negrón
+    - [ec7f059] Merge pull request #472 from redBorder/add_netflow2kafka_sflow2kafka_and_remove_f2k_and_sfacctd
+  - manegron
+    - [ec7f059] Merge pull request #472 from redBorder/add_netflow2kafka_sflow2kafka_and_remove_f2k_and_sfacctd
+    - [3ac3b83] Adapt attributes
+    - [ee3d499] Rename sflow2kafka and netflow2kafka to redborder-sflow2kafka and redborder-netflow2kafka
+    - [f71e514] Add sflow2kafka and netflow2kafka
+  - Felix Lopez Da Silva
+    - [da87757] Release 8.3.1
+  - Vimesa
+    - [de2c326] Feature/#26699 config grr ssl (#465)
+
+## 8.3.1
+
+  - Vimesa
+    - [de2c326] Feature/#26699 config grr ssl (#465)
+
+## 8.3.0
+
+  - nilsver
+    - [54843cc] remove require
+    - [7140611] Remove logstash split traffic setting
+    - [4609911] Require cookbook-rb-flow-agent
+    - [df81360] Depend on rb-flow-agent cookbook
+
+## 8.2.2
+
+  - José Jiménez
+    - [1f472c7] Add ips sensor condition to push trap pipeline
+
+## 8.2.1
+
+  - Juan Soto
+    - [fc1932e] Replace rescue modifier with begin/rescue and warn when rb_init_conf.yml can't be read
+  - manegron
+    - [6f16488] FIx getting ipaddress_sync by loading rb_init_conf.yml
+
 ## 8.2.0
 
   - Pablo Pérez
