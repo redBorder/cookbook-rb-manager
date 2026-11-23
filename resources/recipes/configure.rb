@@ -529,27 +529,10 @@ webui_config 'Configure WebUI' do
   end
 end
 
-# the node key is handed to OpenBao once so the agent can restore it after a reboot
+# the agent writes the Chef keys back after every unlock; rb_openbao init/unseal put them in OpenBao once
 chef_client_key = '/run/rb-secrets/chef-client/client.pem'
 chef_client_secret = "cert_chef_client_#{node['hostname']}"
 chef_keys_group = (::Etc.getgrnam('webui') rescue nil) ? 'webui' : 'root'
-ruby_block 'Hand the Chef node key to OpenBao' do
-  block do
-    from = ::File.file?(chef_client_key) ? chef_client_key : '/etc/chef/client.pem'
-    OpenBao.seed_cert_key(chef_client_secret.delete_prefix('cert_'), ::File.read(from), chef_client_key, chef_keys_group)
-    client_rb = ::File.read('/etc/chef/client.rb')
-    unless client_rb.include?(chef_client_key)
-      ::File.write('/etc/chef/client.rb', client_rb.sub(/^client_key .*$/, %(client_key       "#{chef_client_key}")))
-      Chef::Config[:client_key] = chef_client_key
-    end
-    # import-seeds wipes the seed once OpenBao has it
-    node.normal['openbao']['chef_client_key_imported'] = true unless ::File.exist?("#{OpenBao::SEED_DIR}/#{chef_client_secret}.json")
-  end
-  only_if do
-    !node['openbao']['chef_client_key_imported'] &&
-      (::File.file?(chef_client_key) || (::File.file?('/etc/chef/client.pem') && !::File.symlink?('/etc/chef/client.pem')))
-  end
-end
 
 { 'chef-client-key' => [chef_client_key, chef_client_secret, '/etc/chef/client.pem'],
   'chef-data-bag-secret' => ['/run/rb-secrets/chef-databag/encrypted_data_bag_secret', 'cert_data_bag_secret',
