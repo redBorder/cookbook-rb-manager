@@ -1,6 +1,18 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 10.1.0
+
+  - Miguel Negrón
+    - [0ee29ff] Merge pull request #473 from redBorder/improvement/#157_do_not_use_a_standard_auth_token
+  - manegron
+    - [0ee29ff] Merge pull request #473 from redBorder/improvement/#157_do_not_use_a_standard_auth_token
+    - [fec7202] Merge branch 'development' into improvement/#157_do_not_use_a_standard_auth_token
+  - Juan Soto
+    - [56899c8] Merge branch 'master' into improvement/#157_do_not_use_a_standard_auth_token
+    - [aa08364] Read the hub registration token from the rBglobal data bag
+    - [4e6994a] Pass the hub auth and registration tokens from the passwords data bag to rbhub_config
+
 ## 10.0.0
 
   - Miguel Negrón
