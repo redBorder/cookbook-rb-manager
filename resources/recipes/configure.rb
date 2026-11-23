@@ -169,6 +169,7 @@ keepalived_config 'Configure keepalived' do
     iface_management node['redborder']['management_interface']
     ipaddress_sync node['ipaddress_sync']
     managers_per_service node['redborder']['managers_per_services']
+    unicast_config node.run_state['keepalived_unicast_config']
     action :add
   else
     action :remove
@@ -1100,6 +1101,9 @@ grr_config 'Configure GRR' do
     config_updater_bin                node['redborder']['grr']['paths']['config_updater_bin']
     grr_adminui_hosts                 node['redborder']['grr-adminui']['hosts']
     grr_fleetspeak_hosts              node['redborder']['grr-fleetspeak']['hosts']
+    s3_secrets                        s3_secrets
+    s3_host                           s3_secrets['s3_host']
+    s3_bucket                         s3_secrets['s3_bucket']
     action [:add, :register]
   else
     action [:remove, :deregister]
