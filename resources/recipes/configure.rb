@@ -95,37 +95,6 @@ consul_config 'Configure Consul Server' do
   end
 end
 
-# no item (not migrated yet): keep the data bag passwords an existing install runs on
-openbao_secrets = begin
-                    data_bag_item('rBglobal', 'openbao')['secrets'] == true
-                  rescue Net::HTTPClientException => e
-                    raise unless e.response.code == '404'
-                    false
-                  end
-
-openbao_config 'Configure OpenBao' do
-  if manager_services['openbao']
-    ipaddress node['ipaddress_sync']
-    is_server true
-    dev node['openbao']['dev']
-    dev_static_key node['openbao']['dev_static_key']
-    credentials node['openbao']['credentials']
-    peers node['redborder']['cluster_info'].reject { |name, _| name == node.name }.map { |_, m| m['ipaddress_sync'] }.compact
-    bootstrap ::File.exist?('/var/lock/leader-configuring.lock')
-    action [:add, :register]
-  else
-    action [:remove, :deregister]
-  end
-end
-
-# Determine external
-begin
-  external_services = data_bag_item('rBglobal', 'external_services')
-rescue => e
-  Chef::Log.warn("Failed to load external_services data bag: #{e.message}")
-  external_services = nil
-end
-
 s3_secrets = {}
 
 begin
@@ -140,20 +109,6 @@ begin
   s3_malware_secrets = data_bag_item('rBglobal', 'malware-bucket').to_hash
 rescue
   s3_malware_secrets = {}
-end
-
-# on-prem S3 keys live in OpenBao; external S3 (set in the webui) stays in the data bag
-s3_secrets_real = s3_secrets
-if openbao_secrets && external_services&.dig('s3') == 'onpremise'
-  real = OpenBao.run_secret('s3') || {}
-  s3_secrets_real = s3_secrets.merge(real) # nil keys while OpenBao is sealed
-  s3_secrets = s3_secrets.merge('s3_access_key_id' => OpenBao.ref('s3', 's3_access_key_id'),
-                                's3_secret_key_id' => OpenBao.ref('s3', 's3_secret_key_id'))
-end
-if openbao_secrets
-  s3_malware_secrets = s3_malware_secrets.merge(
-    's3_malware_access_key_id' => OpenBao.ref('s3_malware', 's3_malware_access_key_id'),
-    's3_malware_secret_key_id' => OpenBao.ref('s3_malware', 's3_malware_secret_key_id'))
 end
 
 # only the manager running the Chef server adds new IPS sensors to malware_vault/keys
@@ -179,19 +134,33 @@ chef_server_config 'Configure chef services' do
     postgresql_memory node['redborder']['memory_services']['postgresql']['memory']
     chef_active manager_services['chef-server']
     ipaddress node['ipaddress_sync']
-    # OpenBao sealed: leave the S3 part of the Chef server config as it is
-    s3_secrets(s3_secrets_real['s3_secret_key_id'] ? s3_secrets_real : {})
-    openbao openbao_secrets
+    s3_secrets s3_secrets
     action [:add, :register]
   else
     action [:remove, :deregister]
   end
 end
 
+# Determine external
+begin
+  external_services = data_bag_item('rBglobal', 'external_services')
+rescue => e
+  Chef::Log.warn("Failed to load external_services data bag: #{e.message}")
+  external_services = nil
+end
+
+# on-premise S3: the agent templates get the keys from OpenBao; external S3 (set in the webui) stays in the data bag
+if external_services&.dig('s3') == 'onpremise'
+  s3_secrets = s3_secrets.merge('s3_access_key_id' => OpenBao.ref('s3', 's3_access_key_id'),
+                                's3_secret_key_id' => OpenBao.ref('s3', 's3_secret_key_id'))
+end
+s3_malware_secrets = s3_malware_secrets.merge(
+  's3_malware_access_key_id' => OpenBao.ref('s3_malware', 's3_malware_access_key_id'),
+  's3_malware_secret_key_id' => OpenBao.ref('s3_malware', 's3_malware_secret_key_id'))
+
 
 postgresql_config 'Configure postgresql' do
   if manager_services['postgresql'] && external_services&.dig('postgresql') == 'onpremise'
-    openbao openbao_secrets
     cdomain node['redborder']['cdomain']
     ipaddress node['ipaddress_sync']
     action [:add, :register]
@@ -208,7 +177,7 @@ vrrp_secrets = {}
 if manager_services['keepalived']
   begin
     vrrp_secrets = data_bag_item('passwords', 'vrrp').to_hash
-    vrrp_secrets['pass'] = OpenBao.ref('vrrp', 'pass') if openbao_secrets
+    vrrp_secrets['pass'] = OpenBao.ref('vrrp', 'pass')
   rescue
     vrrp_secrets = {}
   end
@@ -216,7 +185,6 @@ end
 
 keepalived_config 'Configure keepalived' do
   if manager_services['keepalived']
-    openbao openbao_secrets
     vrrp_secrets vrrp_secrets
     virtual_ips virtual_ips
     virtual_ips_per_ip virtual_ips_per_ip
@@ -270,7 +238,6 @@ if manager_services['druid-coordinator'] || manager_services['druid-overlord'] |
   end
 
   druid_common 'Configure druid common resources' do
-    openbao openbao_secrets
     name node['hostname']
     zookeeper_hosts node['redborder']['zookeeper']['zk_hosts']
     memcached_hosts node['redborder']['memcached']['hosts']
@@ -330,7 +297,6 @@ druid_broker 'Configure Druid Broker' do
 end
 
 druid_middlemanager 'Configure Druid MiddleManager' do
-  openbao openbao_secrets
   if manager_services['druid-middlemanager']
     name node['hostname']
     cdomain node['redborder']['cdomain']
@@ -368,7 +334,6 @@ rb_druid_indexer_config 'Configure Rb Druid Indexer' do
 end
 
 druid_indexer 'Configure Druid Indexer' do
-  openbao openbao_secrets
   if manager_services['druid-indexer']
     name node['hostname']
     cdomain node['redborder']['cdomain']
@@ -466,7 +431,6 @@ nginx_config 'Configure Nginx Chef' do
     erchef_hosts node['redborder']['erchef']['hosts']
     cdomain node['redborder']['cdomain']
     service_name 'erchef'
-    openbao openbao_secrets
     action [:configure_certs, :add_erchef]
   else
     action :nothing
@@ -477,7 +441,6 @@ nginx_config 'Configure Nginx aioutliers' do
   if manager_services['nginx'] && node['redborder']['rb-aioutliers']['hosts'] && !node['redborder']['rb-aioutliers']['hosts'].empty?
     aioutliers_hosts node['redborder']['rb-aioutliers']['hosts']
     service_name 'rb-aioutliers'
-    openbao openbao_secrets
     action [:configure_certs, :add_aioutliers]
   elsif manager_services['nginx']
     action :remove_aioutliers
@@ -489,7 +452,6 @@ end
 nginx_config 'Configure Nginx redborder-hub' do
   cdomain node['redborder']['cdomain']
   service_name 'redborder-hub'
-  openbao openbao_secrets
   hub_hosts node['redborder']['redborder-hub']['hosts']
   hub_local_active manager_services['redborder-hub']
   if manager_services['nginx'] && node['redborder']['redborder-hub']['hosts'] && !node['redborder']['redborder-hub']['hosts'].empty?
@@ -534,7 +496,6 @@ rescue
 end
 
 drill_config 'Configure drill' do
-  openbao openbao_secrets
   s3_malware_secrets s3_malware_secrets
   s3_host s3_secrets['s3_host']
   cdomain node['redborder']['cdomain']
@@ -549,7 +510,6 @@ end
 
 webui_config 'Configure WebUI' do
   if manager_services['webui']
-    openbao openbao_secrets
     hostname node['hostname']
     memcached_servers node['redborder']['managers_per_services']['memcached']
     memory_kb node['redborder']['memory_services']['webui']['memory']
@@ -569,53 +529,50 @@ webui_config 'Configure WebUI' do
   end
 end
 
-if openbao_secrets
-  # the node key is handed to OpenBao once so the agent can restore it after a reboot
-  chef_client_key = '/run/rb-secrets/chef-client/client.pem'
-  chef_client_secret = "cert_chef_client_#{node['hostname']}"
-  chef_keys_group = (::Etc.getgrnam('webui') rescue nil) ? 'webui' : 'root'
-  ruby_block 'Hand the Chef node key to OpenBao' do
-    block do
-      from = ::File.file?(chef_client_key) ? chef_client_key : '/etc/chef/client.pem'
-      OpenBao.seed_cert_key(chef_client_secret.delete_prefix('cert_'), ::File.read(from), chef_client_key, chef_keys_group)
-      client_rb = ::File.read('/etc/chef/client.rb')
-      unless client_rb.include?(chef_client_key)
-        ::File.write('/etc/chef/client.rb', client_rb.sub(/^client_key .*$/, %(client_key       "#{chef_client_key}")))
-        Chef::Config[:client_key] = chef_client_key
-      end
-      # import-seeds wipes the seed once OpenBao has it
-      node.normal['openbao']['chef_client_key_imported'] = true unless ::File.exist?("#{OpenBao::SEED_DIR}/#{chef_client_secret}.json")
+# the node key is handed to OpenBao once so the agent can restore it after a reboot
+chef_client_key = '/run/rb-secrets/chef-client/client.pem'
+chef_client_secret = "cert_chef_client_#{node['hostname']}"
+chef_keys_group = (::Etc.getgrnam('webui') rescue nil) ? 'webui' : 'root'
+ruby_block 'Hand the Chef node key to OpenBao' do
+  block do
+    from = ::File.file?(chef_client_key) ? chef_client_key : '/etc/chef/client.pem'
+    OpenBao.seed_cert_key(chef_client_secret.delete_prefix('cert_'), ::File.read(from), chef_client_key, chef_keys_group)
+    client_rb = ::File.read('/etc/chef/client.rb')
+    unless client_rb.include?(chef_client_key)
+      ::File.write('/etc/chef/client.rb', client_rb.sub(/^client_key .*$/, %(client_key       "#{chef_client_key}")))
+      Chef::Config[:client_key] = chef_client_key
     end
-    only_if do
-      !node['openbao']['chef_client_key_imported'] &&
-        (::File.file?(chef_client_key) || (::File.file?('/etc/chef/client.pem') && !::File.symlink?('/etc/chef/client.pem')))
-    end
+    # import-seeds wipes the seed once OpenBao has it
+    node.normal['openbao']['chef_client_key_imported'] = true unless ::File.exist?("#{OpenBao::SEED_DIR}/#{chef_client_secret}.json")
+  end
+  only_if do
+    !node['openbao']['chef_client_key_imported'] &&
+      (::File.file?(chef_client_key) || (::File.file?('/etc/chef/client.pem') && !::File.symlink?('/etc/chef/client.pem')))
+  end
+end
+
+{ 'chef-client-key' => [chef_client_key, chef_client_secret, '/etc/chef/client.pem'],
+  'chef-data-bag-secret' => ['/run/rb-secrets/chef-databag/encrypted_data_bag_secret', 'cert_data_bag_secret',
+                             '/etc/chef/encrypted_data_bag_secret'] }.each do |name, (dest, secret, etc_path)|
+  openbao_secret_file name do
+    source 'key.ctmpl.erb'
+    cookbook 'openbao'
+    variables(name: secret)
+    destination dest
+    owner 'root'
+    group chef_keys_group
+    mode '0640'
   end
 
-  { 'chef-client-key' => [chef_client_key, chef_client_secret, '/etc/chef/client.pem'],
-    'chef-data-bag-secret' => ['/run/rb-secrets/chef-databag/encrypted_data_bag_secret', 'cert_data_bag_secret',
-                               '/etc/chef/encrypted_data_bag_secret'] }.each do |name, (dest, secret, etc_path)|
-    openbao_secret_file name do
-      source 'key.ctmpl.erb'
-      cookbook 'openbao'
-      variables(name: secret)
-      destination dest
-      owner 'root'
-      group chef_keys_group
-      mode '0640'
-    end
-
-    link etc_path do
-      to dest
-      only_if { ::File.exist?(dest) }
-    end
+  link etc_path do
+    to dest
+    only_if { ::File.exist?(dest) }
   end
 end
 
 webui_config 'Configure Nginx WebUI' do
   if manager_services['nginx'] && node['redborder']['webui']['hosts'] && !node['redborder']['webui']['hosts'].empty?
     hosts node['redborder']['webui']['hosts']
-    openbao openbao_secrets
     cdomain node['redborder']['cdomain']
     port node['redborder']['webui']['port']
     action [:configure_certs, :add_webui_conf_nginx]
@@ -650,7 +607,6 @@ nginx_config 'Configure Nginx Http2k' do
     http2k_port node['redborder']['http2k']['port']
     cdomain node['redborder']['cdomain']
     service_name 'http2k'
-    openbao openbao_secrets
     action [:configure_certs, :add_http2k]
   elsif manager_services['nginx']
     action :remove_http2k
@@ -684,21 +640,9 @@ rb_sflow2kafka_config 'Configure redborder-sflow2kafka' do
   end
 end
 
-redis_secrets = {}
-
-unless openbao_secrets
-  begin
-    redis_secrets = data_bag_item('passwords', 'redis').to_hash
-  rescue
-    redis_secrets = {}
-  end
-end
-
 redis_config 'Configure redis' do
   if manager_services['redis']
     redis_hosts node['redborder']['managers_per_services']['redis']
-    redis_secrets redis_secrets
-    openbao openbao_secrets
     cdomain node['redborder']['cdomain']
     action [:add, :register]
   else
@@ -708,8 +652,6 @@ end
 
 rb_alarm_engine_config 'Configure redBorder alarm engine' do
   if manager_services['redborder-alarm-engine']
-    redis_password redis_secrets['pass'] unless redis_secrets.empty?
-    openbao openbao_secrets
   else
     action :remove
   end
@@ -727,8 +669,6 @@ rb_license_config 'Configure redBorder License' do
   if manager_services['redborder-license']
     cluster_uuid cluster_uuid_db['uuid'] unless cluster_uuid_db.empty?
     node_id node['hostname']
-    redis_password redis_secrets['pass'] unless redis_secrets.empty?
-    openbao openbao_secrets
   else
     action :remove
   end
@@ -770,8 +710,6 @@ if manager_services.values_at(*airflow_managed_services).compact.any?
     cdomain node['redborder']['cdomain']
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
-    redis_secrets redis_secrets
-    openbao openbao_secrets
     logstash_hosts node['redborder']['managers_per_services']['logstash']
     airflow_webserver_hosts node['redborder']['managers_per_services']['airflow-webserver']
     cpu_cores node['cpu']['total'].to_i
@@ -898,8 +836,6 @@ logstash_config 'Configure logstash' do
     flow_nodes_with_proxy node.run_state['sensors_info_childs_proxy']['flow-sensor']
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
-    redis_secrets redis_secrets
-    openbao openbao_secrets
     s3_malware_secrets s3_malware_secrets
     clamscan_enabled manager_services['clamav']
     action [:add, :register]
@@ -924,7 +860,6 @@ end
 
 rbnmsp_config 'Configure redborder-nmsp' do
   if manager_services['redborder-nmsp']
-    openbao openbao_secrets
     memory node['redborder']['memory_services']['redborder-nmsp']['memory']
     proxy_nodes node.run_state['sensors_info_all']['proxy-sensor']
     flow_nodes node.run_state['sensors_info_all']['flow-sensor']
@@ -990,7 +925,6 @@ end
 # end
 
 rbaioutliers_config 'Configure rb-aioutliers' do
-  openbao openbao_secrets
   if manager_services['rb-aioutliers']
     s3_secrets s3_secrets
     action [:add, :register]
@@ -1025,8 +959,6 @@ mem2incident_config 'Configure redborder-mem2incident' do
     cdomain node['redborder']['cdomain']
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
-    redis_secrets redis_secrets
-    openbao openbao_secrets
     auth_token node.run_state['auth_token']
     action [:add, :register]
   else
@@ -1080,10 +1012,9 @@ rb_chrony_config 'Configure Chrony' do
   end
 end
 
-s3cfg_initial = openbao_secrets ? '/run/rb-secrets/root/s3cfg_initial' : '/root/.s3cfg_initial'
+s3cfg_initial = '/run/rb-secrets/root/s3cfg_initial'
 directory '/run/rb-secrets/root' do
   mode '0750'
-  only_if { openbao_secrets }
 end
 
 template s3cfg_initial do
@@ -1097,7 +1028,7 @@ template s3cfg_initial do
     cdomain: node['redborder']['cdomain']
   )
   action :create
-  not_if { openbao_secrets && external_services&.dig('s3') == 'onpremise' } # cookbook-minio renders it
+  not_if { external_services&.dig('s3') == 'onpremise' } # cookbook-minio renders it
   only_if do
     s3_secrets['s3_access_key_id'] && !s3_secrets['s3_access_key_id'].empty? &&
       s3_secrets['s3_secret_key_id'] && !s3_secrets['s3_secret_key_id'].empty? &&
@@ -1108,12 +1039,11 @@ end
 
 link '/root/.s3cfg_initial' do
   to s3cfg_initial
-  only_if { openbao_secrets && external_services&.dig('s3') != 'onpremise' }
+  only_if { external_services&.dig('s3') != 'onpremise' }
 end
 
 # Allow only s3 onpremise nodes for now..
 minio_config 'Configure S3 (minio)' do
-  openbao openbao_secrets
   managers_with_minio node['redborder']['managers_per_services']['s3']
   access_key_id s3_secrets['s3_access_key_id']
   secret_key_id s3_secrets['s3_secret_key_id']
@@ -1148,7 +1078,6 @@ end
 
 # Configure secor service for backup kafka data in case of data lose and for view raw vault data
 secor_config 'Configure Secor Service' do
-  openbao openbao_secrets
   if manager_services['secor'] || manager_services['secor-vault']
     kafka_hosts node['redborder']['managers_per_services']['kafka']
     zk_hosts node['redborder']['zookeeper']['zk_hosts']
@@ -1174,7 +1103,6 @@ end
 nginx_config 'Configure Nginx S3 certs' do
   if manager_services['nginx'] && node['redborder']['s3']['s3_hosts'] && !node['redborder']['s3']['s3_hosts'].empty?
     service_name 's3'
-    openbao openbao_secrets
     cdomain node['redborder']['cdomain']
     action :configure_certs
   else
@@ -1251,34 +1179,17 @@ unless ssh_secrets.empty?
   end
 end
 
-begin
-  rsa_pem = data_bag_item('certs', 'rsa_pem')
-rescue
-  rsa_pem = {}
+openbao_secret_file 'root-rsa' do
+  source 'rsa.ctmpl.erb'
+  cookbook 'rb-manager'
+  destination '/run/rb-secrets/root/rsa'
+  owner 'root'
+  group 'root'
+  mode '0600'
 end
 
-if openbao_secrets
-  openbao_secret_file 'root-rsa' do
-    source 'rsa.ctmpl.erb'
-    cookbook 'rb-manager'
-    destination '/run/rb-secrets/root/rsa'
-    owner 'root'
-    group 'root'
-    mode '0600'
-  end
-
-  link '/root/.ssh/rsa' do
-    to '/run/rb-secrets/root/rsa'
-  end
-elsif !rsa_pem.empty?
-  template '/root/.ssh/rsa' do
-    source 'rsa_cert.pem.erb'
-    owner 'root'
-    group 'root'
-    mode '0600'
-    retries 2
-    variables(private_rsa: rsa_pem['private_rsa'])
-  end
+link '/root/.ssh/rsa' do
+  to '/run/rb-secrets/root/rsa'
 end
 
 # Pending Changes..
