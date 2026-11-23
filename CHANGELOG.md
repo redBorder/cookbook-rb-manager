@@ -1,6 +1,17 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 10.0.0
+
+  - Miguel Negrón
+    - [18386b9] Merge pull request #464 from redBorder/improvement/#27039_split_brain_remediation
+  - manegron
+    - [18386b9] Merge pull request #464 from redBorder/improvement/#27039_split_brain_remediation
+    - [35a4331] Merge branch 'development' into improvement/#27039_split_brain_remediation
+  - David Vanhoucke
+    - [0040cbf] fix lint
+    - [8ca4cc0] introduce unicast for postgresql
+
 ## 9.1.0
 
   - rb-aguzman
