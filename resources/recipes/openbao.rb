@@ -12,9 +12,6 @@ openbao_config 'Configure OpenBao' do
   if manager_services['openbao']
     ipaddress node['ipaddress_sync']
     is_server true
-    dev node['openbao']['dev']
-    dev_static_key node['openbao']['dev_static_key']
-    credentials node['openbao']['credentials']
     peers node['redborder']['cluster_info'].reject { |name, _| name == node.name }.map { |_, m| m['ipaddress_sync'] }.compact
     bootstrap ::File.exist?('/var/lock/leader-configuring.lock')
     action [:add, :register]
