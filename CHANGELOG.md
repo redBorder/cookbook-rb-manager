@@ -1,6 +1,12 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 10.1.1
+
+  - ljblancoredborder
+    - [362b46d] Merge pull request #468 from redBorder/bugfix/#27177_rb_clean_segments
+    - [8591090] clean minio even if this node has not druid running
+
 ## 10.1.0
 
   - Miguel Negrón
