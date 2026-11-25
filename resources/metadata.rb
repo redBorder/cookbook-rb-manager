@@ -8,7 +8,7 @@ description      'Installs/Configures redborder manager'
 version          '10.1.1'
 
 depends 'rb-common'
-depends 'chef-server'
+depends 'cinc-server'
 depends 'zookeeper'
 depends 'kafka'
 depends 'druid'
