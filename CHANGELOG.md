@@ -1,6 +1,28 @@
 cookbook-rb-manager CHANGELOG
 ===============
 
+## 11.0.0
+
+  - Miguel Negrón
+    - [26a087c] Merge pull request #477 from redBorder/improvement/#27292_migrate_to_cinc
+  - manegron
+    - [26a087c] Merge pull request #477 from redBorder/improvement/#27292_migrate_to_cinc
+    - [90a292f] Fix get_virtual_ip_info crash on managers without services
+    - [2dd1c14] Migrate to cinc
+  - aguzman
+    - [8a4793b] Bump version
+    - [362b46d] Merge pull request #468 from redBorder/bugfix/#27177_rb_clean_segments
+  - rb-aguzman
+    - [362b46d] Merge pull request #468 from redBorder/bugfix/#27177_rb_clean_segments
+  - ljblancoredborder
+    - [8591090] clean minio even if this node has not druid running
+
+## 10.1.1
+
+  - ljblancoredborder
+    - [362b46d] Merge pull request #468 from redBorder/bugfix/#27177_rb_clean_segments
+    - [8591090] clean minio even if this node has not druid running
+
 ## 10.1.0
 
   - Miguel Negrón

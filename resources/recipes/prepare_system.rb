@@ -35,7 +35,7 @@ mac_sync = `ip a | grep -w -B2 #{ipaddress_sync} | awk '{print toupper($2)}' | h
 node.default['mac_sync'] = mac_sync
 
 # Configure and enable chef-client
-dnf_package 'redborder-chef-client' do
+dnf_package 'redborder-cinc-client' do
   action :upgrade
 end
 
