@@ -1,6 +1,6 @@
 # Cookbook:: manager
 # Recipe:: openbao
-# Copyright:: 2024, redborder
+# Copyright:: 2026, redborder
 # License:: Affero General Public License, Version 3
 
 # Also run alone ('chef-client -o recipe[rb-manager::openbao]') by rb_openbao_migrate.rb before the rest is migrated
