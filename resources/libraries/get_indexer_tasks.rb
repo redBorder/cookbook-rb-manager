@@ -19,7 +19,7 @@ module RbManager
         { task_name: 'rb_trap', feed: 'rb_trap_post' },
       ]
 
-      # This was an optimization: if there are no namespaces, monitor pipeline is not active in Logstash.
+      # This was an optimization: if there are no namespaces, monitor pipeline is not active in redborder-vortex.
       # In that case, we should read from the topic rb_monitor instead of rb_monitor_post.
       # But we want to keep topics consistent as in other modules and switching topics creates an error in indexer,
       # when the feed switches from rb_monitor to rb_monitor_post.

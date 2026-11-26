@@ -655,7 +655,7 @@ if manager_services.values_at(*airflow_managed_services).compact.any?
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
     redis_secrets redis_secrets
-    logstash_hosts node['redborder']['managers_per_services']['logstash']
+    logstash_hosts node['redborder']['managers_per_services']['redborder-vortex']
     airflow_webserver_hosts node['redborder']['managers_per_services']['airflow-webserver']
     cpu_cores node['cpu']['total'].to_i
     ram_memory_kb node['memory']['total'].to_i
@@ -745,8 +745,46 @@ execute 'enable_crb_repo' do
   not_if 'dnf repolist enabled | grep -q crb'
 end
 
-# Configure logstash
-if manager_services['logstash']
+# logstash has been replaced by redborder-vortex: clean up nodes upgraded from older versions
+execute 'Deregister logstash service in consul' do
+  command "curl -X PUT http://localhost:8500/v1/agent/service/deregister/logstash-#{node['hostname']} &>/dev/null"
+  ignore_failure true
+  only_if { node['logstash'] && node['logstash']['registered'] }
+  notifies :run, 'ruby_block[unset_logstash_registered]', :immediately
+end
+
+ruby_block 'unset_logstash_registered' do
+  block { node.normal['logstash']['registered'] = false }
+  action :nothing
+end
+
+service 'logstash' do
+  ignore_failure true
+  action [:stop, :disable]
+  only_if 'rpm -q logstash'
+end
+
+%w(logstash logstash-rules redborder-logstash-plugins).each do |pkg|
+  dnf_package pkg do
+    action :remove
+    # rpm -q matches the package name, not Provides (redborder-vortex Provides: logstash)
+    only_if "rpm -q #{pkg}"
+  end
+end
+
+%w(/etc/logstash /etc/systemd/system/logstash.service.d).each do |dir|
+  directory dir do
+    recursive true
+    action :delete
+  end
+end
+
+file '/etc/logrotate.d/logstash' do
+  action :delete
+end
+
+# Configure redborder-vortex
+if manager_services['redborder-vortex']
   begin
     split_intrusion = data_bag_item('rBglobal', 'splitintrusion')['logstash']
   rescue
@@ -754,8 +792,8 @@ if manager_services['logstash']
   end
 end
 
-logstash_config 'Configure logstash' do
-  if manager_services['logstash'] && node.run_state['pipelines'] && !node.run_state['pipelines'].empty?
+rb_vortex_config 'Configure redborder-vortex' do
+  if manager_services['redborder-vortex'] && node.run_state['pipelines'] && !node.run_state['pipelines'].empty?
     cdomain node['redborder']['cdomain']
     flow_nodes node.run_state['flow_sensors_info']
     ipaddress_sync node['ipaddress_sync']
@@ -775,8 +813,8 @@ logstash_config 'Configure logstash' do
     malware_score_threshold node['redborder']['manager']['malware']['threshold'].to_i
     malware_incidents_priority node['redborder']['manager']['malware']['incidents_priority']
     reputation_managers node['redborder']['managers_per_services']['rb-reputation']
-    logstash_pipelines node.run_state['pipelines']
-    split_intrusion_logstash split_intrusion
+    vortex_pipelines node.run_state['pipelines']
+    split_intrusion_vortex split_intrusion
     flow_nodes_without_proxy node.run_state['cluster_sensors_info']['flow-sensor']
     flow_nodes_with_proxy node.run_state['sensors_info_childs_proxy']['flow-sensor']
     redis_hosts node['redborder']['managers_per_services']['redis']
@@ -847,12 +885,9 @@ rb_reputation_config 'Configure rb-reputation' do
   end
 end
 
+# rb-logstatter read the logstash API, which no longer exists with redborder-vortex
 rblogstatter_config 'Configure redborder-logstatter' do
-  if manager_services['rb-logstatter'] && manager_services['logstash'] && node.run_state['pipelines'] && !node.run_state['pipelines'].empty?
-    action :add
-  else
-    action :remove
-  end
+  action :remove
 end
 
 rb_arubacentral_config 'Configure rb-arubacentral' do
