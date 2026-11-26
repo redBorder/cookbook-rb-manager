@@ -187,7 +187,7 @@ if node['redborder']['managers_per_services']['kafka'].include?(node.name)
 end
 
 # Set all nodes with s3 configured (nginx load balancer)
-s3_hosts = node['redborder']['managers_per_services']['s3'].map { |z| "#{z}.#{node['redborder']['cdomain']}:9000" if node['redborder']['cdomain'] }
+s3_hosts = node['redborder']['managers_per_services']['s3'].map { |z| "#{z}.#{node['redborder']['cdomain']}:#{node['seaweedfs']['s3_port']}" if node['redborder']['cdomain'] }
 node.default['redborder']['s3']['s3_hosts'] = s3_hosts
 
 # get an array of managers

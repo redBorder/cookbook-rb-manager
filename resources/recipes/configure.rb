@@ -216,7 +216,7 @@ if manager_services['druid-coordinator'] || manager_services['druid-overlord'] |
     zookeeper_hosts node['redborder']['zookeeper']['zk_hosts']
     memcached_hosts node['redborder']['memcached']['hosts']
     s3_service s3_secrets['s3_host']
-    s3_port node['minio']['port']
+    s3_port node['seaweedfs']['s3_port']
     s3_secrets s3_secrets
     action :add
     notifies :restart, 'service[druid-broker]', :delayed if manager_services['druid-broker']
@@ -980,7 +980,7 @@ end
 
 template '/root/.s3cfg_initial' do
   source 's3cfg_initial.erb'
-  cookbook 'minio'
+  cookbook 'seaweedfs'
   variables(
     s3_user: s3_secrets['s3_access_key_id'],
     s3_password: s3_secrets['s3_secret_key_id'],
@@ -997,19 +997,21 @@ template '/root/.s3cfg_initial' do
 end
 
 # Allow only s3 onpremise nodes for now..
-minio_config 'Configure S3 (minio)' do
-  managers_with_minio node['redborder']['managers_per_services']['s3']
+# All the managers with s3 form one SeaweedFS cluster
+seaweedfs_config 'Configure S3 (seaweedfs)' do
+  managers_with_s3 node['redborder']['managers_per_services']['s3']
+  cluster_info node['redborder']['cluster_info'].to_hash if node['redborder']['cluster_info']
+  ipaddress node['ipaddress_sync']
   access_key_id s3_secrets['s3_access_key_id']
   secret_key_id s3_secrets['s3_secret_key_id']
   malware_access_key_id s3_malware_secrets['s3_malware_access_key_id'] unless s3_malware_secrets['s3_malware_access_key_id'].nil?
   malware_secret_key_id s3_malware_secrets['s3_malware_secret_key_id'] unless s3_malware_secrets['s3_malware_secret_key_id'].nil?
   if manager_services['s3'] && external_services&.dig('s3') == 'onpremise'
-    ipaddress node['ipaddress_sync']
-    action [:add_mcli, :add, :add_malware, :register]
+    action [:add, :add_malware, :register]
   elsif !external_services.nil?
-    action [:add_mcli, :remove, :deregister]
+    action [:remove, :deregister]
   else
-    Chef::Log.warn('Skipped MinIO removal/deregistration due to missing external_services data')
+    Chef::Log.warn('Skipped SeaweedFS removal/deregistration due to missing external_services data')
     action :nothing
   end
 end
@@ -1041,7 +1043,7 @@ secor_config 'Configure Secor Service' do
     s3_user s3_secrets['s3_access_key_id']
     s3_pass s3_secrets['s3_secret_key_id']
     s3_bucket 'bucket'
-    s3_port node['minio']['port']
+    s3_port node['seaweedfs']['s3_port']
     action :add
   else
     action :remove
@@ -1065,7 +1067,7 @@ nginx_config 'Configure Nginx S3 certs' do
 end
 
 # Configure Nginx s3 onpremise nodes for now..
-minio_config 'Configure S3 (minio)' do
+seaweedfs_config 'Configure Nginx S3 (seaweedfs)' do
   if manager_services['s3'] && external_services&.dig('s3') == 'onpremise'
     s3_hosts node['redborder']['s3']['s3_hosts']
     action [:add_s3_conf_nginx]
