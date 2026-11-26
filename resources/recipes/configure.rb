@@ -111,7 +111,7 @@ rescue
   s3_malware_secrets = {}
 end
 
-chef_server_config 'Configure chef services' do
+cinc_server_config 'Configure chef services' do
   if manager_services['chef-server']
     memory node['redborder']['memory_services']['chef-server']['memory']
     postgresql false
