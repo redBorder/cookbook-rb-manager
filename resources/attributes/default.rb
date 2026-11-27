@@ -141,7 +141,7 @@ default['redborder']['memory_services']['airflow-triggerer'] = { 'count': 10, 'm
 default['redborder']['memory_services']['airflow-dag-processor'] = { 'count': 20, 'memory': 0 }
 default['redborder']['memory_services']['rb-reputation'] = { 'count': 30, 'memory': 0 }
 default['redborder']['memory_services']['redborder-hub'] = { 'count': 10, 'memory': 0 }
-default['redborder']['memory_services']['logstash'] = { 'count': 80, 'memory': 0 }
+default['redborder']['memory_services']['redborder-vortex'] = { 'count': 30, 'memory': 0 }
 default['redborder']['memory_services']['grr-fleetspeak'] = { 'count': 20, 'memory': 0 }
 default['redborder']['memory_services']['grr-adminui'] = { 'count': 20, 'memory': 0 }
 default['redborder']['memory_services']['grr-frontend'] = { 'count': 20, 'memory': 0 }
@@ -160,10 +160,10 @@ default['redborder']['zookeeper_hosts'] = []
 default['redborder']['memory_assigned'] = {}
 
 # geoip has been removed because is not a service
-default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
+default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka redborder-vortex s3
                                                     druid-broker druid-historical druid-coordinator druid-router druid-indexer druid-overlord
                                                     postgresql nginx webui rb-workers redborder-netflow2kafka rb-druid-indexer redborder-monitor redborder-sflow2kafka redis http2k
-                                                    redborder-mem2incident rb-logstatter redborder-alarm-engine redborder-license ftp)
+                                                    redborder-mem2incident redborder-alarm-engine redborder-license ftp)
 
 default['redborder']['services_group']['custom'] = %w(consul)
 default['redborder']['services_group']['core'] = %w(consul chef-server s3 postgresql nginx)
@@ -206,7 +206,6 @@ default['redborder']['services']['rb-druid-indexer']          = false
 default['redborder']['services']['http2k']                    = false
 default['redborder']['services']['kafka']                     = false
 default['redborder']['services']['keepalived']                = false
-default['redborder']['services']['logstash']                  = false
 default['redborder']['services']['memcached']                 = true
 default['redborder']['services']['n2klocd']                   = false
 default['redborder']['services']['redborder-netflow2kafka']   = false
@@ -221,6 +220,7 @@ default['redborder']['services']['rb-workers']                = false
 default['redborder']['services']['redborder-agents']          = false
 default['redborder']['services']['redborder-ale']             = false
 default['redborder']['services']['redborder-cep']             = false
+default['redborder']['services']['redborder-vortex']          = false
 default['redborder']['services']['redborder-mem2incident']    = false
 default['redborder']['services']['redborder-monitor']         = true
 default['redborder']['services']['redborder-nmsp']            = false
@@ -275,7 +275,6 @@ default['redborder']['systemdservices']['ftp']                      = ['vsftpd']
 default['redborder']['systemdservices']['http2k']                   = ['http2k']
 default['redborder']['systemdservices']['kafka']                    = ['kafka']
 default['redborder']['systemdservices']['keepalived']               = ['keepalived']
-default['redborder']['systemdservices']['logstash']                 = ['logstash']
 default['redborder']['systemdservices']['memcached']                = ['memcached']
 default['redborder']['systemdservices']['n2klocd']                  = ['n2klocd']
 default['redborder']['systemdservices']['redborder-netflow2kafka']  = ['redborder-netflow2kafka']
@@ -297,6 +296,7 @@ default['redborder']['systemdservices']['redborder-scanner']        = ['redborde
 default['redborder']['systemdservices']['rsyslog']                  = ['rsyslog']
 default['redborder']['systemdservices']['s3']                       = ['minio']
 default['redborder']['systemdservices']['redborder-sflow2kafka']    = ['redborder-sflow2kafka']
+default['redborder']['systemdservices']['redborder-vortex']         = ['redborder-vortex']
 default['redborder']['systemdservices']['snmp']                     = ['snmpd']
 default['redborder']['systemdservices']['snmptrap']                 = ['snmptrapd']
 default['redborder']['systemdservices']['webui']                    = ['webui']
