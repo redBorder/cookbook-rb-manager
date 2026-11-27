@@ -158,7 +158,6 @@ s3_malware_secrets = s3_malware_secrets.merge(
   's3_malware_access_key_id' => OpenBao.ref('s3_malware', 's3_malware_access_key_id'),
   's3_malware_secret_key_id' => OpenBao.ref('s3_malware', 's3_malware_secret_key_id'))
 
-
 postgresql_config 'Configure postgresql' do
   if manager_services['postgresql'] && external_services&.dig('postgresql') == 'onpremise'
     cdomain node['redborder']['cdomain']
@@ -533,7 +532,11 @@ end
 # the agent writes the Chef keys back after every unlock; rb_openbao init/unseal put them in OpenBao once
 chef_client_key = '/run/rb-secrets/chef-client/client.pem'
 chef_client_secret = "cert_chef_client_#{node['hostname']}"
-chef_keys_group = (::Etc.getgrnam('webui') rescue nil) ? 'webui' : 'root'
+chef_keys_group = begin
+                    ::Etc.getgrnam('webui') && 'webui'
+                  rescue ArgumentError
+                    'root'
+                  end
 
 { 'chef-client-key' => [chef_client_key, chef_client_secret, '/etc/chef/client.pem'],
   'chef-data-bag-secret' => ['/run/rb-secrets/chef-databag/encrypted_data_bag_secret', 'cert_data_bag_secret',
