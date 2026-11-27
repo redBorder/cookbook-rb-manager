@@ -111,6 +111,22 @@ rescue
   s3_malware_secrets = {}
 end
 
+# only the manager running the Chef server adds new IPS sensors to malware_vault/keys
+execute 'Encrypt the malware vault for new IPS sensors' do
+  command '/usr/lib/redborder/bin/rb_malware_vault.sh refresh'
+  only_if do
+    next false unless manager_services['chef-server'] && File.exist?('/usr/lib/redborder/bin/rb_malware_vault.sh')
+    vault_clients = begin
+                      data_bag_item('malware_vault', 'keys_keys')['clients'] || []
+                    rescue Net::HTTPClientException => e
+                      raise unless e.response.code == '404'
+                      nil
+                    end
+    vault_clients && search(:node, 'roles:ips-sensor OR roles:ipscp-sensor').map(&:name).sort != vault_clients.sort
+  end
+  ignore_failure true
+end
+
 cinc_server_config 'Configure chef services' do
   if manager_services['chef-server']
     memory node['redborder']['memory_services']['chef-server']['memory']
@@ -133,6 +149,15 @@ rescue => e
   external_services = nil
 end
 
+# on-premise S3: the agent templates get the keys from OpenBao; external S3 (set in the webui) stays in the data bag
+if external_services&.dig('s3') == 'onpremise'
+  s3_secrets = s3_secrets.merge('s3_access_key_id' => OpenBao.ref('s3', 's3_access_key_id'),
+                                's3_secret_key_id' => OpenBao.ref('s3', 's3_secret_key_id'))
+end
+s3_malware_secrets = s3_malware_secrets.merge(
+  's3_malware_access_key_id' => OpenBao.ref('s3_malware', 's3_malware_access_key_id'),
+  's3_malware_secret_key_id' => OpenBao.ref('s3_malware', 's3_malware_secret_key_id'))
+
 postgresql_config 'Configure postgresql' do
   if manager_services['postgresql'] && external_services&.dig('postgresql') == 'onpremise'
     cdomain node['redborder']['cdomain']
@@ -151,6 +176,7 @@ vrrp_secrets = {}
 if manager_services['keepalived']
   begin
     vrrp_secrets = data_bag_item('passwords', 'vrrp').to_hash
+    vrrp_secrets['pass'] = OpenBao.ref('vrrp', 'pass')
   rescue
     vrrp_secrets = {}
   end
@@ -503,6 +529,34 @@ webui_config 'Configure WebUI' do
   end
 end
 
+# the agent writes the Chef keys back after every unlock; rb_openbao init/unseal put them in OpenBao once
+chef_client_key = '/run/rb-secrets/chef-client/client.pem'
+chef_client_secret = "cert_chef_client_#{node['hostname']}"
+chef_keys_group = begin
+                    ::Etc.getgrnam('webui') && 'webui'
+                  rescue ArgumentError
+                    'root'
+                  end
+
+{ 'chef-client-key' => [chef_client_key, chef_client_secret, '/etc/chef/client.pem'],
+  'chef-data-bag-secret' => ['/run/rb-secrets/chef-databag/encrypted_data_bag_secret', 'cert_data_bag_secret',
+                             '/etc/chef/encrypted_data_bag_secret'] }.each do |name, (dest, secret, etc_path)|
+  openbao_secret_file name do
+    source 'key.ctmpl.erb'
+    cookbook 'openbao'
+    variables(name: secret)
+    destination dest
+    owner 'root'
+    group chef_keys_group
+    mode '0640'
+  end
+
+  link etc_path do
+    to dest
+    only_if { ::File.exist?(dest) }
+  end
+end
+
 webui_config 'Configure Nginx WebUI' do
   if manager_services['nginx'] && node['redborder']['webui']['hosts'] && !node['redborder']['webui']['hosts'].empty?
     hosts node['redborder']['webui']['hosts']
@@ -573,18 +627,9 @@ rb_sflow2kafka_config 'Configure redborder-sflow2kafka' do
   end
 end
 
-redis_secrets = {}
-
-begin
-  redis_secrets = data_bag_item('passwords', 'redis').to_hash
-rescue
-  redis_secrets = {}
-end
-
 redis_config 'Configure redis' do
   if manager_services['redis']
     redis_hosts node['redborder']['managers_per_services']['redis']
-    redis_secrets redis_secrets
     cdomain node['redborder']['cdomain']
     action [:add, :register]
   else
@@ -594,7 +639,6 @@ end
 
 rb_alarm_engine_config 'Configure redBorder alarm engine' do
   if manager_services['redborder-alarm-engine']
-    redis_password redis_secrets['pass'] unless redis_secrets.empty?
   else
     action :remove
   end
@@ -612,7 +656,6 @@ rb_license_config 'Configure redBorder License' do
   if manager_services['redborder-license']
     cluster_uuid cluster_uuid_db['uuid'] unless cluster_uuid_db.empty?
     node_id node['hostname']
-    redis_password redis_secrets['pass'] unless redis_secrets.empty?
   else
     action :remove
   end
@@ -654,7 +697,6 @@ if manager_services.values_at(*airflow_managed_services).compact.any?
     cdomain node['redborder']['cdomain']
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
-    redis_secrets redis_secrets
     logstash_hosts node['redborder']['managers_per_services']['logstash']
     airflow_webserver_hosts node['redborder']['managers_per_services']['airflow-webserver']
     cpu_cores node['cpu']['total'].to_i
@@ -781,7 +823,6 @@ logstash_config 'Configure logstash' do
     flow_nodes_with_proxy node.run_state['sensors_info_childs_proxy']['flow-sensor']
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
-    redis_secrets redis_secrets
     s3_malware_secrets s3_malware_secrets
     clamscan_enabled manager_services['clamav']
     action [:add, :register]
@@ -879,16 +920,8 @@ rbaioutliers_config 'Configure rb-aioutliers' do
   end
 end
 
-# Per-installation hub tokens (generated by rb_configure_leader.sh / rb_create_hub_secrets.sh):
-# auth_token is only readable by managers (passwords bag), registration_token is
-# readable by proxies (rBglobal bag) so their satellites can enrol
-hub_secrets = {}
-begin
-  hub_secrets = data_bag_item('passwords', 'hub').to_hash
-rescue
-  hub_secrets = {}
-end
-
+# Per-installation hub tokens: auth_token is in OpenBao (secret/hub);
+# registration_token stays in rBglobal/hub because sensor satellites have no OpenBao agent.
 hub_registration = {}
 begin
   hub_registration = data_bag_item('rBglobal', 'hub').to_hash
@@ -898,7 +931,7 @@ end
 
 rbhub_config 'Configure redborder-hub' do
   cdomain node['redborder']['cdomain']
-  auth_token hub_secrets['auth_token'].to_s
+  auth_token OpenBao.ref('hub', 'auth_token')
   registration_token hub_registration['registration_token'].to_s
   hub_hosts node['redborder']['redborder-hub']['hosts']
   if manager_services['redborder-hub']
@@ -924,7 +957,6 @@ mem2incident_config 'Configure redborder-mem2incident' do
     cdomain node['redborder']['cdomain']
     redis_hosts node['redborder']['managers_per_services']['redis']
     redis_port node['redis']['port']
-    redis_secrets redis_secrets
     auth_token node.run_state['auth_token']
     action [:add, :register]
   else
@@ -978,8 +1010,14 @@ rb_chrony_config 'Configure Chrony' do
   end
 end
 
-template '/root/.s3cfg_initial' do
+s3cfg_initial = '/run/rb-secrets/root/s3cfg_initial'
+directory '/run/rb-secrets/root' do
+  mode '0750'
+end
+
+template s3cfg_initial do
   source 's3cfg_initial.erb'
+  mode '0600'
   cookbook 'minio'
   variables(
     s3_user: s3_secrets['s3_access_key_id'],
@@ -988,12 +1026,18 @@ template '/root/.s3cfg_initial' do
     cdomain: node['redborder']['cdomain']
   )
   action :create
+  not_if { external_services&.dig('s3') == 'onpremise' } # cookbook-minio renders it
   only_if do
     s3_secrets['s3_access_key_id'] && !s3_secrets['s3_access_key_id'].empty? &&
       s3_secrets['s3_secret_key_id'] && !s3_secrets['s3_secret_key_id'].empty? &&
       s3_secrets['s3_host'] && !s3_secrets['s3_host'].empty? &&
       node['redborder']['cdomain'] && !node['redborder']['cdomain'].empty?
   end
+end
+
+link '/root/.s3cfg_initial' do
+  to s3cfg_initial
+  only_if { external_services&.dig('s3') != 'onpremise' }
 end
 
 # Allow only s3 onpremise nodes for now..
@@ -1136,21 +1180,17 @@ unless ssh_secrets.empty?
   end
 end
 
-begin
-  rsa_pem = data_bag_item('certs', 'rsa_pem')
-rescue
-  rsa_pem = {}
+openbao_secret_file 'root-rsa' do
+  source 'rsa.ctmpl.erb'
+  cookbook 'rb-manager'
+  destination '/run/rb-secrets/root/rsa'
+  owner 'root'
+  group 'root'
+  mode '0600'
 end
 
-unless rsa_pem.empty?
-  template '/root/.ssh/rsa' do
-    source 'rsa_cert.pem.erb'
-    owner 'root'
-    group 'root'
-    mode '0600'
-    retries 2
-    variables(private_rsa: rsa_pem['private_rsa'])
-  end
+link '/root/.ssh/rsa' do
+  to '/run/rb-secrets/root/rsa'
 end
 
 # Pending Changes..

@@ -160,23 +160,23 @@ default['redborder']['zookeeper_hosts'] = []
 default['redborder']['memory_assigned'] = {}
 
 # geoip has been removed because is not a service
-default['redborder']['services_group']['full'] = %w(consul chef-server zookeeper memcached rsyslog kafka logstash s3
+default['redborder']['services_group']['full'] = %w(consul openbao chef-server zookeeper memcached rsyslog kafka logstash s3
                                                     druid-broker druid-historical druid-coordinator druid-router druid-indexer druid-overlord
                                                     postgresql nginx webui rb-workers redborder-netflow2kafka rb-druid-indexer redborder-monitor redborder-sflow2kafka redis http2k
                                                     redborder-mem2incident rb-logstatter redborder-alarm-engine redborder-license ftp)
 
-default['redborder']['services_group']['custom'] = %w(consul)
-default['redborder']['services_group']['core'] = %w(consul chef-server s3 postgresql nginx)
-default['redborder']['services_group']['chef'] = %w(consul chef-server)
-default['redborder']['services_group']['kafka'] = %w(consul kafka)
-default['redborder']['services_group']['historical'] = %w(consul druid-historical)
-default['redborder']['services_group']['middlemanager'] = %w(consul druid-middlemanager)
-default['redborder']['services_group']['broker'] = %w(consul druid-broker)
-default['redborder']['services_group']['http2k'] = %w(consul http2k)
-default['redborder']['services_group']['webui'] = %w(consul nginx webui rb-workers redborder-alarm-engine)
-default['redborder']['services_group']['redborder-netflow2kafka'] = %w(consul redborder-netflow2kafka)
-default['redborder']['services_group']['s3'] = %w(consul nginx s3)
-default['redborder']['services_group']['postgresql'] = %w(consul postgresql)
+default['redborder']['services_group']['custom'] = %w(consul openbao)
+default['redborder']['services_group']['core'] = %w(consul openbao chef-server s3 postgresql nginx)
+default['redborder']['services_group']['chef'] = %w(consul openbao chef-server)
+default['redborder']['services_group']['kafka'] = %w(consul openbao kafka)
+default['redborder']['services_group']['historical'] = %w(consul openbao druid-historical)
+default['redborder']['services_group']['middlemanager'] = %w(consul openbao druid-middlemanager)
+default['redborder']['services_group']['broker'] = %w(consul openbao druid-broker)
+default['redborder']['services_group']['http2k'] = %w(consul openbao http2k)
+default['redborder']['services_group']['webui'] = %w(consul openbao nginx webui rb-workers redborder-alarm-engine)
+default['redborder']['services_group']['redborder-netflow2kafka'] = %w(consul openbao redborder-netflow2kafka)
+default['redborder']['services_group']['s3'] = %w(consul openbao nginx s3)
+default['redborder']['services_group']['postgresql'] = %w(consul openbao postgresql)
 
 default['redborder']['services'] = {}
 default['redborder']['services']['airflow-scheduler']         = false
@@ -195,6 +195,7 @@ default['redborder']['services']['chrony']                    = true
 default['redborder']['services']['clamav']                    = false
 default['redborder']['services']['clamav-freshclam']          = false
 default['redborder']['services']['consul']                    = false
+default['redborder']['services']['openbao']                   = false
 default['redborder']['services']['druid-broker']              = false
 default['redborder']['services']['druid-coordinator']         = false
 default['redborder']['services']['druid-historical']          = false
@@ -263,6 +264,7 @@ default['redborder']['systemdservices']['chrony']                   = ['chronyd'
 default['redborder']['systemdservices']['clamav']                   = ['clamd@scan']
 default['redborder']['systemdservices']['clamav-freshclam']         = ['clamav-freshclam']
 default['redborder']['systemdservices']['consul']                   = ['consul']
+default['redborder']['systemdservices']['openbao']                  = %w(openbao openbao-agent)
 default['redborder']['systemdservices']['druid-broker']             = ['druid-broker']
 default['redborder']['systemdservices']['druid-coordinator']        = ['druid-coordinator']
 default['redborder']['systemdservices']['druid-middlemanager']      = ['druid-middlemanager']
